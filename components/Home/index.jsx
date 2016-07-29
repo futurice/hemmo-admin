@@ -7,15 +7,19 @@ import Paper from 'material-ui/Paper';
 class Home extends Component {
   render() {
     return(
-      <div style={{display: 'flex'}}>
-      <Card style={{margin: this.context.muiTheme.spacing.desktopGutter, flex: 1}}>
+      <div style={{
+        margin: this.context.muiTheme.spacing.desktopGutter,
+        display: 'flex',
+        justifyContent: 'center'
+      }}>
+      <Card style={{marginRight: this.context.muiTheme.spacing.desktopGutter / 2, flex: 1}}>
         <CardHeader title="New feedback" subtitle="Feedback that has been assigned to you" />
         <CardText>
           <SessionTable/>
         </CardText>
       </Card>
 
-      <Card style={{margin: this.context.muiTheme.spacing.desktopGutter, flex: 1}}>
+      <Card style={{marginLeft: this.context.muiTheme.spacing.desktopGutter / 2, flex: 1}}>
         <CardHeader title="Unassigned feedback" subtitle="Feedback that has not been assigned yet" />
         <CardText>
           <SessionTable/>

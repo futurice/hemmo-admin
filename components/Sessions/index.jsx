@@ -1,11 +1,10 @@
 import { Component } from 'react';
+import SessionTable from './SessionTable';
 
 class Sessions extends Component {
   render() {
     return(
-      <div>
-        Hello world! (Sessions view)
-      </div>
+      <SessionTable/>
     );
   }
 }

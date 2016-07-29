@@ -13,16 +13,19 @@ import FlatButton from 'material-ui/FlatButton';
 
 const tableData = [
   {
+    id: 0,
     name: 'Laryn Lincoln',
     assignee: 'Maleah Tailor',
     family: 'Southgate',
     date: new Date('2016-05-17T15:24:30')
   }, {
+    id: 1,
     name: 'Doreen Garey',
     assignee: 'Maleah Tailor',
     family: 'Southgate',
     date: new Date('2016-04-06T12:45:26')
   }, {
+    id: 2,
     name: 'Gray Tanner',
     assignee: 'Dean Bishop',
     family: 'Eccleston',
@@ -61,7 +64,12 @@ class SessionTable extends Component {
               <TableRowColumn>{row.name}</TableRowColumn>
               <TableRowColumn>{row.family}</TableRowColumn>
               <TableRowColumn>{row.date.toISOString().substring(0, 10)}</TableRowColumn>
-              <TableRowColumn style={{textAlign: 'right'}}><FlatButton label="Open" primary={true}/></TableRowColumn>
+              <TableRowColumn style={{textAlign: 'right'}}>
+                <FlatButton onTouchTap={(e) => {
+                  console.log('clicked ' + row.id);
+                  e.preventDefault()
+                }} label="Open" primary={true}/>
+              </TableRowColumn>
             </TableRow>
           ))}
         </TableBody>
