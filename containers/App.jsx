@@ -2,6 +2,8 @@ import React from 'react';
 import { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { DEFAULT_VIEW } from '../constants/Views';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -11,6 +13,10 @@ import Header from '../components/Header';
 import * as UiActions from '../actions/ui';
 
 class App extends Component {
+  componentWillMount() {
+    this.props.router.push('/' + DEFAULT_VIEW.toLowerCase());
+  }
+
   render() {
     const { drawerOpened, view, actions } = this.props;
 
@@ -27,6 +33,7 @@ class App extends Component {
             toggleDrawer={actions.toggleDrawer}
             activeView={view}
           />
+          {this.props.children}
         </div>
       </MuiThemeProvider>
     );
@@ -52,7 +59,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(App);
+)(App));

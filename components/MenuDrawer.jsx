@@ -1,10 +1,12 @@
 import React from 'react';
 import {AppBar, Drawer, MenuItem} from 'material-ui';
 import { PREFERENCES, USERS, SESSIONS } from '../constants/Views';
+import { withRouter } from 'react-router';
 
 class MenuDrawer extends React.Component {
   changeView(view) {
     this.props.changeView(view)
+    this.props.router.push('/' + view.toLowerCase());
     this.props.closeDrawer();
   }
 
@@ -21,18 +23,21 @@ class MenuDrawer extends React.Component {
 
         <MenuItem
           onTouchTap={() => {this.changeView(SESSIONS)}}
+          style={this.props.activeView === SESSIONS ? { color: 'rgb(0, 188, 212)' } : null}
         >
           Sessions
         </MenuItem>
 
         <MenuItem
           onTouchTap={() => {this.changeView(USERS)}}
+          style={this.props.activeView === USERS ? { color: 'rgb(0, 188, 212)' } : null}
         >
           Users
         </MenuItem>
 
         <MenuItem
           onTouchTap={() => {this.changeView(PREFERENCES)}}
+          style={this.props.activeView === PREFERENCES ? { color: 'rgb(0, 188, 212)' } : null}
         >
           Preferences
         </MenuItem>
@@ -41,4 +46,4 @@ class MenuDrawer extends React.Component {
   }
 }
 
-export default MenuDrawer;
+export default withRouter(MenuDrawer);
