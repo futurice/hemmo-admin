@@ -1,6 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import TodoTextInput from './TodoTextInput';
-
 import {AppBar, Drawer, MenuItem} from 'material-ui';
 
 const defaultStyle = {

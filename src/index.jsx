@@ -7,9 +7,9 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 
 import App from '../containers/App';
 
-import Sessions from '../routes/Sessions';
-import Users from '../routes/Users';
-import Preferences from '../routes/Preferences';
+import Sessions from '../components/Sessions';
+import Users from '../components/Users';
+import Preferences from '../components/Preferences';
 
 import configureStore from '../store/configureStore';
 
