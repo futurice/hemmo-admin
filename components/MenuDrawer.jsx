@@ -1,14 +1,10 @@
 import React from 'react';
 import {AppBar, Drawer, MenuItem} from 'material-ui';
+import { PREFERENCES, USERS, SESSIONS } from '../constants/Views';
 
 class MenuDrawer extends React.Component {
-  propTypes: {
-    asd: React.PropTypes.func.isRequired,
-  }
-
-  setView(view) {
-    console.log(this);
-    this.props.setView(view)
+  changeView(view) {
+    this.props.changeView(view)
     this.props.closeDrawer();
   }
 
@@ -24,19 +20,19 @@ class MenuDrawer extends React.Component {
         />
 
         <MenuItem
-          onTouchTap={() => {this.setView('Sessions')}}
+          onTouchTap={() => {this.changeView(SESSIONS)}}
         >
           Sessions
         </MenuItem>
 
         <MenuItem
-          onTouchTap={() => {this.setView('Users')}}
+          onTouchTap={() => {this.changeView(USERS)}}
         >
           Users
         </MenuItem>
 
         <MenuItem
-          onTouchTap={() => {this.setView('Preferences')}}
+          onTouchTap={() => {this.changeView(PREFERENCES)}}
         >
           Preferences
         </MenuItem>

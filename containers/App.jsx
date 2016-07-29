@@ -1,5 +1,5 @@
 import React from 'react';
-import { Component } from 'react';
+import { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -8,46 +8,24 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import MenuDrawer from '../components/MenuDrawer';
 import Header from '../components/Header';
 
+import * as UiActions from '../actions/ui';
+
 class App extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      drawerOpened: false,
-      activeView: 'Sessions'
-    }
-  }
-
-  toggleDrawer() {
-    this.setState({
-      drawerOpened: !this.state.drawerOpened
-    });
-  }
-
-  closeDrawer() {
-    this.setState({
-      drawerOpened: false
-    });
-  }
-
-  setView(view) {
-    this.setState({
-      activeView: view
-    });
-  }
-
   render() {
+    const { drawerOpened, view, actions } = this.props;
+
     return(
       <MuiThemeProvider>
         <div>
           <MenuDrawer
-            open={this.state.drawerOpened}
-            closeDrawer={this.closeDrawer.bind(this)}
-            setView={this.setView.bind(this)}
+            open={drawerOpened}
+            closeDrawer={actions.closeDrawer}
+            changeView={actions.changeView}
+            activeView={view}
           />
           <Header
-            toggleDrawer={this.toggleDrawer.bind(this)}
-            activeView={this.state.activeView}
+            toggleDrawer={actions.toggleDrawer}
+            activeView={view}
           />
         </div>
       </MuiThemeProvider>
@@ -55,40 +33,22 @@ class App extends Component {
   }
 }
 
-import * as TodoActions from '../actions/todos';
-/*
-*/
-
-/*
-class App extends Component {
-  render() {
-    const { todos, actions } = this.props;
-    console.log(<MenuDrawer />);
-    return (
-      <div>
-        <MenuDrawer />
-        <MainSection todos={todos} actions={actions} />
-      </div>
-    );
-  }
-}
-
-
 App.propTypes = {
-  todos: PropTypes.array.isRequired,
+  view: PropTypes.string.isRequired,
+  drawerOpened: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired
 };
 
-*/
 function mapStateToProps(state) {
   return {
-    todos: state.todos
+    view: state.ui.view,
+    drawerOpened: state.ui.drawerOpened
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(TodoActions, dispatch)
+    actions: bindActionCreators(UiActions, dispatch)
   };
 }
 
