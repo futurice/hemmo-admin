@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import {AppBar, Drawer, MenuItem} from 'material-ui';
+import { AppBar, Drawer, MenuItem } from 'material-ui';
 
 const defaultStyle = {
   marginLeft: 20

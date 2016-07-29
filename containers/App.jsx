@@ -7,10 +7,13 @@ import { DEFAULT_VIEW } from '../constants/Views';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MenuDrawer from '../components/MenuDrawer';
 import Header from '../components/Header';
 
 import * as UiActions from '../actions/ui';
+
+const muiTheme = getMuiTheme({});
 
 class App extends Component {
   componentWillMount() {
@@ -21,7 +24,7 @@ class App extends Component {
     const { drawerOpened, view, actions } = this.props;
 
     return(
-      <MuiThemeProvider>
+      <MuiThemeProvider muiTheme={muiTheme}>
         <div>
           <MenuDrawer
             open={drawerOpened}

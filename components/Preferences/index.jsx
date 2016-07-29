@@ -1,14 +1,11 @@
-import { Component, PropTypes } from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { Component } from 'react';
 
 class Preferences extends Component {
   render() {
     return(
-      <MuiThemeProvider>
-        <div>
-          Hello world! (Preferences view)
-        </div>
-      </MuiThemeProvider>
+      <div>
+        Hello world! (Preferences view)
+      </div>
     );
   }
 }

@@ -1,8 +1,8 @@
 import { CHANGE_VIEW, TOGGLE_DRAWER, CLOSE_DRAWER } from '../constants/ActionTypes';
-import { PREFERENCES, USERS, SESSIONS } from '../constants/Views';
+import { DEFAULT_VIEW } from '../constants/Views';
 
 const initialState = {
-  view: SESSIONS,
+  view: DEFAULT_VIEW,
   drawerOpened: false
 };
 

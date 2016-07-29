@@ -1,14 +1,14 @@
 import { Component, PropTypes } from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import UserTable from './UserTable';
 
 class Users extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return(
-      <MuiThemeProvider>
-        <div>
-          Hello world! (Users view)
-        </div>
-      </MuiThemeProvider>
+      <UserTable/>
     );
   }
 }
