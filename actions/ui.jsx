@@ -1,13 +1,5 @@
-import * as types from '../constants/ActionTypes';
+import { createAction } from 'redux-act';
 
-export function changeView(view) {
-  return { type: types.CHANGE_VIEW, view };
-}
-
-export function closeDrawer() {
-  return { type: types.CLOSE_DRAWER };
-}
-
-export function toggleDrawer() {
-  return { type: types.TOGGLE_DRAWER };
-}
+export const changeView = createAction('Change current view');
+export const closeDrawer = createAction('Close menu drawer');
+export const toggleDrawer = createAction('Toggle menu drawer');

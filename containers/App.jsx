@@ -11,8 +11,6 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MenuDrawer from '../components/MenuDrawer';
 import Header from '../components/Header';
 
-import * as UiActions from '../actions/ui';
-
 const muiTheme = getMuiTheme({});
 
 class App extends Component {
@@ -21,21 +19,11 @@ class App extends Component {
   }
 
   render() {
-    const { drawerOpened, view, actions } = this.props;
-
     return(
       <MuiThemeProvider muiTheme={muiTheme}>
         <div>
-          <MenuDrawer
-            open={drawerOpened}
-            closeDrawer={actions.closeDrawer}
-            changeView={actions.changeView}
-            activeView={view}
-          />
-          <Header
-            toggleDrawer={actions.toggleDrawer}
-            activeView={view}
-          />
+          <MenuDrawer/>
+          <Header/>
           {this.props.children}
         </div>
       </MuiThemeProvider>
@@ -43,26 +31,4 @@ class App extends Component {
   }
 }
 
-App.propTypes = {
-  view: PropTypes.string.isRequired,
-  drawerOpened: PropTypes.bool.isRequired,
-  actions: PropTypes.object.isRequired
-};
-
-function mapStateToProps(state) {
-  return {
-    view: state.ui.view,
-    drawerOpened: state.ui.drawerOpened
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(UiActions, dispatch)
-  };
-}
-
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App));
+export default withRouter(App);

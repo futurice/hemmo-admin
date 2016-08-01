@@ -1,11 +1,19 @@
-import { createStore } from 'redux';
+import { createStore, compose } from 'redux';
+import { install } from 'redux-loop';
 import rootReducer from '../reducers';
 
+// TODO: dev tools extension
+//window.devToolsExtension ? window.devToolsExtension() : undefined
+
 export default function configureStore(initialState) {
+  const enhancer = compose(
+    install()
+  );
+
   const store = createStore(
     rootReducer,
     initialState,
-    window.devToolsExtension ? window.devToolsExtension() : undefined
+    enhancer
   );
 
   if (module.hot) {

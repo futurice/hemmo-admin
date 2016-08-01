@@ -9,6 +9,10 @@ import {
   TableRowColumn
 } from 'material-ui/Table';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as Actions from '../../actions/api/user';
+
 const tableData = [
   {
     name: 'Laryn Lincoln',
@@ -33,6 +37,10 @@ class UserTable extends Component {
     this.state = {};
   }
 
+  componentDidMount() {
+    this.props.actions.fetchUsersStart();
+  }
+
   handleToggle = (event, toggled) => {
     this.setState({
       [event.target.name]: toggled
@@ -40,6 +48,7 @@ class UserTable extends Component {
   }
 
   render() {
+    const { users, loading } = this.props;
     return(
       <Table multiSelectable={true}>
         <TableHeader>
@@ -50,7 +59,7 @@ class UserTable extends Component {
           </TableRow>
         </TableHeader>
         <TableBody showRowHover={true}>
-          {tableData.map((row, index) => (
+          {users.map((row, index) => (
             <TableRow key={index} selected={row.selected}>
               <TableRowColumn>{row.name}</TableRowColumn>
               <TableRowColumn>{row.assignee}</TableRowColumn>
@@ -63,4 +72,20 @@ class UserTable extends Component {
   }
 }
 
-export default UserTable;
+function mapStateToProps(state) {
+  return {
+    users: state.api.get('data'),
+    loading: state.api.get('loading')
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(Actions, dispatch)
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UserTable);

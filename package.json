@@ -47,6 +47,7 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "fbjs": "^0.8.3",
+    "immutable": "^3.8.1",
     "material-ui": "^0.15.2",
     "react": "^15.2.1",
     "react-addons-create-fragment": "^15.2.1",
@@ -59,6 +60,8 @@
     "react-router": "^2.6.0",
     "react-router-redux": "^4.0.5",
     "react-tap-event-plugin": "^1.0.0",
-    "redux": "^3.5.2"
+    "redux": "^3.5.2",
+    "redux-act": "^0.5.0",
+    "redux-loop": "^2.2.2"
   }
 }

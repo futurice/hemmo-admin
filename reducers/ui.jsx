@@ -1,29 +1,15 @@
-import { CHANGE_VIEW, TOGGLE_DRAWER, CLOSE_DRAWER } from '../constants/ActionTypes';
+import { createReducer } from 'redux-act';
+import * as Actions from '../actions/ui';
+import { Map } from 'immutable';
 import { DEFAULT_VIEW } from '../constants/Views';
 
-const initialState = {
+const initialState = Map({
   view: DEFAULT_VIEW,
   drawerOpened: false
-};
+});
 
-export default function ui(state = initialState, action) {
-  switch (action.type) {
-    case CHANGE_VIEW:
-      return Object.assign({}, state, {
-        view: action.view
-      });
-
-    case TOGGLE_DRAWER:
-      return Object.assign({}, state, {
-        drawerOpened: !state.drawerOpened
-      });
-
-    case CLOSE_DRAWER:
-      return Object.assign({}, state, {
-        drawerOpened: false
-      });
-
-    default:
-      return state;
-  }
-}
+export default createReducer({
+  [Actions.changeView]: (state, payload) => state.set('view', payload),
+  [Actions.toggleDrawer]: (state) => state.set('drawerOpened', !state.get('drawerOpened')),
+  [Actions.closeDrawer]: (state) => state.set('drawerOpened', false)
+}, initialState);
