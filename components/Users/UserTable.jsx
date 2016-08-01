@@ -1,4 +1,5 @@
-import { Component } from 'react';
+import { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import {
   Table,
   TableBody,
@@ -8,6 +9,8 @@ import {
   TableRow,
   TableRowColumn
 } from 'material-ui/Table';
+
+import rest from '../../rest';
 
 const tableData = [
   {
@@ -33,6 +36,11 @@ class UserTable extends Component {
     this.state = {};
   }
 
+  componentDidMount() {
+    const {dispatch} = this.props;
+    dispatch(rest.actions.users.sync());
+  }
+
   handleToggle = (event, toggled) => {
     this.setState({
       [event.target.name]: toggled
@@ -40,6 +48,9 @@ class UserTable extends Component {
   }
 
   render() {
+    const {users} = this.props;
+    //console.log(users);
+
     return(
       <Table multiSelectable={true}>
         <TableHeader>
@@ -49,18 +60,35 @@ class UserTable extends Component {
             <TableHeaderColumn>Family</TableHeaderColumn>
           </TableRow>
         </TableHeader>
-        <TableBody showRowHover={true}>
-          {tableData.map((row, index) => (
-            <TableRow key={index} selected={row.selected}>
-              <TableRowColumn>{row.name}</TableRowColumn>
-              <TableRowColumn>{row.assignee}</TableRowColumn>
-              <TableRowColumn>{row.family}</TableRowColumn>
-            </TableRow>
-          ))}
-        </TableBody>
+
+        if (!users.loading && users) {
+          <TableBody showRowHover={true}>
+            {users.data.map((row, index) => (
+              <TableRow key={index} selected={row.selected}>
+                <TableRowColumn>{row.name}</TableRowColumn>
+                <TableRowColumn>{row.assignee}</TableRowColumn>
+                <TableRowColumn>{row.family}</TableRowColumn>
+              </TableRow>
+            ))}
+          </TableBody>
+        }
       </Table>
     );
   }
 }
 
-export default UserTable;
+UserTable.propTypes = {
+  users: PropTypes.shape({
+    loading: PropTypes.bool.isRequired,
+    data: PropTypes.array.isRequired
+  }).isRequired,
+  dispatch: PropTypes.func.isRequired
+}
+
+function select(state) {
+  return {
+    users: state.users
+  };
+}
+
+export default connect(select)(UserTable);
