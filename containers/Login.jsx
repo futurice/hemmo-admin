@@ -5,39 +5,100 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { DEFAULT_VIEW } from '../constants/Views';
 
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import Header from '../components/Header';
+import TextField from 'material-ui/TextField';
+import * as Actions from '../actions/api/auth';
 
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 
 class Login extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      email: '',
+      password: ''
+    }
+  }
+
+  doLogin() {
+    this.props.actions.loginStart(this.state);
+  }
+
+  handleChange(field, event) {
+    this.setState({
+      [field]: event.target.value
+    });
+  }
+
   render() {
     return(
-      <Card>
-        <CardHeader
-          title="URL Avatar"
-          subtitle="Subtitle"
-          avatar="http://lorempixel.com/100/100/nature/"
-        />
-        <CardMedia
-          overlay={<CardTitle title="Overlay title" subtitle="Overlay subtitle" />}
-        >
-          <img src="http://lorempixel.com/600/337/nature/" />
-        </CardMedia>
-        <CardTitle title="Card title" subtitle="Card subtitle" />
-        <CardText>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-          Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-          Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-        </CardText>
-        <CardActions>
-          <FlatButton label="Action1" />
-          <FlatButton label="Action2" />
-        </CardActions>
-      </Card>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        margin: this.context.muiTheme.spacing.desktopGutter
+      }}>
+        <Card style={{
+          flex: 1,
+          maxWidth: '350px'
+        }}>
+          <CardHeader
+            title='Welcome back!'
+            subtitle='Please log in:'
+            style={{
+              backgroundColor: this.context.muiTheme.palette.primary1Color
+            }}
+            titleColor={this.context.muiTheme.palette.alternateTextColor}
+            subtitleColor={this.context.muiTheme.palette.accent2Color}
+          />
+          <CardText>
+            <TextField
+              floatingLabelText='Email'
+              value={this.state.email}
+              onChange={(event) => this.handleChange('email', event)}
+              hintText='Enter your email'
+              fullWidth={true}
+            />
+            <TextField
+              hintText='Password'
+              value={this.state.password}
+              onChange={(event) => this.handleChange('password', event)}
+              floatingLabelText='Password'
+              type='password'
+              fullWidth={true}
+            />
+          </CardText>
+          <CardActions style={{
+            margin: this.context.muiTheme.spacing.desktopGutter
+          }}>
+            <RaisedButton label="Login" fullWidth={true} primary={true} onTouchTap={this.doLogin.bind(this)} />
+          </CardActions>
+        </Card>
+      </div>
     );
   }
 }
 
-export default withRouter(Login);
+function mapStateToProps(state) {
+  return {
+    token: state.api.get('data'),
+    loading: state.api.get('loading'),
+    error: state.api.get('error')
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(Actions, dispatch)
+  };
+}
+
+Login.contextTypes = {
+  muiTheme: PropTypes.object.isRequired
+};
+
+export default withRouter(connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login));

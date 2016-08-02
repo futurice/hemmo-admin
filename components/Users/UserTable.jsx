@@ -11,29 +11,13 @@ import {
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as Actions from '../../actions/api/user';
+import fetchUsers from '../../actions/api/user';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import {red500} from 'material-ui/styles/colors';
 import Refresh from 'material-ui/svg-icons/navigation/refresh';
 import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
-
-const tableData = [
-  {
-    name: 'Laryn Lincoln',
-    assignee: 'Maleah Tailor',
-    family: 'Southgate'
-  }, {
-    name: 'Doreen Garey',
-    assignee: 'Maleah Tailor',
-    family: 'Southgate'
-  }, {
-    name: 'Gray Tanner',
-    assignee: 'Dean Bishop',
-    family: 'Eccleston'
-  }
-];
 
 class UserTable extends Component {
   constructor(props) {
@@ -44,7 +28,7 @@ class UserTable extends Component {
   }
 
   componentDidMount() {
-    this.props.actions.fetchUsersStart();
+    this.props.actions.start();
   }
 
   handleToggle = (event, toggled) => {
@@ -125,7 +109,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(Actions, dispatch)
+    actions: bindActionCreators(fetchUsers, dispatch)
   };
 }
 
