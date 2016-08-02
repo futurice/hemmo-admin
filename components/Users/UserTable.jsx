@@ -11,7 +11,7 @@ import {
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import fetchUsers from '../../actions/api/user';
+import fetchUsers from '../../actions/api/users';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
@@ -47,7 +47,6 @@ class UserTable extends Component {
         </div>
       );
     } else if (error || !users) {
-      console.log(error);
       return(
         <div style={{
           margin: this.context.muiTheme.spacing.desktopGutter
@@ -67,7 +66,7 @@ class UserTable extends Component {
             </CardText>
             <CardActions>
               <FlatButton label="Reload"
-                          onTouchTap={this.props.actions.fetchUsersStart}
+                          onTouchTap={() => this.props.actions.start()}
                           primary={true}
                           icon={<Refresh/>} />
             </CardActions>
@@ -101,9 +100,9 @@ class UserTable extends Component {
 
 function mapStateToProps(state) {
   return {
-    users: state.api.get('data'),
-    loading: state.api.get('loading'),
-    error: state.api.get('error')
+    users: state.usersApi.get('data').users,
+    loading: state.usersApi.get('loading'),
+    error: state.usersApi.get('error')
   };
 }
 

@@ -1,12 +1,14 @@
 import { combineReducers } from 'redux-loop';
 import { routerReducer } from 'react-router-redux';
 import ui from './ui';
-import apiReducer from './api';
+import usersApi from './api/users';
+import authApi from './api/auth';
 
 const rootReducer = combineReducers({
     ui,
     routing: routerReducer,
-    api: apiReducer
+    usersApi,
+    authApi
 });
 
 export default rootReducer;

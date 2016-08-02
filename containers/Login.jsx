@@ -8,8 +8,9 @@ import { DEFAULT_VIEW } from '../constants/Views';
 import RaisedButton from 'material-ui/RaisedButton';
 import Header from '../components/Header';
 import TextField from 'material-ui/TextField';
-import * as Actions from '../actions/api/auth';
+import authActions from '../actions/api/auth';
 
+import CircularProgress from 'material-ui/CircularProgress';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 
 class Login extends Component {
@@ -23,7 +24,10 @@ class Login extends Component {
   }
 
   doLogin() {
-    this.props.actions.loginStart(this.state);
+    this.props.actions.start(this.state).then(() => {
+      localStorage.setItem('auth', JSON.stringify(this.props.data));
+      this.props.router.push('/app/' + DEFAULT_VIEW);
+    });
   }
 
   handleChange(field, event) {
@@ -33,48 +37,60 @@ class Login extends Component {
   }
 
   render() {
+    const {data, error, loading} = this.props;
+
+    let spinner = loading ? <CircularProgress /> : null;
+
     return(
       <div style={{
-        display: 'flex',
-        justifyContent: 'center',
+        textAlign: 'center',
         margin: this.context.muiTheme.spacing.desktopGutter
       }}>
-        <Card style={{
-          flex: 1,
-          maxWidth: '350px'
+        <div style={{
+          textAlign: 'left',
+          display: 'flex',
+          justifyContent: 'center',
+          margin: this.context.muiTheme.spacing.desktopGutter
         }}>
-          <CardHeader
-            title='Welcome back!'
-            subtitle='Please log in:'
-            style={{
-              backgroundColor: this.context.muiTheme.palette.primary1Color
-            }}
-            titleColor={this.context.muiTheme.palette.alternateTextColor}
-            subtitleColor={this.context.muiTheme.palette.accent2Color}
-          />
-          <CardText>
-            <TextField
-              floatingLabelText='Email'
-              value={this.state.email}
-              onChange={(event) => this.handleChange('email', event)}
-              hintText='Enter your email'
-              fullWidth={true}
-            />
-            <TextField
-              hintText='Password'
-              value={this.state.password}
-              onChange={(event) => this.handleChange('password', event)}
-              floatingLabelText='Password'
-              type='password'
-              fullWidth={true}
-            />
-          </CardText>
-          <CardActions style={{
-            margin: this.context.muiTheme.spacing.desktopGutter
+          <Card style={{
+            flex: 1,
+            maxWidth: '350px'
           }}>
-            <RaisedButton label="Login" fullWidth={true} primary={true} onTouchTap={this.doLogin.bind(this)} />
-          </CardActions>
-        </Card>
+            <CardHeader
+              title='Welcome back!'
+              subtitle='Please log in:'
+              style={{
+                backgroundColor: this.context.muiTheme.palette.primary1Color
+              }}
+              titleColor={this.context.muiTheme.palette.alternateTextColor}
+              subtitleColor={this.context.muiTheme.palette.accent2Color}
+            />
+            <CardText>
+              <TextField
+                floatingLabelText='Email'
+                value={this.state.email}
+                onChange={(event) => this.handleChange('email', event)}
+                hintText='Enter your email'
+                fullWidth={true}
+              />
+              <TextField
+                hintText='Password'
+                value={this.state.password}
+                onChange={(event) => this.handleChange('password', event)}
+                floatingLabelText='Password'
+                type='password'
+                fullWidth={true}
+              />
+              {String(error)}
+            </CardText>
+            <CardActions style={{
+              margin: this.context.muiTheme.spacing.desktopGutter
+            }}>
+              <RaisedButton disabled={loading} label="Login" fullWidth={true} primary={true} onTouchTap={this.doLogin.bind(this)} />
+            </CardActions>
+          </Card>
+        </div>
+        {spinner}
       </div>
     );
   }
@@ -82,15 +98,15 @@ class Login extends Component {
 
 function mapStateToProps(state) {
   return {
-    token: state.api.get('data'),
-    loading: state.api.get('loading'),
-    error: state.api.get('error')
+    data: state.authApi.get('data'),
+    loading: state.authApi.get('loading'),
+    error: state.authApi.get('error')
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(Actions, dispatch)
+    actions: bindActionCreators(authActions, dispatch)
   };
 }
 
