@@ -3,6 +3,6 @@ import { createReducer } from 'redux-act';
 import fetchUsers from '../../actions/api/users';
 
 export default createReducer(
-  apiReducer('/users', fetchUsers),
+  apiReducer('/users/', fetchUsers),
   initialState()
 );

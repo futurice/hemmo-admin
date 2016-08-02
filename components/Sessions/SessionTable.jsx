@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component, PropTypes } from 'react';
 import {
   Table,
   TableBody,
@@ -9,29 +9,15 @@ import {
   TableRowColumn
 } from 'material-ui/Table';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import fetchSessions from '../../actions/api/sessions';
+import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
-
-const tableData = [
-  {
-    id: 0,
-    name: 'Laryn Lincoln',
-    assignee: 'Maleah Tailor',
-    family: 'Southgate',
-    date: new Date('2016-05-17T15:24:30')
-  }, {
-    id: 1,
-    name: 'Doreen Garey',
-    assignee: 'Maleah Tailor',
-    family: 'Southgate',
-    date: new Date('2016-04-06T12:45:26')
-  }, {
-    id: 2,
-    name: 'Gray Tanner',
-    assignee: 'Dean Bishop',
-    family: 'Eccleston',
-    date: new Date('2016-04-06T12:45:26')
-  }
-];
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import {red500} from 'material-ui/styles/colors';
+import Refresh from 'material-ui/svg-icons/navigation/refresh';
+import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 
 class SessionTable extends Component {
   constructor(props) {
@@ -41,6 +27,10 @@ class SessionTable extends Component {
     this.state = {};
   }
 
+  componentDidMount() {
+    this.props.actions.start();
+  }
+
   handleToggle = (event, toggled) => {
     this.setState({
       [event.target.name]: toggled
@@ -48,34 +38,85 @@ class SessionTable extends Component {
   }
 
   render() {
-    return(
-      <Table multiSelectable={true}>
-        <TableHeader>
-          <TableRow>
-            <TableHeaderColumn>Name</TableHeaderColumn>
-            <TableHeaderColumn>Family</TableHeaderColumn>
-            <TableHeaderColumn>Date</TableHeaderColumn>
-            <TableHeaderColumn></TableHeaderColumn>
-          </TableRow>
-        </TableHeader>
-        <TableBody showRowHover={true}>
-          {tableData.map((row, index) => (
-            <TableRow key={index} selected={row.selected}>
-              <TableRowColumn>{row.name}</TableRowColumn>
-              <TableRowColumn>{row.family}</TableRowColumn>
-              <TableRowColumn>{row.date.toISOString().substring(0, 10)}</TableRowColumn>
-              <TableRowColumn style={{textAlign: 'right'}}>
-                <FlatButton onTouchTap={(e) => {
-                  console.log('clicked ' + row.id);
-                  e.preventDefault()
-                }} label="Open" primary={true}/>
-              </TableRowColumn>
+    const { sessions, loading, error } = this.props;
+
+    if (loading) {
+      return(
+        <div style={{textAlign: 'center'}}>
+          <CircularProgress/>
+        </div>
+      );
+    } else if (error || !sessions) {
+      return(
+        <div style={{
+          margin: this.context.muiTheme.spacing.desktopGutter
+        }}>
+          <Card>
+            <CardHeader
+              title="Error fetching session data"
+              subtitle="Something went wrong when trying to fetch the session table"
+              style={{
+                backgroundColor: red500
+              }}
+              avatar={<ErrorOutline/>} />
+            <CardTitle title="Additional information" />
+            <CardText>
+              {String(error)}
+            </CardText>
+            <CardActions>
+              <FlatButton label="Reload"
+                          onTouchTap={() => this.props.actions.start()}
+                          primary={true}
+                          icon={<Refresh/>} />
+            </CardActions>
+          </Card>
+        </div>
+      );
+    } else {
+      return(
+        <Table multiSelectable={true}>
+          <TableHeader>
+            <TableRow>
+              <TableHeaderColumn>User's name</TableHeaderColumn>
+              <TableHeaderColumn>Session started</TableHeaderColumn>
+              <TableHeaderColumn>Reviewed</TableHeaderColumn>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    );
+          </TableHeader>
+          <TableBody showRowHover={true}>
+            {sessions.map((row, index) => (
+              <TableRow key={index} selected={row.selected}>
+                <TableRowColumn>{row.user.name}</TableRowColumn>
+                <TableRowColumn>{row.startedAt}</TableRowColumn>
+                <TableRowColumn>{row.reviewed}</TableRowColumn>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      );
+    }
   }
 }
 
-export default SessionTable;
+function mapStateToProps(state) {
+  return {
+    sessions: state.sessionsApi.get('data').sessions,
+    loading: state.sessionsApi.get('loading'),
+    error: state.sessionsApi.get('error')
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(fetchSessions, dispatch)
+  };
+}
+
+SessionTable.contextTypes = {
+  muiTheme: PropTypes.object.isRequired
+};
+
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SessionTable);
