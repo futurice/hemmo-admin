@@ -25,8 +25,10 @@ class Login extends Component {
 
   doLogin() {
     this.props.actions.start(this.state).then(() => {
-      localStorage.setItem('auth', JSON.stringify(this.props.data));
-      this.props.router.push('/app/' + DEFAULT_VIEW);
+      if (!this.props.error) {
+        localStorage.setItem('auth', JSON.stringify(this.props.data));
+        this.props.router.push('/app/' + DEFAULT_VIEW);
+      }
     });
   }
 
