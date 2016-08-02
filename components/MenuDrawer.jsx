@@ -11,7 +11,7 @@ import * as UiActions from '../actions/ui';
 class MenuDrawer extends Component {
   changeView(view) {
     this.props.actions.changeView(view)
-    this.props.router.push('/' + view.toLowerCase());
+    this.props.router.push('/app/' + view.toLowerCase());
     this.props.actions.closeDrawer();
   }
 
