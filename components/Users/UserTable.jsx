@@ -16,6 +16,8 @@ import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import {red500} from 'material-ui/styles/colors';
+import Refresh from 'material-ui/svg-icons/navigation/refresh';
+import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 
 const tableData = [
   {
@@ -74,7 +76,7 @@ class UserTable extends Component {
               style={{
                 backgroundColor: red500
               }}
-            />
+              avatar={<ErrorOutline/>} />
             <CardTitle title="Additional information" />
             <CardText>
               {String(error)}
@@ -82,7 +84,8 @@ class UserTable extends Component {
             <CardActions>
               <FlatButton label="Reload"
                           onTouchTap={this.props.actions.fetchUsersStart}
-                          primary={true} />
+                          primary={true}
+                          icon={<Refresh/>} />
             </CardActions>
           </Card>
         </div>

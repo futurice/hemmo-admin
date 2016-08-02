@@ -11,13 +11,10 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MenuDrawer from '../components/MenuDrawer';
 import Header from '../components/Header';
 
-const muiTheme = getMuiTheme({});
+import theme from '../src/material_ui_raw_theme_file';
+const muiTheme = getMuiTheme(theme);
 
 class App extends Component {
-  componentWillMount() {
-    this.props.router.push('/' + DEFAULT_VIEW.toLowerCase());
-  }
-
   render() {
     return(
       <MuiThemeProvider muiTheme={muiTheme}>

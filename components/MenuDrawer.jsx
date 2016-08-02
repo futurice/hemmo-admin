@@ -20,39 +20,30 @@ class MenuDrawer extends Component {
       <Drawer
         open={this.props.drawerOpened}
         docked={false}
-        onRequestChange={this.props.actions.closeDrawer}
-      >
+        onRequestChange={this.props.actions.closeDrawer} >
+
         <AppBar title="Navigation"
-                onLeftIconButtonTouchTap={this.props.actions.closeDrawer}
-        />
+                onLeftIconButtonTouchTap={this.props.actions.closeDrawer} />
 
-        <MenuItem
-          onTouchTap={() => {this.changeView(HOME)}}
-          style={this.props.activeView === HOME ? { color: 'rgb(0, 188, 212)' } : null}
-        >
-          Home
-        </MenuItem>
+        {[HOME, SESSIONS, USERS].map((row, i) => {
+            return(
+              <MenuItem
+                key={`MenuItem${i}`}
+                style={{color: this.props.view === row ? this.context.muiTheme.palette.primary1Color : null}}
+                onTouchTap={() => {this.changeView(row)}}>
 
-        <MenuItem
-          onTouchTap={() => {this.changeView(SESSIONS)}}
-          style={this.props.activeView === SESSIONS ? { color: 'rgb(0, 188, 212)' } : null}
-        >
-          Sessions
-        </MenuItem>
-
-        <MenuItem
-          onTouchTap={() => {this.changeView(USERS)}}
-          style={this.props.activeView === USERS ? { color: 'rgb(0, 188, 212)' } : null}
-        >
-          Users
-        </MenuItem>
+                {row}
+              </MenuItem>
+            );
+          })
+        }
 
         <Divider />
 
         <MenuItem
           onTouchTap={() => {this.changeView(PREFERENCES)}}
-          style={this.props.activeView === PREFERENCES ? { color: this.context.muiTheme.palette.primary1Color } : null}
-        >
+          style={{color: this.props.view === PREFERENCES ? this.context.muiTheme.palette.primary1Color : null}} >
+
           Preferences
         </MenuItem>
       </Drawer>

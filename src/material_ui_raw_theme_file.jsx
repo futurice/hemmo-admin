@@ -6,8 +6,8 @@ module.exports = {
   spacing: Spacing,
   fontFamily: 'Roboto, sans-serif',
   palette: {
-    primary1Color: Colors.cyan500,
-    primary2Color: Colors.cyan700,
+    primary1Color: Colors.lightGreen500,
+    primary2Color: Colors.lightGreen700,
     primary3Color: Colors.lightBlack,
     accent1Color: Colors.pinkA200,
     accent2Color: Colors.grey100,
