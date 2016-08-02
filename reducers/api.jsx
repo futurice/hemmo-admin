@@ -13,30 +13,40 @@ function fetchUsers() {
     })
   })
     .then((r) => (r.json()))
-    .then(Actions.fetchUsersSuccess)
+    .then((res) => {
+      if (res.ok) {
+        return Actions.fetchUsersSuccess(res.users);
+      } else {
+        throw new Error(res.message);
+      }
+    })
     .catch(Actions.fetchUsersFail);
 }
 
 const initialState = Map({
   data: [],
-  loading: false
+  loading: false,
+  error: ''
 });
 
 export default createReducer({
   [Actions.fetchUsersStart]: state => (
     loop(
-      state.set('loading', true),
+      state
+        .set('loading', true)
+        .set('error', false),
       Effects.promise(fetchUsers)
   )),
 
   [Actions.fetchUsersSuccess]: (state, payload) => (
     state
       .set('loading', false)
-      .set('data', payload.users)
+      .set('data', payload)
   ),
 
-  [Actions.fetchUsersFail]: (state) => (
+  [Actions.fetchUsersFail]: (state, payload) => (
     state
       .set('loading', false)
+      .set('error', payload || true)
   )
 }, initialState);
