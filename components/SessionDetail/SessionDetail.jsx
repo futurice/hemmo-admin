@@ -14,6 +14,7 @@ import { bindActionCreators } from 'redux';
 import fetchSession from '../../actions/api/sessionsDetail';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
+import Dialog from 'material-ui/Dialog';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import {red500} from 'material-ui/styles/colors';
 import Refresh from 'material-ui/svg-icons/navigation/refresh';
@@ -24,16 +25,32 @@ class SessionDetail extends Component {
     super(props);
 
     // for toggles states
-    this.state = {};
+    this.state = {
+      attachmentOpen: false,
+      openAttachmentContentId: null
+    };
   }
+
+  handleClose = () => {
+    this.setState({
+      attachmentOpen: false,
+      openAttachmentContentId: null});
+  };
 
   componentDidMount() {
     this.props.actions.start();
   }
 
   openAttachment(contentId) {
-    const url = 'http://0.0.0.0:3001/attachment/' + contentId
-    window.open(url,'_blank');
+    this.setState({
+      attachmentOpen: true,
+      openAttachmentContentId: contentId
+    });
+    console.log(this.state);
+  }
+
+  markReviewed() {
+    console.log("Somehow mark reviewed here");
   }
 
   render() {
@@ -71,9 +88,6 @@ class SessionDetail extends Component {
         </div>
       );
     } else {
-      console.log("ASD");
-      const user = session;
-      console.log(user);
       return(
         <div style={{
           margin: this.context.muiTheme.spacing.desktopGutter
@@ -87,13 +101,24 @@ class SessionDetail extends Component {
             </CardText>
             <CardActions>
               <FlatButton label="Mark reviewed"
-                          onTouchTap={() => this.props.actions.start()}
+                          onTouchTap={() => {
+                            this.markReviewed()
+                          }}
                           primary={true}
                           icon={<Refresh/>} />
             </CardActions>
 
           </Card>
-          <Table multiSelectable={true}>
+          <Dialog
+            title="Attachment"
+            modal={false}
+            open={this.state.attachmentOpen}
+            onRequestClose={this.handleClose}
+          >
+          Attachment with content id {this.state.openAttachmentContentId}
+          </Dialog>
+
+          <Table>
             <TableHeader>
               <TableRow>
                 <TableHeaderColumn>Question</TableHeaderColumn>
