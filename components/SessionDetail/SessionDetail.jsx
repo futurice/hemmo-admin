@@ -8,7 +8,7 @@ import {
   TableRow,
   TableRowColumn
 } from 'material-ui/Table';
-import { withRouter } from 'react-router';
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import fetchSessions from '../../actions/api/sessions';
@@ -19,7 +19,7 @@ import {red500} from 'material-ui/styles/colors';
 import Refresh from 'material-ui/svg-icons/navigation/refresh';
 import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 
-class SessionTable extends Component {
+class SessionDetail extends Component {
   constructor(props) {
     super(props);
 
@@ -31,20 +31,8 @@ class SessionTable extends Component {
     this.props.actions.start();
   }
 
-  handleToggle = (event, toggled) => {
-    this.setState({
-      [event.target.name]: toggled
-    });
-  }
-
-  openSession(sessionId) {
-    console.log(sessionId);
-    const path = '/app/sessions/' + sessionId
-     this.props.router.push(path);
-  }
-
   render() {
-    const { sessions, loading, error } = this.props;
+    const { session, loading, error } = this.props;
 
     if (loading) {
       return(
@@ -52,7 +40,7 @@ class SessionTable extends Component {
           <CircularProgress/>
         </div>
       );
-    } else if (error || !sessions) {
+    } else if (error || !session) {
       return(
         <div style={{
           margin: this.context.muiTheme.spacing.desktopGutter
@@ -60,7 +48,7 @@ class SessionTable extends Component {
           <Card>
             <CardHeader
               title="Error fetching session data"
-              subtitle="Something went wrong when trying to fetch the session table"
+              subtitle="Something went wrong when trying to fetch the session data"
               style={{
                 backgroundColor: red500
               }}
@@ -91,18 +79,7 @@ class SessionTable extends Component {
             </TableRow>
           </TableHeader>
           <TableBody showRowHover={true}>
-            {sessions.map((row, index) => (
-              <TableRow key={index} selected={row.selected}>
-                <TableRowColumn>{row.user.name}</TableRowColumn>
-                <TableRowColumn>{row.startedAt}</TableRowColumn>
-                <TableRowColumn>{row.reviewed.toString()}</TableRowColumn>
-                <TableRowColumn>
-                  <FlatButton onTouchTap={(e) => {
-                      this.openSession(row.sessionId);
-                  }} label="Open" primary={true}/>
-                </TableRowColumn>
-              </TableRow>
-            ))}
+            { session }
           </TableBody>
         </Table>
       );
@@ -112,7 +89,7 @@ class SessionTable extends Component {
 
 function mapStateToProps(state) {
   return {
-    session: state.sessionsApi.get('data').session,
+    sessions: state.sessionsApi.get('data').sessions,
     loading: state.sessionsApi.get('loading'),
     error: state.sessionsApi.get('error')
   };
@@ -124,11 +101,12 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-SessionTable.contextTypes = {
+SessionDetail.contextTypes = {
   muiTheme: PropTypes.object.isRequired
 };
 
-export default withRouter(connect(
+
+export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SessionTable));
+)(SessionDetail);
