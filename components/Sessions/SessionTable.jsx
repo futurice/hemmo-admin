@@ -8,6 +8,7 @@ import {
   TableRow,
   TableRowColumn
 } from 'material-ui/Table';
+
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -39,7 +40,7 @@ class SessionTable extends Component {
 
   openSession(sessionId) {
     console.log(sessionId);
-    const path = '/app/sessions/' + sessionId
+    const path = '/app/sessions/' + sessionId;
      this.props.router.push(path);
   }
 
@@ -112,7 +113,7 @@ class SessionTable extends Component {
 
 function mapStateToProps(state) {
   return {
-    session: state.sessionsApi.get('data').session,
+    sessions: state.sessionsApi.get('data').sessions,
     loading: state.sessionsApi.get('loading'),
     error: state.sessionsApi.get('error')
   };

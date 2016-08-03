@@ -12,7 +12,7 @@ import Home from '../components/Home';
 import Sessions from '../components/Sessions';
 import Users from '../components/Users';
 import Preferences from '../components/Preferences';
-import SessionDetail from '../components/SessionDetail';
+import SessionView from '../components/SessionDetail';
 
 import configureStore from '../store/configureStore';
 
@@ -42,7 +42,7 @@ ReactDOM.render(
         <Route path='/app' component={App}>
           <Route path='home' component={Home}/>
           <Route path='sessions' component={Sessions}/>
-          <Route path='sessions/:id' component={SessionDetail}/>
+          <Route path='sessions/:id' component={SessionView}/>
           <Route path='users' component={Users}/>
           <Route path='preferences' component={Preferences}/>
         </Route>

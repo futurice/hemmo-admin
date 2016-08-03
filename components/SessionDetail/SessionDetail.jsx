@@ -11,7 +11,7 @@ import {
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import fetchSessions from '../../actions/api/sessions';
+import fetchSession from '../../actions/api/sessionsDetail';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
@@ -67,7 +67,7 @@ class SessionDetail extends Component {
         </div>
       );
     } else {
-      console.log(sessions[0])
+      console.log(session)
       return(
         <Table multiSelectable={true}>
           <TableHeader>
@@ -79,7 +79,7 @@ class SessionDetail extends Component {
             </TableRow>
           </TableHeader>
           <TableBody showRowHover={true}>
-            { session }
+
           </TableBody>
         </Table>
       );
@@ -89,15 +89,15 @@ class SessionDetail extends Component {
 
 function mapStateToProps(state) {
   return {
-    sessions: state.sessionsApi.get('data').sessions,
-    loading: state.sessionsApi.get('loading'),
-    error: state.sessionsApi.get('error')
+    session: state.sessionDetailApi.get('data').session,
+    loading: state.sessionDetailApi.get('loading'),
+    error: state.sessionDetailApi.get('error')
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(fetchSessions, dispatch)
+    actions: bindActionCreators(fetchSession, dispatch)
   };
 }
 
