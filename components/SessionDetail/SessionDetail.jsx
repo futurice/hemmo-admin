@@ -9,6 +9,8 @@ import {
   TableRowColumn
 } from 'material-ui/Table';
 
+import Attachment from './Attachment';
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import fetchSession from '../../actions/api/sessionsDetail';
@@ -23,7 +25,7 @@ import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 class SessionDetail extends Component {
   constructor(props) {
     super(props);
-
+    console.log(Attachment);
     // for toggles states
     this.state = {
       attachmentOpen: false,
@@ -115,7 +117,7 @@ class SessionDetail extends Component {
             open={this.state.attachmentOpen}
             onRequestClose={this.handleClose}
           >
-          Attachment with content id {this.state.openAttachmentContentId}
+            <Attachment contentId={this.state.openAttachmentContentId} />
           </Dialog>
 
           <Table>
