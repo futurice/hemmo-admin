@@ -2,7 +2,8 @@ import { Effects, loop } from 'redux-loop';
 import { Map } from 'immutable';
 import { Promise } from 'bluebird';
 
-const API_ROOT = 'http://localhost:3001';
+const PORT = 3001;
+const API_ROOT = window.location.protocol + '//' + window.location.hostname + ':' + PORT;
 
 function fetchApi(path, actions, method = 'GET', body) {
   let API_TOKEN = '';
