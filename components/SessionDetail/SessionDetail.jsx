@@ -31,10 +31,14 @@ class SessionDetail extends Component {
     this.props.actions.start();
   }
 
+  openAttachment(contentId) {
+    const url = 'http://0.0.0.0:3001/attachment/' + contentId
+    window.open(url,'_blank');
+  }
+
   render() {
     const { session, loading, error } = this.props;
-
-    if (loading) {
+    if (loading || session.length === 0) {
       return(
         <div style={{textAlign: 'center'}}>
           <CircularProgress/>
@@ -67,21 +71,55 @@ class SessionDetail extends Component {
         </div>
       );
     } else {
-      console.log(session)
+      console.log("ASD");
+      const user = session;
+      console.log(user);
       return(
-        <Table multiSelectable={true}>
-          <TableHeader>
-            <TableRow>
-              <TableHeaderColumn>User</TableHeaderColumn>
-              <TableHeaderColumn>Session started</TableHeaderColumn>
-              <TableHeaderColumn>Reviewed</TableHeaderColumn>
-              <TableHeaderColumn>Open session</TableHeaderColumn>
-            </TableRow>
-          </TableHeader>
-          <TableBody showRowHover={true}>
+        <div style={{
+          margin: this.context.muiTheme.spacing.desktopGutter
+        }}>
+          <Card>
+            <CardTitle title="Session overview" />
+            <CardText>
+              User: {session.user.name}<br></br>
+              Review status: {session.reviewed.toString()}<br></br>
+              Started: {session.startedAt}
+            </CardText>
+            <CardActions>
+              <FlatButton label="Mark reviewed"
+                          onTouchTap={() => this.props.actions.start()}
+                          primary={true}
+                          icon={<Refresh/>} />
+            </CardActions>
 
-          </TableBody>
-        </Table>
+          </Card>
+          <Table multiSelectable={true}>
+            <TableHeader>
+              <TableRow>
+                <TableHeaderColumn>Question</TableHeaderColumn>
+                <TableHeaderColumn>Answer</TableHeaderColumn>
+                <TableHeaderColumn>Date</TableHeaderColumn>
+                <TableHeaderColumn>Open attachment</TableHeaderColumn>
+              </TableRow>
+            </TableHeader>
+            <TableBody showRowHover={true}>
+              {session.content.map((row, index) => (
+                <TableRow key={index} selected={row.selected}>
+                  <TableRowColumn>{row.question}</TableRowColumn>
+                  <TableRowColumn>{row.answer}</TableRowColumn>
+                  <TableRowColumn>{row.createdAt}</TableRowColumn>
+                  <TableRowColumn>
+                    {row.hasAttachment ?
+                      <FlatButton onTouchTap={(e) => {
+                          this.openAttachment(row.contentId);
+                      }} label="Open attachment" primary={true}/>
+                    : null }
+                  </TableRowColumn>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       );
     }
   }
@@ -89,7 +127,7 @@ class SessionDetail extends Component {
 
 function mapStateToProps(state) {
   return {
-    session: state.sessionDetailApi.get('data').session,
+    session: state.sessionDetailApi.get('data'),
     loading: state.sessionDetailApi.get('loading'),
     error: state.sessionDetailApi.get('error')
   };

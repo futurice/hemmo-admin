@@ -4,6 +4,6 @@ import fetchSession from '../../actions/api/sessionsDetail';
 
 
 export default createReducer(
-  apiReducer('/sessions/4c114a7b-e68a-4cde-9825-4fb756b9ef91', fetchSession, 'GET'),
+  apiReducer('/sessions/6e1054bd-0c85-4a48-9c64-89466ed4d8ba', fetchSession, 'GET'),
   initialState()
 );
