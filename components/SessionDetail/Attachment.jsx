@@ -2,85 +2,87 @@ import { Component, PropTypes } from 'react';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import fetchAttachment from '../../actions/api/attachment';
-import CircularProgress from 'material-ui/CircularProgress';
-import FlatButton from 'material-ui/FlatButton';
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
-import {red500} from 'material-ui/styles/colors';
-import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
+import { browserHistory } from 'react-router'
 
+const mimeCodec = 'audio/mpeg';
 
 class Attachment extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {};
+    console.log(props);
+    this.state = {
+      audio: null,
+      mediaSource: null
+    };
   }
 
   componentDidMount() {
-    this.props.actions.start();
-  }
+    window.MediaSource = window.MediaSource || window.WebKitMediaSource;
 
-  render() {
-    const { data, loading, error } = this.props;
-    console.log(data);
-    if (loading || data.length === 0) {
-      return(
-        <div style={{textAlign: 'center'}}>
-          <CircularProgress/>
-        </div>
-      );
-    } else if (error || !data) {
-      return(
-        <div style={{
-          margin: this.context.muiTheme.spacing.desktopGutter
-        }}>
-          <Card>
-            <CardHeader
-              title="Error fetching session data"
-              subtitle="Something went wrong when trying to fetch the session data"
-              style={{
-                backgroundColor: red500
-              }}
-              avatar={<ErrorOutline/>} />
-            <CardTitle title="Additional information" />
-            <CardText>
-              {String(error)}
-            </CardText>
-            <CardActions>
-              <FlatButton label="Reload"
-                          onTouchTap={() => this.props.actions.start()}
-                          primary={true}
-                          icon={<Refresh/>} />
-            </CardActions>
-          </Card>
-        </div>
-      );
+    if ('MediaSource' in window && MediaSource.isTypeSupported(mimeCodec)) {
+      const mediaSource = new MediaSource();
+      const audio = document.querySelector('audio');
+      this.state.mediaSource = mediaSource;
+      audio.src = window.URL.createObjectURL(mediaSource);
+      this.state.audio = audio;
+      mediaSource.addEventListener('sourceopen', this.onSourceOpen.bind(this), false);
+
     } else {
-      return(
-        <div>
-          {this.props.contentId}
-        </div>
-      );
+      console.log("NOT SUPPORTED");
+      return;
     }
   }
+
+  onSourceOpen() {
+    const mediaSource = this.state.mediaSource;
+    const sourceBuffer = mediaSource.addSourceBuffer(mimeCodec);
+    const audio = this.state.audio;
+    console.log(audio);
+    const assetURL = 'http://localhost:3001/attachment/' + this.props.contentId;
+
+    this.fetchAudioAsset(assetURL, function (buf) {
+      sourceBuffer.addEventListener('updateend', function (_) {
+        console.log(mediaSource);
+        console.log(mediaSource.readyState);
+        mediaSource.endOfStream();
+        audio.play();
+        //console.log(mediaSource.readyState); // ended
+      });
+      sourceBuffer.appendBuffer(buf);
+      console.log(sourceBuffer);
+
+    });
+  }
+
+  fetchAudioAsset(url, callback) {
+
+    let auth = JSON.parse(localStorage.getItem('auth'));
+    if (!auth) {
+      browserHistory.push('/login');
+    }
+
+    const token = 'Bearer ' + auth.token;
+    console.log(url);
+    console.log(auth);
+
+    const xhr = new XMLHttpRequest;
+    xhr.open('get', url);
+    xhr.responseType = 'arraybuffer';
+    xhr.setRequestHeader('Authorization', token);
+    xhr.onload = function () {
+      callback(xhr.response);
+    };
+    xhr.send();
+  }
+
+
+  render() {
+    return(
+      <div>
+        <audio controls autoPlay></audio>
+      </div>
+    );
+  }
 }
 
-function mapStateToProps(state) {
-  return {
-    data: state.attachmentApi.get('data'),
-    loading: state.attachmentApi.get('loading'),
-    error: state.attachmentApi.get('error')
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(fetchAttachment, dispatch)
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Attachment);
+export default connect()(Attachment);
