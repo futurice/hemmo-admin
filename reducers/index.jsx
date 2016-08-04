@@ -10,11 +10,4 @@ const rootReducer = combineReducers({
   routing: routerReducer
 });
 
-/*
-usersApi,
-sessionsApi,
-sessionDetailApi,
-authApi
-*/
-
 export default rootReducer;

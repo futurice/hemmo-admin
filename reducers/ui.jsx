@@ -3,6 +3,7 @@ import * as Actions from '../actions/ui';
 import { Map } from 'immutable';
 import { DEFAULT_VIEW } from '../constants/Views';
 
+// TODO: DEFAULT_VIEW might not be correct here if going straight to view url
 const initialState = Map({
   view: DEFAULT_VIEW,
   drawerOpened: false

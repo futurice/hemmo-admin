@@ -50,6 +50,7 @@ class Login extends Component {
   render() {
     const {data, error, loading} = this.props;
 
+    console.log(this.props.routing.locationBeforeTransitions);
     let spinner = loading ? <CircularProgress /> : null;
 
     return(
@@ -109,7 +110,10 @@ class Login extends Component {
 }
 
 function select(state) {
-  return { auth: state.auth };
+  return {
+    auth: state.auth,
+    routing: state.routing
+  };
 }
 
 Login.contextTypes = {

@@ -26,12 +26,16 @@ class UserTable extends Component {
 
     // for toggles states
     this.state = {};
+    this.refresh = this.refresh.bind(this);
+  }
+
+  refresh() {
+    const {dispatch} = this.props;
+    dispatch(rest.actions.users());
   }
 
   componentDidMount() {
-    const {dispatch} = this.props;
-    dispatch(rest.actions.users.sync());
-    //this.props.actions.start();
+    this.refresh();
   }
 
   handleToggle = (event, toggled) => {
@@ -41,24 +45,15 @@ class UserTable extends Component {
   }
 
   render() {
-    const { loading, error } = this.props;
-    let users = this.props.users.data;
-    console.log(users);
+    let users = this.props.users;
 
-    if (loading) {
+    if (users.loading) {
       return(
         <div style={{textAlign: 'center'}}>
           <CircularProgress/>
         </div>
       );
-    } else if (error || !users) {
-      return (
-        <div/>
-      );
-    } else {
-      return null;
-    
-      /*
+    } else if (!users.data) {
       return(
         <div style={{
           margin: this.context.muiTheme.spacing.desktopGutter
@@ -74,11 +69,11 @@ class UserTable extends Component {
               avatar={<ErrorOutline/>} />
             <CardTitle title="Additional information" />
             <CardText>
-              {String(error)}
+              Error: {String(users.error)}
             </CardText>
             <CardActions>
               <FlatButton label="Reload"
-                          onTouchTap={() => this.props.actions.start()}
+                          onTouchTap={() => this.refresh()}
                           primary={true}
                           icon={<Refresh/>} />
             </CardActions>
@@ -96,7 +91,7 @@ class UserTable extends Component {
             </TableRow>
           </TableHeader>
           <TableBody showRowHover={true}>
-            {users.map((row, index) => (
+            {users.data.map((row, index) => (
               <TableRow key={index} selected={row.selected}>
                 <TableRowColumn>{row.name}</TableRowColumn>
                 <TableRowColumn>{row.assignee}</TableRowColumn>
@@ -106,7 +101,6 @@ class UserTable extends Component {
           </TableBody>
         </Table>
       );
-      */
     }
   }
 }
@@ -118,7 +112,7 @@ UserTable.contextTypes = {
 UserTable.propTypes = {
   users: PropTypes.shape({
     loading: PropTypes.bool.isRequired,
-    data: PropTypes.object.isRequired
+    data: PropTypes.array.isRequired
   }).isRequired,
   dispatch: PropTypes.func.isRequired
 };
