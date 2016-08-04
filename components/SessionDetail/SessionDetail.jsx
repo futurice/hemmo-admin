@@ -25,7 +25,6 @@ import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 class SessionDetail extends Component {
   constructor(props) {
     super(props);
-    console.log(Attachment);
     // for toggles states
     this.state = {
       attachmentOpen: false,
@@ -48,7 +47,6 @@ class SessionDetail extends Component {
       attachmentOpen: true,
       openAttachmentContentId: contentId
     });
-    console.log(this.state);
   }
 
   markReviewed() {
