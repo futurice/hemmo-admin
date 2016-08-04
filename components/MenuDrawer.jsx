@@ -46,6 +46,11 @@ class MenuDrawer extends Component {
 
           Preferences
         </MenuItem>
+
+        <MenuItem
+          onTouchTap={() => {this.props.router.push('/logout')}} >
+          Logout
+        </MenuItem>
       </Drawer>
     );
   }
