@@ -40,13 +40,13 @@ ReactDOM.render(
       <Router history={history}>
         <Redirect from='/' to={`/app/${DEFAULT_VIEW}`.toLowerCase()} />
         <Route path='/login' component={Login}/>
-        <Route path='/logout' component={Logout}/>
         <Route path='/app' component={App}>
           <Route path='home' component={Home}/>
           <Route path='sessions' component={Sessions}/>
           <Route path='sessions/:id' component={SessionView}/>
           <Route path='users' component={Users}/>
           <Route path='preferences' component={Preferences}/>
+          <Route path='logout' component={Logout}/>
         </Route>
       </Router>
     </MuiThemeProvider>

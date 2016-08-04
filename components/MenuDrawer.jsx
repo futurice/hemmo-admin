@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { Component, PropTypes } from 'react';
 import { AppBar, Divider, Drawer, MenuItem } from 'material-ui';
-import { PREFERENCES, USERS, SESSIONS, HOME } from '../constants/Views';
+import { PREFERENCES, USERS, SESSIONS, HOME, LOGOUT } from '../constants/Views';
 import { withRouter } from 'react-router';
 
 import * as UiActions from '../actions/ui';
@@ -48,7 +48,9 @@ class MenuDrawer extends Component {
         </MenuItem>
 
         <MenuItem
-          onTouchTap={() => {this.props.router.push('/logout')}} >
+          onTouchTap={() => {
+            this.props.actions.logOut(); this.props.actions.closeDrawer();
+          }} >
           Logout
         </MenuItem>
       </Drawer>
