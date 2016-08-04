@@ -2,6 +2,8 @@ import { Effects, loop } from 'redux-loop';
 import { Map } from 'immutable';
 import { Promise } from 'bluebird';
 
+import { browserHistory } from 'react-router'
+
 const PORT = 3001;
 const API_ROOT = window.location.protocol + '//' + window.location.hostname + ':' + PORT;
 
@@ -24,12 +26,16 @@ function fetchApi(path, actions, method = 'GET', body) {
   .then((res) => {
     if (res.status >= 200 && res.status < 300) {
       return Promise.resolve(res);
+    } else if (res.status === 401) {
+      // Unauthorized, redirect to login page
+      browserHistory.push('/login');
     } else {
       return Promise.reject(new Error(res.statusText));
     }
   })
   .then((res) => (res.json()))
   .then((res) => {
+
     return actions.success(res);
   })
   .catch(actions.fail);
