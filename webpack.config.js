@@ -5,7 +5,7 @@ module.exports = {
     css: "./src/main.css",
     html: "./src/index.html",
   },
-  devtool: 'eval',
+  devtool: 'inline-eval-source-map',
   output: {
     path: __dirname + "/static",
     filename: "bundle.js",

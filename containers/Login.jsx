@@ -13,6 +13,8 @@ import authActions from '../actions/api/auth';
 import CircularProgress from 'material-ui/CircularProgress';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 
+import rest from '../reducers/api';
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -23,13 +25,33 @@ class Login extends Component {
     }
   }
 
+  authSuccess() {
+    this.props.router.push('/app/' + DEFAULT_VIEW);
+  }
+
+  shouldComponentUpdate(props) {
+    let token = props.auth.data.get('token');
+
+    if (token) {
+      this.authSuccess();
+      return false;
+    }
+
+    return true;
+  }
+
   doLogin() {
+    const {dispatch} = this.props;
+    dispatch(rest.actions.auth(null, {
+      body: JSON.stringify(this.state)
+    }));
+    /*
     this.props.actions.start(this.state).then(() => {
       if (!this.props.error) {
-        localStorage.setItem('auth', JSON.stringify(this.props.data));
         this.props.router.push('/app/' + DEFAULT_VIEW);
       }
     });
+    */
   }
 
   handleChange(field, event) {
@@ -83,7 +105,7 @@ class Login extends Component {
                 type='password'
                 fullWidth={true}
               />
-              {String(error)}
+              {error ? String(error) : ''}
             </CardText>
             <CardActions style={{
               margin: this.context.muiTheme.spacing.desktopGutter
@@ -98,25 +120,12 @@ class Login extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    data: state.authApi.get('data'),
-    loading: state.authApi.get('loading'),
-    error: state.authApi.get('error')
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(authActions, dispatch)
-  };
+function select(state) {
+  return { auth: state.auth };
 }
 
 Login.contextTypes = {
   muiTheme: PropTypes.object.isRequired
 };
 
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Login));
+export default withRouter(connect(select)(Login));

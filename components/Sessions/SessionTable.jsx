@@ -112,10 +112,11 @@ class SessionTable extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log(state.sessions);
   return {
-    sessions: state.sessionsApi.get('data').sessions,
-    loading: state.sessionsApi.get('loading'),
-    error: state.sessionsApi.get('error')
+    sessions: state.sessions.data.sessions,
+    loading: state.sessions.loading,
+    error: state.sessions.error
   };
 }
 

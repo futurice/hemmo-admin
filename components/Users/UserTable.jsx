@@ -18,6 +18,7 @@ import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'mat
 import {red500} from 'material-ui/styles/colors';
 import Refresh from 'material-ui/svg-icons/navigation/refresh';
 import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
+import rest from '../../reducers/api';
 
 class UserTable extends Component {
   constructor(props) {
@@ -29,7 +30,10 @@ class UserTable extends Component {
 
   componentDidMount() {
     console.log(this.props);
-    this.props.actions.start();
+    const {dispatch} = this.props;
+    console.log(rest.actions.users.sync());
+    dispatch(rest.actions.users.sync());
+    //this.props.actions.start();
   }
 
   handleToggle = (event, toggled) => {
@@ -48,6 +52,13 @@ class UserTable extends Component {
         </div>
       );
     } else if (error || !users) {
+      return (
+        <div/>
+      );
+    } else {
+      return null;
+    
+      /*
       return(
         <div style={{
           margin: this.context.muiTheme.spacing.desktopGutter
@@ -95,6 +106,7 @@ class UserTable extends Component {
           </TableBody>
         </Table>
       );
+      */
     }
   }
 }
@@ -117,7 +129,16 @@ UserTable.contextTypes = {
   muiTheme: PropTypes.object.isRequired
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserTable);
+UserTable.propTypes = {
+  users: PropTypes.shape({
+    loading: PropTypes.bool.isRequired,
+    data: PropTypes.object.isRequired
+  }).isRequired,
+  dispatch: PropTypes.func.isRequired
+};
+
+function select(state) {
+  return { users: state.users };
+}
+
+export default connect(select)(UserTable);
