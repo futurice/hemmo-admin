@@ -1,8 +1,8 @@
 import 'isomorphic-fetch';
 import reduxApi, {transformers} from 'redux-api';
 import adapterFetch from 'redux-api/lib/adapters/fetch';
-import { Map } from 'immutable';
 import { logOut } from '../../actions/ui';
+import { Map } from 'immutable';
 
 const PORT = 3001;
 const API_ROOT = window.location.protocol + '//' + window.location.hostname + ':' + PORT;
@@ -37,6 +37,7 @@ export default reduxApi({
     reducer(state, action) {
       if (action.type === logOut().type) {
         localStorage.removeItem('auth');
+        console.log('removing auth session');
 
         return { ...state, data: Map({ auth: false, token: '', employeeId: '' })};
       }

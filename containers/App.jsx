@@ -15,11 +15,9 @@ class App extends Component {
     this.checkLogin = this.checkLogin.bind(this);
   }
 
-  checkLogin() {
-    let token = this.props.auth.data.get('token');
-
-    if (!token) {
-      this.props.router.push('/login');
+  checkLogin(props) {
+    if (!props.auth.data.get('token')) {
+      props.router.push('/login');
       return false;
     }
 
@@ -27,11 +25,11 @@ class App extends Component {
   }
 
   componentWillMount() {
-    this.checkLogin();
+    this.checkLogin(this.props);
   }
 
   shouldComponentUpdate(props) {
-    return this.checkLogin();
+    return this.checkLogin(props);
   }
 
   render() {

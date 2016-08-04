@@ -18,11 +18,6 @@ import rest from '../reducers/api';
 class Login extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      email: '',
-      password: ''
-    }
   }
 
   authSuccess() {
@@ -30,9 +25,7 @@ class Login extends Component {
   }
 
   shouldComponentUpdate(props) {
-    let token = props.auth.data.get('token');
-
-    if (token) {
+    if (props.auth.data.get('token')) {
       this.authSuccess();
       return false;
     }
@@ -40,24 +33,18 @@ class Login extends Component {
     return true;
   }
 
+  componentDidMount() {
+    this.refs.email.focus();
+  }
+
   doLogin() {
     const {dispatch} = this.props;
     dispatch(rest.actions.auth(null, {
-      body: JSON.stringify(this.state)
+      body: JSON.stringify({
+        email: this.refs.email.getValue(),
+        password: this.refs.password.getValue()
+      })
     }));
-    /*
-    this.props.actions.start(this.state).then(() => {
-      if (!this.props.error) {
-        this.props.router.push('/app/' + DEFAULT_VIEW);
-      }
-    });
-    */
-  }
-
-  handleChange(field, event) {
-    this.setState({
-      [field]: event.target.value
-    });
   }
 
   render() {
@@ -91,19 +78,20 @@ class Login extends Component {
             />
             <CardText>
               <TextField
+                ref='email'
+                type='text'
                 floatingLabelText='Email'
-                value={this.state.email}
-                onChange={(event) => this.handleChange('email', event)}
                 hintText='Enter your email'
                 fullWidth={true}
+                onKeyDown={(event) => {if (event.keyCode === 13) this.doLogin();}}
               />
               <TextField
-                hintText='Password'
-                value={this.state.password}
-                onChange={(event) => this.handleChange('password', event)}
-                floatingLabelText='Password'
+                ref='password'
                 type='password'
+                floatingLabelText='Password'
+                hintText='Password'
                 fullWidth={true}
+                onKeyDown={(event) => {if (event.keyCode === 13) this.doLogin();}}
               />
               {error ? String(error) : ''}
             </CardText>
