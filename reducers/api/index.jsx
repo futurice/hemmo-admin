@@ -11,19 +11,23 @@ export default reduxApi({
   auth: {
     url: `${API_ROOT}/employees/authenticate/`,
     transformer(data) {
-      let authSession = localStorage.getItem('auth')
+      let authSession = JSON.parse(localStorage.getItem('auth'));
+
       if (data) {
         console.log('got data');
         console.log(data);
         const { token, employeeId } = data;
+        localStorage.setItem('auth', JSON.stringify({ token, employeeId }));
+
         return Map({ auth: true, token, employeeId });
-        localStorage.setItem('auth', { token, employeeId });
       } else if (authSession) {
         const { token, employeeId } = authSession;
         console.log(token, employeeId);
+
         return Map({ auth: true, token, employeeId });
       } else {
         console.log('no auth session');
+
         return Map({ auth: false, token: '', employeeId: '' });
       }
     },
@@ -31,10 +35,9 @@ export default reduxApi({
       method: 'post'
     },
     reducer(state, action) {
-      console.log(action);
-      console.log(logOut());
-      console.log(state);
       if (action.type === logOut().type) {
+        localStorage.removeItem('auth');
+
         return { ...state, data: Map({ auth: false, token: '', employeeId: '' })};
       }
       return state;
@@ -47,7 +50,8 @@ export default reduxApi({
         dispatch(actions.auth.sync(cb));
       },
       function ({getState}, cb) {
-        const { user: { data: { auth }}} = getState();
+        console.log(getState());
+        const { users: { data: { auth }}} = getState();
         console.log(auth);
 
         auth ? cb() : cb(new Error("Unauthorized"));

@@ -29,9 +29,7 @@ class UserTable extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     const {dispatch} = this.props;
-    console.log(rest.actions.users.sync());
     dispatch(rest.actions.users.sync());
     //this.props.actions.start();
   }
@@ -43,7 +41,9 @@ class UserTable extends Component {
   }
 
   render() {
-    const { users, loading, error } = this.props;
+    const { loading, error } = this.props;
+    let users = this.props.users.data;
+    console.log(users);
 
     if (loading) {
       return(
@@ -109,20 +109,6 @@ class UserTable extends Component {
       */
     }
   }
-}
-
-function mapStateToProps(state) {
-  return {
-    users: state.usersApi.get('data').users,
-    loading: state.usersApi.get('loading'),
-    error: state.usersApi.get('error')
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(fetchUsers, dispatch)
-  };
 }
 
 UserTable.contextTypes = {
