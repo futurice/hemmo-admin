@@ -14,6 +14,8 @@ function fetchApi(path, actions, method = 'GET', body) {
   let auth = JSON.parse(localStorage.getItem('auth'));
   if (auth) {
     API_TOKEN = auth.token;
+  } else {
+    browserHistory.push('/login');
   }
 
   return fetch(`${API_ROOT}${path}`, {

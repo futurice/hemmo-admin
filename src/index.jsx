@@ -7,6 +7,7 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 
 import App from '../containers/App';
 import Login from '../containers/Login';
+import Logout from '../containers/Logout';
 
 import Home from '../components/Home';
 import Sessions from '../components/Sessions';
@@ -39,6 +40,7 @@ ReactDOM.render(
       <Router history={history}>
         <Redirect from='/' to={`/app/${DEFAULT_VIEW}`.toLowerCase()} />
         <Route path='/login' component={Login}/>
+        <Route path='/logout' component={Logout}/>
         <Route path='/app' component={App}>
           <Route path='home' component={Home}/>
           <Route path='sessions' component={Sessions}/>
