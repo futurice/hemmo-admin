@@ -119,7 +119,7 @@ class SessionDetail extends Component {
           </Dialog>
 
           <Table>
-            <TableHeader>
+            <TableHeader displaySelectAll={false}>
               <TableRow>
                 <TableHeaderColumn>Question</TableHeaderColumn>
                 <TableHeaderColumn>Answer</TableHeaderColumn>
@@ -127,7 +127,7 @@ class SessionDetail extends Component {
                 <TableHeaderColumn>Open attachment</TableHeaderColumn>
               </TableRow>
             </TableHeader>
-            <TableBody showRowHover={true}>
+            <TableBody showRowHover={true} displayRowCheckbox={false}>
               {session.content.map((row, index) => (
                 <TableRow key={index} selected={row.selected}>
                   <TableRowColumn>{row.question}</TableRowColumn>
