@@ -23,7 +23,13 @@ class Login extends Component {
   }
 
   authSuccess() {
-    this.props.dispatch(replace(this.props.redirect || '/'));
+    let redirect = this.props.redirect;
+
+    if (!redirect || redirect === '/logout') {
+      redirect = '/';
+    }
+
+    this.props.dispatch(replace(redirect));
   }
 
   shouldComponentUpdate(props) {

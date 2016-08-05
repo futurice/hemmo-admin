@@ -11,19 +11,35 @@ import TextField from 'material-ui/TextField';
 import authActions from '../actions/api/auth';
 
 import CircularProgress from 'material-ui/CircularProgress';
+import * as UiActions from '../actions/ui';
 
 class Logout extends Component {
   constructor(props) {
     super(props);
-    localStorage.removeItem('auth');
-    this.props.router.push('/login');
+  }
+
+  componentDidMount() {
+    this.props.dispatch(UiActions.logOut());
   }
 
   render() {
     return(
-      <CircularProgress />
+      <div style={{
+        textAlign: 'center',
+        margin: this.context.muiTheme.spacing.desktopGutter
+      }}>
+        <CircularProgress />
+      </div>
     );
   }
 }
+
+Logout.propTypes = {
+  dispatch: PropTypes.func.isRequired
+};
+
+Logout.contextTypes = {
+  muiTheme: PropTypes.object.isRequired
+};
 
 export default withRouter(connect()(Logout));

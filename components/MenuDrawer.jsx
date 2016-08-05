@@ -49,9 +49,7 @@ class MenuDrawer extends Component {
         </MenuItem>
 
         <MenuItem
-          onTouchTap={() => {
-            this.props.dispatch(UiActions.logOut()); this.props.dispatch(UiActions.closeDrawer());
-          }} >
+          onTouchTap={() => { this.changeView(LOGOUT); }} >
           Logout
         </MenuItem>
       </Drawer>
