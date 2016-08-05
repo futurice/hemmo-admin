@@ -4,26 +4,28 @@ import { bindActionCreators } from 'redux';
 import { Component, PropTypes } from 'react';
 import { AppBar, Divider, Drawer, MenuItem } from 'material-ui';
 import { PREFERENCES, USERS, SESSIONS, HOME, LOGOUT } from '../constants/Views';
-import { withRouter } from 'react-router';
+import { push } from 'react-router-redux'
 
 import * as UiActions from '../actions/ui';
 
 class MenuDrawer extends Component {
   changeView(view) {
-    this.props.actions.changeView(view)
-    this.props.router.push('/app/' + view.toLowerCase());
-    this.props.actions.closeDrawer();
+    //this.props.actions.changeView(view)
+    this.props.dispatch(UiActions.changeView(view));
+    this.props.dispatch(UiActions.closeDrawer());
+    this.props.dispatch(push('/' + view.toLowerCase()));
   }
 
   render() {
+    console.log(this.props);
     return (
       <Drawer
         open={this.props.drawerOpened}
         docked={false}
-        onRequestChange={this.props.actions.closeDrawer} >
+        onRequestChange={() => this.props.dispatch(UiActions.closeDrawer())} >
 
         <AppBar title="Navigation"
-                onLeftIconButtonTouchTap={this.props.actions.closeDrawer} />
+                onLeftIconButtonTouchTap={() => this.props.dispatch(UiActions.closeDrawer())} />
 
         {[HOME, SESSIONS, USERS].map((row, i) => {
             return(
@@ -49,7 +51,7 @@ class MenuDrawer extends Component {
 
         <MenuItem
           onTouchTap={() => {
-            this.props.actions.logOut(); this.props.actions.closeDrawer();
+            this.props.dispatch(UiActions.logOut()); this.props.dispatch(UiActions.closeDrawer());
           }} >
           Logout
         </MenuItem>
@@ -62,20 +64,11 @@ MenuDrawer.contextTypes = {
   muiTheme: PropTypes.object.isRequired
 };
 
-function mapStateToProps(state) {
+function select(state) {
   return {
     view: state.ui.get('view'),
     drawerOpened: state.ui.get('drawerOpened')
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(UiActions, dispatch)
-  };
-}
-
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MenuDrawer));
+export default connect(select)(MenuDrawer);

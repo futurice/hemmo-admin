@@ -19,17 +19,17 @@ export default reduxApi({
         const { token, employeeId } = data;
         localStorage.setItem('auth', JSON.stringify({ token, employeeId }));
 
-        return Map({ auth: true, token, employeeId });
+        return { token, employeeId };
       } else if (authSession && authSession.token) {
         console.log('found token in localStorage');
 
         const { token, employeeId } = authSession;
 
-        return Map({ auth: true, token, employeeId });
+        return { token, employeeId };
       } else {
         console.log('no auth token found');
 
-        return Map({ auth: false, token: '', employeeId: '' });
+        return {};
       }
     },
     options: {
@@ -40,7 +40,7 @@ export default reduxApi({
         localStorage.removeItem('auth');
         console.log('removing auth session');
 
-        return { ...state, data: Map({ auth: false, token: '', employeeId: '' })};
+        return { ...state, data: {}};
       }
       return state;
     }
@@ -53,20 +53,31 @@ export default reduxApi({
       } else {
         return [];
       }
-    },
-    prefetch: [
-      function ({getState}, cb) {
-        const token = getState().auth.data.get('token');
-        token ? cb() : cb(new Error("Unauthorized"));
-      }
-    ]
+    }
   },
   sessions: {
-    url: `/sessions/`
+    url: `/sessions/`,
+    transformer(data) {
+      if (data) {
+        return data.sessions;
+      } else {
+        return [];
+      }
+    }
+  },
+  sessionDetail: {
+    url: `/sessions/:id`,
+    transformer(data) {
+      if (data) {
+        return data.session;
+      } else {
+        return {};
+      }
+    }
   }
 })
 .use('options', (url, params, getState) => {
-  const token = getState().auth.data.get('token');
+  const token = getState().auth.data.token;
 
   const headers = {
     'Accept': 'application/json',

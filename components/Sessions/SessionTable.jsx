@@ -19,6 +19,8 @@ import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'mat
 import {red500} from 'material-ui/styles/colors';
 import Refresh from 'material-ui/svg-icons/navigation/refresh';
 import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
+import rest from '../../reducers/api';
+import { push } from 'react-router-redux'
 
 class SessionTable extends Component {
   constructor(props) {
@@ -26,10 +28,16 @@ class SessionTable extends Component {
 
     // for toggles states
     this.state = {};
+    this.refresh = this.refresh.bind(this);
+  }
+
+  refresh() {
+    const {dispatch} = this.props;
+    dispatch(rest.actions.sessions());
   }
 
   componentDidMount() {
-    this.props.actions.start();
+    this.refresh();
   }
 
   handleToggle = (event, toggled) => {
@@ -39,9 +47,8 @@ class SessionTable extends Component {
   }
 
   openSession(sessionId) {
-    console.log(sessionId);
-    const path = '/app/sessions/' + sessionId;
-     this.props.router.push(path);
+    const path = '/sessions/' + sessionId;
+    this.props.dispatch(push(path));
   }
 
   render() {
@@ -72,7 +79,7 @@ class SessionTable extends Component {
             </CardText>
             <CardActions>
               <FlatButton label="Reload"
-                          onTouchTap={() => this.props.actions.start()}
+                          onTouchTap={() => this.refresh()}
                           primary={true}
                           icon={<Refresh/>} />
             </CardActions>
@@ -80,7 +87,6 @@ class SessionTable extends Component {
         </div>
       );
     } else {
-      console.log(sessions[0])
       return(
         <Table multiSelectable={true}>
           <TableHeader>
@@ -92,7 +98,7 @@ class SessionTable extends Component {
             </TableRow>
           </TableHeader>
           <TableBody showRowHover={true}>
-            {sessions.map((row, index) => (
+            {sessions.data.map((row, index) => (
               <TableRow key={index} selected={row.selected}>
                 <TableRowColumn>{row.user.name}</TableRowColumn>
                 <TableRowColumn>{row.startedAt}</TableRowColumn>
@@ -111,26 +117,20 @@ class SessionTable extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  console.log(state.sessions);
-  return {
-    sessions: state.sessions.data.sessions,
-    loading: state.sessions.loading,
-    error: state.sessions.error
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(fetchSessions, dispatch)
-  };
-}
-
 SessionTable.contextTypes = {
   muiTheme: PropTypes.object.isRequired
 };
 
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SessionTable));
+SessionTable.propTypes = {
+  sessions: PropTypes.shape({
+    loading: PropTypes.bool.isRequired,
+    data: PropTypes.array.isRequired
+  }).isRequired,
+  dispatch: PropTypes.func.isRequired
+};
+
+function select(state) {
+  return { sessions: state.sessions };
+}
+
+export default withRouter(connect(select)(SessionTable));

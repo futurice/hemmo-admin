@@ -21,7 +21,10 @@ import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'mat
 import {red500} from 'material-ui/styles/colors';
 import Refresh from 'material-ui/svg-icons/navigation/refresh';
 import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
+import rest from '../../reducers/api';
+import { withRouter } from 'react-router';
 
+/*
 class SessionDetail extends Component {
   constructor(props) {
     super(props);
@@ -38,8 +41,14 @@ class SessionDetail extends Component {
       openAttachmentContentId: null});
   };
 
+  refresh() {
+    const {dispatch} = this.props;
+    console.log(this.props);
+    dispatch(rest.actions.session({id: this.props.params.id}));
+  }
+
   componentDidMount() {
-    this.props.actions.start();
+    this.refresh();
   }
 
   openAttachment(contentId) {
@@ -54,8 +63,9 @@ class SessionDetail extends Component {
   }
 
   render() {
+    console.log(session);
     const { session, loading, error } = this.props;
-    if (loading || session.length === 0) {
+    if (loading) {
       return(
         <div style={{textAlign: 'center'}}>
           <CircularProgress/>
@@ -80,7 +90,7 @@ class SessionDetail extends Component {
             </CardText>
             <CardActions>
               <FlatButton label="Reload"
-                          onTouchTap={() => this.props.actions.start()}
+                          onTouchTap={() => this.refresh()}
                           primary={true}
                           icon={<Refresh/>} />
             </CardActions>
@@ -128,7 +138,7 @@ class SessionDetail extends Component {
               </TableRow>
             </TableHeader>
             <TableBody showRowHover={true} displayRowCheckbox={false}>
-              {session.content.map((row, index) => (
+              {session.data.map((row, index) => (
                 <TableRow key={index} selected={row.selected}>
                   <TableRowColumn>{row.question}</TableRowColumn>
                   <TableRowColumn>{row.answer}</TableRowColumn>
@@ -150,26 +160,32 @@ class SessionDetail extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    session: state.sessionDetailApi.get('data'),
-    loading: state.sessionDetailApi.get('loading'),
-    error: state.sessionDetailApi.get('error')
-  };
-}
 
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(fetchSession, dispatch)
-  };
-}
 
 SessionDetail.contextTypes = {
   muiTheme: PropTypes.object.isRequired
 };
 
+SessionDetail.propTypes = {
+  session: PropTypes.shape({
+    loading: PropTypes.bool.isRequired,
+    data: PropTypes.object.isRequired
+  }).isRequired,
+  dispatch: PropTypes.func.isRequired,
+  params: PropTypes.object.isRequired
+};
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SessionDetail);
+function select(state) {
+  console.log(state);
+  return { session: state.session };
+}
+
+export default connect(select)(SessionDetail);
+*/
+
+export default class SessionDetail extends Component {
+  render() {
+    console.dir(this.props);
+    return <h3>{this.props.params}</h3>;
+  }
+}

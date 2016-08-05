@@ -10,6 +10,8 @@ import Header from '../components/Header';
 import TextField from 'material-ui/TextField';
 import authActions from '../actions/api/auth';
 
+import { replace } from 'react-router-redux'
+
 import CircularProgress from 'material-ui/CircularProgress';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 
@@ -21,11 +23,11 @@ class Login extends Component {
   }
 
   authSuccess() {
-    this.props.router.push('/app/' + DEFAULT_VIEW);
+    this.props.dispatch(replace(this.props.redirect));
   }
 
   shouldComponentUpdate(props) {
-    if (props.auth.data.get('token')) {
+    if (props.auth.data.token) {
       this.authSuccess();
       return false;
     }
@@ -50,7 +52,6 @@ class Login extends Component {
   render() {
     const {data, error, loading} = this.props;
 
-    console.log(this.props.routing.locationBeforeTransitions);
     let spinner = loading ? <CircularProgress /> : null;
 
     return(
@@ -109,12 +110,17 @@ class Login extends Component {
   }
 }
 
-function select(state) {
+function select(state, ownProps) {
   return {
     auth: state.auth,
-    routing: state.routing
+    routing: state.routing,
+    redirect: ownProps.location.query.redirect
   };
 }
+
+Login.propTypes = {
+  dispatch: PropTypes.func.isRequired
+};
 
 Login.contextTypes = {
   muiTheme: PropTypes.object.isRequired

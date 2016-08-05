@@ -11,9 +11,10 @@ import Header from '../components/Header';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.checkLogin = this.checkLogin.bind(this);
+    //this.checkLogin = this.checkLogin.bind(this);
   }
 
+  /*
   checkLogin(props) {
     if (!props.auth.data.get('token')) {
       props.router.push('/login');
@@ -30,6 +31,7 @@ class App extends Component {
   shouldComponentUpdate(props) {
     return this.checkLogin(props);
   }
+  */
 
   render() {
     return(
