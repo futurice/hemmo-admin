@@ -11,41 +11,24 @@ import Header from '../components/Header';
 class App extends Component {
   constructor(props) {
     super(props);
-    //this.checkLogin = this.checkLogin.bind(this);
   }
-
-  /*
-  checkLogin(props) {
-    if (!props.auth.data.get('token')) {
-      props.router.push('/login');
-      return false;
-    }
-
-    return true;
-  }
-
-  componentWillMount() {
-    this.checkLogin(this.props);
-  }
-
-  shouldComponentUpdate(props) {
-    return this.checkLogin(props);
-  }
-  */
 
   render() {
     return(
       <div>
         <MenuDrawer/>
         <Header/>
-        {this.props.children}
+        {React.cloneElement(this.props.children, this.props)}
       </div>
     );
   }
 }
 
-function select(state) {
-  return { auth: state.auth };
+function select(state, ownProps) {
+  return {
+    location: ownProps.location,
+    params: ownProps.params
+  };
 }
 
-export default withRouter(connect(select)(App));
+export default connect(select)(App);

@@ -66,12 +66,12 @@ export default reduxApi({
     }
   },
   sessionDetail: {
-    url: `/sessions/:id`,
+    url: `/sessions/:sessionId`,
     transformer(data) {
       if (data) {
-        return data.session;
+        return data;
       } else {
-        return {};
+        return null
       }
     }
   }

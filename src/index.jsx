@@ -14,7 +14,7 @@ import Home from '../components/Home';
 import Sessions from '../components/Sessions';
 import Users from '../components/Users';
 import Preferences from '../components/Preferences';
-import SessionDetail from '../components/SessionDetail';
+import SessionDetail from '../components/SessionDetail/SessionDetail';
 
 import configureStore from '../store/configureStore';
 
@@ -42,8 +42,8 @@ const requireAuthentication = UserAuthWrapper({
 })
 
 ReactDOM.render(
-  <Provider store={store}>
-    <MuiThemeProvider muiTheme={muiTheme}>
+  <MuiThemeProvider muiTheme={muiTheme}>
+    <Provider store={store}>
       <Router history={history}>
         <Route path='/login' component={Login}/>
         <Route path='/' component={requireAuthentication(App)}>
@@ -56,7 +56,7 @@ ReactDOM.render(
           <Route path='logout' component={Logout}/>
         </Route>
       </Router>
-    </MuiThemeProvider>
-  </Provider>,
+    </Provider>
+  </MuiThemeProvider>,
   document.getElementById("root")
 );

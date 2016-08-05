@@ -17,7 +17,6 @@ class MenuDrawer extends Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <Drawer
         open={this.props.drawerOpened}
@@ -64,7 +63,7 @@ MenuDrawer.contextTypes = {
   muiTheme: PropTypes.object.isRequired
 };
 
-function select(state) {
+function select(state, ownProps) {
   return {
     view: state.ui.get('view'),
     drawerOpened: state.ui.get('drawerOpened')

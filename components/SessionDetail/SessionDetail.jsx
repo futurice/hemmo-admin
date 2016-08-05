@@ -24,10 +24,10 @@ import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 import rest from '../../reducers/api';
 import { withRouter } from 'react-router';
 
-/*
 class SessionDetail extends Component {
   constructor(props) {
     super(props);
+
     // for toggles states
     this.state = {
       attachmentOpen: false,
@@ -43,8 +43,7 @@ class SessionDetail extends Component {
 
   refresh() {
     const {dispatch} = this.props;
-    console.log(this.props);
-    dispatch(rest.actions.session({id: this.props.params.id}));
+    dispatch(rest.actions.sessionDetail({sessionId: this.props.id}));
   }
 
   componentDidMount() {
@@ -63,8 +62,8 @@ class SessionDetail extends Component {
   }
 
   render() {
-    console.log(session);
     const { session, loading, error } = this.props;
+    console.log(session);
     if (loading) {
       return(
         <div style={{textAlign: 'center'}}>
@@ -127,33 +126,6 @@ class SessionDetail extends Component {
           >
             <Attachment contentId={this.state.openAttachmentContentId} />
           </Dialog>
-
-          <Table>
-            <TableHeader displaySelectAll={false}>
-              <TableRow>
-                <TableHeaderColumn>Question</TableHeaderColumn>
-                <TableHeaderColumn>Answer</TableHeaderColumn>
-                <TableHeaderColumn>Date</TableHeaderColumn>
-                <TableHeaderColumn>Open attachment</TableHeaderColumn>
-              </TableRow>
-            </TableHeader>
-            <TableBody showRowHover={true} displayRowCheckbox={false}>
-              {session.data.map((row, index) => (
-                <TableRow key={index} selected={row.selected}>
-                  <TableRowColumn>{row.question}</TableRowColumn>
-                  <TableRowColumn>{row.answer}</TableRowColumn>
-                  <TableRowColumn>{row.createdAt}</TableRowColumn>
-                  <TableRowColumn>
-                    {row.hasAttachment ?
-                      <FlatButton onTouchTap={(e) => {
-                          this.openAttachment(row.contentId);
-                      }} label="Open attachment" primary={true}/>
-                    : null }
-                  </TableRowColumn>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
         </div>
       );
     }
@@ -166,26 +138,11 @@ SessionDetail.contextTypes = {
   muiTheme: PropTypes.object.isRequired
 };
 
-SessionDetail.propTypes = {
-  session: PropTypes.shape({
-    loading: PropTypes.bool.isRequired,
-    data: PropTypes.object.isRequired
-  }).isRequired,
-  dispatch: PropTypes.func.isRequired,
-  params: PropTypes.object.isRequired
-};
-
-function select(state) {
-  console.log(state);
-  return { session: state.session };
+function select(state, ownProps) {
+  return {
+    session: state.sessionDetail.data,
+    id: ownProps.params.id
+  };
 }
 
 export default connect(select)(SessionDetail);
-*/
-
-export default class SessionDetail extends Component {
-  render() {
-    console.dir(this.props);
-    return <h3>{this.props.params}</h3>;
-  }
-}
