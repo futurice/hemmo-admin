@@ -14,19 +14,19 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import {red500} from 'material-ui/styles/colors';
 import Refresh from 'material-ui/svg-icons/navigation/refresh';
 import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 import rest from '../../reducers/api';
 import { push } from 'react-router-redux'
+import Error from '../Error';
 
 class SessionTable extends Component {
   constructor(props) {
     super(props);
 
-    // for toggles states
-    this.state = {};
     this.refresh = this.refresh.bind(this);
   }
 
@@ -39,79 +39,80 @@ class SessionTable extends Component {
     this.refresh();
   }
 
-  handleToggle = (event, toggled) => {
-    this.setState({
-      [event.target.name]: toggled
-    });
-  }
-
   openSession(sessionId) {
     const path = '/sessions/' + sessionId;
     this.props.dispatch(push(path));
   }
 
   render() {
-    const { sessions, loading, error } = this.props;
+    const { sessions } = this.props;
 
-    if (loading) {
+    if (sessions.loading) {
       return(
         <div style={{textAlign: 'center'}}>
           <CircularProgress/>
         </div>
       );
-    } else if (error || !sessions) {
+    } else if (!sessions.sync || sessions.data.error) {
       return(
-        <div style={{
-          margin: this.context.muiTheme.spacing.desktopGutter
-        }}>
-          <Card>
-            <CardHeader
-              title="Error fetching session data"
-              subtitle="Something went wrong when trying to fetch the session table"
-              style={{
-                backgroundColor: red500
-              }}
-              avatar={<ErrorOutline/>} />
-            <CardTitle title="Additional information" />
-            <CardText>
-              {String(error)}
-            </CardText>
-            <CardActions>
-              <FlatButton label="Reload"
-                          onTouchTap={() => this.refresh()}
-                          primary={true}
-                          icon={<Refresh/>} />
-            </CardActions>
-          </Card>
-        </div>
+        <Error model={sessions}/>
       );
     } else {
-      return(
-        <Table>
-          <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-            <TableRow>
-              <TableHeaderColumn>User</TableHeaderColumn>
-              <TableHeaderColumn>Session started</TableHeaderColumn>
-              <TableHeaderColumn>Reviewed</TableHeaderColumn>
-              <TableHeaderColumn>Open session</TableHeaderColumn>
-            </TableRow>
-          </TableHeader>
-          <TableBody showRowHover={true} displayRowCheckbox={false}>
-            {sessions.data.map((row, index) => (
-              <TableRow key={index} selected={row.selected}>
-                <TableRowColumn>{row.user.name}</TableRowColumn>
-                <TableRowColumn>{row.startedAt}</TableRowColumn>
-                <TableRowColumn>{row.reviewed.toString()}</TableRowColumn>
-                <TableRowColumn>
-                  <FlatButton onTouchTap={(e) => {
-                      this.openSession(row.sessionId);
-                  }} label="Open" primary={true}/>
-                </TableRowColumn>
+      if (this.props.small) {
+        return(
+          <Table
+          >
+            <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+              <TableRow>
+                <TableHeaderColumn>User</TableHeaderColumn>
+                <TableHeaderColumn>Session started</TableHeaderColumn>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      );
+            </TableHeader>
+            <TableBody showRowHover={true} displayRowCheckbox={false}>
+              {sessions.data.map((row, index) => (
+                <TableRow key={index}
+                  onTouchTap={(e) => {
+                    this.openSession(row.sessionId);
+                  }} >
+                  <TableRowColumn>{row.user.name}</TableRowColumn>
+                  <TableRowColumn>{row.startedAt}</TableRowColumn>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        );
+      } else {
+        return(
+          <Table>
+            <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+              <TableRow>
+                <TableHeaderColumn>User</TableHeaderColumn>
+                <TableHeaderColumn>Session started</TableHeaderColumn>
+                <TableHeaderColumn>Reviewed</TableHeaderColumn>
+                <TableHeaderColumn style={{
+                  width: '10%'
+                }}></TableHeaderColumn>
+              </TableRow>
+            </TableHeader>
+            <TableBody showRowHover={true} displayRowCheckbox={false}>
+              {sessions.data.map((row, index) => (
+                <TableRow key={index} onTouchTap={(e) => {
+                  this.openSession(row.sessionId);
+                }} >
+                  <TableRowColumn>{row.user.name}</TableRowColumn>
+                  <TableRowColumn>{row.startedAt}</TableRowColumn>
+                  <TableRowColumn>{row.reviewed.toString()}</TableRowColumn>
+                  <TableRowColumn style={{ width: '10%' }}>
+                    <RaisedButton onTouchTap={(e) => {
+                        this.openSession(row.sessionId);
+                    }} label="Open" primary={true} fullWidth={true} />
+                  </TableRowColumn>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        );
+      }
     }
   }
 }

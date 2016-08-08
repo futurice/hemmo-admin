@@ -18,6 +18,7 @@ import {red500} from 'material-ui/styles/colors';
 import Refresh from 'material-ui/svg-icons/navigation/refresh';
 import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 import rest from '../../reducers/api';
+import Error from '../Error';
 
 class UserTable extends Component {
   constructor(props) {
@@ -44,7 +45,7 @@ class UserTable extends Component {
   }
 
   render() {
-    let users = this.props.users;
+    const { users } = this.props;
 
     if (users.loading) {
       return(
@@ -52,32 +53,9 @@ class UserTable extends Component {
           <CircularProgress/>
         </div>
       );
-    } else if (!users.data) {
+    } else if (!users.sync || users.data.error) {
       return(
-        <div style={{
-          margin: this.context.muiTheme.spacing.desktopGutter
-        }}>
-
-          <Card>
-            <CardHeader
-              title="Error fetching user data"
-              subtitle="Something went wrong when trying to fetch the user table"
-              style={{
-                backgroundColor: red500
-              }}
-              avatar={<ErrorOutline/>} />
-            <CardTitle title="Additional information" />
-            <CardText>
-              Error: {String(users.error)}
-            </CardText>
-            <CardActions>
-              <FlatButton label="Reload"
-                          onTouchTap={() => this.refresh()}
-                          primary={true}
-                          icon={<Refresh/>} />
-            </CardActions>
-          </Card>
-        </div>
+        <Error model={users}/>
       );
     } else {
       return(

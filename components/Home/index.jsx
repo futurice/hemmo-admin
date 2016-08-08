@@ -15,14 +15,14 @@ class Home extends Component {
       <Card style={{marginRight: this.context.muiTheme.spacing.desktopGutter / 2, flex: 1}}>
         <CardHeader title="New feedback" subtitle="Feedback that has been assigned to you" />
         <CardText>
-          <SessionTable/>
+          <SessionTable small={true}/>
         </CardText>
       </Card>
 
       <Card style={{marginLeft: this.context.muiTheme.spacing.desktopGutter / 2, flex: 1}}>
-        <CardHeader title="Unassigned feedback" subtitle="Feedback that has not been assigned yet" />
+        <CardHeader title="Unhandled feedback" subtitle="Feedback that was left unhandled for 10 days" />
         <CardText>
-          <SessionTable/>
+          <SessionTable small={true}/>
         </CardText>
       </Card>
       </div>

@@ -23,6 +23,7 @@ import Refresh from 'material-ui/svg-icons/navigation/refresh';
 import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 import rest from '../../reducers/api';
 import { withRouter } from 'react-router';
+import Error from '../Error';
 
 class SessionDetail extends Component {
   constructor(props) {
@@ -72,43 +73,20 @@ class SessionDetail extends Component {
   }
 
   render() {
-    const { session, loading, error } = this.props;
+    const { session } = this.props;
+
     console.log(session);
-    // TODO: error handling
-    if (loading || !session) {
+    if (session.loading) {
       return(
         <div style={{textAlign: 'center'}}>
           <CircularProgress/>
         </div>
       );
-    } else if (error) {
+    } else if (!session.sync || session.data.error) {
       return(
-        <div style={{
-          margin: this.context.muiTheme.spacing.desktopGutter
-        }}>
-          <Card>
-            <CardHeader
-              title="Error fetching session data"
-              subtitle="Something went wrong when trying to fetch the session data"
-              style={{
-                backgroundColor: red500
-              }}
-              avatar={<ErrorOutline/>} />
-            <CardTitle title="Additional information" />
-            <CardText>
-              {String(error)}
-            </CardText>
-            <CardActions>
-              <FlatButton label="Reload"
-                          onTouchTap={() => this.refresh()}
-                          primary={true}
-                          icon={<Refresh/>} />
-            </CardActions>
-          </Card>
-        </div>
+        <Error model={session}/>
       );
     } else {
-      console.log(session);
       return(
         <div style={{
           margin: this.context.muiTheme.spacing.desktopGutter
@@ -117,9 +95,9 @@ class SessionDetail extends Component {
             <CardTitle title="Session overview" />
             <CardText>
               <div>
-                User: {session.user.name}<br/>
-                Review status: {session.reviewed.toString()}<br/>
-                Started: {session.startedAt}<br/>
+                User: {session.data.user.name}<br/>
+                Review status: {session.data.reviewed.toString()}<br/>
+                Started: {session.data.startedAt}<br/>
               </div>
               <Table>
                 <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
@@ -132,7 +110,7 @@ class SessionDetail extends Component {
                   </TableRow>
                 </TableHeader>
                 <TableBody showRowHover={true} displayRowCheckbox={false}>
-                  {session.content.map((row, index) => (
+                  {session.data.content.map((row, index) => (
                     <TableRow key={index} selected={row.selected}>
                       <TableRowColumn>{row.question}</TableRowColumn>
                       <TableRowColumn>{row.answer}</TableRowColumn>
@@ -183,7 +161,7 @@ SessionDetail.contextTypes = {
 
 function select(state, ownProps) {
   return {
-    session: state.sessionDetail.data,
+    session: state.sessionDetail,
     id: ownProps.params.id
   };
 }
