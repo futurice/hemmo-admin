@@ -18,6 +18,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import {red500} from 'material-ui/styles/colors';
+import ActionDone from 'material-ui/svg-icons/action/done';
 import Refresh from 'material-ui/svg-icons/navigation/refresh';
 import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 import rest from '../../reducers/api';
@@ -32,6 +33,7 @@ class SessionDetail extends Component {
       attachmentOpen: false,
       openAttachmentContentId: null
     };
+    this.markReviewed = this.markReviewed.bind(this);
   }
 
   handleClose = () => {
@@ -57,12 +59,20 @@ class SessionDetail extends Component {
   }
 
   markReviewed() {
-    console.log("Somehow mark reviewed here");
+    const self = this;
+    const callback = function() {
+      self.refresh();
+    };
+    const {dispatch} = this.props;
+    dispatch(rest.actions.sessionUpdate({sessionId: this.props.id}, {
+      body: JSON.stringify({
+        reviewed: true
+      })
+    }, callback));
   }
 
   render() {
     const { session, loading, error } = this.props;
-    console.log(session);
     if (loading) {
       return(
         <div style={{textAlign: 'center'}}>
@@ -107,14 +117,17 @@ class SessionDetail extends Component {
               Review status: {session.reviewed.toString()}<br></br>
               Started: {session.startedAt}
             </CardText>
-            <CardActions>
-              <FlatButton label="Mark reviewed"
-                          onTouchTap={() => {
-                            this.markReviewed()
-                          }}
-                          primary={true}
-                          icon={<Refresh/>} />
-            </CardActions>
+            {session.reviewed ?
+                null :
+                <CardActions>
+                  <FlatButton label="Mark reviewed"
+                              onTouchTap={() => {
+                                this.markReviewed()
+                              }}
+                              primary={true}
+                              icon={<ActionDone/>} />
+                </CardActions>
+            }
 
           </Card>
           <Dialog
@@ -130,8 +143,6 @@ class SessionDetail extends Component {
     }
   }
 }
-
-
 
 SessionDetail.contextTypes = {
   muiTheme: PropTypes.object.isRequired

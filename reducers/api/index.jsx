@@ -9,7 +9,7 @@ const API_ROOT = window.location.protocol + '//' + window.location.hostname + ':
 
 export default reduxApi({
   auth: {
-    url: `/employees/authenticate/`,
+    url: `/employees/authenticate`,
     transformer(data) {
       let authSession = JSON.parse(localStorage.getItem('auth'));
 
@@ -60,7 +60,7 @@ export default reduxApi({
     }
   },
   users: {
-    url: `/users/`,
+    url: `/users`,
     transformer(data) {
       if (data) {
         return data.users;
@@ -70,7 +70,7 @@ export default reduxApi({
     }
   },
   sessions: {
-    url: `/sessions/`,
+    url: `/sessions`,
     transformer(data) {
       if (data) {
         return data.sessions;
@@ -87,6 +87,19 @@ export default reduxApi({
       } else {
         return null
       }
+    }
+  },
+  sessionUpdate: {
+    url: `/sessions/:sessionId`,
+    transformer(data) {
+      if (data) {
+        return data;
+      } else {
+        return null;
+      }
+    },
+    options: {
+      method: 'put'
     }
   }
 })
