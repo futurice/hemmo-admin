@@ -8,7 +8,6 @@ import { DEFAULT_VIEW } from '../constants/Views';
 import RaisedButton from 'material-ui/RaisedButton';
 import Header from '../components/Header';
 import TextField from 'material-ui/TextField';
-import authActions from '../actions/api/auth';
 
 import { replace } from 'react-router-redux'
 

@@ -11,8 +11,8 @@ import Login from '../containers/Login';
 import Logout from '../containers/Logout';
 
 import Home from '../components/Home';
-import Sessions from '../components/Sessions';
-import Users from '../components/Users';
+import Sessions from '../components/Sessions/SessionTable';
+import Users from '../components/Users/UserTable';
 import Preferences from '../components/Preferences';
 import SessionDetail from '../components/SessionDetail/SessionDetail';
 

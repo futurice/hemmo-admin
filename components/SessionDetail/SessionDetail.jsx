@@ -13,7 +13,6 @@ import Attachment from './Attachment';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import fetchSession from '../../actions/api/sessionsDetail';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
