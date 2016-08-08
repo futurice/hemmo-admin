@@ -53,7 +53,7 @@ class SessionTable extends Component {
           <CircularProgress/>
         </div>
       );
-    } else if (!sessions.sync || sessions.data.error) {
+    } else if (!sessions.sync || !sessions.data || sessions.data.error) {
       return(
         <Error model={sessions}/>
       );

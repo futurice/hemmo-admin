@@ -53,7 +53,7 @@ class UserTable extends Component {
           <CircularProgress/>
         </div>
       );
-    } else if (!users.sync || users.data.error) {
+    } else if (!users.sync || !users.data || users.data.error) {
       return(
         <Error model={users}/>
       );

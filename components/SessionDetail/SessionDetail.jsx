@@ -82,7 +82,7 @@ class SessionDetail extends Component {
           <CircularProgress/>
         </div>
       );
-    } else if (!session.sync || session.data.error) {
+    } else if (!session.sync || !session.data || session.data.error) {
       return(
         <Error model={session}/>
       );
