@@ -17,13 +17,20 @@ import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
-import {red500} from 'material-ui/styles/colors';
+import {
+  red300,
+  yellow300,
+  lightGreen300
+} from 'material-ui/styles/colors';
 import ActionDone from 'material-ui/svg-icons/action/done';
 import Refresh from 'material-ui/svg-icons/navigation/refresh';
 import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 import rest from '../../reducers/api';
 import { withRouter } from 'react-router';
 import Error from '../Error';
+import ThumbUp from 'material-ui/svg-icons/social/sentiment-satisfied';
+import ThumbDown from 'material-ui/svg-icons/social/sentiment-dissatisfied';
+import Neutral from 'material-ui/svg-icons/social/sentiment-neutral';
 
 class SessionDetail extends Component {
   constructor(props) {
@@ -117,12 +124,36 @@ class SessionDetail extends Component {
             <Card key={index} style={{
               margin: this.context.muiTheme.spacing.desktopGutter
             }}>
-              <CardTitle title={row.question}/>
+              <CardHeader
+                title={`Question ${index + 1}`}
+                style={{
+                  backgroundColor: row.like === 1 ? lightGreen300 : row.like === -1 ? red300 : yellow300
+                }}
+                avatar={((row) => {
+                  if (row.like === 1) {
+                    return (<ThumbUp/>);
+                  } else if (row.like === -1) {
+                    return (<ThumbDown/>);
+                  } else {
+                    return (<Neutral/>);
+                  }
+                })(row)} />
+              <CardTitle title={ row.question }/>
               <CardText>
                 <div>
-                  {row.answer}
+                  <b>Answer: </b>
+                  { row.answer }
                 </div>
               </CardText>
+              <CardActions>
+                {((row) => {
+                  if (row.hasAttachment) {
+                    return <FlatButton label="View attachment" primary={true}/>;
+                  } else {
+                    return null;
+                  }
+                })(row)}
+              </CardActions>
             </Card>
           ))}
 
