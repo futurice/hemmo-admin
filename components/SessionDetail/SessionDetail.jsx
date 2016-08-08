@@ -63,13 +63,14 @@ class SessionDetail extends Component {
   render() {
     const { session, loading, error } = this.props;
     console.log(session);
-    if (loading) {
+    // TODO: error handling
+    if (loading || !session) {
       return(
         <div style={{textAlign: 'center'}}>
           <CircularProgress/>
         </div>
       );
-    } else if (error || !session) {
+    } else if (error) {
       return(
         <div style={{
           margin: this.context.muiTheme.spacing.desktopGutter
@@ -96,6 +97,7 @@ class SessionDetail extends Component {
         </div>
       );
     } else {
+      console.log(session);
       return(
         <div style={{
           margin: this.context.muiTheme.spacing.desktopGutter
@@ -103,9 +105,39 @@ class SessionDetail extends Component {
           <Card>
             <CardTitle title="Session overview" />
             <CardText>
-              User: {session.user.name}<br></br>
-              Review status: {session.reviewed.toString()}<br></br>
-              Started: {session.startedAt}
+              <div>
+                User: {session.user.name}<br/>
+                Review status: {session.reviewed.toString()}<br/>
+                Started: {session.startedAt}<br/>
+              </div>
+              <Table>
+                <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+                  <TableRow>
+                    <TableHeaderColumn>Question</TableHeaderColumn>
+                    <TableHeaderColumn>Answer</TableHeaderColumn>
+                    <TableHeaderColumn>Like</TableHeaderColumn>
+                    <TableHeaderColumn>Date</TableHeaderColumn>
+                    <TableHeaderColumn>Open attachment</TableHeaderColumn>
+                  </TableRow>
+                </TableHeader>
+                <TableBody showRowHover={true} displayRowCheckbox={false}>
+                  {session.content.map((row, index) => (
+                    <TableRow key={index} selected={row.selected}>
+                      <TableRowColumn>{row.question}</TableRowColumn>
+                      <TableRowColumn>{row.answer}</TableRowColumn>
+                      <TableRowColumn>{row.like}</TableRowColumn>
+                      <TableRowColumn>{row.createdAt}</TableRowColumn>
+                      <TableRowColumn>
+                        {row.hasAttachment ?
+                          <FlatButton onTouchTap={(e) => {
+                              this.openAttachment(row.contentId);
+                          }} label="Open attachment" primary={true}/>
+                        : null }
+                      </TableRowColumn>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </CardText>
             <CardActions>
               <FlatButton label="Mark reviewed"

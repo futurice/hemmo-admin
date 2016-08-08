@@ -82,14 +82,14 @@ class UserTable extends Component {
     } else {
       return(
         <Table multiSelectable={true}>
-          <TableHeader>
+          <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
               <TableHeaderColumn>Name</TableHeaderColumn>
               <TableHeaderColumn>Assignee</TableHeaderColumn>
               <TableHeaderColumn>Family</TableHeaderColumn>
             </TableRow>
           </TableHeader>
-          <TableBody showRowHover={true}>
+          <TableBody showRowHover={true} displayRowCheckbox={false}>
             {users.data.map((row, index) => (
               <TableRow key={index} selected={row.selected}>
                 <TableRowColumn>{row.name}</TableRowColumn>
