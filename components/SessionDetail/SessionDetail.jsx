@@ -88,10 +88,10 @@ class SessionDetail extends Component {
       );
     } else {
       return(
-        <div style={{
-          margin: this.context.muiTheme.spacing.desktopGutter
-        }}>
-          <Card>
+        <div>
+          <Card style={{
+            margin: this.context.muiTheme.spacing.desktopGutter
+          }}>
             <CardTitle title="Session overview" />
             <CardText>
               <div>
@@ -99,48 +99,33 @@ class SessionDetail extends Component {
                 Review status: {session.data.reviewed.toString()}<br/>
                 Started: {session.data.startedAt}<br/>
               </div>
-              <Table>
-                <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-                  <TableRow>
-                    <TableHeaderColumn>Question</TableHeaderColumn>
-                    <TableHeaderColumn>Answer</TableHeaderColumn>
-                    <TableHeaderColumn>Like</TableHeaderColumn>
-                    <TableHeaderColumn>Date</TableHeaderColumn>
-                    <TableHeaderColumn>Open attachment</TableHeaderColumn>
-                  </TableRow>
-                </TableHeader>
-                <TableBody showRowHover={true} displayRowCheckbox={false}>
-                  {session.data.content.map((row, index) => (
-                    <TableRow key={index} selected={row.selected}>
-                      <TableRowColumn>{row.question}</TableRowColumn>
-                      <TableRowColumn>{row.answer}</TableRowColumn>
-                      <TableRowColumn>{row.like}</TableRowColumn>
-                      <TableRowColumn>{row.createdAt}</TableRowColumn>
-                      <TableRowColumn>
-                        {row.hasAttachment ?
-                          <FlatButton onTouchTap={(e) => {
-                              this.openAttachment(row.contentId);
-                          }} label="Open attachment" primary={true}/>
-                        : null }
-                      </TableRowColumn>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
             </CardText>
             {session.reviewed ?
-                null :
-                <CardActions>
-                  <FlatButton label="Mark reviewed"
-                              onTouchTap={() => {
-                                this.markReviewed()
-                              }}
-                              primary={true}
-                              icon={<ActionDone/>} />
-                </CardActions>
+              null :
+              <CardActions>
+                <FlatButton label="Mark reviewed"
+                            onTouchTap={() => {
+                              this.markReviewed()
+                            }}
+                            primary={true}
+                            icon={<ActionDone/>} />
+              </CardActions>
             }
-
           </Card>
+
+          {session.data.content.map((row, index) => (
+            <Card key={index} style={{
+              margin: this.context.muiTheme.spacing.desktopGutter
+            }}>
+              <CardTitle title={row.question}/>
+              <CardText>
+                <div>
+                  {row.answer}
+                </div>
+              </CardText>
+            </Card>
+          ))}
+
           <Dialog
             title="Attachment"
             modal={false}
