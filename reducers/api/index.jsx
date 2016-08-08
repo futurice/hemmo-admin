@@ -85,7 +85,7 @@ export default reduxApi({
       if (data) {
         return data;
       } else {
-        return null
+        return {};
       }
     }
   },
