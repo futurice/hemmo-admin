@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router'
 
-const mimeCodec = 'audio/mpeg';
+const mimeCodec = 'audio/aac';
 
 class Attachment extends Component {
   constructor(props) {
