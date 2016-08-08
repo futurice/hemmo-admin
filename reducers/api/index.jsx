@@ -16,16 +16,30 @@ export default reduxApi({
       if (data) {
         console.log('got new token from backend');
 
-        const { token, employeeId } = data;
-        localStorage.setItem('auth', JSON.stringify({ token, employeeId }));
+        const { token, employeeId, expiresIn } = data;
 
-        return { token, employeeId };
+        let expiration = new Date();
+        let expirationDelta = 1000; // account for possible clock drift, latency...
+        expiration.setMilliseconds(expiration.getMilliseconds() + expiresIn - expirationDelta);
+
+        localStorage.setItem('auth', JSON.stringify({
+          token,
+          employeeId,
+          expiration
+        }));
+
+        return { token, employeeId, expiration };
       } else if (authSession && authSession.token) {
         console.log('found token in localStorage');
 
-        const { token, employeeId } = authSession;
+        const { token, employeeId, expiration } = authSession;
 
-        return { token, employeeId };
+        if (!expiration || new Date().getTime() >= new Date(expiration).getTime()) {
+          console.log('token in localStorage expired!');
+          return {};
+        }
+
+        return { token, employeeId, expiration };
       } else {
         console.log('no auth token found');
 
