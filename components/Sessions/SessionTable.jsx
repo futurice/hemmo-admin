@@ -87,8 +87,8 @@ class SessionTable extends Component {
       );
     } else {
       return(
-        <Table multiSelectable={true}>
-          <TableHeader>
+        <Table>
+          <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
               <TableHeaderColumn>User</TableHeaderColumn>
               <TableHeaderColumn>Session started</TableHeaderColumn>
@@ -96,7 +96,7 @@ class SessionTable extends Component {
               <TableHeaderColumn>Open session</TableHeaderColumn>
             </TableRow>
           </TableHeader>
-          <TableBody showRowHover={true}>
+          <TableBody showRowHover={true} displayRowCheckbox={false}>
             {sessions.data.map((row, index) => (
               <TableRow key={index} selected={row.selected}>
                 <TableRowColumn>{row.user.name}</TableRowColumn>
