@@ -2,8 +2,21 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from 'react-redux';
 
-import { Router, Route, browserHistory, IndexRoute, Redirect } from 'react-router'
-import { syncHistoryWithStore, routerReducer, routerActions } from 'react-router-redux'
+import {
+  Router,
+  Route,
+  browserHistory,
+  IndexRoute,
+  Redirect,
+  NotFoundRoute
+} from 'react-router'
+
+import {
+  syncHistoryWithStore,
+  routerReducer,
+  routerActions
+} from 'react-router-redux'
+
 import { UserAuthWrapper } from 'redux-auth-wrapper'
 
 import App from '../containers/App';
@@ -55,6 +68,7 @@ ReactDOM.render(
           <Route path='preferences' component={Preferences}/>
           <Route path='logout' component={Logout}/>
         </Route>
+        <Redirect from='*' to='/' />
       </Router>
     </Provider>
   </MuiThemeProvider>,
