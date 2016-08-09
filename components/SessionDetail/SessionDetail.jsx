@@ -27,10 +27,12 @@ import Refresh from 'material-ui/svg-icons/navigation/refresh';
 import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 import rest from '../../reducers/api';
 import { withRouter } from 'react-router';
+import { goBack } from 'react-router-redux';
 import Error from '../Error';
 import ThumbUp from 'material-ui/svg-icons/social/sentiment-satisfied';
 import ThumbDown from 'material-ui/svg-icons/social/sentiment-dissatisfied';
 import Neutral from 'material-ui/svg-icons/social/sentiment-neutral';
+import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
 
 class SessionDetail extends Component {
   constructor(props) {
@@ -99,6 +101,13 @@ class SessionDetail extends Component {
           <Card style={{
             margin: this.context.muiTheme.spacing.desktopGutter
           }}>
+              <CardActions>
+                <FlatButton label="Back"
+                            onTouchTap={() => {
+                              this.props.dispatch(goBack());
+                            }}
+                            icon={<ArrowBack/>} />
+              </CardActions>
             <CardTitle title="Session overview" />
             <CardText>
               <div>
