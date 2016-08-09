@@ -3,7 +3,6 @@ import { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { DEFAULT_VIEW } from '../constants/Views';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import Header from '../components/Header';
@@ -67,7 +66,6 @@ class Login extends Component {
 
   render() {
     const { auth } = this.props;
-    console.log(auth.data);
 
     let spinner = auth.loading ? <CircularProgress /> : null;
 
@@ -136,7 +134,7 @@ class Login extends Component {
               margin: this.context.muiTheme.spacing.desktopGutter
             }}>
               <RaisedButton disabled={
-                auth.loading || console.log(this.state.email.length) || !this.state.email.length || !this.state.password.length
+                auth.loading || !this.state.email.length || !this.state.password.length
               } label="Login" fullWidth={true} primary={true} onTouchTap={this.doLogin.bind(this)} />
             </CardActions>
           </Card>

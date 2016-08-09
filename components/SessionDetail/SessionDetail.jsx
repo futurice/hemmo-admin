@@ -84,7 +84,6 @@ class SessionDetail extends Component {
   render() {
     const { session } = this.props;
 
-    console.log(session);
     if (session.loading) {
       return(
         <div style={{textAlign: 'center'}}>
@@ -108,7 +107,6 @@ class SessionDetail extends Component {
                             }}
                             icon={<ArrowBack/>} />
               </CardActions>
-            <CardTitle title="Session overview" />
             <CardText>
               <div>
                 User: {session.data.user.name}<br/>

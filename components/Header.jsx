@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import React, { PropTypes, Component } from 'react';
 import { AppBar, Drawer, MenuItem } from 'material-ui';
 import * as UiActions from '../actions/ui';
+import { MenuRoutes, MiscRoutes } from '../src/Routes';
 
 const defaultStyle = {
   marginLeft: 20
@@ -13,17 +14,37 @@ class Header extends Component {
     this.props.actions.toggleDrawer();
   }
 
+  matchMiscRoute(path, params) {
+    return MiscRoutes[Object.keys(MiscRoutes).find(route => {
+      let replacedRoute = route;
+
+      if (route.indexOf(':' !== -1)) {
+        Object.keys(params).forEach(param => {
+          replacedRoute = replacedRoute.replace(`:${param}`, params[param]);
+        });
+      }
+
+      if (replacedRoute === path) {
+        return true;
+      }
+    })];
+  }
+
+  getTitle(path, params) {
+    return MenuRoutes[path] || this.matchMiscRoute(path, params);
+  }
+
   render() {
     return (
       <header className="header">
-        <AppBar title={this.props.view}
+        <AppBar title={this.getTitle(this.props.pathname, this.props.params)}
                 onLeftIconButtonTouchTap={() => this.toggleDrawer()}/>
       </header>
     );
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
     view: state.ui.get('view')
   };
