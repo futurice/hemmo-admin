@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=development webpack-dev-server --hot --inline --progress --colors --host 0.0.0.0",
-    "start-heroku": "static -p $PORT -a 0.0.0.0 static",
+    "start-heroku": "static -p $PORT -a 0.0.0.0 --spa static",
     "build": "NODE_ENV=production webpack --progress --colors",
     "postinstall": "npm run build"
   },
