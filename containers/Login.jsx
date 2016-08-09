@@ -19,6 +19,11 @@ import rest from '../reducers/api';
 class Login extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      email: '',
+      password: ''
+    }
   }
 
   authSuccess() {
@@ -44,6 +49,12 @@ class Login extends Component {
     this.refs.email.focus();
   }
 
+  handleChange(event, field) {
+    this.setState({
+      [field]: event.target.value
+    });
+  }
+
   doLogin() {
     const {dispatch} = this.props;
     dispatch(rest.actions.auth(null, {
@@ -55,9 +66,10 @@ class Login extends Component {
   }
 
   render() {
-    const {data, error, loading} = this.props;
+    const { auth } = this.props;
+    console.log(auth.data);
 
-    let spinner = loading ? <CircularProgress /> : null;
+    let spinner = auth.loading ? <CircularProgress /> : null;
 
     return(
       <div style={{
@@ -90,7 +102,16 @@ class Login extends Component {
                 floatingLabelText='Email'
                 hintText='Enter your email'
                 fullWidth={true}
-                onKeyDown={(event) => {if (event.keyCode === 13) this.doLogin();}}
+                onChange={(event) => {
+                  if (event.keyCode !== 13) {
+                    this.handleChange(event, 'email');
+                  }
+                }}
+                onKeyDown={(event) => {
+                  if (event.keyCode === 13) {
+                    this.doLogin();
+                  }
+                }}
               />
               <TextField
                 ref='password'
@@ -98,14 +119,25 @@ class Login extends Component {
                 floatingLabelText='Password'
                 hintText='Password'
                 fullWidth={true}
-                onKeyDown={(event) => {if (event.keyCode === 13) this.doLogin();}}
+                onChange={(event) => {
+                  if (event.keyCode !== 13) {
+                    this.handleChange(event, 'password');
+                  }
+                }}
+                onKeyDown={(event) => {
+                  if (event.keyCode === 13) {
+                    this.doLogin();
+                  }
+                }}
               />
-              {error ? String(error) : ''}
+              {auth && auth.data.message ? String(auth.data.message) : ''}
             </CardText>
             <CardActions style={{
               margin: this.context.muiTheme.spacing.desktopGutter
             }}>
-              <RaisedButton disabled={loading} label="Login" fullWidth={true} primary={true} onTouchTap={this.doLogin.bind(this)} />
+              <RaisedButton disabled={
+                auth.loading || console.log(this.state.email.length) || !this.state.email.length || !this.state.password.length
+              } label="Login" fullWidth={true} primary={true} onTouchTap={this.doLogin.bind(this)} />
             </CardActions>
           </Card>
         </div>

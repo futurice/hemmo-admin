@@ -13,7 +13,10 @@ export default reduxApi({
     transformer(data) {
       let authSession = JSON.parse(localStorage.getItem('auth'));
 
-      if (data) {
+      if (data && data.error) {
+        console.log('got error from backend');
+        return { error: data.error, message: data.message };
+      } else if (data) {
         console.log('got new token from backend');
 
         const { token, employeeId, expiresIn } = data;
