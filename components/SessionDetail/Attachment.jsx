@@ -42,15 +42,12 @@ class Attachment extends Component {
 
     this.fetchAudioAsset(assetURL, function (buf) {
       sourceBuffer.addEventListener('updateend', function (_) {
-        console.log(mediaSource);
-        console.log(mediaSource.readyState);
         mediaSource.endOfStream();
         audio.play();
+
         //console.log(mediaSource.readyState); // ended
       });
       sourceBuffer.appendBuffer(buf);
-      console.log(sourceBuffer);
-
     });
   }
 
