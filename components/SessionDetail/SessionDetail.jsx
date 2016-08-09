@@ -33,6 +33,8 @@ import ThumbUp from 'material-ui/svg-icons/social/sentiment-satisfied';
 import ThumbDown from 'material-ui/svg-icons/social/sentiment-dissatisfied';
 import Neutral from 'material-ui/svg-icons/social/sentiment-neutral';
 import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
+import Close from 'material-ui/svg-icons/navigation/close';
+import AttachmentIcon from 'material-ui/svg-icons/file/attachment';
 
 class SessionDetail extends Component {
   constructor(props) {
@@ -95,6 +97,15 @@ class SessionDetail extends Component {
         <Error model={session}/>
       );
     } else {
+      const actions = [
+        <FlatButton
+          label="Close"
+          primary={false}
+          onTouchTap={this.handleClose}
+          icon={<Close/>}
+        />
+      ];
+
       return(
         <div>
           <Card style={{
@@ -163,7 +174,9 @@ class SessionDetail extends Component {
               <CardActions>
                 {((row) => {
                   if (row.hasAttachment) {
-                    return <FlatButton label="View attachment" primary={true}/>;
+                    return <FlatButton onTouchTap={(e) => {
+                      this.openAttachment(row.contentId);
+                    }} label="View attachment" icon={<AttachmentIcon/>} primary={true}/>;
                   } else {
                     return null;
                   }
@@ -178,6 +191,7 @@ class SessionDetail extends Component {
             modal={false}
             open={this.state.attachmentOpen}
             onRequestClose={this.handleClose}
+            actions={actions}
           >
             <Attachment contentId={this.state.openAttachmentContentId} />
           </Dialog>
