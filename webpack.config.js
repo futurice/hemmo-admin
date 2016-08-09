@@ -1,3 +1,5 @@
+let path = require('path');
+
 module.exports = {
   context: __dirname,
   entry: {
@@ -22,7 +24,10 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js', '.jsx'],
+    alias: {
+      config: path.join(__dirname, 'config', process.env.NODE_ENV || 'development')
+    }
   },
   eslint: {
     configFile: './.eslintrc'

@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --hot --inline --progress --colors --host 0.0.0.0",
-    "build": "webpack --progress --colors"
+    "start": "NODE_ENV=development webpack-dev-server --hot --inline --progress --colors --host 0.0.0.0",
+    "start-heroku": "static -p $PORT static",
+    "build": "NODE_ENV=production webpack --progress --colors"
   },
   "repository": {
     "type": "git",
@@ -51,6 +52,7 @@
     "immutable": "^3.8.1",
     "isomorphic-fetch": "^2.2.1",
     "material-ui": "^0.15.2",
+    "node-static": "^0.7.8",
     "react": "^15.2.1",
     "react-addons-create-fragment": "^15.2.1",
     "react-addons-pure-render-mixin": "^15.2.1",

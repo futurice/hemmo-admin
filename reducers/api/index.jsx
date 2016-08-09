@@ -4,8 +4,7 @@ import adapterFetch from 'redux-api/lib/adapters/fetch';
 import { logOut } from '../../actions/ui';
 import { Map } from 'immutable';
 
-const PORT = 3001;
-const API_ROOT = window.location.protocol + '//' + window.location.hostname + ':' + PORT;
+import config from 'config';
 
 export default reduxApi({
   auth: {
@@ -128,4 +127,4 @@ export default reduxApi({
   };
 })
 .use('fetch', adapterFetch(fetch))
-.use('rootUrl', API_ROOT);
+.use('rootUrl', config.API_ROOT);
