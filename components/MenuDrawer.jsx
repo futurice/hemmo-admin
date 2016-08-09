@@ -16,12 +16,16 @@ class MenuDrawer extends Component {
     this.props.dispatch(push('/' + view.toLowerCase()));
   }
 
+  onChange(open) {
+    this.props.dispatch(UiActions.toggleDrawer());
+  }
+
   render() {
     return (
       <Drawer
         open={this.props.drawerOpened}
         docked={false}
-        onRequestChange={() => this.props.dispatch(UiActions.closeDrawer())} >
+        onRequestChange={() => this.onChange()} >
 
         <AppBar title="Navigation"
                 onLeftIconButtonTouchTap={() => this.props.dispatch(UiActions.closeDrawer())} />

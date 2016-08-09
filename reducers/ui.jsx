@@ -12,5 +12,6 @@ const initialState = Map({
 export default createReducer({
   [Actions.changeView]: (state, payload) => state.set('view', payload),
   [Actions.toggleDrawer]: (state) => state.set('drawerOpened', !state.get('drawerOpened')),
-  [Actions.closeDrawer]: (state) => state.set('drawerOpened', false)
+  [Actions.closeDrawer]: (state) => state.set('drawerOpened', false),
+  [Actions.openDrawer]: (state) => state.set('drawerOpened', true)
 }, initialState);
