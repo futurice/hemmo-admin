@@ -129,9 +129,17 @@ class SessionDetail extends Component {
             }
           </Card>
 
+          <div style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            padding: this.context.muiTheme.spacing.desktopGutter / 2
+          }}>
           {session.data.content.map((row, index) => (
             <Card key={index} style={{
-              margin: this.context.muiTheme.spacing.desktopGutter
+              margin: this.context.muiTheme.spacing.desktopGutter / 2,
+              flex: 1,
+              flexBasis: '320px'
             }}>
               <CardHeader
                 title={`Question ${index + 1}`}
@@ -165,6 +173,7 @@ class SessionDetail extends Component {
               </CardActions>
             </Card>
           ))}
+          </div>
 
           <Dialog
             title="Attachment"
