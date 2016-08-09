@@ -39,7 +39,7 @@
     "immutable": "^3.8.1",
     "isomorphic-fetch": "^2.2.1",
     "material-ui": "^0.15.2",
-    "node-static": "^0.7.8",
+    "node-static": "FruitieX/node-static",
     "react": "^15.2.1",
     "react-addons-create-fragment": "^15.2.1",
     "react-addons-pure-render-mixin": "^15.2.1",
