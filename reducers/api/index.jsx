@@ -97,6 +97,16 @@ export default reduxApi({
       method: 'post'
     }
   },
+  employees: {
+    url: `/employees`,
+    transformer(data) {
+      if (data) {
+        return data.employees;
+      } else {
+        return [];
+      }
+    }
+  },
   users: {
     url: `/users`,
     transformer(data) {
@@ -105,6 +115,30 @@ export default reduxApi({
       } else {
         return [];
       }
+    }
+  },
+  userDetail: {
+    url: `/users/:userId`,
+    transformer(data, prevData) {
+      if (data) {
+        return {...prevData, ...data};
+      } else {
+        return {...prevData};
+      }
+    },
+    crud: true
+  },
+  setUserAssignee: {
+    url: `/users/:userId`,
+    transformer(data) {
+      if (data) {
+        return data;
+      } else {
+        return {};
+      }
+    },
+    options: {
+      method: 'put'
     }
   },
   sessions: {

@@ -18,6 +18,7 @@ import {red500} from 'material-ui/styles/colors';
 import Refresh from 'material-ui/svg-icons/navigation/refresh';
 import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 import rest from '../../reducers/api';
+import { push } from 'react-router-redux'
 import Error from '../Error';
 
 class UserTable extends Component {
@@ -36,6 +37,11 @@ class UserTable extends Component {
 
   componentDidMount() {
     this.refresh();
+  }
+
+  openUser(userId) {
+    const path = '/users/' + userId;
+    this.props.dispatch(push(path));
   }
 
   handleToggle = (event, toggled) => {
@@ -69,7 +75,9 @@ class UserTable extends Component {
           </TableHeader>
           <TableBody showRowHover={true} displayRowCheckbox={false}>
             {users.data.map((row, index) => (
-              <TableRow key={index} selected={row.selected}>
+              <TableRow key={index} onTouchTap={(e) => {
+                this.openUser(row.userId);
+              }}>
                 <TableRowColumn>{row.name}</TableRowColumn>
                 <TableRowColumn>{row.assignee}</TableRowColumn>
                 <TableRowColumn>{row.family}</TableRowColumn>
