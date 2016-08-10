@@ -123,7 +123,9 @@ class UserDetail extends Component {
 
             <CardTitle title={'User sessions:'}/>
             <CardText>
-              <SessionTable />
+              <SessionTable filter={{
+                user: this.props.userId
+              }}/>
             </CardText>
 
             <CardActions>

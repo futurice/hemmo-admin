@@ -32,7 +32,7 @@ class SessionTable extends Component {
 
   refresh() {
     const {dispatch} = this.props;
-    dispatch(rest.actions.sessions());
+    dispatch(rest.actions.sessions(this.props.filter));
   }
 
   componentDidMount() {
