@@ -22,6 +22,7 @@ import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 import rest from '../../reducers/api';
 import { push } from 'react-router-redux'
 import Error from '../Error';
+import ThumbUp from 'material-ui/svg-icons/social/sentiment-satisfied';
 
 class SessionTable extends Component {
   constructor(props) {
@@ -58,7 +59,15 @@ class SessionTable extends Component {
         <Error refresh={this.refresh} model={sessions}/>
       );
     } else {
-      if (this.props.small) {
+      if (!sessions.data.length) {
+        return(
+          <div>
+            { this.props.noFeedbackMsg || 'No feedback found matching search!' }
+            <br/>
+            <ThumbUp/>
+          </div>
+        );
+      } else if (this.props.small) {
         return(
           <Table
           >

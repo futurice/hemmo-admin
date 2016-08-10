@@ -24,7 +24,7 @@ class Home extends Component {
           <SessionTable filter={{
             reviewed: 0,
             assignee: this.props.employeeId
-          }} small={true}/>
+          }} noFeedbackMsg={'No unhandled feedback for you'} small={true}/>
         </CardText>
       </Card>
 
@@ -37,7 +37,7 @@ class Home extends Component {
         <CardText>
           <SessionTable filter={{
             reviewed: 0
-          }} small={true}/>
+          }} noFeedbackMsg={'No old unhandled feedback found'} small={true}/>
         </CardText>
       </Card>
       </div>
