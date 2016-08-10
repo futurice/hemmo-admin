@@ -37,6 +37,11 @@ class Register extends Component {
     this.props.dispatch(replace(redirect));
   }
 
+  openLogin() {
+    let redirect = '/login';
+    this.props.dispatch(replace(redirect));
+  }
+
   shouldComponentUpdate(props) {
     if (props.auth.data.token) {
       this.authSuccess();
@@ -155,6 +160,8 @@ class Register extends Component {
               <RaisedButton disabled={
                 auth.loading || console.log(this.state.email.length) || !this.state.email.length || !this.state.password.length
               } label="Register" fullWidth={true} primary={true} onTouchTap={this.doRegister.bind(this)} />
+            <RaisedButton label="Have account? Login!" fullWidth={true} primary={true} onTouchTap={this.openLogin.bind(this)} />
+
             </CardActions>
           </Card>
         </div>
