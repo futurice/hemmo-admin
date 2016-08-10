@@ -21,6 +21,7 @@ import rest from '../../reducers/api';
 import { push } from 'react-router-redux'
 import Error from '../Error';
 import ArrowForward from 'material-ui/svg-icons/navigation/arrow-forward';
+import Dimensions from '../dimensions'
 
 class UserTable extends Component {
   constructor(props) {
@@ -70,8 +71,23 @@ class UserTable extends Component {
           <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
               <TableHeaderColumn>Name</TableHeaderColumn>
-              <TableHeaderColumn>Assignee</TableHeaderColumn>
-              <TableHeaderColumn>Family</TableHeaderColumn>
+
+              {(() => {if (this.props.containerWidth >= 640) {
+                return(
+                  <TableHeaderColumn>Assignee</TableHeaderColumn>
+                );
+              } else {
+                return null;
+              }})()}
+
+              {(() => {if (this.props.containerWidth >= 640) {
+                return(
+                  <TableHeaderColumn>Family</TableHeaderColumn>
+                );
+              } else {
+                return null;
+              }})()}
+
               <TableHeaderColumn style={{
                 width: '20px'
               }}></TableHeaderColumn>
@@ -83,8 +99,23 @@ class UserTable extends Component {
                 this.openUser(row.userId);
               }}>
                 <TableRowColumn>{row.name}</TableRowColumn>
-                <TableRowColumn>{row.assignee}</TableRowColumn>
-                <TableRowColumn>{row.family}</TableRowColumn>
+
+                {(() => {if (this.props.containerWidth >= 640) {
+                  return (
+                    <TableRowColumn>{row.assignee}</TableRowColumn>
+                  );
+                } else {
+                  return null;
+                }})()}
+
+                {(() => {if (this.props.containerWidth >= 640) {
+                  return (
+                    <TableRowColumn>{row.family}</TableRowColumn>
+                  );
+                } else {
+                  return null;
+                }})()}
+
                 <TableRowColumn style={{ width: '20px' }}>
                   <FlatButton onTouchTap={(e) => {
                       this.openUser(row.userId);
@@ -117,4 +148,4 @@ function select(state) {
   return { users: state.users };
 }
 
-export default connect(select)(UserTable);
+export default connect(select)(Dimensions()(UserTable));
