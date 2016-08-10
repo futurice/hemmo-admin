@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import { Component, PropTypes } from 'react';
 import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import SessionTable from '../Sessions/SessionTable';
@@ -20,7 +21,10 @@ class Home extends Component {
       }}>
         <CardHeader title="New feedback" subtitle="Feedback that has been assigned to you" />
         <CardText>
-          <SessionTable small={true}/>
+          <SessionTable filter={{
+            reviewed: 0,
+            assignee: this.props.employeeId
+          }} small={true}/>
         </CardText>
       </Card>
 
@@ -31,7 +35,9 @@ class Home extends Component {
       }}>
         <CardHeader title="Unhandled feedback" subtitle="Feedback that was left unhandled for 10 days" />
         <CardText>
-          <SessionTable small={true}/>
+          <SessionTable filter={{
+            reviewed: 0
+          }} small={true}/>
         </CardText>
       </Card>
       </div>
@@ -43,4 +49,10 @@ Home.contextTypes = {
   muiTheme: PropTypes.object.isRequired
 };
 
-export default Home;
+function select(state, ownProps) {
+  return {
+    employeeId: state.auth.data.employeeId
+  };
+}
+
+export default connect(select)(Home);
