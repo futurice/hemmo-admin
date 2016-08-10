@@ -20,6 +20,7 @@ import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 import rest from '../../reducers/api';
 import { push } from 'react-router-redux'
 import Error from '../Error';
+import ArrowForward from 'material-ui/svg-icons/navigation/arrow-forward';
 
 class UserTable extends Component {
   constructor(props) {
@@ -71,6 +72,9 @@ class UserTable extends Component {
               <TableHeaderColumn>Name</TableHeaderColumn>
               <TableHeaderColumn>Assignee</TableHeaderColumn>
               <TableHeaderColumn>Family</TableHeaderColumn>
+              <TableHeaderColumn style={{
+                width: '20px'
+              }}></TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody showRowHover={true} displayRowCheckbox={false}>
@@ -81,6 +85,13 @@ class UserTable extends Component {
                 <TableRowColumn>{row.name}</TableRowColumn>
                 <TableRowColumn>{row.assignee}</TableRowColumn>
                 <TableRowColumn>{row.family}</TableRowColumn>
+                <TableRowColumn style={{ width: '20px' }}>
+                  <FlatButton onTouchTap={(e) => {
+                      this.openUser(row.userId);
+                  }} style={{
+                    minWidth: '40px'
+                  }} icon={<ArrowForward/>} />
+                </TableRowColumn>
               </TableRow>
             ))}
           </TableBody>
