@@ -94,7 +94,7 @@ class SessionDetail extends Component {
       );
     } else if (!session.sync || !session.data || session.data.error) {
       return(
-        <Error model={session}/>
+        <Error refresh={this.refresh} model={session}/>
       );
     } else {
       const actions = [

@@ -55,7 +55,7 @@ class UserTable extends Component {
       );
     } else if (!users.sync || !users.data || users.data.error) {
       return(
-        <Error model={users}/>
+        <Error refresh={this.refresh} model={users}/>
       );
     } else {
       return(

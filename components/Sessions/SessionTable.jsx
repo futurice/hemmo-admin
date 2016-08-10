@@ -55,7 +55,7 @@ class SessionTable extends Component {
       );
     } else if (!sessions.sync || !sessions.data || sessions.data.error) {
       return(
-        <Error model={sessions}/>
+        <Error refresh={this.refresh} model={sessions}/>
       );
     } else {
       if (this.props.small) {
