@@ -61,6 +61,40 @@ export default reduxApi({
       return state;
     }
   },
+  register: {
+    url: `/employees/register`,
+    transformer(data) {
+      let authSession = JSON.parse(localStorage.getItem('auth'));
+
+      if (data && data.error) {
+        console.log('got error from backend');
+        return { error: data.error, message: data.message };
+      } else if (data) {
+        console.log('got new token from backend');
+
+        const { token, employeeId, expiresIn } = data;
+
+        let expiration = new Date();
+        let expirationDelta = 1000; // account for possible clock drift, latency...
+        expiration.setMilliseconds(expiration.getMilliseconds() + expiresIn - expirationDelta);
+
+        localStorage.setItem('auth', JSON.stringify({
+          token,
+          employeeId,
+          expiration
+        }));
+
+        return { token, employeeId, expiration };
+      } else {
+        console.log('no auth token found');
+
+        return {};
+      }
+    },
+    options: {
+      method: 'post'
+    }
+  },
   users: {
     url: `/users`,
     transformer(data) {

@@ -21,6 +21,7 @@ import { UserAuthWrapper } from 'redux-auth-wrapper'
 
 import App from '../containers/App';
 import Login from '../containers/Login';
+import Register from '../containers/Register';
 import Logout from '../containers/Logout';
 
 import Home from '../components/Home';
@@ -59,6 +60,7 @@ ReactDOM.render(
     <Provider store={store}>
       <Router history={history}>
         <Route path='/login' component={Login}/>
+        <Route path='/register' component={Register}/>
         <Route path='/' component={requireAuthentication(App)}>
           <IndexRoute component={Home}/>
           <Redirect from='home' to='/' />
