@@ -106,10 +106,13 @@ class UserDetail extends Component {
           }}>
             <CardHeader
               title={user.data.name}
+              subtitle={`${Math.round((user.data.likes + 1) / 2 * 100)}% happy`}
               style={{
-                backgroundColor: lightGreen300
+                backgroundColor: user.data.likes > 0.5 ? lightGreen300 : user.data.likes > -0.5 ? yellow300 : red300
               }}
-              avatar={<ThumbUp/>} />
+              avatar={
+                user.data.likes > 0.5 ? <ThumbUp/> : user.data.likes > -0.5 ? <Neutral/> : <ThumbDown/>
+              } />
 
             <CardTitle title={'Assignee:'}/>
 
