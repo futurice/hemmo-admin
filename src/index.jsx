@@ -32,8 +32,6 @@ import SessionDetail from '../components/SessionDetail/SessionDetail';
 
 import configureStore from '../store/configureStore';
 
-import { DEFAULT_VIEW } from '../constants/Views';
-
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
@@ -63,12 +61,12 @@ ReactDOM.render(
         <Route path='/register' component={Register}/>
         <Route path='/' component={requireAuthentication(App)}>
           <IndexRoute component={Home}/>
-          <Redirect from='home' to='/' />
-          <Route path='sessions' component={Sessions}/>
-          <Route path='sessions/:id' component={SessionDetail}/>
-          <Route path='users' component={Users}/>
-          <Route path='preferences' component={Preferences}/>
-          <Route path='logout' component={Logout}/>
+          <Redirect from='/home' to='/' />
+          <Route path='/sessions' component={Sessions}/>
+          <Route path='/sessions/:id' component={SessionDetail}/>
+          <Route path='/users' component={Users}/>
+          <Route path='/preferences' component={Preferences}/>
+          <Route path='/logout' component={Logout}/>
         </Route>
         <Redirect from='*' to='/' />
       </Router>

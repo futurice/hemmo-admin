@@ -24,6 +24,8 @@ export default reduxApi({
         let expirationDelta = 1000; // account for possible clock drift, latency...
         expiration.setMilliseconds(expiration.getMilliseconds() + expiresIn - expirationDelta);
 
+        document.cookie = `token=${token}`;
+
         localStorage.setItem('auth', JSON.stringify({
           token,
           employeeId,

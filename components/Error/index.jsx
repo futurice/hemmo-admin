@@ -50,7 +50,7 @@ export default class Error extends Component {
           </CardText>
           <CardActions>
             <FlatButton label="Reload"
-                        onTouchTap={() => this.refresh()}
+                        onTouchTap={() => this.props.refresh()}
                         primary={true}
                         icon={<Refresh/>} />
           </CardActions>

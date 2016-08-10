@@ -8,18 +8,27 @@ class Home extends Component {
   render() {
     return(
       <div style={{
-        margin: this.context.muiTheme.spacing.desktopGutter,
         display: 'flex',
-        justifyContent: 'center'
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        padding: this.context.muiTheme.spacing.desktopGutter / 2
       }}>
-      <Card style={{marginRight: this.context.muiTheme.spacing.desktopGutter / 2, flex: 1}}>
+      <Card style={{
+        margin: this.context.muiTheme.spacing.desktopGutter / 2,
+        flex: 1,
+        flexBasis: '320px'
+      }}>
         <CardHeader title="New feedback" subtitle="Feedback that has been assigned to you" />
         <CardText>
           <SessionTable small={true}/>
         </CardText>
       </Card>
 
-      <Card style={{marginLeft: this.context.muiTheme.spacing.desktopGutter / 2, flex: 1}}>
+      <Card style={{
+        margin: this.context.muiTheme.spacing.desktopGutter / 2,
+        flex: 1,
+        flexBasis: '320px'
+      }}>
         <CardHeader title="Unhandled feedback" subtitle="Feedback that was left unhandled for 10 days" />
         <CardText>
           <SessionTable small={true}/>

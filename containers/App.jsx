@@ -16,8 +16,8 @@ class App extends Component {
   render() {
     return(
       <div>
-        <MenuDrawer/>
-        <Header/>
+        <MenuDrawer pathname={this.props.location.pathname} />
+        <Header pathname={this.props.location.pathname} params={this.props.params} />
         {React.cloneElement(this.props.children, this.props)}
       </div>
     );
