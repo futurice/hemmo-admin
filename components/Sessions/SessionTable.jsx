@@ -100,7 +100,7 @@ class SessionTable extends Component {
 
                   {(() => {if (this.props.containerWidth >= 320) {
                     return (<TableRowColumn style={{ width: '20px' }}>
-                      {row.reviewed ? <Done color={lightGreen300}/> : <Announcement color={red300}/>}
+                      {row.reviewed ? <Done style={{ verticalAlign: 'middle' }} color={lightGreen300}/> : <Announcement style={{ verticalAlign: 'middle' }} color={red300}/>}
                     </TableRowColumn>);
                   } else {
                     return null;

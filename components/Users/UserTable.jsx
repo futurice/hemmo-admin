@@ -21,6 +21,7 @@ import rest from '../../reducers/api';
 import { push } from 'react-router-redux'
 import Error from '../Error';
 import ArrowForward from 'material-ui/svg-icons/navigation/arrow-forward';
+import Account from 'material-ui/svg-icons/action/account-circle';
 import Dimensions from '../dimensions'
 
 class UserTable extends Component {
@@ -70,6 +71,7 @@ class UserTable extends Component {
         <Table multiSelectable={true}>
           <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
+              <TableHeaderColumn style={{ width: '20px' }}></TableHeaderColumn>
               <TableHeaderColumn>Name</TableHeaderColumn>
 
               {(() => {if (this.props.containerWidth >= 640) {
@@ -88,9 +90,7 @@ class UserTable extends Component {
                 return null;
               }})()}
 
-              <TableHeaderColumn style={{
-                width: '20px'
-              }}></TableHeaderColumn>
+              <TableHeaderColumn style={{ width: '20px' }}></TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody showRowHover={true} displayRowCheckbox={false}>
@@ -98,6 +98,7 @@ class UserTable extends Component {
               <TableRow key={index} onTouchTap={(e) => {
                 this.openUser(row.userId);
               }}>
+                <TableRowColumn style={{ width: '20px' }}>{<Account style={{ verticalAlign: 'middle' }}/>}</TableRowColumn>
                 <TableRowColumn>{row.name}</TableRowColumn>
 
                 {(() => {if (this.props.containerWidth >= 640) {
