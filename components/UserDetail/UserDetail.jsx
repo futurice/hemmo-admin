@@ -114,7 +114,7 @@ class UserDetail extends Component {
             <CardTitle title={'Assignee:'}/>
 
             <CardText>
-              <SelectField onChange={this.setAssignee} value={user.data.assignee.id}>
+              <SelectField onChange={this.setAssignee} value={user.data.assignee ? user.data.assignee.id : null}>
                 {this.props.employees.data.map((row, index) => (
                   <MenuItem key={index} value={row.employeeId} primaryText={row.name} />
                 ))}
