@@ -12,6 +12,7 @@ import { replace } from 'react-router-redux'
 
 import CircularProgress from 'material-ui/CircularProgress';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import Account from 'material-ui/svg-icons/action/account-circle';
 
 import rest from '../reducers/api';
 
@@ -99,6 +100,14 @@ class Register extends Component {
               titleColor={this.context.muiTheme.palette.alternateTextColor}
               subtitleColor={this.context.muiTheme.palette.accent2Color}
             />
+            <div style={{textAlign: 'center', marginTop: this.context.muiTheme.spacing.desktopGutter}}>
+              <Account style={{
+                height: '100px',
+                width: '100px',
+                textAlign: 'center',
+                color: this.context.muiTheme.palette.primary3Color
+              }}/>
+            </div>
             <CardText>
               <TextField
                 ref='email'
@@ -154,12 +163,21 @@ class Register extends Component {
               {auth && auth.data.message ? String(auth.data.message) : ''}
             </CardText>
             <CardActions style={{
+              margin: this.context.muiTheme.spacing.desktopGutter,
+              marginBottom: '0px',
+              marginTop: '0px'
+            }}>
               margin: this.context.muiTheme.spacing.desktopGutter
             }}>
               <RaisedButton disabled={
                 auth.loading || console.log(this.state.email.length) || !this.state.email.length || !this.state.password.length
               } label="Register" fullWidth={true} primary={true} onTouchTap={this.doRegister.bind(this)} />
-            <RaisedButton label="Have account? Login!" fullWidth={true} primary={true} onTouchTap={this.openLogin.bind(this)} />
+            </CardActions>
+            <CardActions style={{
+              margin: this.context.muiTheme.spacing.desktopGutter,
+              marginTop: '0px'
+            }}>
+              <RaisedButton label="Have account? Login!" fullWidth={true} primary={true} onTouchTap={this.openLogin.bind(this)} />
 
             </CardActions>
           </Card>

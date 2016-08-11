@@ -17,13 +17,13 @@ class Home extends Component {
       <Card style={{
         margin: this.context.muiTheme.spacing.desktopGutter / 2,
         flex: 1,
-        flexBasis: '320px'
+        flexBasis: '450px'
       }}>
         <CardHeader title="New feedback" subtitle="Feedback that has been assigned to you" />
         <CardText>
           <SessionTable filter={{
-            reviewed: 0,
-            assignee: this.props.employeeId
+            reviewed: 0
+            //assignee: this.props.employeeId
           }} noFeedbackMsg={'No unhandled feedback for you'} small={true}/>
         </CardText>
       </Card>
@@ -31,7 +31,7 @@ class Home extends Component {
       <Card style={{
         margin: this.context.muiTheme.spacing.desktopGutter / 2,
         flex: 1,
-        flexBasis: '320px'
+        flexBasis: '450px'
       }}>
         <CardHeader title="Unhandled feedback" subtitle="Feedback that was left unhandled for 10 days" />
         <CardText>

@@ -1,12 +1,25 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { AppBar, Divider, Drawer, MenuItem } from 'material-ui';
 import { push } from 'react-router-redux'
 import { MenuRoutes } from '../src/Routes';
 
 import * as UiActions from '../actions/ui';
+import Home from 'material-ui/svg-icons/action/home';
+import Sessions from 'material-ui/svg-icons/action/assessment';
+import Users from 'material-ui/svg-icons/action/supervisor-account';
+import Preferences from 'material-ui/svg-icons/action/settings';
+import Logout from 'material-ui/svg-icons/action/exit-to-app';
+
+let icons = {
+  Home,
+  Sessions,
+  Users,
+  Preferences,
+  Logout
+}
 
 class MenuDrawer extends Component {
   changeView(view) {
@@ -32,6 +45,7 @@ class MenuDrawer extends Component {
         {Object.keys(MenuRoutes).map((path, i) => {
             return(
               <MenuItem
+                leftIcon={React.createElement(icons[MenuRoutes[path]])}
                 key={`MenuItem${i}`}
                 style={{color: this.props.pathname === path ? this.context.muiTheme.palette.primary1Color : null}}
                 onTouchTap={() => {this.changeView(path)}}>
@@ -45,6 +59,7 @@ class MenuDrawer extends Component {
         <Divider />
 
         <MenuItem
+          leftIcon={<Preferences/>}
           onTouchTap={() => {this.changeView('/preferences')}}
           style={{color: this.props.pathname === '/preferences' ? this.context.muiTheme.palette.primary1Color : null}} >
 
@@ -52,6 +67,7 @@ class MenuDrawer extends Component {
         </MenuItem>
 
         <MenuItem
+          leftIcon={<Logout/>}
           onTouchTap={() => { this.changeView('/logout'); }} >
           Logout
         </MenuItem>

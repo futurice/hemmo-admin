@@ -9,20 +9,22 @@ import {
   TableRowColumn
 } from 'material-ui/Table';
 
-import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
-import {red500} from 'material-ui/styles/colors';
+import { red300, lightGreen300 } from 'material-ui/styles/colors';
 import Refresh from 'material-ui/svg-icons/navigation/refresh';
 import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 import rest from '../../reducers/api';
 import { push } from 'react-router-redux'
 import Error from '../Error';
 import ThumbUp from 'material-ui/svg-icons/social/sentiment-satisfied';
+import ArrowForward from 'material-ui/svg-icons/navigation/arrow-forward';
+import Done from 'material-ui/svg-icons/action/done';
+import Announcement from 'material-ui/svg-icons/action/announcement';
+import Dimensions from '../dimensions'
 
 class SessionTable extends Component {
   constructor(props) {
@@ -67,40 +69,27 @@ class SessionTable extends Component {
             <ThumbUp/>
           </div>
         );
-      } else if (this.props.small) {
-        return(
-          <Table
-          >
-            <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-              <TableRow>
-                <TableHeaderColumn>User</TableHeaderColumn>
-                <TableHeaderColumn>Session started</TableHeaderColumn>
-              </TableRow>
-            </TableHeader>
-            <TableBody showRowHover={true} displayRowCheckbox={false}>
-              {sessions.data.map((row, index) => (
-                <TableRow key={index}
-                  onTouchTap={(e) => {
-                    this.openSession(row.sessionId);
-                  }} >
-                  <TableRowColumn>{row.user.name}</TableRowColumn>
-                  <TableRowColumn>{row.startedAt}</TableRowColumn>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        );
       } else {
         return(
           <Table>
             <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
               <TableRow>
+
+                {(() => {if (this.props.containerWidth >= 320) {
+                  return <TableHeaderColumn style={{ width: '20px' }}>Status</TableHeaderColumn>
+                } else {
+                  return null;
+                }})()}
+
                 <TableHeaderColumn>User</TableHeaderColumn>
-                <TableHeaderColumn>Session started</TableHeaderColumn>
-                <TableHeaderColumn>Reviewed</TableHeaderColumn>
-                <TableHeaderColumn style={{
-                  width: '10%'
-                }}></TableHeaderColumn>
+
+                {(() => {if (this.props.containerWidth >= 400) {
+                  return <TableHeaderColumn>Session started</TableHeaderColumn>;
+                } else {
+                  return null;
+                }})()}
+
+                <TableHeaderColumn style={{ width: '20px' }}></TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody showRowHover={true} displayRowCheckbox={false}>
@@ -108,13 +97,29 @@ class SessionTable extends Component {
                 <TableRow key={index} onTouchTap={(e) => {
                   this.openSession(row.sessionId);
                 }} >
+
+                  {(() => {if (this.props.containerWidth >= 320) {
+                    return (<TableRowColumn style={{ width: '20px' }}>
+                      {row.reviewed ? <Done style={{ verticalAlign: 'middle' }} color={lightGreen300}/> : <Announcement style={{ verticalAlign: 'middle' }} color={red300}/>}
+                    </TableRowColumn>);
+                  } else {
+                    return null;
+                  }})()}
+
                   <TableRowColumn>{row.user.name}</TableRowColumn>
-                  <TableRowColumn>{row.startedAt}</TableRowColumn>
-                  <TableRowColumn>{row.reviewed.toString()}</TableRowColumn>
-                  <TableRowColumn style={{ width: '10%' }}>
-                    <RaisedButton onTouchTap={(e) => {
+
+                  {(() => {if (this.props.containerWidth >= 400) {
+                    return <TableRowColumn>{new Date(row.startedAt).toLocaleDateString()}</TableRowColumn>;
+                  } else {
+                    return null;
+                  }})()}
+
+                  <TableRowColumn style={{ width: '20px' }}>
+                    <FlatButton onTouchTap={(e) => {
                         this.openSession(row.sessionId);
-                    }} label="Open" primary={true} fullWidth={true} />
+                    }} style={{
+                      minWidth: '40px'
+                    }} icon={<ArrowForward/>} />
                   </TableRowColumn>
                 </TableRow>
               ))}
@@ -142,4 +147,4 @@ function select(state) {
   return { sessions: state.sessions };
 }
 
-export default withRouter(connect(select)(SessionTable));
+export default connect(select)(Dimensions()(SessionTable));

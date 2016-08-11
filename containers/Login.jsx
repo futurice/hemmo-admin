@@ -12,6 +12,7 @@ import { replace } from 'react-router-redux'
 
 import CircularProgress from 'material-ui/CircularProgress';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import Account from 'material-ui/svg-icons/action/account-circle';
 
 import rest from '../reducers/api';
 
@@ -98,6 +99,14 @@ class Login extends Component {
               titleColor={this.context.muiTheme.palette.alternateTextColor}
               subtitleColor={this.context.muiTheme.palette.accent2Color}
             />
+            <div style={{textAlign: 'center', marginTop: this.context.muiTheme.spacing.desktopGutter}}>
+              <Account style={{
+                height: '100px',
+                width: '100px',
+                textAlign: 'center',
+                color: this.context.muiTheme.palette.primary3Color
+              }}/>
+            </div>
             <CardText>
               <TextField
                 ref='email'
@@ -133,15 +142,26 @@ class Login extends Component {
                   }
                 }}
               />
+            </CardText>
+            <CardText style={{
+              textAlign: 'center'
+            }}>
               {auth && auth.data.message ? String(auth.data.message) : ''}
             </CardText>
             <CardActions style={{
-              margin: this.context.muiTheme.spacing.desktopGutter
+              margin: this.context.muiTheme.spacing.desktopGutter,
+              marginBottom: '0px',
+              marginTop: '0px'
             }}>
               <RaisedButton disabled={
                 auth.loading || !this.state.email.length || !this.state.password.length
               } label="Login" fullWidth={true} primary={true} onTouchTap={this.doLogin.bind(this)} />
-            <RaisedButton label="No account? Register!" fullWidth={true} primary={true} onTouchTap={this.openRegister.bind(this)} />
+            </CardActions>
+            <CardActions style={{
+              margin: this.context.muiTheme.spacing.desktopGutter,
+              marginTop: '0px'
+            }}>
+              <RaisedButton label="No account? Register!" fullWidth={true} primary={true} onTouchTap={this.openRegister.bind(this)} />
             </CardActions>
           </Card>
         </div>
