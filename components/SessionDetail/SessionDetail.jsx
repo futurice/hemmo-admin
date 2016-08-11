@@ -125,8 +125,7 @@ class SessionDetail extends Component {
                 Started: {session.data.startedAt}<br/>
               </div>
             </CardText>
-            {session.reviewed ?
-              null :
+            {session.data.reviewed ? null :
               <CardActions>
                 <FlatButton label="Mark reviewed"
                             onTouchTap={() => {
