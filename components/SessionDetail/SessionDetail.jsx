@@ -35,6 +35,8 @@ import Neutral from 'material-ui/svg-icons/social/sentiment-neutral';
 import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
 import Close from 'material-ui/svg-icons/navigation/close';
 import AttachmentIcon from 'material-ui/svg-icons/file/attachment';
+import Done from 'material-ui/svg-icons/action/done';
+import AlertErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 
 class SessionDetail extends Component {
   constructor(props) {
@@ -121,7 +123,8 @@ class SessionDetail extends Component {
             <CardText>
               <div>
                 User: {session.data.user.name}<br/>
-                Review status: {session.data.reviewed.toString()}<br/>
+              Reviewed: {session.data.reviewed ? <Done style={{ verticalAlign: 'middle' }} color={lightGreen300}/> :
+                                                      <AlertErrorOutline style={{ verticalAlign: 'middle' }} color={red300}/>}<br/>
                 Started: {session.data.startedAt}<br/>
               </div>
             </CardText>

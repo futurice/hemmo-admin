@@ -23,7 +23,7 @@ import Error from '../Error';
 import ThumbUp from 'material-ui/svg-icons/social/sentiment-satisfied';
 import ArrowForward from 'material-ui/svg-icons/navigation/arrow-forward';
 import Done from 'material-ui/svg-icons/action/done';
-import Announcement from 'material-ui/svg-icons/action/announcement';
+import AlertErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 import Dimensions from '../dimensions'
 
 class SessionTable extends Component {
@@ -100,7 +100,7 @@ class SessionTable extends Component {
 
                   {(() => {if (this.props.containerWidth >= 320) {
                     return (<TableRowColumn style={{ width: '20px' }}>
-                      {row.reviewed ? <Done style={{ verticalAlign: 'middle' }} color={lightGreen300}/> : <Announcement style={{ verticalAlign: 'middle' }} color={red300}/>}
+                      {row.reviewed ? <Done style={{ verticalAlign: 'middle' }} color={lightGreen300}/> : <AlertErrorOutline style={{ verticalAlign: 'middle' }} color={red300}/>}
                     </TableRowColumn>);
                   } else {
                     return null;
