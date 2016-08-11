@@ -196,6 +196,7 @@ class SessionDetail extends Component {
             }}>
               <CardHeader
                 title={`Question ${index + 1}`}
+                subtitle={`Mood: ${row.like === 1 ? 'Happy' : row.like === -1 ? 'Unhappy' : 'Neutral'}`}
                 style={{
                   backgroundColor: row.like === 1 ? lightGreen300 : row.like === -1 ? red300 : yellow300
                 }}
