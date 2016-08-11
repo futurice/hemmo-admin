@@ -105,10 +105,13 @@ class UserDetail extends Component {
         width: iconSize
       };
 
+      const palette = this.context.muiTheme.palette;
+      const spacing = this.context.muiTheme.spacing;
+
       return(
         <div>
           <Card style={{
-            margin: this.context.muiTheme.spacing.desktopGutter
+            margin: spacing.desktopGutter
           }}>
             <CardHeader
               title={user.data.name}
@@ -123,7 +126,8 @@ class UserDetail extends Component {
 
             <CardTitle subtitle={'Assignee:'}>
               <CardText>
-                <SelectField hintText={'(nobody)'} onChange={this.setAssignee} value={user.data.assignee ? user.data.assignee.id : null}>
+                <SelectField onChange={this.setAssignee} value={user.data.assignee ? user.data.assignee.id : null}>
+                  <MenuItem key={'nobody'} value={null} style={{color: palette.accent3Color}} primaryText={'(nobody)'} />
                   {this.props.employees.data.map((row, index) => (
                     <MenuItem key={index} value={row.employeeId} primaryText={row.name} />
                   ))}
