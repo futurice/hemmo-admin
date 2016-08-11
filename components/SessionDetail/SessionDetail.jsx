@@ -210,7 +210,7 @@ class SessionDetail extends Component {
                   }
                 })(row)} />
               <CardTitle title={ row.question }/>
-              <CardTitle subtitle={'Answer'}>
+              <CardTitle subtitle={ row.answer ? 'Answer' : null}>
                 <CardText>
                   { row.answer }
                 </CardText>

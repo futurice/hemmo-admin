@@ -71,9 +71,7 @@ class SessionTable extends Component {
       if (!data || !data.length) {
         return(
           <div>
-            { this.props.noFeedbackMsg || 'No feedback found matching search!' }
-            <br/>
-            <ThumbUp/>
+            { this.props.noFeedbackMsg || 'No feedback found' }
           </div>
         );
       } else {

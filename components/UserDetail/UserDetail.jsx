@@ -108,6 +108,9 @@ class UserDetail extends Component {
       const palette = this.context.muiTheme.palette;
       const spacing = this.context.muiTheme.spacing;
 
+      let likes = user.data.likes;
+      let percentAvg = Math.round((likes + 1) / 2 * 100);
+
       return(
         <div>
           <Card style={{
@@ -115,12 +118,12 @@ class UserDetail extends Component {
           }}>
             <CardHeader
               title={user.data.name}
-              subtitle={`${Math.round((user.data.likes + 1) / 2 * 100)}% happy`}
+              subtitle={likes !== null ? `${percentAvg}% happy` : `No feedback given`}
               style={{
-                backgroundColor: user.data.likes > 0.5 ? lightGreen300 : user.data.likes > -0.5 ? yellow300 : red300
+                backgroundColor: likes > 0.5 || likes === null ? lightGreen300 : likes > -0.5 ? yellow300 : red300
               }}
               avatar={
-                user.data.likes > 0.5 ? <ThumbUp style={iconStyle}/> : user.data.likes > -0.5 ? <Neutral style={iconStyle}/> : <ThumbDown style={iconStyle}/>
+                likes > 0.5 || likes === null ? <ThumbUp style={iconStyle}/> : likes > -0.5 ? <Neutral style={iconStyle}/> : <ThumbDown style={iconStyle}/>
               } >
             </CardHeader>
 
