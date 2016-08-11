@@ -1,13 +1,13 @@
 let MenuRoutes = {
   '/': 'Home',
-  '/sessions': 'Sessions',
-  '/users': 'Users'
+  '/sessions': 'Feedback',
+  '/users': 'Children'
 };
 
 let MiscRoutes = {
   '/login': 'Login',
-  '/sessions/:id': 'Session details',
-  '/users/:id': 'User details',
+  '/sessions/:id': 'Feedback details',
+  '/users/:id': 'Child details',
   '/preferences': 'Preferences',
   '/logout': 'Logout'
 };

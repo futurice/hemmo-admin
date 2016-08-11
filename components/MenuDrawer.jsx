@@ -7,16 +7,18 @@ import { push } from 'react-router-redux'
 import { MenuRoutes } from '../src/Routes';
 
 import * as UiActions from '../actions/ui';
+
+// icons
 import Home from 'material-ui/svg-icons/action/home';
-import Sessions from 'material-ui/svg-icons/action/assessment';
-import Users from 'material-ui/svg-icons/action/supervisor-account';
+import Feedback from 'material-ui/svg-icons/action/assessment';
+import Children from 'material-ui/svg-icons/action/supervisor-account';
 import Preferences from 'material-ui/svg-icons/action/settings';
 import Logout from 'material-ui/svg-icons/action/exit-to-app';
 
 let icons = {
   Home,
-  Sessions,
-  Users,
+  Feedback,
+  Children,
   Preferences,
   Logout
 }

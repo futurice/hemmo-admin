@@ -143,11 +143,31 @@ export default reduxApi({
   },
   sessions: {
     url: `/sessions`,
-    transformer(data) {
+    transformer(data, prevData = {}, action) {
       if (data) {
-        return data.sessions;
+        return {
+          ...prevData,
+          sessions: data.sessions
+        };
       } else {
-        return [];
+        return {
+          ...prevData
+        };
+      }
+    }
+  },
+  sessionsExtra: {
+    url: `/sessions`,
+    transformer(data, prevData = {}, action) {
+      if (data) {
+        return {
+          ...prevData,
+          sessions: data.sessions
+        };
+      } else {
+        return {
+          ...prevData
+        };
       }
     }
   },

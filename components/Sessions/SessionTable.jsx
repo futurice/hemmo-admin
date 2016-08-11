@@ -35,7 +35,12 @@ class SessionTable extends Component {
 
   refresh() {
     const {dispatch} = this.props;
-    dispatch(rest.actions.sessions(this.props.filter));
+
+    if (this.props.extra) {
+      dispatch(rest.actions.sessionsExtra(this.props.filter));
+    } else {
+      dispatch(rest.actions.sessions(this.props.filter));
+    }
   }
 
   componentDidMount() {
@@ -48,7 +53,7 @@ class SessionTable extends Component {
   }
 
   render() {
-    const { sessions } = this.props;
+    const sessions = this.props.extra ? this.props.sessionsExtra : this.props.sessions;
 
     if (sessions.loading) {
       return(
@@ -61,7 +66,9 @@ class SessionTable extends Component {
         <Error refresh={this.refresh} model={sessions}/>
       );
     } else {
-      if (!sessions.data.length) {
+      let data = sessions.data.sessions;
+
+      if (!data || !data.length) {
         return(
           <div>
             { this.props.noFeedbackMsg || 'No feedback found matching search!' }
@@ -81,10 +88,10 @@ class SessionTable extends Component {
                   return null;
                 }})()}
 
-                <TableHeaderColumn>User</TableHeaderColumn>
+                <TableHeaderColumn>Child</TableHeaderColumn>
 
                 {(() => {if (this.props.containerWidth >= 400) {
-                  return <TableHeaderColumn>Session started</TableHeaderColumn>;
+                  return <TableHeaderColumn>Feedback started</TableHeaderColumn>;
                 } else {
                   return null;
                 }})()}
@@ -93,7 +100,7 @@ class SessionTable extends Component {
               </TableRow>
             </TableHeader>
             <TableBody showRowHover={true} displayRowCheckbox={false}>
-              {sessions.data.map((row, index) => (
+              {data.map((row, index) => (
                 <TableRow key={index} onTouchTap={(e) => {
                   this.openSession(row.sessionId);
                 }} >
@@ -138,13 +145,16 @@ SessionTable.contextTypes = {
 SessionTable.propTypes = {
   sessions: PropTypes.shape({
     loading: PropTypes.bool.isRequired,
-    data: PropTypes.array.isRequired
+    data: PropTypes.object.isRequired
   }).isRequired,
   dispatch: PropTypes.func.isRequired
 };
 
 function select(state) {
-  return { sessions: state.sessions };
+  return {
+    sessions: state.sessions,
+    sessionsExtra: state.sessionsExtra
+  };
 }
 
 export default connect(select)(Dimensions()(SessionTable));
