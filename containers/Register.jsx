@@ -19,7 +19,6 @@ import rest from '../reducers/api';
 class Register extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       email: '',
       name: '',
@@ -28,13 +27,7 @@ class Register extends Component {
   }
 
   authSuccess() {
-    let redirect = this.props.redirect;
-
-    if (!redirect || redirect === '/logout') {
-      redirect = '/';
-    }
-
-    this.props.dispatch(replace(redirect));
+    this.props.dispatch(replace('/'));
   }
 
   openLogin() {

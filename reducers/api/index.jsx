@@ -66,8 +66,6 @@ export default reduxApi({
   register: {
     url: `/employees/register`,
     transformer(data) {
-      let authSession = JSON.parse(localStorage.getItem('auth'));
-
       if (data && data.error) {
         console.log('got error from backend');
         return { error: data.error, message: data.message };
