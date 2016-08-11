@@ -99,6 +99,12 @@ class UserDetail extends Component {
         />
       ];
 
+      const iconSize = '42px';
+      const iconStyle = {
+        height: iconSize,
+        width: iconSize
+      };
+
       return(
         <div>
           <Card style={{
@@ -111,20 +117,21 @@ class UserDetail extends Component {
                 backgroundColor: user.data.likes > 0.5 ? lightGreen300 : user.data.likes > -0.5 ? yellow300 : red300
               }}
               avatar={
-                user.data.likes > 0.5 ? <ThumbUp/> : user.data.likes > -0.5 ? <Neutral/> : <ThumbDown/>
-              } />
+                user.data.likes > 0.5 ? <ThumbUp style={iconStyle}/> : user.data.likes > -0.5 ? <Neutral style={iconStyle}/> : <ThumbDown style={iconStyle}/>
+              } >
+            </CardHeader>
 
-            <CardTitle title={'Assignee:'}/>
+            <CardTitle subtitle={'Assignee:'}>
+              <CardText>
+                <SelectField hintText={'(nobody)'} onChange={this.setAssignee} value={user.data.assignee ? user.data.assignee.id : null}>
+                  {this.props.employees.data.map((row, index) => (
+                    <MenuItem key={index} value={row.employeeId} primaryText={row.name} />
+                  ))}
+                </SelectField>
+              </CardText>
+            </CardTitle>
 
-            <CardText>
-              <SelectField onChange={this.setAssignee} value={user.data.assignee ? user.data.assignee.id : null}>
-                {this.props.employees.data.map((row, index) => (
-                  <MenuItem key={index} value={row.employeeId} primaryText={row.name} />
-                ))}
-              </SelectField>
-            </CardText>
-
-            <CardTitle title={'User sessions:'}/>
+            <CardTitle subtitle={'User sessions:'}/>
             <CardText>
               <SessionTable filter={{
                 user: this.props.userId

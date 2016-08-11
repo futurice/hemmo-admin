@@ -18,11 +18,19 @@ import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import {
+  grey900,
   red300,
+  red900,
   yellow300,
-  lightGreen300
+  lightGreen300,
+  lightGreen500
 } from 'material-ui/styles/colors';
+import Chip from 'material-ui/Chip';
+import Avatar from 'material-ui/Avatar';
 import ActionDone from 'material-ui/svg-icons/action/done';
+import Done from 'material-ui/svg-icons/action/done';
+import Announcement from 'material-ui/svg-icons/alert/error-outline';
+import Cancel from 'material-ui/svg-icons/navigation/cancel';
 import Refresh from 'material-ui/svg-icons/navigation/refresh';
 import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 import rest from '../../reducers/api';
@@ -35,8 +43,6 @@ import Neutral from 'material-ui/svg-icons/social/sentiment-neutral';
 import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
 import Close from 'material-ui/svg-icons/navigation/close';
 import AttachmentIcon from 'material-ui/svg-icons/file/attachment';
-import Done from 'material-ui/svg-icons/action/done';
-import AlertErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 
 class SessionDetail extends Component {
   constructor(props) {
@@ -72,7 +78,7 @@ class SessionDetail extends Component {
     });
   }
 
-  markReviewed() {
+  markReviewed(reviewStatus) {
     const self = this;
     const callback = function() {
       self.refresh();
@@ -80,7 +86,7 @@ class SessionDetail extends Component {
     const {dispatch} = this.props;
     dispatch(rest.actions.sessionUpdate({sessionId: this.props.id}, {
       body: JSON.stringify({
-        reviewed: true
+        reviewed: reviewStatus
       })
     }, callback));
   }
@@ -108,34 +114,70 @@ class SessionDetail extends Component {
         />
       ];
 
+      let avgLikes = null;
+
+      if (session.data.content.length) {
+        avgLikes = session.data.content.reduce((sum, content) => {
+          return sum + content.like;
+        }, 0) / session.data.content.length;
+      }
+
+      const iconSize = '42px';
+      const iconStyle = {
+        height: iconSize,
+        width: iconSize
+      };
+
       return(
         <div>
           <Card style={{
-            margin: this.context.muiTheme.spacing.desktopGutter
+            margin: this.context.muiTheme.spacing.desktopGutter,
+            marginBottom: 0
           }}>
+            <CardHeader
+              title={session.data.user.name}
+              subtitle={avgLikes !== null ? `${Math.round((avgLikes + 1) / 2 * 100)}% happy in session` : null}
+              style={{
+                backgroundColor: avgLikes > 0.5 ? lightGreen300 : avgLikes > -0.5 ? yellow300 : red300
+              }}
+              avatar={
+                avgLikes > 0.5 ? <ThumbUp style={iconStyle}/> : avgLikes > -0.5 ? <Neutral style={iconStyle}/> : <ThumbDown style={iconStyle}/>
+              } />
+
+            <CardTitle subtitle={'Review status'}>
+              <CardText> {
+                session.data.reviewed ?
+                  <Chip>
+                    <Avatar backgroundColor={lightGreen300} icon={<Done />} />
+                    Reviewed
+                  </Chip>
+                  :
+                  <Chip>
+                    <Avatar backgroundColor={red300} icon={<Announcement />} />
+                    Unhandled
+                  </Chip>
+                }
+              </CardText>
+            </CardTitle>
+            <CardTitle subtitle={'Started'}>
+              <CardText>
+                {new Date(session.data.startedAt).toLocaleDateString()}
+              </CardText>
+            </CardTitle>
+            {session.reviewed ?
+              null :
               <CardActions>
                 <FlatButton label="Back"
                             onTouchTap={() => {
                               this.props.dispatch(goBack());
                             }}
                             icon={<ArrowBack/>} />
-              </CardActions>
-            <CardText>
-              <div>
-                User: {session.data.user.name}<br/>
-              Reviewed: {session.data.reviewed ? <Done style={{ verticalAlign: 'middle' }} color={lightGreen300}/> :
-                                                      <AlertErrorOutline style={{ verticalAlign: 'middle' }} color={red300}/>}<br/>
-                Started: {session.data.startedAt}<br/>
-              </div>
-            </CardText>
-            {session.data.reviewed ? null :
-              <CardActions>
-                <FlatButton label="Mark reviewed"
+                <FlatButton label={session.data.reviewed ?  'Mark unhandled' : 'Mark reviewed'}
                             onTouchTap={() => {
-                              this.markReviewed()
+                              this.markReviewed(!session.data.reviewed)
                             }}
-                            primary={true}
-                            icon={<ActionDone/>} />
+                            primary={!session.data.reviewed}
+                            icon={session.data.reviewed ? <Cancel/> : <ActionDone/>} />
               </CardActions>
             }
           </Card>
@@ -159,20 +201,19 @@ class SessionDetail extends Component {
                 }}
                 avatar={((row) => {
                   if (row.like === 1) {
-                    return (<ThumbUp/>);
+                    return (<ThumbUp style={iconStyle}/>);
                   } else if (row.like === -1) {
-                    return (<ThumbDown/>);
+                    return (<ThumbDown style={iconStyle}/>);
                   } else {
-                    return (<Neutral/>);
+                    return (<Neutral style={iconStyle}/>);
                   }
                 })(row)} />
               <CardTitle title={ row.question }/>
-              <CardText>
-                <div>
-                  <b>Answer: </b>
+              <CardTitle subtitle={'Answer'}>
+                <CardText>
                   { row.answer }
-                </div>
-              </CardText>
+                </CardText>
+              </CardTitle>
               <CardActions>
                 {((row) => {
                   if (row.hasAttachment) {
