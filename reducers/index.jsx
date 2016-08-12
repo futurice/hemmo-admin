@@ -1,6 +1,7 @@
 import { applyMiddleware } from 'redux';
 import { combineReducers } from 'redux-loop';
 import { routerReducer } from 'react-router-redux';
+import { logOut } from '../actions/ui';
 import ui from './ui';
 import api from './api';
 
@@ -11,8 +12,9 @@ const appReducer = combineReducers({
 })
 
 const rootReducer = (state, action) => {
-  if (action.payload && action.payload.pathname === '/logout') {
-    state = undefined
+  if (action.type === logOut().type) {
+    console.log('wiping state');
+    state = undefined;
   }
   return appReducer(state, action)
 }
