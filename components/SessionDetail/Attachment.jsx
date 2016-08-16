@@ -9,7 +9,7 @@ class Attachment extends Component {
   render() {
     return(
       <div>
-        <audio controls autoPlay src={`${config.API_ROOT}/attachment/${this.props.contentId}`} style={{
+        <audio crossorigin={ 'use-credentials' } controls autoPlay src={`${config.API_ROOT}/attachment/${this.props.contentId}`} style={{
           width: '100%'
         }}></audio>
       </div>
