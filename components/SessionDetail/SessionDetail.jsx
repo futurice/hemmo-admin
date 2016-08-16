@@ -43,6 +43,18 @@ import Neutral from 'material-ui/svg-icons/social/sentiment-neutral';
 import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
 import Close from 'material-ui/svg-icons/navigation/close';
 import AttachmentIcon from 'material-ui/svg-icons/file/attachment';
+import FileDownload from 'material-ui/svg-icons/file/file-download';
+import config from 'config';
+
+const styles = {
+  chip: {
+    margin: 4
+  },
+  chipWrapper: {
+    display: 'flex',
+    flexWrap: 'wrap'
+  }
+};
 
 class SessionDetail extends Component {
   constructor(props) {
@@ -188,43 +200,71 @@ class SessionDetail extends Component {
             justifyContent: 'center',
             padding: this.context.muiTheme.spacing.desktopGutter / 2
           }}>
-          {session.data.content.map((row, index) => (
+          {session.data.content.map((content, index) => (
             <Card key={index} style={{
               margin: this.context.muiTheme.spacing.desktopGutter / 2,
               flex: 1,
               flexBasis: '320px'
             }}>
               <CardHeader
-                title={`Question ${index + 1}`}
-                subtitle={`Mood: ${row.like === 1 ? 'Happy' : row.like === -1 ? 'Unhappy' : 'Neutral'}`}
+                title={`Round ${index + 1}`}
+                subtitle={`Mood: ${content.like === 1 ? 'Happy' : content.like === -1 ? 'Unhappy' : 'Neutral'}`}
                 style={{
-                  backgroundColor: row.like === 1 ? lightGreen300 : row.like === -1 ? red300 : yellow300
+                  backgroundColor: content.like === 1 ? lightGreen300 : content.like === -1 ? red300 : yellow300
                 }}
-                avatar={((row) => {
-                  if (row.like === 1) {
+                avatar={((content) => {
+                  if (content.like === 1) {
                     return (<ThumbUp style={iconStyle}/>);
-                  } else if (row.like === -1) {
+                  } else if (content.like === -1) {
                     return (<ThumbDown style={iconStyle}/>);
                   } else {
                     return (<Neutral style={iconStyle}/>);
                   }
-                })(row)} />
-              <CardTitle title={ row.question }/>
-              <CardTitle subtitle={ row.answer ? 'Answer' : null}>
-                <CardText>
-                  { row.answer }
-                </CardText>
-              </CardTitle>
+                })(content)} />
+
+              <CardText style={ styles.chipWrapper }>
+                {content.moods.map((mood, index) => {
+                  return <Chip style={ styles.chip } key={ index }>
+                    { mood }
+                  </Chip>;
+                })}
+              </CardText>
+
+              {content.questions.map((question, index) => {
+                if (question.answer || question.attachmentId) {
+                  return <CardTitle key={ index } subtitle={ question.question }>
+                    <CardText>
+                      {(() => {
+                        if (question.attachmentId) {
+                          return <div>
+                              <FlatButton onTouchTap={(e) => {
+                                this.openAttachment(question.attachmentId);
+                              }} label="View attachment" icon={<AttachmentIcon/>} primary={true}/>
+
+                              <FlatButton href={ `${config.API_ROOT}/attachment/${question.attachmentId}` }
+                                label="Download" icon={<FileDownload/>} primary={false}/>
+                            </div>
+                        } else if (question.answer) {
+                          return question.answer;
+                        }
+                      })()}
+                    </CardText>
+                  </CardTitle>;
+                } else {
+                  return null;
+                }
+              })}
+
               <CardActions>
-                {((row) => {
-                  if (row.hasAttachment) {
+                {((content) => {
+                  if (content.hasAttachment) {
                     return <FlatButton onTouchTap={(e) => {
-                      this.openAttachment(row.contentId);
+                      this.openAttachment(content.contentId);
                     }} label="View attachment" icon={<AttachmentIcon/>} primary={true}/>;
                   } else {
                     return null;
                   }
-                })(row)}
+                })(content)}
               </CardActions>
             </Card>
           ))}
