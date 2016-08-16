@@ -43,7 +43,6 @@ import Neutral from 'material-ui/svg-icons/social/sentiment-neutral';
 import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
 import Close from 'material-ui/svg-icons/navigation/close';
 import AttachmentIcon from 'material-ui/svg-icons/file/attachment';
-import FileDownload from 'material-ui/svg-icons/file/file-download';
 import config from 'config';
 
 const styles = {
@@ -236,14 +235,9 @@ class SessionDetail extends Component {
                     <CardText>
                       {(() => {
                         if (question.attachmentId) {
-                          return <div>
-                              <FlatButton onTouchTap={(e) => {
+                          return <FlatButton onTouchTap={(e) => {
                                 this.openAttachment(question.attachmentId);
                               }} label="View attachment" icon={<AttachmentIcon/>} primary={true}/>
-
-                              <FlatButton href={ `${config.API_ROOT}/attachment/${question.attachmentId}` }
-                                label="Download" icon={<FileDownload/>} primary={false}/>
-                            </div>
                         } else if (question.answer) {
                           return question.answer;
                         }

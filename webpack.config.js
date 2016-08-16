@@ -33,6 +33,8 @@ module.exports = {
     configFile: './.eslintrc'
   },
   devServer: {
-    historyApiFallback: true
+    historyApiFallback: true,
+    headers: {
+    }
   }
 };
