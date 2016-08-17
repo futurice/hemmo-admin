@@ -238,14 +238,14 @@ class SessionDetail extends Component {
                 })(content)} />
 
               <CardText style={ styles.chipWrapper }>
-                {content.moods.map((mood, index) => {
+                {content.moods ? content.moods.map((mood, index) => {
                   return <Chip style={ styles.chip } key={ index }>
                     { mood }
                   </Chip>;
-                })}
+                }) : null}
               </CardText>
 
-              {content.questions.map((question, index) => {
+              {content.questions ? content.questions.map((question, index) => {
                 if (question.answer || question.attachmentId) {
                   return <CardTitle key={ index } subtitle={ question.question }>
                     <CardText>
@@ -263,7 +263,7 @@ class SessionDetail extends Component {
                 } else {
                   return null;
                 }
-              })}
+              }) : null}
 
               <CardActions>
                 {((content) => {
