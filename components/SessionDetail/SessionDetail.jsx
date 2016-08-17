@@ -55,6 +55,20 @@ const styles = {
   }
 };
 
+const getLikeAvg = questions => {
+  let numLikes = 0;
+  let sum = 0;
+
+  questions.forEach(question => {
+    if (question.like !== undefined) {
+      numLikes++;
+      sum += question.like;
+    }
+  });
+
+  return sum / (numLikes || 1);
+};
+
 class SessionDetail extends Component {
   constructor(props) {
     super(props);
@@ -129,7 +143,7 @@ class SessionDetail extends Component {
 
       if (session.data.content.length) {
         avgLikes = session.data.content.reduce((sum, content) => {
-          return sum + content.like;
+          return sum + getLikeAvg(content.questions);
         }, 0) / session.data.content.length;
       }
 
@@ -199,22 +213,24 @@ class SessionDetail extends Component {
             justifyContent: 'center',
             padding: this.context.muiTheme.spacing.desktopGutter / 2
           }}>
-          {session.data.content.map((content, index) => (
-            <Card key={index} style={{
+          {session.data.content.map((content, index) => {
+            let avgLikes = getLikeAvg(content.questions);
+
+            return <Card key={index} style={{
               margin: this.context.muiTheme.spacing.desktopGutter / 2,
               flex: 1,
               flexBasis: '320px'
             }}>
               <CardHeader
                 title={`Round ${index + 1}`}
-                subtitle={`Mood: ${content.like === 1 ? 'Happy' : content.like === -1 ? 'Unhappy' : 'Neutral'}`}
+                subtitle={`Mood: ${avgLikes > 0.5 ? 'Happy' : avgLikes < -0.5 ? 'Unhappy' : 'Neutral'}`}
                 style={{
-                  backgroundColor: content.like === 1 ? lightGreen300 : content.like === -1 ? red300 : yellow300
+                  backgroundColor: avgLikes > 0.5 ? lightGreen300 : avgLikes < -0.5 ? red300 : yellow300
                 }}
                 avatar={((content) => {
-                  if (content.like === 1) {
+                  if (avgLikes > 0.5) {
                     return (<ThumbUp style={iconStyle}/>);
-                  } else if (content.like === -1) {
+                  } else if (avgLikes === -0.5) {
                     return (<ThumbDown style={iconStyle}/>);
                   } else {
                     return (<Neutral style={iconStyle}/>);
@@ -261,7 +277,7 @@ class SessionDetail extends Component {
                 })(content)}
               </CardActions>
             </Card>
-          ))}
+          })}
           </div>
 
           <Dialog
