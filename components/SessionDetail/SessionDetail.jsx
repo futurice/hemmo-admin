@@ -19,6 +19,7 @@ import Dialog from 'material-ui/Dialog';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import {
   grey900,
+  grey300,
   red300,
   red900,
   yellow300,
@@ -39,6 +40,7 @@ import { goBack } from 'react-router-redux';
 import Error from '../Error';
 import ThumbUp from 'material-ui/svg-icons/social/sentiment-satisfied';
 import ThumbDown from 'material-ui/svg-icons/social/sentiment-dissatisfied';
+import NA from 'material-ui/svg-icons/av/not-interested';
 import Neutral from 'material-ui/svg-icons/social/sentiment-neutral';
 import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
 import Close from 'material-ui/svg-icons/navigation/close';
@@ -68,7 +70,7 @@ const getLikeAvg = questions => {
     }
   });
 
-  return sum / (numLikes || 1);
+  return numLikes >= 1 ? sum / numLikes : null;
 };
 
 class SessionDetail extends Component {
@@ -160,11 +162,25 @@ class SessionDetail extends Component {
       ];
 
       let avgLikes = null;
+      let numLikes = 0;
 
       if (session.data.content.length) {
         avgLikes = session.data.content.reduce((sum, content) => {
-          return sum + getLikeAvg(content.questions);
-        }, 0) / session.data.content.length;
+          let avg = getLikeAvg(content.questions);
+
+          if (avg === null) {
+            return sum;
+          } else {
+            numLikes++;
+            return sum + avg;
+          }
+        }, 0);
+
+        if (numLikes) {
+          avgLikes /= numLikes;
+        } else {
+          avgLikes = null;
+        }
       }
 
       const iconSize = '42px';
@@ -185,7 +201,7 @@ class SessionDetail extends Component {
           }}>
             <CardHeader
               title={session.data.user.name}
-              subtitle={avgLikes !== null ? `${Math.round((avgLikes + 1) / 2 * 100)}% happy in session` : null}
+              subtitle={avgLikes !== null ? `${Math.round((avgLikes + 1) / 2 * 100)}% happy in session` : `No feedback given yet`}
               style={{
                 backgroundColor: avgLikes > 0.5 ? lightGreen300 : avgLikes > -0.5 ? yellow300 : red300
               }}
@@ -259,12 +275,14 @@ class SessionDetail extends Component {
             }}>
               <CardHeader
                 title={`Round ${index + 1}`}
-                subtitle={`Mood: ${avgLikes > 0.5 ? 'Happy' : avgLikes < -0.5 ? 'Unhappy' : 'Neutral'}`}
+                subtitle={avgLikes === null ? '' : `Mood: ${avgLikes > 0.5 ? 'Happy' : avgLikes < -0.5 ? 'Unhappy' : 'Neutral'}`}
                 style={{
-                  backgroundColor: avgLikes > 0.5 ? lightGreen300 : avgLikes < -0.5 ? red300 : yellow300
+                  backgroundColor: avgLikes === null ? grey300 : (avgLikes > 0.5 ? lightGreen300 : avgLikes < -0.5 ? red300 : yellow300)
                 }}
                 avatar={((content) => {
-                  if (avgLikes > 0.5) {
+                  if (avgLikes === null) {
+                    return (<NA style={iconStyle}/>);
+                  } else if (avgLikes > 0.5) {
                     return (<ThumbUp style={iconStyle}/>);
                   } else if (avgLikes === -0.5) {
                     return (<ThumbDown style={iconStyle}/>);
