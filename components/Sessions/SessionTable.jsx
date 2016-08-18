@@ -55,6 +55,9 @@ class SessionTable extends Component {
   render() {
     const sessions = this.props.extra ? this.props.sessionsExtra : this.props.sessions;
 
+    const palette = this.context.muiTheme.palette;
+    const spacing = this.context.muiTheme.spacing;
+
     if (sessions.loading) {
       return(
         <div style={{textAlign: 'center'}}>
@@ -88,7 +91,13 @@ class SessionTable extends Component {
 
                 <TableHeaderColumn>Child</TableHeaderColumn>
 
-                {(() => {if (this.props.containerWidth >= 400) {
+                {(() => {if (this.props.containerWidth >= 680) {
+                  return <TableHeaderColumn>Assignee</TableHeaderColumn>;
+                } else {
+                  return null;
+                }})()}
+
+                {(() => {if (this.props.containerWidth >= 440) {
                   return <TableHeaderColumn>Feedback started</TableHeaderColumn>;
                 } else {
                   return null;
@@ -113,7 +122,13 @@ class SessionTable extends Component {
 
                   <TableRowColumn>{row.user.name}</TableRowColumn>
 
-                  {(() => {if (this.props.containerWidth >= 400) {
+                  {(() => {if (this.props.containerWidth >= 680) {
+                    return <TableRowColumn style={row.assignee ? null : {color: palette.accent3Color}}>{row.assignee || '(nobody)'}</TableRowColumn>;
+                  } else {
+                    return null;
+                  }})()}
+
+                  {(() => {if (this.props.containerWidth >= 440) {
                     return <TableRowColumn>{new Date(row.createdAt).toLocaleDateString()}</TableRowColumn>;
                   } else {
                     return null;

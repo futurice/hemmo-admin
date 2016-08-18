@@ -192,7 +192,6 @@ class SessionDetail extends Component {
       const palette = this.context.muiTheme.palette;
       const spacing = this.context.muiTheme.spacing;
 
-      console.log(session.data);
       return(
         <div>
           <Card style={{

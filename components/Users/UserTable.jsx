@@ -56,6 +56,9 @@ class UserTable extends Component {
   render() {
     const { users } = this.props;
 
+    const palette = this.context.muiTheme.palette;
+    const spacing = this.context.muiTheme.spacing;
+
     if (users.loading) {
       return(
         <div style={{textAlign: 'center'}}>
@@ -82,14 +85,6 @@ class UserTable extends Component {
                 return null;
               }})()}
 
-              {(() => {if (this.props.containerWidth >= 640) {
-                return(
-                  <TableHeaderColumn>Family</TableHeaderColumn>
-                );
-              } else {
-                return null;
-              }})()}
-
               <TableHeaderColumn style={{ width: '20px' }}></TableHeaderColumn>
             </TableRow>
           </TableHeader>
@@ -103,15 +98,7 @@ class UserTable extends Component {
 
                 {(() => {if (this.props.containerWidth >= 640) {
                   return (
-                    <TableRowColumn>{row.assignee}</TableRowColumn>
-                  );
-                } else {
-                  return null;
-                }})()}
-
-                {(() => {if (this.props.containerWidth >= 640) {
-                  return (
-                    <TableRowColumn>{row.family}</TableRowColumn>
+                    <TableRowColumn style={row.assignee ? null : {color: palette.accent3Color}}>{row.assignee || '(nobody)'}</TableRowColumn>
                   );
                 } else {
                   return null;
