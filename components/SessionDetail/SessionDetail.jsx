@@ -186,7 +186,7 @@ class SessionDetail extends Component {
             </CardTitle>
             <CardTitle subtitle={'Started'}>
               <CardText>
-                {new Date(session.data.startedAt).toLocaleDateString()}
+                {new Date(session.data.createdAt).toLocaleDateString()}
               </CardText>
             </CardTitle>
             {session.reviewed ?

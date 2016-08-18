@@ -114,7 +114,7 @@ class SessionTable extends Component {
                   <TableRowColumn>{row.user.name}</TableRowColumn>
 
                   {(() => {if (this.props.containerWidth >= 400) {
-                    return <TableRowColumn>{new Date(row.startedAt).toLocaleDateString()}</TableRowColumn>;
+                    return <TableRowColumn>{new Date(row.createdAt).toLocaleDateString()}</TableRowColumn>;
                   } else {
                     return null;
                   }})()}
