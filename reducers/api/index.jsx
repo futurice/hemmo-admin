@@ -171,26 +171,14 @@ export default reduxApi({
   },
   sessionDetail: {
     url: `/sessions/:sessionId`,
-    transformer(data) {
+    transformer(data, prevData) {
       if (data) {
-        return data;
+        return {...prevData, ...data};
       } else {
-        return {};
-      }
-    }
-  },
-  sessionUpdate: {
-    url: `/sessions/:sessionId`,
-    transformer(data) {
-      if (data) {
-        return data;
-      } else {
-        return null;
+        return {...prevData};
       }
     },
-    options: {
-      method: 'put'
-    }
+    crud: true
   }
 })
 .use('options', (url, params, getState) => {

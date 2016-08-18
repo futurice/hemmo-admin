@@ -22,8 +22,8 @@ class Home extends Component {
         <CardHeader title="New feedback" subtitle="Feedback that has been assigned to you" />
         <CardText>
           <SessionTable filter={{
-            reviewed: 0
-            //assignee: this.props.employeeId
+            reviewed: 0,
+            assignee: this.props.employeeId
           }} noFeedbackMsg={'No unhandled feedback for you'} small={true}/>
         </CardText>
       </Card>

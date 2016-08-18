@@ -44,6 +44,8 @@ import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
 import Close from 'material-ui/svg-icons/navigation/close';
 import AttachmentIcon from 'material-ui/svg-icons/file/attachment';
 import config from 'config';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 const styles = {
   chip: {
@@ -79,6 +81,7 @@ class SessionDetail extends Component {
       openAttachmentContentId: null
     };
     this.markReviewed = this.markReviewed.bind(this);
+    this.setAssignee = this.setAssignee.bind(this);
   }
 
   handleClose = () => {
@@ -90,6 +93,7 @@ class SessionDetail extends Component {
   refresh() {
     const {dispatch} = this.props;
     dispatch(rest.actions.sessionDetail({sessionId: this.props.id}));
+    dispatch(rest.actions.employees());
   }
 
   componentDidMount() {
@@ -109,11 +113,27 @@ class SessionDetail extends Component {
       self.refresh();
     };
     const {dispatch} = this.props;
-    dispatch(rest.actions.sessionUpdate({sessionId: this.props.id}, {
+    dispatch(rest.actions.sessionDetail.put({sessionId: this.props.id}, {
       body: JSON.stringify({
         reviewed: reviewStatus
       })
     }, callback));
+  }
+
+  setAssignee(event, index, value) {
+    this.setState({
+      assigneeId: value
+    });
+
+    this.props.dispatch(rest.actions.sessionDetail.put({sessionId: this.props.id}, {
+      body: JSON.stringify({
+        assigneeId: value
+      })
+    }, (err) => {
+      if (err) {
+        console.log(err);
+      }
+    }));
   }
 
   render() {
@@ -153,6 +173,10 @@ class SessionDetail extends Component {
         width: iconSize
       };
 
+      const palette = this.context.muiTheme.palette;
+      const spacing = this.context.muiTheme.spacing;
+
+      console.log(session.data);
       return(
         <div>
           <Card style={{
@@ -184,6 +208,18 @@ class SessionDetail extends Component {
                 }
               </CardText>
             </CardTitle>
+
+            <CardTitle subtitle={'Assignee:'}>
+              <CardText>
+                <SelectField onChange={this.setAssignee} value={session.data.assigneeId}>
+                  <MenuItem key={'nobody'} value={null} style={{color: palette.accent3Color}} primaryText={'(nobody)'} />
+                  {this.props.employees.data.map((row, index) => (
+                    <MenuItem key={index} value={row.employeeId} primaryText={row.name} />
+                  ))}
+                </SelectField>
+              </CardText>
+            </CardTitle>
+
             <CardTitle subtitle={'Started'}>
               <CardText>
                 {new Date(session.data.createdAt).toLocaleDateString()}
@@ -302,6 +338,7 @@ SessionDetail.contextTypes = {
 function select(state, ownProps) {
   return {
     session: state.sessionDetail,
+    employees: state.employees,
     id: ownProps.params.id
   };
 }
