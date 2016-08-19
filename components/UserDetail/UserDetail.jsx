@@ -135,10 +135,16 @@ class UserDetail extends Component {
                     <MenuItem key={index} value={row.employeeId} primaryText={row.name} />
                   ))}
                 </SelectField>
+
+                <div style={{
+                  color: palette.accent3Color
+                }}>
+                  New feedback by <b>{ user.data.name }</b> will be assigned to this employee automatically.
+                </div>
               </CardText>
             </CardTitle>
 
-            <CardTitle subtitle={'Feedback from child:'}/>
+            <CardTitle subtitle={`Feedback by ${ user.data.name }:`}/>
             <CardText>
               <SessionTable filter={{
                 user: this.props.userId

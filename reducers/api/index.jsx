@@ -154,7 +154,7 @@ export default reduxApi({
     transformer(data, prevData = {
       entries: [],
       totalEntries: 0,
-      name: 'Sessions'
+      name: 'Feedback'
     }, action) {
       if (data) {
         return {
@@ -171,11 +171,16 @@ export default reduxApi({
   },
   sessionsExtra: {
     url: `/sessions`,
-    transformer(data, prevData = {}, action) {
+    transformer(data, prevData = {
+      entries: [],
+      totalEntries: 0,
+      name: 'Feedback'
+    }, action) {
       if (data) {
         return {
           ...prevData,
-          sessions: data.sessions
+          entries: data.sessions,
+          totalEntries: data.count
         };
       } else {
         return {
@@ -185,7 +190,7 @@ export default reduxApi({
     }
   },
   sessionDetail: {
-    url: `/sessions/:sessionId`,
+    url: `/sessions/:id`,
     transformer(data, prevData) {
       if (data) {
         return {...prevData, ...data};

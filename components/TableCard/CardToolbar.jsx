@@ -56,7 +56,7 @@ class CardToolbar extends Component {
     const pageEntries = this.state.pageEntries;
     const totalEntries = this.props.totalEntries;
     const page = this.state.page;
-    const pages = Math.floor(pageEntries / totalEntries);
+    const pages = Math.ceil(totalEntries / pageEntries);
 
     return(
       <Toolbar>
@@ -66,6 +66,7 @@ class CardToolbar extends Component {
         <ToolbarGroup lastChild={true}>
           <ToolbarTitle text="Rows per page:" />
           <DropDownMenu iconStyle={{ fill: palette.textColor }} value={this.state.pageEntries} onChange={this.setPageEntries}>
+            <MenuItem value={5} primaryText="5"/>
             <MenuItem value={20} primaryText="20"/>
             <MenuItem value={50} primaryText="50"/>
             <MenuItem value={100} primaryText="100"/>

@@ -12,6 +12,7 @@ import {
 import Account from 'material-ui/svg-icons/action/account-circle';
 import FlatButton from 'material-ui/FlatButton';
 import ArrowForward from 'material-ui/svg-icons/navigation/arrow-forward';
+
 import Dimensions from '../dimensions';
 
 class ModelTable extends Component {
@@ -49,8 +50,8 @@ class ModelTable extends Component {
       let body = header.component;
       let style = header.style;
 
-      if (!body) {
-        body = row[header.field]
+      if (!body && header.value) {
+        body = header.value(row);
       }
 
       if (!body) {

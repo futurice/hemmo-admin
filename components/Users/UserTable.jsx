@@ -1,13 +1,4 @@
 import { Component, PropTypes } from 'react';
-import {
-  Table,
-  TableBody,
-  TableFooter,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn
-} from 'material-ui/Table';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -23,7 +14,6 @@ import Error from '../Error';
 import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
 import ArrowForward from 'material-ui/svg-icons/navigation/arrow-forward';
 import Account from 'material-ui/svg-icons/action/account-circle';
-import Dimensions from '../dimensions'
 
 import TableCard from '../TableCard';
 
@@ -58,23 +48,19 @@ class UserTable extends Component {
           style: { width: '20px' }
         },
         {
-          field: 'name',
+          value: row => row.name,
           columnTitle: 'Name'
         },
         {
-          field: 'assignee',
+          value: row => row.assignee,
           columnTitle: 'Assignee',
           defaultValue: '(nobody)',
           defaultValueStyle: { color: palette.accent3Color },
           maxShowWidth: 640
         },
         {
-          maxShowWidth: 640,
           component: (
-            <FlatButton onTouchTap={(e) => {
-              console.log(e);
-              //this.openUser.bind(this);
-            }} style={{
+            <FlatButton style={{
               minWidth: '40px'
             }} icon={<ArrowForward/>} />
           ),
@@ -107,4 +93,4 @@ function select(state) {
   return { users: state.users };
 }
 
-export default connect(select)(Dimensions()(UserTable));
+export default connect(select)(UserTable);

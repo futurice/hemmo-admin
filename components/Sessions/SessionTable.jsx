@@ -26,130 +26,82 @@ import Done from 'material-ui/svg-icons/action/done';
 import AlertErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 import Dimensions from '../dimensions'
 
+import Account from 'material-ui/svg-icons/action/account-circle';
+import TableCard from '../TableCard';
+
 class SessionTable extends Component {
   constructor(props) {
     super(props);
-
-    this.refresh = this.refresh.bind(this);
   }
 
-  refresh() {
+  refresh(pagination) {
     const {dispatch} = this.props;
 
+    let params = {
+      ...this.props.filter,
+      offset: pagination.page * pagination.pageEntries,
+      limit: pagination.pageEntries
+    };
+
     if (this.props.extra) {
-      dispatch(rest.actions.sessionsExtra(this.props.filter));
+      dispatch(rest.actions.sessionsExtra(params));
     } else {
-      dispatch(rest.actions.sessions(this.props.filter));
+      dispatch(rest.actions.sessions(params));
     }
   }
 
-  componentDidMount() {
-    this.refresh();
-  }
-
-  openSession(sessionId) {
-    const path = '/sessions/' + sessionId;
+  openSession(id) {
+    const path = '/sessions/' + id;
     this.props.dispatch(push(path));
   }
 
   render() {
-    const sessions = this.props.extra ? this.props.sessionsExtra : this.props.sessions;
-
     const palette = this.context.muiTheme.palette;
     const spacing = this.context.muiTheme.spacing;
 
-    console.log(sessions.data);
+    return(
+      <TableCard
+        model={ this.props.extra ? this.props.sessionsExtra : this.props.sessions }
+        header={[
+          {
+            value: row => row.reviewed ?
+              <Done style={{ verticalAlign: 'middle' }} color={lightGreen300}/> :
+              <AlertErrorOutline style={{ verticalAlign: 'middle' }} color={red300}/>,
 
-    if (sessions.loading) {
-      return(
-        <div style={{textAlign: 'center'}}>
-          <CircularProgress/>
-        </div>
-      );
-    } else if (!sessions.sync || !sessions.data || sessions.data.error) {
-      return(
-        <Error refresh={this.refresh} model={sessions}/>
-      );
-    } else {
-      let data = sessions.data.sessions;
+            style: { width: '20px' },
+            maxShowWidth: 320
+          },
+          {
+            value: row => row.user.name,
+            columnTitle: 'Child'
+          },
+          {
+            value: row => row.assignee,
+            columnTitle: 'Assignee',
+            defaultValue: '(nobody)',
+            defaultValueStyle: { color: palette.accent3Color },
+            maxShowWidth: 680
+          },
+          {
+            value: row => new Date(row.createdAt).toLocaleDateString(),
+            columnTitle: 'Feedback started',
+            maxShowWidth: 440
+          },
+          {
+            component: (
+              <FlatButton style={{
+                minWidth: '40px'
+              }} icon={<ArrowForward/>} />
+            ),
 
-      if (!data || !data.length) {
-        return(
-          <div>
-            { this.props.noFeedbackMsg || 'No feedback found' }
-          </div>
-        );
-      } else {
-        return(
-          <Table>
-            <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-              <TableRow>
-
-                {(() => {if (this.props.containerWidth >= 320) {
-                  return <TableHeaderColumn style={{ width: '20px' }}>Status</TableHeaderColumn>
-                } else {
-                  return null;
-                }})()}
-
-                <TableHeaderColumn>Child</TableHeaderColumn>
-
-                {(() => {if (this.props.containerWidth >= 680) {
-                  return <TableHeaderColumn>Assignee</TableHeaderColumn>;
-                } else {
-                  return null;
-                }})()}
-
-                {(() => {if (this.props.containerWidth >= 440) {
-                  return <TableHeaderColumn>Feedback started</TableHeaderColumn>;
-                } else {
-                  return null;
-                }})()}
-
-                <TableHeaderColumn style={{ width: '20px' }}></TableHeaderColumn>
-              </TableRow>
-            </TableHeader>
-            <TableBody showRowHover={true} displayRowCheckbox={false}>
-              {data.map((row, index) => (
-                <TableRow key={index} onTouchTap={(e) => {
-                  this.openSession(row.sessionId);
-                }} >
-
-                  {(() => {if (this.props.containerWidth >= 320) {
-                    return (<TableRowColumn style={{ width: '20px' }}>
-                      {row.reviewed ? <Done style={{ verticalAlign: 'middle' }} color={lightGreen300}/> : <AlertErrorOutline style={{ verticalAlign: 'middle' }} color={red300}/>}
-                    </TableRowColumn>);
-                  } else {
-                    return null;
-                  }})()}
-
-                  <TableRowColumn>{row.user.name}</TableRowColumn>
-
-                  {(() => {if (this.props.containerWidth >= 680) {
-                    return <TableRowColumn style={row.assignee ? null : {color: palette.accent3Color}}>{row.assignee || '(nobody)'}</TableRowColumn>;
-                  } else {
-                    return null;
-                  }})()}
-
-                  {(() => {if (this.props.containerWidth >= 440) {
-                    return <TableRowColumn>{new Date(row.createdAt).toLocaleDateString()}</TableRowColumn>;
-                  } else {
-                    return null;
-                  }})()}
-
-                  <TableRowColumn style={{ width: '20px' }}>
-                    <FlatButton onTouchTap={(e) => {
-                        this.openSession(row.sessionId);
-                    }} style={{
-                      minWidth: '40px'
-                    }} icon={<ArrowForward/>} />
-                  </TableRowColumn>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        );
-      }
-    }
+            style: { width: '20px' }
+          }
+        ]}
+        onClickRow={this.openSession.bind(this)}
+        refresh={this.refresh.bind(this)}
+        small={this.props.small}
+      />
+    );
   }
 }
 

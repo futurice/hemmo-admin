@@ -94,7 +94,7 @@ class SessionDetail extends Component {
 
   refresh() {
     const {dispatch} = this.props;
-    dispatch(rest.actions.sessionDetail({sessionId: this.props.id}));
+    dispatch(rest.actions.sessionDetail({id: this.props.id}));
     dispatch(rest.actions.employees());
   }
 
@@ -115,7 +115,7 @@ class SessionDetail extends Component {
       self.refresh();
     };
     const {dispatch} = this.props;
-    dispatch(rest.actions.sessionDetail.put({sessionId: this.props.id}, {
+    dispatch(rest.actions.sessionDetail.put({id: this.props.id}, {
       body: JSON.stringify({
         reviewed: reviewStatus
       })
@@ -127,7 +127,7 @@ class SessionDetail extends Component {
       assigneeId: value
     });
 
-    this.props.dispatch(rest.actions.sessionDetail.put({sessionId: this.props.id}, {
+    this.props.dispatch(rest.actions.sessionDetail.put({id: this.props.id}, {
       body: JSON.stringify({
         assigneeId: value
       })

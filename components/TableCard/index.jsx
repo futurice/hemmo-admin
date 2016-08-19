@@ -29,6 +29,15 @@ class TableCard extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    if (this.props.small) {
+      this.props.refresh({
+        page: 0,
+        pageEntries: 20
+      });
+    }
+  }
+
   render() {
     const { model } = this.props;
 
@@ -65,12 +74,10 @@ class TableCard extends Component {
     );
 
     return(
-      <Card style={{
-        margin: this.props.margin || spacing.desktopGutter
-      }}>
+      <div>
         { toolbar }
         { body }
-      </Card>
+      </div>
     );
 
   }
