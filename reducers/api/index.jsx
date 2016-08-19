@@ -107,11 +107,21 @@ export default reduxApi({
   },
   users: {
     url: `/users`,
-    transformer(data) {
+    transformer(data, prevData = {
+      entries: [],
+      totalEntries: 0,
+      name: 'Children'
+    }, action) {
       if (data) {
-        return data.users;
+        return {
+          ...prevData,
+          entries: data.users,
+          totalEntries: data.count
+        };
       } else {
-        return [];
+        return {
+          ...prevData
+        };
       }
     }
   },
@@ -141,11 +151,16 @@ export default reduxApi({
   },
   sessions: {
     url: `/sessions`,
-    transformer(data, prevData = {}, action) {
+    transformer(data, prevData = {
+      entries: [],
+      totalEntries: 0,
+      name: 'Sessions'
+    }, action) {
       if (data) {
         return {
           ...prevData,
-          sessions: data.sessions
+          entries: data.sessions,
+          totalEntries: data.count
         };
       } else {
         return {

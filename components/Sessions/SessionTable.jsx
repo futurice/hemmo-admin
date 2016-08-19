@@ -58,6 +58,8 @@ class SessionTable extends Component {
     const palette = this.context.muiTheme.palette;
     const spacing = this.context.muiTheme.spacing;
 
+    console.log(sessions.data);
+
     if (sessions.loading) {
       return(
         <div style={{textAlign: 'center'}}>

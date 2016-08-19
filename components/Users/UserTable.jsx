@@ -20,26 +20,25 @@ import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 import rest from '../../reducers/api';
 import { push } from 'react-router-redux'
 import Error from '../Error';
+import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
 import ArrowForward from 'material-ui/svg-icons/navigation/arrow-forward';
 import Account from 'material-ui/svg-icons/action/account-circle';
 import Dimensions from '../dimensions'
 
+import TableCard from '../TableCard';
+
 class UserTable extends Component {
   constructor(props) {
     super(props);
-
-    // for toggles states
-    this.state = {};
-    this.refresh = this.refresh.bind(this);
   }
 
-  refresh() {
+  refresh(pagination) {
     const {dispatch} = this.props;
-    dispatch(rest.actions.users());
-  }
 
-  componentDidMount() {
-    this.refresh();
+    dispatch(rest.actions.users({
+      offset: pagination.page * pagination.pageEntries,
+      limit: pagination.pageEntries
+    }));
   }
 
   openUser(userId) {
@@ -54,69 +53,43 @@ class UserTable extends Component {
   }
 
   render() {
-    const { users } = this.props;
-
     const palette = this.context.muiTheme.palette;
     const spacing = this.context.muiTheme.spacing;
 
-    if (users.loading) {
-      return(
-        <div style={{textAlign: 'center'}}>
-          <CircularProgress/>
-        </div>
-      );
-    } else if (!users.sync || !users.data || users.data.error) {
-      return(
-        <Error refresh={this.refresh} model={users}/>
-      );
-    } else {
-      return(
-        <Table multiSelectable={true}>
-          <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-            <TableRow>
-              <TableHeaderColumn style={{ width: '20px' }}></TableHeaderColumn>
-              <TableHeaderColumn>Name</TableHeaderColumn>
-
-              {(() => {if (this.props.containerWidth >= 640) {
-                return(
-                  <TableHeaderColumn>Assignee</TableHeaderColumn>
-                );
-              } else {
-                return null;
-              }})()}
-
-              <TableHeaderColumn style={{ width: '20px' }}></TableHeaderColumn>
-            </TableRow>
-          </TableHeader>
-          <TableBody showRowHover={true} displayRowCheckbox={false}>
-            {users.data.map((row, index) => (
-              <TableRow key={index} onTouchTap={(e) => {
-                this.openUser(row.userId);
-              }}>
-                <TableRowColumn style={{ width: '20px' }}>{<Account style={{ verticalAlign: 'middle' }}/>}</TableRowColumn>
-                <TableRowColumn>{row.name}</TableRowColumn>
-
-                {(() => {if (this.props.containerWidth >= 640) {
-                  return (
-                    <TableRowColumn style={row.assignee ? null : {color: palette.accent3Color}}>{row.assignee || '(nobody)'}</TableRowColumn>
-                  );
-                } else {
-                  return null;
-                }})()}
-
-                <TableRowColumn style={{ width: '20px' }}>
-                  <FlatButton onTouchTap={(e) => {
-                      this.openUser(row.userId);
-                  }} style={{
-                    minWidth: '40px'
-                  }} icon={<ArrowForward/>} />
-                </TableRowColumn>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      );
-    }
+    return <TableCard
+      model={this.props.users}
+      header={[
+        {
+          component: <Account style={{ verticalAlign: 'middle' }}/>,
+          style: { width: '20px' }
+        },
+        {
+          field: 'name',
+          columnTitle: 'Name'
+        },
+        {
+          field: 'assignee',
+          columnTitle: 'Assignee',
+          defaultValue: '(nobody)',
+          defaultValueStyle: { color: palette.accent3Color },
+          maxShowWidth: 640
+        },
+        {
+          maxShowWidth: 640,
+          component: (
+            <FlatButton onTouchTap={(e) => {
+              console.log(e);
+              //this.openUser.bind(this);
+            }} style={{
+              minWidth: '40px'
+            }} icon={<ArrowForward/>} />
+          ),
+          style: { width: '20px' }
+        }
+      ]}
+      onClickRow={this.openUser.bind(this)}
+      refresh={this.refresh.bind(this)}
+    />;
   }
 }
 
@@ -127,7 +100,11 @@ UserTable.contextTypes = {
 UserTable.propTypes = {
   users: PropTypes.shape({
     loading: PropTypes.bool.isRequired,
-    data: PropTypes.array.isRequired
+    data: PropTypes.shape({
+      entries: PropTypes.array.isRequired,
+      totalEntries: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired
+    }).isRequired
   }).isRequired,
   dispatch: PropTypes.func.isRequired
 };

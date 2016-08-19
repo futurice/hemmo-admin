@@ -55,7 +55,7 @@ class UserDetail extends Component {
       assigneeId: value
     });
 
-    this.props.dispatch(rest.actions.userDetail.put({userId: this.props.userId}, {
+    this.props.dispatch(rest.actions.userDetail.put({id: this.props.userId}, {
       body: JSON.stringify({
         assigneeId: value
       })
@@ -68,7 +68,7 @@ class UserDetail extends Component {
 
   refresh() {
     const {dispatch} = this.props;
-    dispatch(rest.actions.userDetail({userId: this.props.userId}));
+    dispatch(rest.actions.userDetail({id: this.props.userId}));
     dispatch(rest.actions.employees());
   }
 
