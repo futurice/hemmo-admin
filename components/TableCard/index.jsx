@@ -29,17 +29,6 @@ class TableCard extends Component {
     super(props);
   }
 
-  openUser(userId) {
-    const path = '/users/' + userId;
-    this.props.dispatch(push(path));
-  }
-
-  handleToggle = (event, toggled) => {
-    this.setState({
-      [event.target.name]: toggled
-    });
-  }
-
   render() {
     const { model } = this.props;
 

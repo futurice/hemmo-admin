@@ -46,12 +46,6 @@ class UserTable extends Component {
     this.props.dispatch(push(path));
   }
 
-  handleToggle = (event, toggled) => {
-    this.setState({
-      [event.target.name]: toggled
-    });
-  }
-
   render() {
     const palette = this.context.muiTheme.palette;
     const spacing = this.context.muiTheme.spacing;

@@ -126,7 +126,7 @@ export default reduxApi({
     }
   },
   userDetail: {
-    url: `/users/:userId`,
+    url: `/users/:id`,
     transformer(data, prevData) {
       if (data) {
         return {...prevData, ...data};
