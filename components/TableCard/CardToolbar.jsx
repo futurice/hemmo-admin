@@ -13,6 +13,8 @@ import MiniArrowForward from 'material-ui/svg-icons/hardware/keyboard-arrow-righ
 
 import { Component, PropTypes } from 'react';
 
+import Dimensions from '../dimensions';
+
 class CardToolbar extends Component {
   constructor(props) {
     super(props);
@@ -58,28 +60,57 @@ class CardToolbar extends Component {
     const page = this.state.page;
     const pages = Math.ceil(totalEntries / pageEntries);
 
+    let leftToolbarItems = [];
+
+    if (this.props.containerWidth >= 800) {
+      leftToolbarItems.push(
+        <ToolbarTitle key='name' text={ this.props.modelName }/>
+      );
+    }
+
+    let rightToolbarItems = [];
+
+    if (this.props.containerWidth >= 640) {
+      rightToolbarItems.push(
+        <ToolbarTitle key='rowsText' text="Rows per page:" />
+      );
+    }
+
+    if (this.props.containerWidth >= 480) {
+      rightToolbarItems.push(
+        <DropDownMenu key='dropdown' iconStyle={{ fill: palette.textColor }} value={this.state.pageEntries} onChange={this.setPageEntries}>
+          <MenuItem value={5} primaryText="5"/>
+          <MenuItem value={20} primaryText="20"/>
+          <MenuItem value={50} primaryText="50"/>
+          <MenuItem value={100} primaryText="100"/>
+        </DropDownMenu>
+      );
+    }
+
+    if (this.props.containerWidth >= 540) {
+      rightToolbarItems.push(
+        <ToolbarTitle key='currentPage' text={`${1 + pageEntries * page}-${pageEntries + pageEntries * page} of ${totalEntries}`}/>
+      );
+    }
+
+    rightToolbarItems.push(
+      <FlatButton key='back' disabled={this.state.page <= 0} onTouchTap={(e) => {
+          this.changePage(-1);
+      }} icon={<MiniArrowBack/>} />
+    );
+    rightToolbarItems.push(
+      <FlatButton key='forward' disabled={this.state.page >= pages - 1} onTouchTap={(e) => {
+          this.changePage(1);
+      }} icon={<MiniArrowForward/>} />
+    );
+
     return(
       <Toolbar>
         <ToolbarGroup>
-          <ToolbarTitle text={ this.props.modelName }/>
+          { leftToolbarItems }
         </ToolbarGroup>
         <ToolbarGroup lastChild={true}>
-          <ToolbarTitle text="Rows per page:" />
-          <DropDownMenu iconStyle={{ fill: palette.textColor }} value={this.state.pageEntries} onChange={this.setPageEntries}>
-            <MenuItem value={5} primaryText="5"/>
-            <MenuItem value={20} primaryText="20"/>
-            <MenuItem value={50} primaryText="50"/>
-            <MenuItem value={100} primaryText="100"/>
-          </DropDownMenu>
-
-          <ToolbarTitle text={`${1 + pageEntries * page}-${pageEntries + pageEntries * page} of ${totalEntries}`}/>
-
-          <FlatButton disabled={this.state.page <= 0} onTouchTap={(e) => {
-              this.changePage(-1);
-          }} icon={<MiniArrowBack/>} />
-          <FlatButton disabled={this.state.page >= pages - 1} onTouchTap={(e) => {
-              this.changePage(1);
-          }} icon={<MiniArrowForward/>} />
+          { rightToolbarItems }
         </ToolbarGroup>
       </Toolbar>
     );
@@ -96,4 +127,4 @@ CardToolbar.propTypes = {
   modelName: PropTypes.string.isRequired
 };
 
-export default CardToolbar;
+export default Dimensions()(CardToolbar);
