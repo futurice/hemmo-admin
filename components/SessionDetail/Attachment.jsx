@@ -1,14 +1,22 @@
+/*
+ * React & Redux
+ */
 import { Component, PropTypes } from 'react';
-
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { browserHistory } from 'react-router';
 import config from 'config';
-import FileDownload from 'material-ui/svg-icons/file/file-download';
+
+/*
+ * MaterialUI
+ */
 import FlatButton from 'material-ui/FlatButton';
 import CircularProgress from 'material-ui/CircularProgress';
+import Dialog from 'material-ui/Dialog';
 
-class Attachment extends Component {
+// Icons
+import FileDownload from 'material-ui/svg-icons/file/file-download';
+import Close from 'material-ui/svg-icons/navigation/close';
+
+class DialogContents extends Component {
   constructor() {
     super();
 
@@ -22,7 +30,6 @@ class Attachment extends Component {
     let url = `${config.API_ROOT}/attachment/${this.props.contentId}`;
 
     let request = new XMLHttpRequest();
-    let audio = this.refs.audio;
 
     request.open('GET', url);
     request.setRequestHeader('Authorization', `Bearer ${this.props.token}`);
@@ -53,18 +60,47 @@ class Attachment extends Component {
         <CircularProgress />
       </div>;
     } else {
-      return(
+      return (
         <div>
-          <audio ref={'audio'} src={this.state.blobUrl} controls autoPlay style={{
+          <audio src={this.state.blobUrl} controls autoPlay style={{
             width: '100%',
             paddingBottom: '24px'
           }} />
 
           <FlatButton download={'attachment.mp4'} href={this.state.blobUrl}
-            label="Download attachment" icon={<FileDownload/>} primary={false}/>
+            label='Download attachment' icon={<FileDownload/>} primary={false}/>
         </div>
       );
     }
+
+  }
+}
+
+class Attachment extends Component {
+  render() {
+    const actions = [
+      <FlatButton
+        label='Close'
+        primary={false}
+        onTouchTap={this.props.handleClose}
+        icon={<Close/>}
+      />
+    ];
+
+    return (
+      <Dialog
+        title='Attachment'
+        modal={ false }
+        open={ this.props.open }
+        onRequestClose={ this.props.handleClose }
+        actions={ actions } >
+
+        <DialogContents
+          contentId={ this.props.contentId }
+          token={ this.props.token } />
+
+      </Dialog>
+    );
   }
 }
 
