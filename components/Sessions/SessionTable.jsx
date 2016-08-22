@@ -62,6 +62,7 @@ class SessionTable extends Component {
     return(
       <TableCard
         model={ this.props.extra ? this.props.sessionsExtra : this.props.sessions }
+        emptyMsg={ this.props.noFeedbackMsg }
         header={[
           {
             value: row => row.reviewed ?

@@ -55,6 +55,12 @@ class TableCard extends Component {
       body = (
         <Error refresh={this.props.refresh} model={model}/>
       );
+    } else if (!this.props.model.data.entries.length && this.props.emptyMsg) {
+      return (
+        <div>
+          { this.props.emptyMsg }
+        </div>
+      );
     } else {
       body = (
         <ModelTable
