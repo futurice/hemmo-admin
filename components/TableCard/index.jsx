@@ -53,7 +53,7 @@ class TableCard extends Component {
       );
     } else if (!model.sync || !model.data || model.data.error) {
       body = (
-        <Error refresh={this.refresh} model={model}/>
+        <Error refresh={this.props.refresh} model={model}/>
       );
     } else {
       body = (

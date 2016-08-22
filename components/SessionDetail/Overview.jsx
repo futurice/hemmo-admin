@@ -20,6 +20,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Done from 'material-ui/svg-icons/action/done';
 import ThumbUp from 'material-ui/svg-icons/social/sentiment-satisfied';
 import ThumbDown from 'material-ui/svg-icons/social/sentiment-dissatisfied';
+import Neutral from 'material-ui/svg-icons/social/sentiment-neutral';
 import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
 import Cancel from 'material-ui/svg-icons/navigation/cancel';
 import Announcement from 'material-ui/svg-icons/alert/error-outline';

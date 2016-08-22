@@ -13,6 +13,7 @@ import FlatButton from 'material-ui/FlatButton';
 // Icons
 import ThumbUp from 'material-ui/svg-icons/social/sentiment-satisfied';
 import ThumbDown from 'material-ui/svg-icons/social/sentiment-dissatisfied';
+import Neutral from 'material-ui/svg-icons/social/sentiment-neutral';
 import NA from 'material-ui/svg-icons/av/not-interested';
 import AttachmentIcon from 'material-ui/svg-icons/file/attachment';
 

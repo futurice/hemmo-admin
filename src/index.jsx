@@ -28,8 +28,8 @@ import Home from '../components/Home';
 import Sessions from '../components/Sessions/SessionTable';
 import Users from '../components/Users/UserTable';
 import Preferences from '../components/Preferences';
-import SessionDetail from '../components/SessionDetail/SessionDetail';
-import UserDetail from '../components/UserDetail/UserDetail';
+import SessionDetail from '../components/SessionDetail';
+import UserDetail from '../components/UserDetail';
 
 import configureStore from '../store/configureStore';
 

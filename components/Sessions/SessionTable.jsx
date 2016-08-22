@@ -124,4 +124,4 @@ function select(state) {
   };
 }
 
-export default connect(select)(Dimensions()(SessionTable));
+export default connect(select)(SessionTable);
