@@ -34,8 +34,21 @@ class SessionTable extends Component {
     super(props);
   }
 
-  refresh(pagination) {
+  refresh(pagination = {
+      page: 0,
+      pageEntries: 20
+    }) {
     const {dispatch} = this.props;
+
+    if (this.props.location && this.props.location.pathname === '/sessions') {
+      this.props.dispatch(push({
+        pathname: this.props.location.pathname,
+        query: {
+          page: pagination.page,
+          pageEntries: pagination.pageEntries
+        }
+      }));
+    }
 
     let params = {
       ...this.props.filter,
@@ -59,8 +72,13 @@ class SessionTable extends Component {
     const palette = this.context.muiTheme.palette;
     const spacing = this.context.muiTheme.spacing;
 
+    const initialPage = this.props.location ? this.props.location.query.page : 0;
+    const pageEntries = this.props.location ? this.props.location.query.pageEntries : 20;
+
     return(
       <TableCard
+        initialPage={ initialPage }
+        pageEntries={ pageEntries }
         model={ this.props.extra ? this.props.sessionsExtra : this.props.sessions }
         emptyMsg={ this.props.noFeedbackMsg }
         header={[
@@ -118,8 +136,9 @@ SessionTable.propTypes = {
   dispatch: PropTypes.func.isRequired
 };
 
-function select(state) {
+function select(state, ownParams) {
   return {
+    location: ownParams.location,
     sessions: state.sessions,
     sessionsExtra: state.sessionsExtra
   };

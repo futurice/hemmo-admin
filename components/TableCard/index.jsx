@@ -76,6 +76,8 @@ class TableCard extends Component {
         refresh={this.props.refresh}
         totalEntries={this.props.model.data.totalEntries}
         modelName={this.props.model.data.name}
+        initialPage={ parseInt(this.props.initialPage) }
+        pageEntries={ parseInt(this.props.pageEntries) }
       />
     );
 

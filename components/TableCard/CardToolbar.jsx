@@ -36,7 +36,7 @@ class CardToolbar extends Component {
 
   changePage(offset) {
     this.setState({
-      page: this.state.page + offset
+      page: parseInt(this.state.page) + offset
     });
   }
 
@@ -48,7 +48,13 @@ class CardToolbar extends Component {
   }
 
   componentDidMount() {
-    this.props.refresh(this.state);
+    let pagination = {
+      page: this.props.initialPage || 0,
+      pageEntries: this.props.pageEntries || 20
+    };
+
+    this.setState(pagination);
+    this.props.refresh(pagination);
   }
 
   render() {
@@ -87,17 +93,18 @@ class CardToolbar extends Component {
       );
     }
 
-    if (this.props.containerWidth >= 540) {
-      rightToolbarItems.push(
-        <ToolbarTitle key='currentPage' text={`${1 + pageEntries * page}-${pageEntries + pageEntries * page} of ${totalEntries}`}/>
-      );
-    }
-
     rightToolbarItems.push(
       <FlatButton key='back' disabled={this.state.page <= 0} onTouchTap={(e) => {
           this.changePage(-1);
       }} icon={<MiniArrowBack/>} />
     );
+
+    if (this.props.containerWidth >= 540) {
+      rightToolbarItems.push(
+        <ToolbarTitle key='currentPageNum' text={`${page + 1} / ${pages}`}/>
+      );
+    }
+
     rightToolbarItems.push(
       <FlatButton key='forward' disabled={this.state.page >= pages - 1} onTouchTap={(e) => {
           this.changePage(1);
