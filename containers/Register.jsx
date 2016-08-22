@@ -164,7 +164,7 @@ class Register extends Component {
               margin: this.context.muiTheme.spacing.desktopGutter
             }}>
               <RaisedButton disabled={
-                auth.loading || console.log(this.state.email.length) || !this.state.email.length || !this.state.password.length
+                auth.loading || !this.state.email.length || !this.state.password.length
               } label="Register" fullWidth={true} primary={true} onTouchTap={this.doRegister.bind(this)} />
             </CardActions>
             <CardActions style={{
