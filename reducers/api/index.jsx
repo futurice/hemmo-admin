@@ -105,6 +105,12 @@ export default reduxApi({
       }
     }
   },
+  employeePassword: {
+    url: `/employees/password`,
+    options: {
+      method: 'post'
+    }
+  },
   users: {
     url: `/users`,
     transformer(data, prevData = {
