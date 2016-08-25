@@ -51,7 +51,7 @@ class TableCard extends Component {
           <CircularProgress/>
         </div>
       );
-    } else if (!model.sync || !model.data || model.data.error) {
+    } else if (!model.sync || !model.data || !model.data.entries || model.data.error) {
       body = (
         <Error refresh={this.props.refresh} model={model}/>
       );

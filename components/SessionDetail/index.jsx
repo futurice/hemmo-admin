@@ -29,6 +29,7 @@ class SessionDetail extends Component {
     };
 
     this.openAttachment = this.openAttachment.bind(this);
+    this.refresh = this.refresh.bind(this);
   }
 
   handleClose = () => {

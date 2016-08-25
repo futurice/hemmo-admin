@@ -4,16 +4,19 @@ import adapterFetch from 'redux-api/lib/adapters/fetch';
 import { logOut } from '../../actions/ui';
 import { Map } from 'immutable';
 
+import { replace } from 'react-router-redux'
+
 import config from 'config';
 
 export default reduxApi({
   auth: {
     url: `/employees/authenticate`,
+    reducerName: 'auth',
     transformer(data) {
       let authSession = JSON.parse(localStorage.getItem('auth'));
 
       if (data && data.error) {
-        console.log('got error from backend');
+        console.log('Got error from backend: ' + JSON.stringify(data));
         return { error: data.error, message: data.message };
       } else if (data) {
         console.log('got new token from backend');
@@ -62,6 +65,47 @@ export default reduxApi({
       }
       return state;
     }
+  },
+  renewAuth: {
+    url: `/employees/renewauth`,
+    reducerName: 'auth',
+    options: {
+      method: 'post'
+    },
+    transformer(data) {
+      if (data && data.error) {
+        console.log('Got error from backend: ' + JSON.stringify(data));
+        return { error: data.error, message: data.message };
+      } else if (data) {
+        const { token, employeeId, expiresIn } = data;
+
+        let expiration = new Date();
+        let expirationDelta = 1000; // account for possible clock drift, latency...
+        expiration.setMilliseconds(expiration.getMilliseconds() + expiresIn - expirationDelta);
+
+        document.cookie = `token=${token}`;
+
+        localStorage.setItem('auth', JSON.stringify({
+          token,
+          employeeId,
+          expiration
+        }));
+
+        return { token, employeeId, expiration };
+      } else {
+        return {};
+      }
+    },
+    postfetch: [
+      ({data, actions, dispatch, getState, request}) => {
+        if (!data.token) {
+          console.log('Error while renewing auth token, redirecting to login...');
+          console.log(data);
+          let redirect = '/login';
+          dispatch(replace(redirect));
+        }
+      }
+    ]
   },
   register: {
     url: `/employees/register`,
@@ -121,8 +165,9 @@ export default reduxApi({
       if (data) {
         return {
           ...prevData,
-          entries: data.users,
-          totalEntries: data.count
+          ...data,
+          entries: data.users || [],
+          totalEntries: data.count || 0
         };
       } else {
         return {
@@ -165,8 +210,9 @@ export default reduxApi({
       if (data) {
         return {
           ...prevData,
-          entries: data.sessions,
-          totalEntries: data.count
+          ...data,
+          entries: data.sessions || [],
+          totalEntries: data.count || 0
         };
       } else {
         return {
@@ -185,8 +231,9 @@ export default reduxApi({
       if (data) {
         return {
           ...prevData,
-          entries: data.sessions,
-          totalEntries: data.count
+          ...data,
+          entries: data.sessions || [],
+          totalEntries: data.count || 0
         };
       } else {
         return {
