@@ -96,8 +96,12 @@ class Login extends Component {
               style={{
                 backgroundColor: this.context.muiTheme.palette.primary1Color
               }}
-              titleColor={this.context.muiTheme.palette.alternateTextColor}
-              subtitleColor={this.context.muiTheme.palette.accent2Color}
+              titleStyle={{
+                color: this.context.muiTheme.palette.alternateTextColor
+              }}
+              subtitleStyle={{
+                color: this.context.muiTheme.palette.accent2Color
+              }}
             />
             <div style={{textAlign: 'center', marginTop: this.context.muiTheme.spacing.desktopGutter}}>
               <Account style={{
