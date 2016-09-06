@@ -1,5 +1,11 @@
 # hemmo-admin
 
+This is the admin frontend for Pelastakaa Lapset ry's Hemmo mobile app. It provides an interface for reading feedback sent by children, and various other administrative tasks.
+
+The mobile app source will be released at a later date.
+
+Backend app: https://github.com/futurice/hemmo-backend
+
 ## Package installation
 ```bash
 $ npm install
