@@ -28,6 +28,7 @@
   },
   "homepage": "",
   "devDependencies": {
+    "spa-express-static-server": "FruitieX/spa-express-static-server",
     "webpack-dev-server": "^1.14.1",
     "webpack-hot-middleware": "^2.10.0"
   },
@@ -69,7 +70,6 @@
     "redux-auth-wrapper": "^0.6.0",
     "redux-loop": "^2.2.2",
     "redux-thunk": "^2.1.0",
-    "spa-express-static-server": "FruitieX/spa-express-static-server",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.0"
   }
