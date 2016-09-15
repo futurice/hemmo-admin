@@ -1,3 +1,3 @@
 export default {
-  API_ROOT: 'http://192.168.3.239:3001'
+  API_ROOT: window.location.protocol + '//' + window.location.hostname + ':3001'
 };
