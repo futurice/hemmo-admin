@@ -150,6 +150,7 @@ class Login extends Component {
             <CardText style={{
               textAlign: 'center'
             }}>
+              {!auth.error && auth.data && auth.data.message ? String('Note: ' + auth.data.message) : ''}
               {auth.error && auth.error.message ? String('Error: ' + auth.error.message) : ''}
             </CardText>
             <CardActions style={{
