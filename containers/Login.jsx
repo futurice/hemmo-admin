@@ -42,7 +42,7 @@ class Login extends Component {
   }
 
   shouldComponentUpdate(props) {
-    if (props.auth.data.token) {
+    if (props.auth.data && props.auth.data.token) {
       this.authSuccess();
       return false;
     }

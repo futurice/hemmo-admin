@@ -36,7 +36,7 @@ class Register extends Component {
   }
 
   shouldComponentUpdate(props) {
-    if (props.auth.data.token) {
+    if (props.auth.data && props.auth.data.token) {
       props.login.data.token = props.auth.data.token;
       this.authSuccess();
       return false;
@@ -158,7 +158,8 @@ class Register extends Component {
                   }
                 }}
               />
-              {auth && auth.data.message ? String(auth.data.message) : ''}
+              {!auth.error && auth.data && auth.data.message ? String('Note: ' + auth.data.message) : ''}
+              {auth.error && auth.error.message ? String('Error: ' + auth.error.message) : ''}
             </CardText>
             <CardActions style={{
               margin: this.context.muiTheme.spacing.desktopGutter,

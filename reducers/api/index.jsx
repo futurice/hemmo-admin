@@ -18,7 +18,8 @@ export default reduxApi({
       if (data && data.error) {
         console.log('Got error from backend: ' + JSON.stringify(data));
         return { error: data.error, message: data.message };
-      } else if (data) {
+      } else if (data && data.token) {
+        // got new token
         console.log('got new token from backend');
 
         const { token, employeeId, expiresIn } = data;
@@ -50,7 +51,7 @@ export default reduxApi({
       } else {
         console.log('no auth token found');
 
-        return {};
+        return data;
       }
     },
     options: {
@@ -76,8 +77,10 @@ export default reduxApi({
       if (data && data.error) {
         console.log('Got error from backend: ' + JSON.stringify(data));
         return { error: data.error, message: data.message };
-      } else if (data) {
+      } else if (data && data.token) {
+        // got new token
         const { token, employeeId, expiresIn } = data;
+        console.log('refreshed new token from backend');
 
         let expiration = new Date();
         let expirationDelta = 1000; // account for possible clock drift, latency...
@@ -93,7 +96,7 @@ export default reduxApi({
 
         return { token, employeeId, expiration };
       } else {
-        return {};
+        return data;
       }
     },
     postfetch: [
@@ -113,7 +116,7 @@ export default reduxApi({
       if (data && data.error) {
         console.log('got error from backend');
         return { error: data.error, message: data.message };
-      } else if (data) {
+      } else if (data && data.token) {
         console.log('got new token from backend');
 
         const { token, employeeId, expiresIn } = data;
@@ -132,7 +135,7 @@ export default reduxApi({
       } else {
         console.log('no auth token found');
 
-        return {};
+        return data;
       }
     },
     options: {
@@ -151,6 +154,12 @@ export default reduxApi({
   },
   employeePassword: {
     url: `/employees/password`,
+    options: {
+      method: 'post'
+    }
+  },
+  employeeVerify: {
+    url: `/employees/verify/:employeeId`,
     options: {
       method: 'post'
     }
@@ -255,7 +264,12 @@ export default reduxApi({
   }
 })
 .use('options', (url, params, getState) => {
-  const token = getState().auth.data.token;
+  let token = null;
+
+  const authState = getState().auth;
+  if (authState.data) {
+    token = authState.data.token;
+  }
 
   const headers = {
     'Accept': 'application/json',

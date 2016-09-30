@@ -11,10 +11,12 @@ import TextField from 'material-ui/TextField';
 
 import Lock from 'material-ui/svg-icons/action/lock-outline';
 import Warning from 'material-ui/svg-icons/alert/warning';
+import Check from 'material-ui/svg-icons/navigation/check';
 
 // Colors
 import {
-  red500
+  red500,
+  lightGreen300
 } from 'material-ui/styles/colors';
 
 class Preferences extends Component {
@@ -29,6 +31,19 @@ class Preferences extends Component {
     }
 
     this.setEmployeeId = this.setEmployeeId.bind(this);
+  }
+
+  verifyEmployee(employeeId) {
+    const {dispatch} = this.props;
+
+    dispatch(rest.actions.employeeVerify({
+      employeeId
+    }, err => {
+      this.setState({
+        error: err || this.props.error.data.message || 'Successfully verified employee. They may now log in.'
+      });
+      dispatch(rest.actions.employees());
+    }));
   }
 
   changePassword(password, employeeId) {
@@ -67,13 +82,25 @@ class Preferences extends Component {
     const palette = this.context.muiTheme.palette;
     const spacing = this.context.muiTheme.spacing;
 
+    let selectedEmployeeName = '(none)';
+    let selectedEmployee = null;
+
+    if (this.props.employees.data) {
+      selectedEmployee = this.props.employees.data
+        .find(employee => employee.employeeId === this.state.employeeId);
+    }
+
+    if (selectedEmployee) {
+      selectedEmployeeName = selectedEmployee.name;
+    }
+
     return(
       <Card style={{
         margin: spacing.desktopGutter,
         marginBottom: 0
       }}>
         <CardHeader
-          title={'Reset employee password'}
+          title={'Employee management'}
           avatar={<Warning style={{color:red500}}/>}
           />
 
@@ -81,13 +108,28 @@ class Preferences extends Component {
           <CardText>
             <SelectField onChange={this.setEmployeeId} value={this.state.employeeId}>
               {this.props.employees.data.map((row, index) => (
-                <MenuItem key={index} value={row.employeeId} primaryText={row.name} />
+                <MenuItem leftIcon={row.verified ? <Check/> : <Warning/> } key={index} value={row.employeeId} primaryText={row.name} />
               ))}
             </SelectField>
           </CardText>
         </CardTitle>
 
-        <CardTitle subtitle={'New password:'}>
+        <CardTitle subtitle={`Verify ${selectedEmployeeName}`}>
+          <CardText>
+            <RaisedButton backgroundColor={lightGreen300} label={
+              selectedEmployee && selectedEmployee.verified ? 'Employee already verified' : `Verify ${selectedEmployeeName}, allowing them to log in`
+            }
+              disabled={
+                selectedEmployee && selectedEmployee.verified
+              }
+              onTouchTap={() => {
+                this.verifyEmployee(this.state.employeeId);
+              }}
+              icon={<Check/>} />
+          </CardText>
+        </CardTitle>
+
+        <CardTitle subtitle={`Reset ${selectedEmployeeName}'s password:`}>
           <CardText>
             <TextField
               floatingLabelText='Password'
@@ -99,7 +141,7 @@ class Preferences extends Component {
               type='password' />
           </CardText>
           <CardText>
-            <RaisedButton backgroundColor={red500} label="Change password"
+            <RaisedButton backgroundColor={red500} label={`Change ${selectedEmployeeName}'s password`}
               disabled={
                 this.state.password1 !== this.state.password2 || this.state.password1 === ''
               }
@@ -109,7 +151,7 @@ class Preferences extends Component {
               icon={<Lock/>} />
           </CardText>
           <CardText>
-            { this.state.error }
+            { String(this.state.error) }
           </CardText>
         </CardTitle>
       </Card>
