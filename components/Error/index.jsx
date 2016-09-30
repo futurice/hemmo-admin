@@ -16,7 +16,7 @@ export default class Error extends Component {
     if (model.error) {
       // redux-api error
 
-      rows.push(model.error);
+      rows.push(String(model.error));
     } else if (model.data && model.data.error) {
       // server returned error
 

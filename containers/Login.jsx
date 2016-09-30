@@ -150,7 +150,7 @@ class Login extends Component {
             <CardText style={{
               textAlign: 'center'
             }}>
-              {auth && auth.data.message ? String(auth.data.message) : ''}
+              {auth.error && auth.error.message ? String('Error: ' + auth.error.message) : ''}
             </CardText>
             <CardActions style={{
               margin: this.context.muiTheme.spacing.desktopGutter,
