@@ -164,6 +164,17 @@ export default reduxApi({
       method: 'post'
     }
   },
+  employeeDetail: {
+    url: `/employees/:id`,
+    transformer(data, prevData) {
+      if (data) {
+        return {...prevData, ...data};
+      } else {
+        return {...prevData};
+      }
+    },
+    crud: true
+  },
   users: {
     url: `/users`,
     transformer(data, prevData = {

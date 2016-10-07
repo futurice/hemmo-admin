@@ -19,6 +19,9 @@ import {
   lightGreen300
 } from 'material-ui/styles/colors';
 
+// Components
+import DeleteDialog from '../Shared/DeleteDialog';
+
 class Preferences extends Component {
   constructor(props) {
     super(props);
@@ -27,10 +30,25 @@ class Preferences extends Component {
       password1: '',
       password2: '',
       employeeId: props.employeeId,
-      error: ''
+      error: '',
+      dialogOpen: false
     }
 
     this.setEmployeeId = this.setEmployeeId.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+  }
+
+  openDeleteDialog() {
+    this.setState({dialogOpen: true});
+  }
+
+  handleDelete() {
+    const {dispatch} = this.props;
+    dispatch(rest.actions.employeeDetail.delete({id: this.state.employeeId}, () => {
+      this.setState({employeeId: this.props.employeeId});
+      dispatch(rest.actions.employees());
+    }));
+    this.setState({dialogOpen: false});
   }
 
   verifyEmployee(employeeId) {
@@ -95,66 +113,85 @@ class Preferences extends Component {
     }
 
     return(
-      <Card style={{
-        margin: spacing.desktopGutter,
-        marginBottom: 0
-      }}>
-        <CardHeader
-          title={'Employee management'}
-          avatar={<Warning style={{color:red300}}/>}
-          />
+      <div>
+        <DeleteDialog
+          handleDelete={this.handleDelete}
+          handleClose={() => {
+            this.setState({
+              dialogOpen: false
+            });
+          }}
+          open={this.state.dialogOpen}
+          message='Deleting this employee will remove them from the system forever! Only proceed if you are absolutely sure.'/>
+        <Card style={{
+          margin: spacing.desktopGutter,
+          marginBottom: 0
+        }}>
+          <CardHeader
+            title={'Employee management'}
+            avatar={<Warning style={{color:red300}}/>}
+            />
 
-        <CardTitle subtitle={'Employee:'}>
-          <CardText>
-            <SelectField onChange={this.setEmployeeId} value={this.state.employeeId}>
-              {this.props.employees.data.map((row, index) => (
-                <MenuItem leftIcon={row.verified ? <Check/> : <Warning/> } key={index} value={row.employeeId} primaryText={row.name} />
-              ))}
-            </SelectField>
-          </CardText>
-        </CardTitle>
+          <CardTitle subtitle={'Employee:'}>
+            <CardText>
+              <SelectField onChange={this.setEmployeeId} value={this.state.employeeId}>
+                {this.props.employees.data.map((row, index) => (
+                  <MenuItem leftIcon={row.verified ? <Check/> : <Warning/> } key={index} value={row.employeeId} primaryText={row.name} />
+                ))}
+              </SelectField>
+            </CardText>
+          </CardTitle>
 
-        <CardTitle subtitle={`Verify ${selectedEmployeeName}`}>
-          <CardText>
-            <RaisedButton backgroundColor={lightGreen300} label={
-              selectedEmployee && selectedEmployee.verified ? 'Employee already verified' : `Verify ${selectedEmployeeName}, allowing them to log in`
-            }
-              disabled={
-                selectedEmployee && selectedEmployee.verified
+          <CardTitle subtitle={`Verify or delete ${selectedEmployeeName}`}>
+            <CardText>
+              <RaisedButton backgroundColor={lightGreen300} label={
+                selectedEmployee && selectedEmployee.verified ? 'Employee already verified' : `Verify ${selectedEmployeeName}, allowing them to log in`
               }
-              onTouchTap={() => {
-                this.verifyEmployee(this.state.employeeId);
-              }}
-              icon={<Check/>} />
-          </CardText>
-        </CardTitle>
+                disabled={
+                  selectedEmployee && selectedEmployee.verified
+                }
+                onTouchTap={() => {
+                  this.verifyEmployee(this.state.employeeId);
+                }}
+                icon={<Check/>} />
+            </CardText>
+            <CardText>
+              <RaisedButton label={`Delete employee ${selectedEmployeeName}`}
+                          backgroundColor={red300}
+                          onTouchTap={() => {
+                            this.openDeleteDialog()
+                          }}
+                          icon={<Warning/>} />
+            </CardText>
+          </CardTitle>
 
-        <CardTitle subtitle={`Reset ${selectedEmployeeName}'s password:`}>
-          <CardText>
-            <TextField
-              floatingLabelText='Password'
-              onChange={(event) => this.handleChange(event, 'password1')}
-              type='password' /> <br/>
-            <TextField
-              floatingLabelText='Re-enter password'
-              onChange={(event) => this.handleChange(event, 'password2')}
-              type='password' />
-          </CardText>
-          <CardText>
-            <RaisedButton backgroundColor={red300} label={`Change ${selectedEmployeeName}'s password`}
-              disabled={
-                this.state.password1 !== this.state.password2 || this.state.password1 === ''
-              }
-              onTouchTap={() => {
-                this.changePassword(this.state.password1, this.state.employeeId);
-              }}
-              icon={<Lock/>} />
-          </CardText>
-          <CardText>
-            { String(this.state.error) }
-          </CardText>
-        </CardTitle>
-      </Card>
+          <CardTitle subtitle={`Reset ${selectedEmployeeName}'s password:`}>
+            <CardText>
+              <TextField
+                floatingLabelText='Password'
+                onChange={(event) => this.handleChange(event, 'password1')}
+                type='password' /> <br/>
+              <TextField
+                floatingLabelText='Re-enter password'
+                onChange={(event) => this.handleChange(event, 'password2')}
+                type='password' />
+            </CardText>
+            <CardText>
+              <RaisedButton backgroundColor={red300} label={`Change ${selectedEmployeeName}'s password`}
+                disabled={
+                  this.state.password1 !== this.state.password2 || this.state.password1 === ''
+                }
+                onTouchTap={() => {
+                  this.changePassword(this.state.password1, this.state.employeeId);
+                }}
+                icon={<Lock/>} />
+            </CardText>
+            <CardText>
+              { String(this.state.error) }
+            </CardText>
+          </CardTitle>
+        </Card>
+      </div>
     );
   }
 }
