@@ -22,6 +22,7 @@ import {
   yellow300,
   lightGreen300
 } from 'material-ui/styles/colors';
+import Warning from 'material-ui/svg-icons/alert/warning';
 import ActionDone from 'material-ui/svg-icons/action/done';
 import Refresh from 'material-ui/svg-icons/navigation/refresh';
 import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
@@ -39,15 +40,31 @@ import AttachmentIcon from 'material-ui/svg-icons/file/attachment';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
+// Components
+import DeleteDialog from '../Shared/DeleteDialog';
+
 class UserDetail extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      assigneeId: -1
+      assigneeId: -1,
+      dialogOpen: false
     };
 
     this.setAssignee = this.setAssignee.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+  }
+
+  openDeleteDialog() {
+    this.setState({dialogOpen: true});
+  }
+
+  handleDelete() {
+    const {dispatch} = this.props;
+    dispatch(rest.actions.userDetail.delete({id: this.props.userId}, () => {
+      dispatch(goBack());
+    }));
   }
 
   setAssignee(event, index, value) {
@@ -113,6 +130,15 @@ class UserDetail extends Component {
 
       return(
         <div>
+          <DeleteDialog
+            handleDelete={this.handleDelete}
+            handleClose={() => {
+              this.setState({
+                dialogOpen: false
+              });
+            }}
+            open={this.state.dialogOpen}
+            message='Deleting this user will destroy the user and all their feedback forever! Only proceed if you are absolutely sure.'/>
           <Card style={{
             margin: spacing.desktopGutter
           }}>
@@ -149,6 +175,16 @@ class UserDetail extends Component {
               <SessionTable filter={{
                 user: this.props.userId
               }}/>
+            </CardText>
+
+            <CardTitle subtitle={`Delete ${ user.data.name }:`}/>
+            <CardText>
+              <FlatButton label='Delete user and all their feedback'
+                          onTouchTap={() => {
+                            this.openDeleteDialog()
+                          }}
+                          style={{color: red300}}
+                          icon={<Warning/>} />
             </CardText>
 
             <CardActions>

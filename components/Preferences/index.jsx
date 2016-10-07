@@ -15,7 +15,7 @@ import Check from 'material-ui/svg-icons/navigation/check';
 
 // Colors
 import {
-  red500,
+  red300,
   lightGreen300
 } from 'material-ui/styles/colors';
 
@@ -101,7 +101,7 @@ class Preferences extends Component {
       }}>
         <CardHeader
           title={'Employee management'}
-          avatar={<Warning style={{color:red500}}/>}
+          avatar={<Warning style={{color:red300}}/>}
           />
 
         <CardTitle subtitle={'Employee:'}>
@@ -141,7 +141,7 @@ class Preferences extends Component {
               type='password' />
           </CardText>
           <CardText>
-            <RaisedButton backgroundColor={red500} label={`Change ${selectedEmployeeName}'s password`}
+            <RaisedButton backgroundColor={red300} label={`Change ${selectedEmployeeName}'s password`}
               disabled={
                 this.state.password1 !== this.state.password2 || this.state.password1 === ''
               }

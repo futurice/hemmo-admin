@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
-import {red500} from 'material-ui/styles/colors';
 import Refresh from 'material-ui/svg-icons/navigation/refresh';
 import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 import rest from '../../reducers/api';

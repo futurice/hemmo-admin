@@ -1,7 +1,7 @@
 import { Component, PropTypes } from 'react';
 
 import FlatButton from 'material-ui/FlatButton';
-import {red500} from 'material-ui/styles/colors';
+import {red300} from 'material-ui/styles/colors';
 import Refresh from 'material-ui/svg-icons/navigation/refresh';
 import ErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 import Divider from 'material-ui/Divider';
@@ -37,7 +37,7 @@ export default class Error extends Component {
             title="Error fetching user data"
             subtitle="Something went wrong when trying to fetch the user table"
             style={{
-              backgroundColor: red500
+              backgroundColor: red300
             }}
             avatar={<ErrorOutline/>} />
           <CardTitle title="Additional information" />
