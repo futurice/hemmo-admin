@@ -53,7 +53,8 @@ class SessionTable extends Component {
     let params = {
       ...this.props.filter,
       offset: pagination.page * pagination.pageEntries,
-      limit: pagination.pageEntries
+      limit: pagination.pageEntries,
+      order: 'asc'
     };
 
     if (this.props.extra) {
