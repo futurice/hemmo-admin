@@ -170,6 +170,12 @@ class UserDetail extends Component {
               </CardText>
             </CardTitle>
 
+            <CardTitle subtitle={'Registration date:'}>
+              <CardText>
+                { new Date(user.data.createdAt).toLocaleDateString() }
+              </CardText>
+            </CardTitle>
+
             <CardTitle subtitle={`Feedback by ${ user.data.name }:`}/>
             <CardText>
               <SessionTable filter={{

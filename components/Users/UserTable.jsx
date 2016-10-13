@@ -51,6 +51,11 @@ class UserTable extends Component {
           columnTitle: 'Name'
         },
         {
+          value: row => new Date(row.createdAt).toLocaleDateString(),
+          columnTitle: 'Registration date',
+          maxShowWidth: 440
+        },
+        {
           value: row => row.assignee,
           columnTitle: 'Assignee',
           defaultValue: '(nobody)',
