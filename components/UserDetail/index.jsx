@@ -9,6 +9,8 @@ import {
   TableRowColumn
 } from 'material-ui/Table';
 
+import { FormattedMessage } from 'react-intl';
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import SessionTable from '../Sessions/SessionTable';
@@ -138,13 +140,13 @@ class UserDetail extends Component {
               });
             }}
             open={this.state.dialogOpen}
-            message='Deleting this user will destroy the user and all their feedback forever! Only proceed if you are absolutely sure.'/>
+            message={<FormattedMessage id='deleteUserWarn' />}/>
           <Card style={{
             margin: spacing.desktopGutter
           }}>
             <CardHeader
               title={user.data.name}
-              subtitle={likes !== null ? `${percentAvg}% happy` : `No feedback given`}
+              subtitle={likes !== null ? <FormattedMessage id='percentHappy' values={{percent: percentAvg}} /> : `No feedback given`}
               style={{
                 backgroundColor: likes > 0.5 || likes === null ? lightGreen300 : likes > -0.5 ? yellow300 : red300
               }}
@@ -153,10 +155,10 @@ class UserDetail extends Component {
               } >
             </CardHeader>
 
-            <CardTitle subtitle={'Assignee:'}>
+            <CardTitle subtitle={ <FormattedMessage id='assignee:' /> }>
               <CardText>
                 <SelectField onChange={this.setAssignee} value={user.data.assignee ? user.data.assignee.id : null}>
-                  <MenuItem key={'nobody'} value={null} style={{color: palette.accent3Color}} primaryText={'(nobody)'} />
+                  <MenuItem key={'nobody'} value={null} style={{color: palette.accent3Color}} primaryText={<FormattedMessage id='nobody' />} />
                   {this.props.employees.data.map((row, index) => (
                     <MenuItem key={index} value={row.employeeId} primaryText={row.name} />
                   ))}
@@ -165,27 +167,27 @@ class UserDetail extends Component {
                 <div style={{
                   color: palette.accent3Color
                 }}>
-                  New feedback by <b>{ user.data.name }</b> will be assigned to this employee automatically.
+                  <FormattedMessage id='assigneeExplanation' values={{ child: <b> {user.data.name} </b> }} />
                 </div>
               </CardText>
             </CardTitle>
 
-            <CardTitle subtitle={'Registration date:'}>
+            <CardTitle subtitle={ <FormattedMessage id='registrationDate:' />}>
               <CardText>
                 { new Date(user.data.createdAt).toLocaleDateString() }
               </CardText>
             </CardTitle>
 
-            <CardTitle subtitle={`Feedback by ${ user.data.name }:`}/>
+            <CardTitle subtitle={ <FormattedMessage id='feedbackBy' values={{ child: <b> {user.data.name} </b> }} />} />
             <CardText>
               <SessionTable filter={{
                 user: this.props.userId
               }}/>
             </CardText>
 
-            <CardTitle subtitle={`Delete ${ user.data.name }:`}/>
+            <CardTitle subtitle={ <FormattedMessage id='deleteUser' values={{ child: <b> {user.data.name} </b> }} />} />
             <CardText>
-              <FlatButton label='Delete user and all their feedback'
+              <FlatButton label={ <FormattedMessage id='deleteUserDesc' /> }
                           onTouchTap={() => {
                             this.openDeleteDialog()
                           }}

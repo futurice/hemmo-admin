@@ -2,6 +2,7 @@
  * React & Redux
  */
 import { Component, PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import config from 'config';
 
@@ -42,7 +43,7 @@ class DialogContents extends Component {
 
           this.setState({blobUrl});
         } else {
-          this.setState({error: 'An error occurred while fetching attachment. Please try again later.'});
+          this.setState({error: <FormattedMessage id='attachmentFetchError' />});
         }
       }
     };
@@ -68,7 +69,7 @@ class DialogContents extends Component {
           }} />
 
           <FlatButton download={'attachment.mp4'} href={this.state.blobUrl}
-            label='Download attachment' icon={<FileDownload/>} primary={false}/>
+            label={<FormattedMessage id='downloadAttachment' />} icon={<FileDownload/>} primary={false}/>
         </div>
       );
     }
@@ -80,26 +81,31 @@ class Attachment extends Component {
   render() {
     const actions = [
       <FlatButton
-        label='Close'
         primary={false}
         onTouchTap={this.props.handleClose}
         icon={<Close/>}
-      />
+      >
+        <FormattedMessage id='close' />
+      </FlatButton>
     ];
 
     return (
-      <Dialog
-        title='Attachment'
-        modal={ false }
-        open={ this.props.open }
-        onRequestClose={ this.props.handleClose }
-        actions={ actions } >
+      <FormattedMessage id='attachment'>
+        {title => (
+          <Dialog
+            title={ title }
+            modal={ false }
+            open={ this.props.open }
+            onRequestClose={ this.props.handleClose }
+            actions={ actions } >
 
-        <DialogContents
-          contentId={ this.props.contentId }
-          token={ this.props.token } />
+            <DialogContents
+              contentId={ this.props.contentId }
+              token={ this.props.token } />
 
-      </Dialog>
+          </Dialog>
+        )}
+      </FormattedMessage>
     );
   }
 }

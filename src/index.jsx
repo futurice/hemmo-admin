@@ -1,6 +1,29 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Provider } from 'react-redux';
+
+import {IntlProvider, addLocaleData} from 'react-intl';
+import localeEn from 'react-intl/locale-data/en';
+import localeFi from 'react-intl/locale-data/fi';
+
+import {Provider} from 'react-redux';
+import en from '../translations/en';
+import fi from '../translations/fi';
+
+addLocaleData([...localeEn, ...localeFi]);
+const translations = {
+  en,
+  fi
+}
+
+let storedLocale = localStorage.locale;
+const language = storedLocale ||
+  (navigator.languages && navigator.languages[0]) ||
+  navigator.language ||
+  navigator.userLanguage;
+
+//const language = 'fi';
+const languageWithoutRegionCode = language.toLowerCase().split(/[_-]+/)[0];
+const messages = translations[languageWithoutRegionCode] || translations[language] || translations['en'];
 
 import {
   Router,
@@ -57,21 +80,27 @@ const requireAuthentication = UserAuthWrapper({
 ReactDOM.render(
   <MuiThemeProvider muiTheme={muiTheme}>
     <Provider store={store}>
-      <Router history={history}>
-        <Route path='/login' component={Login}/>
-        <Route path='/register' component={Register}/>
-        <Route path='/' component={requireAuthentication(App)}>
-          <IndexRoute component={Home}/>
-          <Redirect from='/home' to='/' />
-          <Route path='/sessions' component={Sessions}/>
-          <Route path='/sessions/:id' component={SessionDetail}/>
-          <Route path='/users/:id' component={UserDetail}/>
-          <Route path='/users' component={Users}/>
-          <Route path='/preferences' component={Preferences}/>
-          <Route path='/logout' component={Logout}/>
-        </Route>
-        <Redirect from='*' to='/' />
-      </Router>
+      <IntlProvider
+        locale={language}
+        key={language}
+        messages={messages}
+      >
+        <Router history={history}>
+          <Route path='/login' component={Login}/>
+          <Route path='/register' component={Register}/>
+          <Route path='/' component={requireAuthentication(App)}>
+            <IndexRoute component={Home}/>
+            <Redirect from='/home' to='/' />
+            <Route path='/sessions' component={Sessions}/>
+            <Route path='/sessions/:id' component={SessionDetail}/>
+            <Route path='/users/:id' component={UserDetail}/>
+            <Route path='/users' component={Users}/>
+            <Route path='/preferences' component={Preferences}/>
+            <Route path='/logout' component={Logout}/>
+          </Route>
+          <Redirect from='*' to='/' />
+        </Router>
+      </IntlProvider>
     </Provider>
   </MuiThemeProvider>,
   document.getElementById("root")

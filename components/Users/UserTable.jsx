@@ -1,4 +1,5 @@
 import { Component, PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -48,17 +49,17 @@ class UserTable extends Component {
         },
         {
           value: row => row.name,
-          columnTitle: 'Name'
+          columnTitle: <FormattedMessage id='name' />
         },
         {
           value: row => new Date(row.createdAt).toLocaleDateString(),
-          columnTitle: 'Registration date',
+          columnTitle: <FormattedMessage id='registrationDate' />,
           maxShowWidth: 440
         },
         {
           value: row => row.assignee,
-          columnTitle: 'Assignee',
-          defaultValue: '(nobody)',
+          columnTitle: <FormattedMessage id='assignee' />,
+          defaultValue: <FormattedMessage id='nobody' />,
           defaultValueStyle: { color: palette.accent3Color },
           maxShowWidth: 640
         },

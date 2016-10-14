@@ -12,6 +12,7 @@ import MiniArrowBack from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
 import MiniArrowForward from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 
 import { Component, PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import Dimensions from '../dimensions';
 
@@ -70,7 +71,9 @@ class CardToolbar extends Component {
 
     if (this.props.containerWidth >= 800) {
       leftToolbarItems.push(
-        <ToolbarTitle key='name' text={ this.props.modelName }/>
+        <FormattedMessage key='name' id={this.props.modelName.toLowerCase()}>
+          { text => <ToolbarTitle text={text} /> }
+        </FormattedMessage>
       );
     }
 
@@ -78,7 +81,9 @@ class CardToolbar extends Component {
 
     if (this.props.containerWidth >= 640) {
       rightToolbarItems.push(
-        <ToolbarTitle key='rowsText' text="Rows per page:" />
+        <FormattedMessage key='rowsText' id='rowsPerPage'>
+          { text => <ToolbarTitle text={text} /> }
+        </FormattedMessage>
       );
     }
 

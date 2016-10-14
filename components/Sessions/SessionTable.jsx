@@ -26,6 +26,8 @@ import Done from 'material-ui/svg-icons/action/done';
 import AlertErrorOutline from 'material-ui/svg-icons/alert/error-outline';
 import Dimensions from '../dimensions'
 
+import { FormattedMessage } from 'react-intl';
+
 import Account from 'material-ui/svg-icons/action/account-circle';
 import TableCard from '../TableCard';
 
@@ -93,18 +95,18 @@ class SessionTable extends Component {
           },
           {
             value: row => row.user.name,
-            columnTitle: 'Child'
+            columnTitle: <FormattedMessage id='child' />
           },
           {
             value: row => row.assignee,
-            columnTitle: 'Assignee',
+            columnTitle: <FormattedMessage id='assignee' />,
             defaultValue: '(nobody)',
             defaultValueStyle: { color: palette.accent3Color },
             maxShowWidth: 680
           },
           {
             value: row => new Date(row.createdAt).toLocaleDateString(),
-            columnTitle: 'Feedback started',
+            columnTitle: <FormattedMessage id='feedbackStartDate' />,
             maxShowWidth: 440
           },
           {

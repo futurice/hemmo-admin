@@ -31,15 +31,26 @@ class Preferences extends Component {
       password2: '',
       employeeId: props.employeeId,
       error: '',
-      dialogOpen: false
+      dialogOpen: false,
+      locale: localStorage.locale || 'en'
     }
 
     this.setEmployeeId = this.setEmployeeId.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.setLocale = this.setLocale.bind(this);
   }
 
   openDeleteDialog() {
     this.setState({dialogOpen: true});
+  }
+
+  setLocale(event, index, value) {
+    const locale = value;
+    this.setState({ locale });
+    localStorage.locale = locale;
+
+    // TODO: fixme
+    location.reload();
   }
 
   handleDelete() {
@@ -127,6 +138,16 @@ class Preferences extends Component {
           margin: spacing.desktopGutter,
           marginBottom: 0
         }}>
+          <CardTitle title={'Language:'}>
+            <CardText>
+              <SelectField onChange={this.setLocale} value={this.state.locale}>
+                {[{locale: 'en', name: 'English'}, {locale: 'fi', name: 'Finnish'}].map((row, index) => (
+                  <MenuItem key={index} value={row.locale} primaryText={row.name} />
+                ))}
+              </SelectField>
+            </CardText>
+          </CardTitle>
+
           <CardHeader
             title={'Employee management'}
             avatar={<Warning style={{color:red300}}/>}

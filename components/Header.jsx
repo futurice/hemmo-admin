@@ -4,6 +4,7 @@ import React, { PropTypes, Component } from 'react';
 import { AppBar, Drawer, MenuItem } from 'material-ui';
 import * as UiActions from '../actions/ui';
 import { MenuRoutes, MiscRoutes } from '../src/Routes';
+import { FormattedMessage } from 'react-intl';
 
 const defaultStyle = {
   marginLeft: 20
@@ -37,7 +38,7 @@ class Header extends Component {
   render() {
     return (
       <header className="header">
-        <AppBar title={this.getTitle(this.props.pathname, this.props.params)}
+        <AppBar title={<FormattedMessage id={this.getTitle(this.props.pathname, this.props.params)} /> }
                 onLeftIconButtonTouchTap={() => this.toggleDrawer()}/>
       </header>
     );

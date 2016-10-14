@@ -2,6 +2,7 @@
  * React & Redux
  */
 import { Component, PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { goBack } from 'react-router-redux';
 import rest from '../../reducers/api';
@@ -144,14 +145,16 @@ class Overview extends Component {
             });
           }}
           open={this.state.dialogOpen}
-          message='Deleting this feedback will destroy it forever! Only proceed if you are absolutely sure.'/>
+          message={<FormattedMessage id='deleteFeedbackWarn' />} />
         <Card style={{
           margin: spacing.desktopGutter,
           marginBottom: 0
         }}>
           <CardHeader
             title={session.data.user.name}
-            subtitle={avgLikes !== null ? `${Math.round((avgLikes + 1) / 2 * 100)}% happy in session` : `No feedback given yet`}
+            subtitle={avgLikes !== null ? <FormattedMessage id='percentHappyInSession' values={{
+              percent: Math.round((avgLikes + 1) / 2 * 100)
+            }} /> : <FormattedMessage id='noFeedbackGiven' />}
             style={{
               backgroundColor: avgLikes > 0.5 ? lightGreen300 : avgLikes > -0.5 ? yellow300 : red300
             }}
@@ -159,26 +162,26 @@ class Overview extends Component {
               avgLikes > 0.5 ? <ThumbUp style={iconStyle}/> : avgLikes > -0.5 ? <Neutral style={iconStyle}/> : <ThumbDown style={iconStyle}/>
             } />
 
-          <CardTitle subtitle={'Review status'}>
+          <CardTitle subtitle={<FormattedMessage id='reviewStatus' />}>
             <CardText> {
               session.data.reviewed ?
                 <Chip>
                   <Avatar backgroundColor={lightGreen300} icon={<Done />} />
-                  Reviewed
+                  <FormattedMessage id='reviewed' />
                 </Chip>
                 :
                 <Chip>
                   <Avatar backgroundColor={red300} icon={<Announcement />} />
-                  Unhandled
+                  <FormattedMessage id='notReviewed' />
                 </Chip>
               }
             </CardText>
           </CardTitle>
 
-          <CardTitle subtitle={'Assignee:'}>
+          <CardTitle subtitle={<FormattedMessage id='assignee:' />}>
             <CardText>
               <SelectField onChange={this.setAssignee} value={session.data.assigneeId}>
-                <MenuItem key={'nobody'} value={null} style={{color: palette.accent3Color}} primaryText={'(nobody)'} />
+                <MenuItem key={'nobody'} value={null} style={{color: palette.accent3Color}} primaryText={<FormattedMessage id='nobody' />} />
                 {this.props.employees.data.map((row, index) => (
                   <MenuItem key={index} value={row.employeeId} primaryText={row.name} />
                 ))}
@@ -186,7 +189,7 @@ class Overview extends Component {
             </CardText>
           </CardTitle>
 
-          <CardTitle subtitle={'Started'}>
+          <CardTitle subtitle={<FormattedMessage id='feedbackStartDate' />}>
             <CardText>
               {new Date(session.data.createdAt).toLocaleDateString()}
             </CardText>
@@ -194,18 +197,18 @@ class Overview extends Component {
           {session.reviewed ?
             null :
             <CardActions>
-              <FlatButton label="Back"
+              <FlatButton label={<FormattedMessage id='back' />}
                           onTouchTap={() => {
                             this.props.dispatch(goBack());
                           }}
                           icon={<ArrowBack/>} />
-              <FlatButton label={session.data.reviewed ?  'Mark unhandled' : 'Mark reviewed'}
+              <FlatButton label={session.data.reviewed ?  <FormattedMessage id='markUnhandled' /> : <FormattedMessage id='markReviewed' />}
                           onTouchTap={() => {
                             this.markReviewed(!session.data.reviewed)
                           }}
                           primary={!session.data.reviewed}
                           icon={session.data.reviewed ? <Cancel/> : <ActionDone/>} />
-              <FlatButton label='Delete feedback'
+              <FlatButton label={<FormattedMessage id='deleteFeedback' />}
                           onTouchTap={() => {
                             this.openDeleteDialog()
                           }}

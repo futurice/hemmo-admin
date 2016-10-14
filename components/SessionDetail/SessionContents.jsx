@@ -2,6 +2,7 @@
  * React & Redux
  */
 import { Component, PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 /*
  * MaterialUI
@@ -69,8 +70,11 @@ class SessionContents extends Component {
           flexBasis: '320px'
         }}>
           <CardHeader
-            title={`Round ${index + 1}`}
-            subtitle={avgLikes === null ? '' : `Mood: ${avgLikes > 0.5 ? 'Happy' : avgLikes < -0.5 ? 'Unhappy' : 'Neutral'}`}
+            title={<FormattedMessage id='feedbackRound' values={{round: index + 1}} />}
+            subtitle={avgLikes === null ? '' :
+              avgLikes > 0.5 ? <FormattedMessage id='feedbackHappyMood' /> :
+              avgLikes < -0.5 ? <FormattedMessage id='feedbackUnhappyMood' /> :
+                                <FormattedMessage id='feedbackNeutralMood' />}
             style={{
               backgroundColor: avgLikes === null ? grey300 : (avgLikes > 0.5 ? lightGreen300 : avgLikes < -0.5 ? red300 : yellow300)
             }}

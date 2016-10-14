@@ -1,4 +1,5 @@
 import { Component, PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -12,28 +13,32 @@ export default class DeleteDialog extends Component {
   render() {
     const actions = [
       <FlatButton
-        label="Cancel"
+        label={<FormattedMessage id='cancel' />}
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.props.handleClose}
       />,
       <FlatButton
-        label="Delete"
+        label={<FormattedMessage id='delete' />}
         style={{color: red300}}
         onTouchTap={this.props.handleDelete}
       />
     ];
 
     return (
-      <Dialog
-        title="Are you sure?"
-        actions={actions}
-        modal={false}
-        open={this.props.open}
-        onRequestClose={this.props.handleClose}
-      >
-        {this.props.message || 'Deleting this item will destroy it forever! Only proceed if you are absolutely sure.'}
-      </Dialog>
+      <FormattedMessage id='areYouSure'>
+      { title => (
+        <Dialog
+          title={title}
+          actions={actions}
+          modal={false}
+          open={this.props.open}
+          onRequestClose={this.props.handleClose}
+        >
+          {this.props.message || <FormattedMessage id='deleteDefaultWarn' />}
+        </Dialog>
+      )}
+      </FormattedMessage>
     );
   }
 }

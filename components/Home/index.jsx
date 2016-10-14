@@ -3,6 +3,8 @@ import { Component, PropTypes } from 'react';
 import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import SessionTable from '../Sessions/SessionTable';
 
+import { FormattedMessage } from 'react-intl';
+
 import Paper from 'material-ui/Paper';
 
 class Home extends Component {
@@ -19,13 +21,15 @@ class Home extends Component {
         flex: 1,
         flexBasis: '450px'
       }}>
-        <CardHeader title="New feedback" subtitle="Feedback that has been assigned to you" />
+        <CardHeader
+          title={ <FormattedMessage id='newFeedback' /> }
+          subtitle={ <FormattedMessage id='newFeedbackDesc' /> } />
         <CardText>
           <SessionTable filter={{
             reviewed: 0,
             assignee: this.props.employeeId,
             small: true
-          }} noFeedbackMsg={'No unhandled feedback for you'} small={true}/>
+          }} noFeedbackMsg={ <FormattedMessage id='newFeedbackEmpty' /> } small={true}/>
         </CardText>
       </Card>
 
@@ -34,12 +38,15 @@ class Home extends Component {
         flex: 1,
         flexBasis: '450px'
       }}>
-        <CardHeader title="Unhandled feedback" subtitle="Feedback that was left unhandled for 10 days" />
+        <CardHeader
+          title={ <FormattedMessage id='unhandledFeedback' /> }
+          subtitle={ <FormattedMessage id='unhandledFeedbackDesc' /> }
+        />
         <CardText>
           <SessionTable extra={true} filter={{
             reviewed: 0,
             small: true
-          }} noFeedbackMsg={'No old unhandled feedback found'} small={true}/>
+          }} noFeedbackMsg={ <FormattedMessage id='unhandledFeedbackEmpty' /> } small={true}/>
         </CardText>
       </Card>
       </div>

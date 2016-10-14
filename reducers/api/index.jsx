@@ -4,7 +4,8 @@ import adapterFetch from 'redux-api/lib/adapters/fetch';
 import { logOut } from '../../actions/ui';
 import { Map } from 'immutable';
 
-import { replace } from 'react-router-redux'
+import { replace } from 'react-router-redux';
+import jwtDecode from 'jwt-decode';
 
 import config from 'config';
 
@@ -22,7 +23,10 @@ export default reduxApi({
         // got new token
         console.log('got new token from backend');
 
-        const { token, employeeId, expiresIn } = data;
+        const { token, expiresIn } = data;
+
+        const decoded = jwtDecode(token);
+        const { id: employeeId, data: { locale } } = decoded;
 
         let expiration = new Date();
         let expirationDelta = 1000; // account for possible clock drift, latency...
@@ -33,21 +37,22 @@ export default reduxApi({
         localStorage.setItem('auth', JSON.stringify({
           token,
           employeeId,
-          expiration
+          expiration,
+          locale
         }));
 
-        return { token, employeeId, expiration };
+        return { token, employeeId, locale, expiration };
       } else if (authSession && authSession.token) {
         console.log('found token in localStorage');
 
-        const { token, employeeId, expiration } = authSession;
+        const { token, employeeId, locale, expiration } = authSession;
 
         if (!expiration || new Date().getTime() >= new Date(expiration).getTime()) {
           console.log('token in localStorage expired!');
           return {};
         }
 
-        return { token, employeeId, expiration };
+        return { token, employeeId, locale, expiration };
       } else {
         console.log('no auth token found');
 
@@ -79,7 +84,11 @@ export default reduxApi({
         return { error: data.error, message: data.message };
       } else if (data && data.token) {
         // got new token
-        const { token, employeeId, expiresIn } = data;
+        const { token, expiresIn } = data;
+
+        const decoded = jwtDecode(token);
+        const { id: employeeId, data: { locale } } = decoded;
+
         console.log('refreshed new token from backend');
 
         let expiration = new Date();
@@ -91,10 +100,11 @@ export default reduxApi({
         localStorage.setItem('auth', JSON.stringify({
           token,
           employeeId,
-          expiration
+          expiration,
+          locale
         }));
 
-        return { token, employeeId, expiration };
+        return { token, employeeId, expiration, locale };
       } else {
         return data;
       }
@@ -119,7 +129,10 @@ export default reduxApi({
       } else if (data && data.token) {
         console.log('got new token from backend');
 
-        const { token, employeeId, expiresIn } = data;
+        const { token, expiresIn } = data;
+
+        const decoded = jwtDecode(token);
+        const { id: employeeId, data: { locale } } = decoded;
 
         let expiration = new Date();
         let expirationDelta = 1000; // account for possible clock drift, latency...
@@ -128,10 +141,11 @@ export default reduxApi({
         localStorage.setItem('auth', JSON.stringify({
           token,
           employeeId,
-          expiration
+          expiration,
+          locale
         }));
 
-        return { token, employeeId, expiration };
+        return { token, employeeId, expiration, locale };
       } else {
         console.log('no auth token found');
 

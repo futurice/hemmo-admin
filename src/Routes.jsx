@@ -1,15 +1,15 @@
 let MenuRoutes = {
-  '/': 'Home',
-  '/sessions': 'Feedback',
-  '/users': 'Children'
+  '/': 'routeHome',
+  '/sessions': 'routeFeedback',
+  '/users': 'routeChildren'
 };
 
 let MiscRoutes = {
-  '/login': 'Login',
-  '/sessions/:id': 'Feedback details',
-  '/users/:id': 'Child details',
-  '/preferences': 'Preferences',
-  '/logout': 'Logout'
+  '/login': 'routeLogin',
+  '/sessions/:id': 'routeFeedbackDetails',
+  '/users/:id': 'routeChildDetails',
+  '/preferences': 'routePreferences',
+  '/logout': 'routeLogout'
 };
 
 export { MenuRoutes, MiscRoutes };
