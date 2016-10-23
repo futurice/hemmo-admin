@@ -45,12 +45,16 @@ class Preferences extends Component {
   }
 
   setLocale(event, index, value) {
+    const {dispatch} = this.props;
+
     const locale = value;
     this.setState({ locale });
     localStorage.locale = locale;
 
-    // TODO: fixme
-    location.reload();
+    dispatch(rest.actions.locale.post({ locale }, () => {
+      // TODO: fixme - there are better ways
+      location.reload();
+    }));
   }
 
   handleDelete() {

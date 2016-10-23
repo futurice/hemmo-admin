@@ -26,14 +26,16 @@ export default reduxApi({
         const { token, expiresIn } = data;
 
         const decoded = jwtDecode(token);
-        const { id: employeeId, data: { locale } } = decoded;
+        console.log('decoded JWT:', decoded);
+        const { exp, id: employeeId, data: { locale } } = decoded;
 
-        let expiration = new Date();
-        let expirationDelta = 1000; // account for possible clock drift, latency...
-        expiration.setMilliseconds(expiration.getMilliseconds() + expiresIn - expirationDelta);
+        let expiration = new Date(exp * 1000);
+        let expirationDelta = 60 * 1000; // account for possible clock drift, latency...
+        expiration.setMilliseconds(expiration.getMilliseconds() - expirationDelta);
 
         document.cookie = `token=${token}`;
 
+        localStorage.locale = locale;
         localStorage.setItem('auth', JSON.stringify({
           token,
           employeeId,
@@ -87,16 +89,16 @@ export default reduxApi({
         const { token, expiresIn } = data;
 
         const decoded = jwtDecode(token);
-        const { id: employeeId, data: { locale } } = decoded;
+        console.log('decoded JWT:', decoded);
+        const { exp, id: employeeId, data: { locale } } = decoded;
 
-        console.log('refreshed new token from backend');
-
-        let expiration = new Date();
-        let expirationDelta = 1000; // account for possible clock drift, latency...
-        expiration.setMilliseconds(expiration.getMilliseconds() + expiresIn - expirationDelta);
+        let expiration = new Date(exp * 1000);
+        let expirationDelta = 60 * 1000; // account for possible clock drift, latency...
+        expiration.setMilliseconds(expiration.getMilliseconds() - expirationDelta);
 
         document.cookie = `token=${token}`;
 
+        localStorage.locale = locale;
         localStorage.setItem('auth', JSON.stringify({
           token,
           employeeId,
@@ -132,12 +134,14 @@ export default reduxApi({
         const { token, expiresIn } = data;
 
         const decoded = jwtDecode(token);
-        const { id: employeeId, data: { locale } } = decoded;
+        console.log('decoded JWT:', decoded);
+        const { exp, id: employeeId, data: { locale } } = decoded;
 
-        let expiration = new Date();
-        let expirationDelta = 1000; // account for possible clock drift, latency...
-        expiration.setMilliseconds(expiration.getMilliseconds() + expiresIn - expirationDelta);
+        let expiration = new Date(exp * 1000);
+        let expirationDelta = 60 * 1000; // account for possible clock drift, latency...
+        expiration.setMilliseconds(expiration.getMilliseconds() - expirationDelta);
 
+        localStorage.locale = locale;
         localStorage.setItem('auth', JSON.stringify({
           token,
           employeeId,
@@ -285,6 +289,10 @@ export default reduxApi({
         return {...prevData};
       }
     },
+    crud: true
+  },
+  locale: {
+    url: `/locale`,
     crud: true
   }
 })
