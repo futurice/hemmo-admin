@@ -124,6 +124,7 @@ export default reduxApi({
   },
   register: {
     url: `/employees/register`,
+    reducerName: 'auth',
     transformer(data) {
       if (data && data.error) {
         console.log('got error from backend');

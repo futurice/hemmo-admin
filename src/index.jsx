@@ -72,7 +72,7 @@ const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
 
 const requireAuthentication = UserAuthWrapper({
-  authSelector: state => state.auth.data || state.register.data,
+  authSelector: state => state.auth.data,
   redirectAction: routerActions.replace,
   wrapperDisplayName: 'requireAuthentication'
 })

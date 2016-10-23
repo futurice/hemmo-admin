@@ -37,7 +37,6 @@ class Register extends Component {
 
   shouldComponentUpdate(props) {
     if (props.auth.data && props.auth.data.token) {
-      props.login.data.token = props.auth.data.token;
       this.authSuccess();
       return false;
     }
@@ -189,8 +188,7 @@ class Register extends Component {
 
 function select(state, ownProps) {
   return {
-    auth: state.register,
-    login: state.auth,
+    auth: state.auth,
     routing: state.routing,
     redirect: ownProps.location.query.redirect
   };
