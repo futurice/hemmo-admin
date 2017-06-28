@@ -36,7 +36,7 @@ export default class CardToolbar extends React.Component {
 
   changePage(offset) {
     this.setState({
-      page: parseInt(this.state.page) + offset
+      page: parseInt(this.state.page, 10) + offset
     });
   }
 
@@ -59,7 +59,6 @@ export default class CardToolbar extends React.Component {
 
   render() {
     const palette = this.context.muiTheme.palette;
-    const spacing = this.context.muiTheme.spacing;
 
     const pageEntries = this.state.pageEntries;
     const totalEntries = this.props.totalEntries;
