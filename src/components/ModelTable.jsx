@@ -3,21 +3,13 @@ import PropTypes from 'prop-types';
 
 import Table, {
   TableBody,
-  TableHeader,
-  TableHeaderColumn,
+  TableHead,
   TableRow,
-  TableRowColumn
+  TableCell
 } from 'material-ui/Table';
 
 export default class ModelTable extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.getHeaderColumns = this.getHeaderColumns.bind(this);
-    this.getRowColumns = this.getRowColumns.bind(this);
-  }
-
-  getHeaderColumns() {
+  getHeaderColumns = () => {
     let columns = [];
 
     this.props.header.forEach((header, index) => {
@@ -26,14 +18,14 @@ export default class ModelTable extends React.Component {
       }
 
       columns.push(
-        <TableHeaderColumn style={ header.style } key={index}> { header.columnTitle || '' } </TableHeaderColumn>
+        <TableCell style={ header.style } key={index}> { header.columnTitle || '' } </TableCell>
       );
     });
 
     return columns;
   }
 
-  getRowColumns(row, index) {
+  getRowColumns = (row, index) => {
     let columns = [];
 
     this.props.header.forEach((header, index) => {
@@ -57,12 +49,12 @@ export default class ModelTable extends React.Component {
       }
 
       columns.push(
-        <TableRowColumn
+        <TableCell
           style={ style }
           key={ index } >
 
           { body }
-        </TableRowColumn>
+        </TableCell>
       );
     });
 
@@ -79,14 +71,12 @@ export default class ModelTable extends React.Component {
     const entries = this.props.entries;
 
     return(
-      <div>model table goes here</div>
-      /*
       <Table>
-        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+        <TableHead displaySelectAll={false} adjustForCheckbox={false}>
           <TableRow>
             { this.getHeaderColumns() }
           </TableRow>
-        </TableHeader>
+        </TableHead>
 
         <TableBody showRowHover={true} displayRowCheckbox={false}>
           {entries.map((row, index) => (
@@ -94,7 +84,6 @@ export default class ModelTable extends React.Component {
           ))}
         </TableBody>
       </Table>
-      */
     );
   }
 }
