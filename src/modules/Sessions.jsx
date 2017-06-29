@@ -16,6 +16,10 @@ import { FormattedMessage } from 'react-intl';
 import TableCard from '../components/TableCard';
 
 class SessionTable extends React.Component {
+  state = {
+    page: 0,
+  };
+
   refresh(pagination = {
       page: 0,
       pageEntries: 20
@@ -52,10 +56,8 @@ class SessionTable extends React.Component {
   }
 
   render() {
-    const palette = this.context.muiTheme.palette;
-
-    const initialPage = this.props.location ? this.props.location.query.page : 0;
-    const pageEntries = this.props.location ? this.props.location.query.pageEntries : 20;
+    const initialPage = 0;
+    const pageEntries = 20;
 
     return(
       <TableCard
@@ -80,7 +82,6 @@ class SessionTable extends React.Component {
             value: row => row.assignee,
             columnTitle: <FormattedMessage id='assignee' />,
             defaultValue: '(nobody)',
-            defaultValueStyle: { color: palette.accent3Color },
             maxShowWidth: 680
           },
           {
@@ -105,10 +106,6 @@ class SessionTable extends React.Component {
     );
   }
 }
-
-SessionTable.contextTypes = {
-  muiTheme: PropTypes.object.isRequired
-};
 
 SessionTable.propTypes = {
   sessions: PropTypes.shape({

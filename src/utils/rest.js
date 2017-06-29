@@ -40,30 +40,122 @@ const rest = reduxApi({
     crud: true,
   },
 
-  // Add more API endpoints here! Examples below:
-
-  /*
-  // Endpoints which return an array (data defaults to [])
-  teams: {
-    url: `${apiRoot}/teams`,
-    transformer: transformers.array,
-    crud: true,
+  employees: {
+    url: `${apiRoot}/employees`,
+    transformer(data) {
+      if (data) {
+        return data.employees;
+      } else {
+        return [];
+      }
+    }
   },
-  companies: {
-    url: `${apiRoot}/companies`,
-    transformer: transformers.array,
-    crud: true,
-  }
-
-  // Endpoint which returns an object (data defaults to {})
-  profile: {
-    url: `${apiRoot}/profile`,
-    crud: true,
-  }
-  */
-
+  employeePassword: {
+    url: `${apiRoot}/employees/password`,
+    options: {
+      method: 'post'
+    }
+  },
+  employeeVerify: {
+    url: `${apiRoot}/employees/verify/:employeeId`,
+    options: {
+      method: 'post'
+    }
+  },
+  employeeDetail: {
+    url: `${apiRoot}/employees/:id`,
+    transformer(data, prevData) {
+      if (data) {
+        return {...prevData, ...data};
+      } else {
+        return {...prevData};
+      }
+    },
+    crud: true
+  },
+  userDetail: {
+    url: `${apiRoot}/users/:id`,
+    transformer(data, prevData) {
+      if (data) {
+        return {...prevData, ...data};
+      } else {
+        return {...prevData};
+      }
+    },
+    crud: true
+  },
+  setUserAssignee: {
+    url: `${apiRoot}/users/:userId`,
+    transformer(data) {
+      if (data) {
+        return data;
+      } else {
+        return {};
+      }
+    },
+    options: {
+      method: 'put'
+    }
+  },
+  sessions: {
+    url: `${apiRoot}/sessions`,
+    transformer(data, prevData = {
+      entries: [],
+      totalEntries: 0,
+      name: 'Feedback'
+    }, action) {
+      if (data) {
+        return {
+          ...prevData,
+          ...data,
+          entries: data.sessions || [],
+          totalEntries: data.count || 0
+        };
+      } else {
+        return {
+          ...prevData
+        };
+      }
+    }
+  },
+  sessionsExtra: {
+    url: `${apiRoot}/sessions`,
+    transformer(data, prevData = {
+      entries: [],
+      totalEntries: 0,
+      name: 'Feedback'
+    }, action) {
+      if (data) {
+        return {
+          ...prevData,
+          ...data,
+          entries: data.sessions || [],
+          totalEntries: data.count || 0
+        };
+      } else {
+        return {
+          ...prevData
+        };
+      }
+    }
+  },
+  sessionDetail: {
+    url: `${apiRoot}/sessions/:id`,
+    transformer(data, prevData) {
+      if (data) {
+        return {...prevData, ...data};
+      } else {
+        return {...prevData};
+      }
+    },
+    crud: true
+  },
+  locale: {
+    url: `${apiRoot}/locale`,
+    crud: true
+  },
   auth: {
-    url: `${apiRoot}/users/authenticate`,
+    url: `${apiRoot}/employees/authenticate`,
     transformer: (data = {}) => {
       if (data.token) {
         return {

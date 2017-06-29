@@ -62,10 +62,6 @@ class TableCard extends React.Component {
   }
 }
 
-TableCard.contextTypes = {
-  muiTheme: PropTypes.object.isRequired
-};
-
 TableCard.propTypes = {
   model: PropTypes.shape({
     loading: PropTypes.bool.isRequired,

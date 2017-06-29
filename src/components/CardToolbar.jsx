@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  Toolbar,
+import Toolbar, {
   ToolbarGroup,
   ToolbarTitle
 } from 'material-ui/Toolbar';
@@ -58,8 +57,6 @@ export default class CardToolbar extends React.Component {
   }
 
   render() {
-    const palette = this.context.muiTheme.palette;
-
     const pageEntries = this.state.pageEntries;
     const totalEntries = this.props.totalEntries;
     const page = this.state.page;
@@ -87,7 +84,7 @@ export default class CardToolbar extends React.Component {
 
     if (this.props.containerWidth >= 480) {
       rightToolbarItems.push(
-        <Menu key='dropdown' iconStyle={{ fill: palette.textColor }} value={this.state.pageEntries} onChange={this.setPageEntries}>
+        <Menu key='dropdown' value={this.state.pageEntries} onChange={this.setPageEntries}>
           <MenuItem value={5} primaryText="5"/>
           <MenuItem value={20} primaryText="20"/>
           <MenuItem value={50} primaryText="50"/>
@@ -115,6 +112,8 @@ export default class CardToolbar extends React.Component {
     );
 
     return(
+      <div>toolbar goes here</div>
+      /*
       <Toolbar>
         <ToolbarGroup>
           { leftToolbarItems }
@@ -123,13 +122,10 @@ export default class CardToolbar extends React.Component {
           { rightToolbarItems }
         </ToolbarGroup>
       </Toolbar>
+      */
     );
   }
 }
-
-CardToolbar.contextTypes = {
-  muiTheme: PropTypes.object.isRequired
-};
 
 CardToolbar.propTypes = {
   refresh: PropTypes.func.isRequired,

@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  Table,
+import Table, {
   TableBody,
   TableHeader,
   TableHeaderColumn,
@@ -80,6 +79,8 @@ export default class ModelTable extends React.Component {
     const entries = this.props.entries;
 
     return(
+      <div>model table goes here</div>
+      /*
       <Table>
         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
           <TableRow>
@@ -93,13 +94,10 @@ export default class ModelTable extends React.Component {
           ))}
         </TableBody>
       </Table>
+      */
     );
   }
 }
-
-ModelTable.contextTypes = {
-  muiTheme: PropTypes.object.isRequired
-};
 
 ModelTable.propTypes = {
   entries: PropTypes.array.isRequired,

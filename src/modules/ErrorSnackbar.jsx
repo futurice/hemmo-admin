@@ -81,7 +81,7 @@ export default class ErrorSnackbar extends React.Component {
       message={<span id="error-snackbar">{ msg }</span>}
       onRequestClose={this.handleRequestClose}
       action={[
-        <Button key="undo" color="accent" compact onClick={this.openDetails}>
+        <Button key="undo" color="accent" onClick={this.openDetails}>
           DETAILS
         </Button>,
         <IconButton

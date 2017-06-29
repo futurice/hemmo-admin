@@ -34,7 +34,7 @@ export default {
   unhandledFeedbackEmpty: 'All feedback in the system has been handled!',
 
   routeHome: 'Home',
-  routeFeedback: 'Feedback',
+  Sessions: 'Sessions',
   routeChildren: 'Children',
   routeLogin: 'Login',
   routeFeedbackDetails: 'Feedback details',

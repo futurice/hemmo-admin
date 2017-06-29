@@ -54,8 +54,8 @@ export default class Home extends React.Component {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button compact color="primary">Share</Button>
-        <Button compact color="primary">Learn More</Button>
+        <Button color="primary">Share</Button>
+        <Button color="primary">Learn More</Button>
       </CardActions>
     </Card>
   );
@@ -78,8 +78,8 @@ export default class Home extends React.Component {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button compact color="primary">Share</Button>
-        <Button compact color="primary">Learn More</Button>
+        <Button color="primary">Share</Button>
+        <Button color="primary">Learn More</Button>
       </CardActions>
     </Card>
   );

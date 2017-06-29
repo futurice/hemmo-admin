@@ -34,7 +34,7 @@ export default {
   unhandledFeedbackEmpty: 'Kaikki järjestelmässä olevat palautteet käsitelty!',
 
   routeHome: 'Koti',
-  routeFeedback: 'Palautteet',
+  Sessions: 'Palautteet',
   routeChildren: 'Lapset',
   routeLogin: 'Kirjaudu sisään',
   routeFeedbackDetails: 'Palautteen tiedot',
