@@ -52,14 +52,13 @@ export default class ModelTable extends React.Component {
         <TableCell
           style={ style }
           key={ index } >
-
           { body }
         </TableCell>
       );
     });
 
     return (
-      <TableRow key={index} onTouchTap={(e) => {
+      <TableRow hover key={index} onClick={(e) => {
         this.props.onClickRow(row.id);
       }}>
         { columns }
@@ -72,13 +71,13 @@ export default class ModelTable extends React.Component {
 
     return(
       <Table>
-        <TableHead displaySelectAll={false} adjustForCheckbox={false}>
+        <TableHead>
           <TableRow>
             { this.getHeaderColumns() }
           </TableRow>
         </TableHead>
 
-        <TableBody showRowHover={true} displayRowCheckbox={false}>
+        <TableBody>
           {entries.map((row, index) => (
             this.getRowColumns(row, index)
           ))}
