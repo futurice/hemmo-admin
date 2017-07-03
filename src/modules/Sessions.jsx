@@ -93,7 +93,7 @@ class SessionTable extends React.Component {
             component: (
               <Button style={{
                 minWidth: '40px'
-              }} icon={<ArrowForward/>} />
+              }}><ArrowForward/></Button>
             ),
 
             style: { width: '20px' }
