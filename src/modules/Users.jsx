@@ -122,8 +122,8 @@ export default class Users extends React.Component {
           <TableBody>
             {
               // Loop over each user and render a <TableRow>
-              users.data.map(user => (
-                <TableRow key={user.id}>
+              users.data.map((user, i) => (
+                <TableRow key={"`${user.id}-${i}`"}>
                   <TableCell>{user.id}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell numeric>
