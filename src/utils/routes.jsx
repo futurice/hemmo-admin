@@ -48,6 +48,7 @@ import Users from '../modules/Users';
 import Preferences from '../modules/Preferences';
 import Login from '../modules/Login';
 import Logout from '../modules/Logout';
+import NoMatch from '../modules/NoMatch';
 
 // Routes
 const routeConfigs = [{
@@ -81,7 +82,7 @@ const routeConfigs = [{
   component: Login,
   icon: LoginIcon,
   requiresLogin: false,
-  hideWhenScope: ['user', 'admin'],
+  hideWhenScope: ['employee', 'admin'],
 }, {
   path: '/logout',
   name: 'Logout',
@@ -143,7 +144,7 @@ class AuthRedirectRoute extends React.Component {
             <Redirect
               to={{
                 pathname: '/login',
-                state: { from: props.location },
+                state: { from: props.location }
               }}
             />
           )
@@ -185,7 +186,7 @@ export const ConfiguredRoutes = ({ ...rest }) => (
         />
       ))
     }
-    <Redirect to={{ pathname: '/' }} />
+    <Route component={NoMatch} />
   </Switch>
 );
 

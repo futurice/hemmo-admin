@@ -115,7 +115,7 @@ export default class NavigationDrawer extends React.Component {
               const scope = user ? user.scope : null;
               const Icon = route.icon;
 
-              if (Array.isArray(route.hideWhenScope) && route.hideWhenScope.includes(scope)) {
+              if ((Array.isArray(route.hideWhenScope) && route.hideWhenScope.includes(scope)) || (route.requiresLogin && !user)) {
                 return null;
               }
 

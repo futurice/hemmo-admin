@@ -7,6 +7,8 @@
     "jwt-decode": "^2.2.0",
     "material-ui": "1.0.0-alpha.20",
     "material-ui-icons": "^1.0.0-alpha.19",
+    "node-sass-chokidar": "0.0.3",
+    "npm-run-all": "^4.0.2",
     "offline-plugin": "^4.8.1",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
@@ -30,8 +32,11 @@
     "eslint": "^3.19.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build-css": "node-sass-chokidar src/ -o src/",
+    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
+    "start-js": "react-scripts start",
+    "start": "npm-run-all -p watch-css start-js",
+    "build": "npm run build-css && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "lint": "eslint --ext .jsx --ext .js src",
