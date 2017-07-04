@@ -12,4 +12,18 @@ body {
 .table-filters {
 	margin-top: 2rem;
 	padding: 0 24px;
+
+	&>div, &>label {
+		margin-right: 2.5rem;
+
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+	
+	.text-field {
+		vertical-align: bottom;
+		min-width: 200px;
+		max-width: 300px;
+	}
 }

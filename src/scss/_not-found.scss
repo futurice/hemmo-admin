@@ -1,0 +1,22 @@
+html {
+  font-family: 'Roboto', sans-serif; }
+
+body {
+  font-size: 13px;
+  line-height: 20px;
+  margin: 0;
+  padding: 0; }
+
+.table-filters {
+  margin-top: 2rem;
+  padding: 0 24px; }
+  .table-filters > div, .table-filters > label {
+    margin-right: 2.5rem; }
+    .table-filters > div:last-child, .table-filters > label:last-child {
+      margin-right: 0; }
+  .table-filters .text-field {
+    vertical-align: bottom;
+    min-width: 200px;
+    max-width: 300px; }
+  .table-filters .foo, .table-filters .bar {
+    color: green; }
