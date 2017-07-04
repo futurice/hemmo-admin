@@ -14,6 +14,7 @@ import { LinearProgress } from 'material-ui/Progress';
 import ListIcon from 'material-ui-icons/List';
 
 import { DialogContentText } from 'material-ui/Dialog';
+import { LabelSwitch } from 'material-ui/Switch';
 import DialogWithButtons from '../components/DialogWithButtons';
 
 import rest from '../utils/rest';
@@ -59,6 +60,8 @@ export default class Users extends React.Component {
   // Here we keep track of whether the user details dialog is open.
   state = {
     dialogOpen: false,
+    showAll: false,
+    name: ''
   };
 
   // Refresh user list when component is first mounted
@@ -70,6 +73,7 @@ export default class Users extends React.Component {
 
   renderProgressBar() {
     const { usersLoading } = this.props;
+
     return usersLoading
       ? (
         <div style={{ marginBottom: '-5px' }}>
@@ -81,6 +85,7 @@ export default class Users extends React.Component {
   render() {
     const { users, refreshUser, userDetails, intl: { formatMessage } } = this.props;
     const { dialogOpen } = this.state;
+    const userList = users.data.length ? users.data[0].users : [];
 
     // Show the following user details in the dialog
     const userDetailsDescription = (
@@ -111,10 +116,19 @@ export default class Users extends React.Component {
 
         { this.renderProgressBar() }
 
+        <div className="table-filters">
+          <LabelSwitch
+            checked={false}
+            onChange={(event, checked) => this.setState({ showAll: checked })}
+            label={formatMessage({ id: 'showAllChildren' })}
+          />
+        </div>
+
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>{formatMessage({ id: 'userId' })}</TableCell>
+              <TableCell>{formatMessage({ id: 'name' })}</TableCell>
+              <TableCell>{formatMessage({ id: 'assignee' })}</TableCell>
               <TableCell>{formatMessage({ id: 'email' })}</TableCell>
               <TableCell />
             </TableRow>
@@ -122,10 +136,11 @@ export default class Users extends React.Component {
           <TableBody>
             {
               // Loop over each user and render a <TableRow>
-              users.data.map((user, i) => (
-                <TableRow key={"`${user.id}-${i}`"}>
-                  <TableCell>{user.id}</TableCell>
-                  <TableCell>{user.email}</TableCell>
+              userList.map((user, i) => (
+                <TableRow key={user.id}>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user.assignee}</TableCell>
+                  <TableCell></TableCell>
                   <TableCell numeric>
                     <Button
                       color="primary"

@@ -10,9 +10,3 @@ body {
 .table-filters {
   margin-top: 2rem;
   padding: 0 24px; }
-
-.not-found {
-  max-width: 500px;
-  margin: 40px auto 0; }
-  .not-found > div {
-    padding: 16px 24px; }

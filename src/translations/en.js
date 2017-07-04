@@ -8,11 +8,12 @@ export default {
   Login: 'Login',
 
   // Users view
-  userId: 'ID',
+  userId: 'User ID',
   email: 'E-mail',
   description: 'Description',
   showUserDetails: 'Details',
   userDetails: 'User details',
+  showAllChildren: 'Show all children',
 
   // Preferences view
   language: 'App language',
@@ -35,6 +36,7 @@ export default {
 
   routeHome: 'Home',
   Sessions: 'Sessions',
+  Children: 'Children',
   routeChildren: 'Children',
   routeLogin: 'Login',
   routeFeedbackDetails: 'Feedback details',
@@ -54,9 +56,9 @@ export default {
   feedbackStartDate: 'Date',
 
   percentHappy: '{percent}% positive feedback',
-  'assignee:': 'Assignee:',
+  assignee: 'Assignee:',
   assigneeExplanation: 'New feedback by {child} will be assigned to this employee automatically.',
-  'registrationDate:': 'Registration date:',
+  registrationDate: 'Registration date:',
   feedbackBy: 'Feedback by {child}',
   deleteUser: 'Delete {child}',
   deleteUserDesc: 'Delete user and all their feedback',

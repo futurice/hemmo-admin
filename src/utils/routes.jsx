@@ -45,10 +45,11 @@ import LogoutIcon from 'material-ui-icons/ExitToApp';
 import Home from '../modules/Home';
 import Sessions from '../modules/Sessions';
 import Users from '../modules/Users';
+import UserDetail from '../modules/UserDetail';
 import Preferences from '../modules/Preferences';
 import Login from '../modules/Login';
 import Logout from '../modules/Logout';
-import NoMatch from '../modules/NoMatch';
+import NotFound from '../modules/NotFound';
 
 // Routes
 const routeConfigs = [{
@@ -57,25 +58,37 @@ const routeConfigs = [{
   component: Home,
   icon: HomeIcon,
   requiresLogin: true,
+  showInMenu: true
 }, {
   path: '/sessions',
-  name: 'Sessions',
+  name: 'Feedback',
   component: Sessions,
   icon: SessionsIcon,
   requiresLogin: true,
+  showInMenu: true
+}, {
+  path: '/users/:userId',
+  name: 'Child',
+  component: UserDetail,
+  icon: UsersIcon,
+  separator: true,
+  requiresLogin: true,
+  showInMenu: false
 }, {
   path: '/users',
-  name: 'Users',
+  name: 'Children',
   component: Users,
   icon: UsersIcon,
   separator: true,
   requiresLogin: true,
+  showInMenu: true
 }, {
   path: '/preferences',
   name: 'Preferences',
   component: Preferences,
   icon: PreferencesIcon,
   requiresLogin: true,
+  showInMenu: true
 }, {
   path: '/login',
   name: 'Login',
@@ -83,6 +96,7 @@ const routeConfigs = [{
   icon: LoginIcon,
   requiresLogin: false,
   hideWhenScope: ['employee', 'admin'],
+  showInMenu: true
 }, {
   path: '/logout',
   name: 'Logout',
@@ -90,6 +104,7 @@ const routeConfigs = [{
   icon: LogoutIcon,
   requiresLogin: false,
   hideWhenScope: [null],
+  showInMenu: true
 }];
 
 export default routeConfigs;
@@ -186,7 +201,7 @@ export const ConfiguredRoutes = ({ ...rest }) => (
         />
       ))
     }
-    <Route component={NoMatch} />
+    <Route component={NotFound} />
   </Switch>
 );
 

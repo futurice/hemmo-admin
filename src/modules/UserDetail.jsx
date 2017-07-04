@@ -1,13 +1,72 @@
-import { Component, PropTypes } from 'react';
-import {
-  Table,
+import React from 'react';
+import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
+
+import Table, {
   TableBody,
-  TableFooter,
-  TableHeader,
-  TableHeaderColumn,
+  TableHead,
   TableRow,
-  TableRowColumn
+  TableCell,
 } from 'material-ui/Table';
+import { LinearProgress } from 'material-ui/Progress';
+import ListIcon from 'material-ui-icons/List';
+import Typography from 'material-ui/Typography';
+
+import rest from '../utils/rest';
+import NotFound from './NotFound';
+
+
+const mapStateToProps = state => ({
+  user: state.userDetails,
+  userLoading: state.userDetails.loading,
+});
+
+const mapDispatchToProps = dispatch => ({
+  refresh: (userId) => {
+    dispatch(rest.actions.userDetails({ userId: userId }));
+  }
+});
+
+@injectIntl
+@connect(mapStateToProps, mapDispatchToProps)
+export default class Users extends React.Component {
+  // Refresh user list when component is first mounted
+  componentDidMount() {
+    const { refresh } = this.props;
+
+    refresh(this.props.match.params.userId);
+  }
+
+  renderProgressBar() {
+    const { userLoading } = this.props;
+
+    return userLoading
+      ? (
+        <div style={{ marginBottom: '-5px' }}>
+          <LinearProgress />
+        </div>
+      ) : null;
+  }
+
+  render() {
+    const { user, intl: { formatMessage } } = this.props;
+    const userData = user.data ? user.data : null;
+
+    return (
+      <div>
+        { this.renderProgressBar() }
+
+        {userData ? (
+          <Typography type="display1">{userData.name}</Typography>
+        ) : (<NotFound />)}
+      </div>
+    );
+  }
+}
+
+
+
+/*
 
 import { FormattedMessage } from 'react-intl';
 
@@ -223,3 +282,4 @@ function select(state, ownProps) {
 }
 
 export default connect(select)(UserDetail);
+*/

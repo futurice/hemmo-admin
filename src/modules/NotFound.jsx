@@ -13,7 +13,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 @connect(mapStateToProps, mapDispatchToProps)
-export default class NoMatch extends React.Component {
+export default class NotFound extends React.Component {
   render() {
 
     return (

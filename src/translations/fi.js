@@ -8,11 +8,12 @@ export default {
   Login: 'Kirjaudu sisään',
 
   // Users view
-  userId: 'ID',
+  userId: 'User ID',
   email: 'Sähköpostiosoite',
   description: 'Kuvaus',
   showUserDetails: 'Lisätiedot',
   userDetails: 'Käyttäjän lisätiedot',
+  showAllChildren: 'Näytä kaikki lapset',
 
   // Preferences view
   language: 'Sovelluksen kieli',
@@ -35,6 +36,7 @@ export default {
 
   routeHome: 'Koti',
   Sessions: 'Palautteet',
+  Children: 'Lapset',
   routeChildren: 'Lapset',
   routeLogin: 'Kirjaudu sisään',
   routeFeedbackDetails: 'Palautteen tiedot',
