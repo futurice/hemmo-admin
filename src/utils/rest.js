@@ -118,7 +118,7 @@ const rest = reduxApi({
       }
     }
   },
-  sessionsExtra: {
+  /*sessionsExtra: {
     url: `${apiRoot}/sessions`,
     transformer(data, prevData = {
       entries: [],
@@ -138,7 +138,7 @@ const rest = reduxApi({
         };
       }
     }
-  },
+  },*/
   sessionDetail: {
     url: `${apiRoot}/sessions/:id`,
     transformer(data, prevData) {
