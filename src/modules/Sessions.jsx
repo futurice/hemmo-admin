@@ -20,34 +20,32 @@ class SessionTable extends React.Component {
     page: 0,
   };
 
-  refresh(pagination = {
+  componentWillMount() {
+    this.refresh();
+  }
+
+  refresh(params = {
       page: 0,
-      pageEntries: 20
+      pageEntries: 20,
+      showAll: false,
+      name: ''
     }) {
-    const {dispatch} = this.props;
+    const { dispatch } = this.props;
 
-    if (this.props.location && this.props.location.pathname === '/sessions') {
-      this.props.dispatch(push({
-        pathname: this.props.location.pathname,
-        query: {
-          page: pagination.page,
-          pageEntries: pagination.pageEntries
-        }
-      }));
-    }
-
-    let params = {
-      ...this.props.filter,
-      offset: pagination.page * pagination.pageEntries,
-      limit: pagination.pageEntries,
+    let queryParams = {
+      //...this.props.filter,
+      offset: params.page * params.pageEntries,
+      limit: params.pageEntries,
+      showAll: params.showAll,
+      name: params.name,
       order: 'asc'
     };
 
-    if (this.props.extra) {
-      dispatch(rest.actions.sessionsExtra(params));
-    } else {
-      dispatch(rest.actions.sessions(params));
-    }
+    // if (this.props.extra) {
+      // dispatch(rest.actions.sessionsExtra(params));
+    // } else {
+      dispatch(rest.actions.sessions(queryParams));
+    // }
   }
 
   openSession(id) {

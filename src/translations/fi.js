@@ -13,7 +13,8 @@ export default {
   description: 'Kuvaus',
   showUserDetails: 'Lisätiedot',
   userDetails: 'Käyttäjän lisätiedot',
-  showAllChildren: 'Näytä kaikki lapset',
+  showAll: 'Näytä kaikki',
+  lastFeedback: 'Viimeisin palaute',
 
   // Preferences view
   language: 'Sovelluksen kieli',
@@ -37,6 +38,7 @@ export default {
   routeHome: 'Koti',
   Sessions: 'Palautteet',
   Children: 'Lapset',
+  Feedback: 'Palautteet',
   routeChildren: 'Lapset',
   routeLogin: 'Kirjaudu sisään',
   routeFeedbackDetails: 'Palautteen tiedot',

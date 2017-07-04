@@ -12,11 +12,9 @@ import Table, {
 
 import { LinearProgress } from 'material-ui/Progress';
 import ListIcon from 'material-ui-icons/List';
-
 import { DialogContentText } from 'material-ui/Dialog';
-import { LabelSwitch } from 'material-ui/Switch';
-import DialogWithButtons from '../components/DialogWithButtons';
 
+import DialogWithButtons from '../components/DialogWithButtons';
 import rest from '../utils/rest';
 
 // Here we 'connect' the component to the Redux store. This means that the component will receive
@@ -45,8 +43,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  refresh: () => {
-    dispatch(rest.actions.users());
+  refresh: (showAll = false, name = null) => {
+    dispatch(rest.actions.users({
+      showAll: showAll,
+      name: name
+    }));
   },
   refreshUser: (user) => {
     dispatch(rest.actions.userDetails({ userId: user.id }));
@@ -62,7 +63,7 @@ export default class Users extends React.Component {
     dialogOpen: false,
     showAll: false,
     name: ''
-  };
+  }
 
   // Refresh user list when component is first mounted
   componentDidMount() {
@@ -80,6 +81,10 @@ export default class Users extends React.Component {
           <LinearProgress />
         </div>
       ) : null;
+  }
+
+  nameSearch() {
+    this.props.refresh(this.state.showAll, this.state.name)
   }
 
   render() {
@@ -116,18 +121,11 @@ export default class Users extends React.Component {
 
         { this.renderProgressBar() }
 
-        <div className="table-filters">
-          <LabelSwitch
-            checked={false}
-            onChange={(event, checked) => this.setState({ showAll: checked })}
-            label={formatMessage({ id: 'showAllChildren' })}
-          />
-        </div>
-
         <Table>
           <TableHead>
             <TableRow>
               <TableCell>{formatMessage({ id: 'name' })}</TableCell>
+              <TableCell>{formatMessage({ id: 'lastFeedback' })}</TableCell>
               <TableCell>{formatMessage({ id: 'assignee' })}</TableCell>
               <TableCell>{formatMessage({ id: 'email' })}</TableCell>
               <TableCell />
@@ -139,6 +137,7 @@ export default class Users extends React.Component {
               userList.map((user, i) => (
                 <TableRow key={user.id}>
                   <TableCell>{user.name}</TableCell>
+                  <TableCell></TableCell>
                   <TableCell>{user.assignee}</TableCell>
                   <TableCell></TableCell>
                   <TableCell numeric>

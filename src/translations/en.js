@@ -13,7 +13,8 @@ export default {
   description: 'Description',
   showUserDetails: 'Details',
   userDetails: 'User details',
-  showAllChildren: 'Show all children',
+  showAll: 'Show all',
+  lastFeedback: 'Last Feedback',
 
   // Preferences view
   language: 'App language',
@@ -37,6 +38,7 @@ export default {
   routeHome: 'Home',
   Sessions: 'Sessions',
   Children: 'Children',
+  Feedback: 'Feedback',
   routeChildren: 'Children',
   routeLogin: 'Login',
   routeFeedbackDetails: 'Feedback details',
