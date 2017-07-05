@@ -205,6 +205,27 @@ export const ConfiguredRoutes = ({ ...rest }) => (
   </Switch>
 );
 
+// Return list of routes to show in navigation element(s)
+export const NavigationRoutes = (user, path) => {
+  const scope = user ? user.scope : null;
+
+  return routeConfigs.reduce((ary, route) => {
+    let active = (path === route.path);
+    const hide = Array.isArray(route.hideWhenScope) && route.hideWhenScope.includes(scope);
+    const isAuthenticated = route.requiresLogin ? user !== null : true;
+
+    if (route.path === routeConfigs[0].path && path === '/') {
+      active = true;
+    }
+
+    if (route.showInMenu &&!hide && isAuthenticated) {
+      ary.push({...route, active});
+    }
+
+    return ary;
+  }, []);
+}
+
 // Check that routeConfigs array is a valid RouteConfigShape
 PropTypes.checkPropTypes({
   routeConfigs: PropTypes.arrayOf(RouteConfigShape).isRequired,

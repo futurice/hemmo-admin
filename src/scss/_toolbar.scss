@@ -9,11 +9,13 @@
 		}
 	}
 
-	&>div, &>label {
-		margin-right: 2.5rem;
+	&>span {
+		&>div, &>label {
+			margin-right: 2.5rem;
 
-		&:last-child {
-			margin-right: 0;
+			&:last-child {
+				margin-right: 0;
+			}
 		}
 	}
 	
@@ -25,13 +27,13 @@
 
 	.pull-right {
 		align-self: flex-end;
+	}
 
-		p {
-			display: inline-flex;
-		}
+	p {
+		display: inline-flex;
+	}
 
-		button {
-			vertical-align: middle;
-		}
+	button {
+		vertical-align: middle;
 	}
 }

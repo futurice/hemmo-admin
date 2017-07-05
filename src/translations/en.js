@@ -1,5 +1,6 @@
 export default {
   // Navigation
+  HemmoAdmin: 'Hemmo Admin',
   navigation: 'Navigation',
   Home: 'Home',
   Users: 'Users',
@@ -58,9 +59,7 @@ export default {
   feedbackStartDate: 'Date',
 
   percentHappy: '{percent}% positive feedback',
-  assignee: 'Assignee:',
   assigneeExplanation: 'New feedback by {child} will be assigned to this employee automatically.',
-  registrationDate: 'Registration date:',
   feedbackBy: 'Feedback by {child}',
   deleteUser: 'Delete {child}',
   deleteUserDesc: 'Delete user and all their feedback',

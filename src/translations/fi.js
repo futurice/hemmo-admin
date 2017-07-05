@@ -1,5 +1,6 @@
 export default {
   // Navigation
+  HemmoAdmin: 'Hemmo Admin',
   navigation: 'Navigaatio',
   Home: 'Koti',
   Users: 'Käyttäjät',
@@ -58,9 +59,7 @@ export default {
   feedbackStartDate: 'Päivämäärä',
 
   percentHappy: '{percent}% positiivista palautetta',
-  'assignee:': 'Kohdistettu työntekijä:',
   assigneeExplanation: 'Palautteet lapselta {child} kohdistetaan automattisesti valitulle työntekijälle.',
-  'registrationDate:': 'Käyttäjän luontipvm:',
   feedbackBy: 'Palautetta lapselta {child}',
   deleteUser: 'Poista {child}',
   deleteUserDesc: 'Poista käyttäjä sekä kaikki heidän antamat palautteet järjestelmästä',

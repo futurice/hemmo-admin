@@ -1,11 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Toolbar, {
-  ToolbarGroup,
-  ToolbarTitle
-} from 'material-ui/Toolbar';
-
+import Toolbar from 'material-ui/Toolbar';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import Button from 'material-ui/Button';
 import MiniArrowBack from 'material-ui-icons/KeyboardArrowLeft';
@@ -83,14 +79,6 @@ export default class CardToolbar extends React.Component {
     let leftToolbarItems = [];
     let rightToolbarItems = [];
 
-    /*if (this.props.containerWidth >= 800) {
-      leftToolbarItems.push(
-        <FormattedMessage key='name' id={this.props.modelName.toLowerCase()}>
-          { text => <ToolbarTitle text={text} /> }
-        </FormattedMessage>
-      );
-    }*/
-
     leftToolbarItems.push(
       <span key="filter-rows">
         <LabelSwitch
@@ -105,7 +93,11 @@ export default class CardToolbar extends React.Component {
           className="text-field"
           label={formatMessage({ id: 'name' })}
           onKeyUp={event => {
-            this.setState({ name: event.target.value }, this.refresh);
+            const val = event.target.value;
+            
+            if (val.length >= 3) {
+              this.setState({ name: val }, this.refresh);
+            }
           }}
           marginForm
         />
@@ -166,16 +158,6 @@ export default class CardToolbar extends React.Component {
             { rightToolbarItems }
           </span>
       </Toolbar>
-      /*
-      <Toolbar>
-        <ToolbarGroup>
-          { leftToolbarItems }
-        </ToolbarGroup>
-        <ToolbarGroup lastChild={true}>
-          { rightToolbarItems }
-        </ToolbarGroup>
-      </Toolbar>
-      */
     );
   }
 }
