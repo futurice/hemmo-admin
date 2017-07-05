@@ -19,6 +19,7 @@ import { reset } from './Logout';
 import { languages, storeLocaleForUser } from '../utils/intl';
 
 import CardGridWrapper from '../components/CardGridWrapper';
+import PageHeader from '../components/PageHeader';
 
 const mapStateToProps = state => ({
   activeLanguage: state.intl.locale,
@@ -63,64 +64,67 @@ export default class Preferences extends React.Component {
     } = this.props;
 
     return (
-      <CardGridWrapper>
-        <Card>
-          <CardContent>
-            <Typography type="headline">{formatMessage({ id: 'language' })}</Typography>
-            <List>
-              <ListItem
-                button
-                aria-haspopup="true"
-                aria-controls="language-menu"
-                aria-label="App language"
-                onClick={e => this.setState({
-                  languageMenuOpen: true,
-                  languageMenuAnchor: e.currentTarget,
-                })}
+      <div>
+        <PageHeader header={formatMessage({id: 'Preferences'})} />
+        <CardGridWrapper>
+          <Card>
+            <CardContent>
+              <Typography type="headline">{formatMessage({ id: 'language' })}</Typography>
+              <List>
+                <ListItem
+                  button
+                  aria-haspopup="true"
+                  aria-controls="language-menu"
+                  aria-label="App language"
+                  onClick={e => this.setState({
+                    languageMenuOpen: true,
+                    languageMenuAnchor: e.currentTarget,
+                  })}
+                >
+                  <ListItemText
+                    primary={formatMessage({ id: 'selectedLanguage' })}
+                    secondary={languages[activeLanguage] ? languages[activeLanguage].name : 'unknown'}
+                  />
+                </ListItem>
+              </List>
+              <Menu
+                id="language-menu"
+                anchorEl={this.state.languageMenuAnchor}
+                open={this.state.languageMenuOpen}
+                onRequestClose={() => this.setState({ languageMenuOpen: false })}
               >
-                <ListItemText
-                  primary={formatMessage({ id: 'selectedLanguage' })}
-                  secondary={languages[activeLanguage] ? languages[activeLanguage].name : 'unknown'}
-                />
-              </ListItem>
-            </List>
-            <Menu
-              id="language-menu"
-              anchorEl={this.state.languageMenuAnchor}
-              open={this.state.languageMenuOpen}
-              onRequestClose={() => this.setState({ languageMenuOpen: false })}
-            >
-              {
-                Object.keys(languages).map(language => (
-                  <MenuItem
-                    key={language}
-                    selected={language === activeLanguage}
-                    onClick={() => {
-                      changeLanguage(user, language);
-                      this.setState({ languageMenuOpen: false });
-                    }}
-                  >
-                    {languages[language].name}
-                  </MenuItem>
-                ))
-              }
-            </Menu>
-          </CardContent>
-          <CardContent>
-            <Typography type="headline">{formatMessage({ id: 'resetState' })}</Typography>
-            <Typography>{formatMessage({ id: 'resetStateExplanation' })}</Typography>
-          </CardContent>
-          <CardContent>
-            <Button
-              raised
-              color="accent"
-              onClick={doClearState}
-            >
-              {formatMessage({ id: 'resetStateButton' })}
-            </Button>
-          </CardContent>
-        </Card>
-      </CardGridWrapper>
+                {
+                  Object.keys(languages).map(language => (
+                    <MenuItem
+                      key={language}
+                      selected={language === activeLanguage}
+                      onClick={() => {
+                        changeLanguage(user, language);
+                        this.setState({ languageMenuOpen: false });
+                      }}
+                    >
+                      {languages[language].name}
+                    </MenuItem>
+                  ))
+                }
+              </Menu>
+            </CardContent>
+            <CardContent>
+              <Typography type="headline">{formatMessage({ id: 'resetState' })}</Typography>
+              <Typography>{formatMessage({ id: 'resetStateExplanation' })}</Typography>
+            </CardContent>
+            <CardContent>
+              <Button
+                raised
+                color="accent"
+                onClick={doClearState}
+              >
+                {formatMessage({ id: 'resetStateButton' })}
+              </Button>
+            </CardContent>
+          </Card>
+        </CardGridWrapper>
+      </div>
     );
   }
 }

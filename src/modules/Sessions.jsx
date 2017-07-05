@@ -11,10 +11,12 @@ import ArrowForward from 'material-ui-icons/ArrowForward';
 import Done from 'material-ui-icons/Done';
 import AlertErrorOutline from 'material-ui-icons/ErrorOutline';
 
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
 import TableCard from '../components/TableCard';
+import PageHeader from '../components/PageHeader';
 
+@injectIntl
 class SessionTable extends React.Component {
   state = {
     page: 0,
@@ -56,51 +58,56 @@ class SessionTable extends React.Component {
   render() {
     const initialPage = 0;
     const pageEntries = 20;
+    const { intl: { formatMessage } } = this.props;
+
 
     return(
-      <TableCard
-        initialPage={ initialPage }
-        pageEntries={ pageEntries }
-        model={ this.props.extra ? this.props.sessionsExtra : this.props.sessions }
-        emptyMsg={ this.props.noFeedbackMsg }
-        header={[
-          {
-            value: row => row.reviewed ?
-              <Done style={{ verticalAlign: 'middle' }} color={lightGreen300}/> :
-              <AlertErrorOutline style={{ verticalAlign: 'middle' }} color={red300}/>,
+      <div>
+        <PageHeader header={formatMessage({id: 'Feedback'})} />
+        <TableCard
+          initialPage={ initialPage }
+          pageEntries={ pageEntries }
+          model={ this.props.extra ? this.props.sessionsExtra : this.props.sessions }
+          emptyMsg={ this.props.noFeedbackMsg }
+          header={[
+            {
+              value: row => row.reviewed ?
+                <Done style={{ verticalAlign: 'middle' }} color={lightGreen300}/> :
+                <AlertErrorOutline style={{ verticalAlign: 'middle' }} color={red300}/>,
 
-            style: { width: '20px' },
-            maxShowWidth: 320
-          },
-          {
-            value: row => row.user.name,
-            columnTitle: <FormattedMessage id='child' />
-          },
-          {
-            value: row => row.assignee,
-            columnTitle: <FormattedMessage id='assignee' />,
-            defaultValue: '(nobody)',
-            maxShowWidth: 680
-          },
-          {
-            value: row => new Date(row.createdAt).toLocaleDateString(),
-            columnTitle: <FormattedMessage id='feedbackStartDate' />,
-            maxShowWidth: 440
-          },
-          {
-            component: (
-              <Button style={{
-                minWidth: '40px'
-              }}><ArrowForward/></Button>
-            ),
+              style: { width: '20px' },
+              maxShowWidth: 320
+            },
+            {
+              value: row => row.user.name,
+              columnTitle: <FormattedMessage id='child' />
+            },
+            {
+              value: row => row.assignee,
+              columnTitle: <FormattedMessage id='assignee' />,
+              defaultValue: '(nobody)',
+              maxShowWidth: 680
+            },
+            {
+              value: row => new Date(row.createdAt).toLocaleDateString(),
+              columnTitle: <FormattedMessage id='feedbackStartDate' />,
+              maxShowWidth: 440
+            },
+            {
+              component: (
+                <Button style={{
+                  minWidth: '40px'
+                }}><ArrowForward/></Button>
+              ),
 
-            style: { width: '20px' }
-          }
-        ]}
-        onClickRow={this.openSession.bind(this)}
-        refresh={this.refresh.bind(this)}
-        small={this.props.small}
-      />
+              style: { width: '20px' }
+            }
+          ]}
+          onClickRow={this.openSession.bind(this)}
+          refresh={this.refresh.bind(this)}
+          small={this.props.small}
+        />
+      </div>
     );
   }
 }

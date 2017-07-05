@@ -10,7 +10,7 @@ import Table, {
 } from 'material-ui/Table';
 import { LinearProgress } from 'material-ui/Progress';
 import ListIcon from 'material-ui-icons/List';
-import Typography from 'material-ui/Typography';
+import PageHeader from '../components/PageHeader';
 
 import rest from '../utils/rest';
 import NotFound from './NotFound';
@@ -57,7 +57,7 @@ export default class Users extends React.Component {
         { this.renderProgressBar() }
 
         {userData ? (
-          <Typography type="display1">{userData.name}</Typography>
+          <PageHeader header={userData.name} />
         ) : (<NotFound />)}
       </div>
     );

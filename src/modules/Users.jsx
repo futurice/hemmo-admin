@@ -15,6 +15,7 @@ import ListIcon from 'material-ui-icons/List';
 import { DialogContentText } from 'material-ui/Dialog';
 
 import DialogWithButtons from '../components/DialogWithButtons';
+import PageHeader from '../components/PageHeader';
 import rest from '../utils/rest';
 
 // Here we 'connect' the component to the Redux store. This means that the component will receive
@@ -109,6 +110,7 @@ export default class Users extends React.Component {
 
     return (
       <div>
+        <PageHeader header={formatMessage({ id: 'Children' })} />
         <DialogWithButtons
           title={formatMessage({ id: 'userDetails' })}
           description={userDetailsDescription}
