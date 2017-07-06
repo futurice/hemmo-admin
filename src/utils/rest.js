@@ -32,7 +32,24 @@ if (process.env.NODE_ENV === 'development') {
 const rest = reduxApi({
   users: {
     url: `${apiRoot}/users`,
-    transformer: transformers.array,
+    transformer(data, prevData = {
+      entries: [],
+      totalEntries: 0,
+      name: 'Users'
+    }, action) {
+      if (data) {
+        return {
+          ...prevData,
+          ...data,
+          entries: data.users || [],
+          totalEntries: data.count || 0
+        };
+      } else {
+        return {
+          ...prevData
+        };
+      }
+    },
     crud: true,
   },
   userDetails: {

@@ -5,10 +5,22 @@ import Table, {
   TableBody,
   TableHead,
   TableRow,
-  TableCell
+  TableCell,
+  TableSortLabel
 } from 'material-ui/Table';
 
 export default class ModelTable extends React.Component {
+  sortHandler = property => event => {
+    const orderBy = property;
+    let order = 'asc';
+
+    if (this.props.orderBy === property && this.props.order === 'asc') {
+      order = 'desc';
+    }
+
+    this.props.onSortRequest({orderBy, order});  
+  }
+
   getHeaderColumns = () => {
     let columns = [];
 
@@ -18,7 +30,15 @@ export default class ModelTable extends React.Component {
       }
 
       columns.push(
-        <TableCell style={ header.style } key={index}> { header.columnTitle || '' } </TableCell>
+        <TableCell style={ header.style } key={index}>
+          <TableSortLabel
+            active={this.props.orderBy === header.id}
+            order={this.props.order}
+            onClick={this.sortHandler(header.id)}
+          >
+            { header.columnTitle || '' }
+          </TableSortLabel>
+        </TableCell>
       );
     });
 
@@ -90,5 +110,8 @@ export default class ModelTable extends React.Component {
 ModelTable.propTypes = {
   entries: PropTypes.array.isRequired,
   header: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onClickRow: PropTypes.func.isRequired
+  onClickRow: PropTypes.func.isRequired,
+  onSortRequest: PropTypes.func.isRequired,
+  order: PropTypes.string.isRequired,
+  orderBy: PropTypes.string.isRequired
 };

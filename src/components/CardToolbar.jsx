@@ -51,16 +51,6 @@ export default class CardToolbar extends React.Component {
     });
   }
 
-  componentDidMount() {
-    let pagination = {
-      page: this.props.initialPage || 0,
-      pageEntries: this.props.pageEntries || 20
-    };
-
-    this.setState(pagination);
-    this.props.refresh(pagination);
-  }
-
   refresh() {
     this.props.refresh({
       showAll: this.state.showAll,
@@ -94,9 +84,12 @@ export default class CardToolbar extends React.Component {
           label={formatMessage({ id: 'name' })}
           onKeyUp={event => {
             const val = event.target.value;
-            
-            if (val.length >= 3) {
-              this.setState({ name: val }, this.refresh);
+            const keyword = (val.length >= 3) ? val : '';
+
+            if (keyword !== this.state.name) {
+              this.setState({
+                name: val.length >= 3 ? val : ''
+              }, this.refresh);
             }
           }}
           marginForm

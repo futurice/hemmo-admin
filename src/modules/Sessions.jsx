@@ -16,38 +16,38 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import TableCard from '../components/TableCard';
 import PageHeader from '../components/PageHeader';
 
+
 @injectIntl
 class SessionTable extends React.Component {
   state = {
     page: 0,
+    pageEntries: 20,
+    showAll: false,
+    name: '',
+    orderBy: 'name',
+    order: 'asc'
   };
 
   componentWillMount() {
     this.refresh();
   }
 
-  refresh(params = {
-      page: 0,
-      pageEntries: 20,
-      showAll: false,
-      name: ''
-    }) {
+  refresh(p = {}) {
     const { dispatch } = this.props;
+    const params = Object.assign(this.state, p);
+console.log(p)
+    this.setState({...this.state, params});
 
     let queryParams = {
-      //...this.props.filter,
       offset: params.page * params.pageEntries,
       limit: params.pageEntries,
       showAll: params.showAll,
       name: params.name,
-      order: 'asc'
+      orderBy: params.orderBy,
+      order: params.order
     };
 
-    // if (this.props.extra) {
-      // dispatch(rest.actions.sessionsExtra(params));
-    // } else {
-      dispatch(rest.actions.sessions(queryParams));
-    // }
+    dispatch(rest.actions.sessions(queryParams));
   }
 
   openSession(id) {
@@ -55,11 +55,14 @@ class SessionTable extends React.Component {
     this.props.dispatch(push(path));
   }
 
+  sortByColumn(sortParams) {
+    this.setState({...this.state, sortParams}, this.refresh);
+  }
+
   render() {
     const initialPage = 0;
     const pageEntries = 20;
     const { intl: { formatMessage } } = this.props;
-
 
     return(
       <div>
@@ -67,10 +70,13 @@ class SessionTable extends React.Component {
         <TableCard
           initialPage={ initialPage }
           pageEntries={ pageEntries }
-          model={ this.props.extra ? this.props.sessionsExtra : this.props.sessions }
+          model={ this.props.sessions }
           emptyMsg={ this.props.noFeedbackMsg }
+          orderBy={this.state.orderBy}
+          order={this.state.order}
           header={[
             {
+              id: null,
               value: row => row.reviewed ?
                 <Done style={{ verticalAlign: 'middle' }} color={lightGreen300}/> :
                 <AlertErrorOutline style={{ verticalAlign: 'middle' }} color={red300}/>,
@@ -79,16 +85,19 @@ class SessionTable extends React.Component {
               maxShowWidth: 320
             },
             {
+              id: 'name',
               value: row => row.user.name,
               columnTitle: <FormattedMessage id='child' />
             },
             {
+              id: 'assignee',
               value: row => row.assignee,
               columnTitle: <FormattedMessage id='assignee' />,
               defaultValue: '(nobody)',
               maxShowWidth: 680
             },
             {
+              id: 'createdAt',
               value: row => new Date(row.createdAt).toLocaleDateString(),
               columnTitle: <FormattedMessage id='feedbackStartDate' />,
               maxShowWidth: 440
@@ -105,7 +114,6 @@ class SessionTable extends React.Component {
           ]}
           onClickRow={this.openSession.bind(this)}
           refresh={this.refresh.bind(this)}
-          small={this.props.small}
         />
       </div>
     );
@@ -123,8 +131,7 @@ SessionTable.propTypes = {
 function select(state, ownParams) {
   return {
     location: ownParams.location,
-    sessions: state.sessions,
-    sessionsExtra: state.sessionsExtra
+    sessions: state.sessions
   };
 }
 

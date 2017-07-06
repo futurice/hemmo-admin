@@ -15,7 +15,7 @@ button {
 
 header {
 	button {
-		&.active:not(:hover) {
+		&.active {
 			&>span:first-child {
 				position: relative;
 

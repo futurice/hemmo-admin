@@ -1,100 +1,124 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
 import Button from 'material-ui/Button';
-import Table, {
-  TableBody,
-  TableHead,
-  TableRow,
-  TableCell,
-} from 'material-ui/Table';
-
 import { LinearProgress } from 'material-ui/Progress';
-import ListIcon from 'material-ui-icons/List';
-import { DialogContentText } from 'material-ui/Dialog';
+import ArrowForward from 'material-ui-icons/ArrowForward';
+import Done from 'material-ui-icons/Done';
+import { red300, lightGreen300 } from 'material-ui/styles/colors';
+import AlertErrorOutline from 'material-ui-icons/ErrorOutline';
 
-import DialogWithButtons from '../components/DialogWithButtons';
+import TableCard from '../components/TableCard';
 import PageHeader from '../components/PageHeader';
+
 import rest from '../utils/rest';
 
-// Here we 'connect' the component to the Redux store. This means that the component will receive
-// parts of the Redux store as its props. Exactly which parts is chosen by mapStateToProps.
-
-// We should map only necessary values as props, in order to avoid unnecessary re-renders. In this
-// case we need the list of users, as returned by the REST API. The component will be able to access
-// the users list via `this.props.users`. Additionally, we need details about the selected user,
-// which will be available as `this.props.userDetails`.
-
-// The second function (mapDispatchToProps) allows us to 'make changes' to the Redux store, by
-// dispatching Redux actions. The functions we define here will be available to the component as
-// props, so in our example the component will be able to call `this.props.refresh()` in order to
-// refresh the users list, and `this.props.refreshUser(user)` to fetch more info about a specific
-// user.
-
-// More details: https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options
-
-// The injectIntl decorator makes this.props.intl.formatMessage available to the component, which
-// is used for localization.
-
-const mapStateToProps = state => ({
-  users: state.users,
-  usersLoading: state.users.loading,
-  userDetails: state.userDetails,
-});
-
-const mapDispatchToProps = dispatch => ({
-  refresh: (showAll = false, name = null) => {
-    dispatch(rest.actions.users({
-      showAll: showAll,
-      name: name
-    }));
-  },
-  refreshUser: (user) => {
-    dispatch(rest.actions.userDetails({ userId: user.id }));
-  },
-});
 
 @injectIntl
-@connect(mapStateToProps, mapDispatchToProps)
-export default class Users extends React.Component {
+class Users extends React.Component {
   // Component initial state.
   // Here we keep track of whether the user details dialog is open.
   state = {
-    dialogOpen: false,
+    page: 0,
+    pageEntries: 20,
     showAll: false,
-    name: ''
+    name: '',
+    orderBy: 'name',
+    order: 'asc'
   }
 
   // Refresh user list when component is first mounted
-  componentDidMount() {
-    const { refresh } = this.props;
-
-    refresh();
+  componentWillMount() {
+    this.refresh();
   }
 
-  renderProgressBar() {
-    const { usersLoading } = this.props;
+  refresh(p = {}) {
+    const { dispatch } = this.props;
+    const params = Object.assign(this.state, p);
 
-    return usersLoading
-      ? (
-        <div style={{ marginBottom: '-5px' }}>
-          <LinearProgress />
-        </div>
-      ) : null;
+    this.setState({...this.state, params});
+
+    let queryParams = {
+      offset: params.page * params.pageEntries,
+      limit: params.pageEntries,
+      showAll: params.showAll,
+      name: params.name,
+      orderBy: params.orderBy,
+      order: params.order
+    };
+
+    dispatch(rest.actions.users(queryParams));
   }
 
-  nameSearch() {
-    this.props.refresh(this.state.showAll, this.state.name)
+  refreshUser(user) {
+    const { dispatch } = this.props;
+
+    dispatch(rest.actions.userDetails({ userId: user.id }));
   }
 
   render() {
     const { users, refreshUser, userDetails, intl: { formatMessage } } = this.props;
-    const { dialogOpen } = this.state;
-    const userList = users.data.length ? users.data[0].users : [];
+    const initialPage = 0;
+    const pageEntries = 20;
+
+    return (
+      <div>
+        <PageHeader header={formatMessage({id: 'Children'})} />
+        <TableCard
+          initialPage={ initialPage }
+          pageEntries={ pageEntries }
+          model={ users }
+          emptyMsg={ this.props.noFeedbackMsg }
+          orderBy={this.state.orderBy}
+          order={this.state.order}
+          header={[
+            {
+              id: null,
+              value: row => row.reviewed ?
+                <Done style={{ verticalAlign: 'middle' }} color={lightGreen300}/> :
+                <AlertErrorOutline style={{ verticalAlign: 'middle' }} color={red300}/>,
+
+              style: { width: '20px' },
+              maxShowWidth: 320
+            },
+            {
+              id: 'name',
+              value: row => row.name,
+              columnTitle: <FormattedMessage id='name' />
+            },
+            {
+              id: 'assignee',
+              value: row => row.assignee,
+              columnTitle: <FormattedMessage id='assignee' />,
+              defaultValue: '(nobody)',
+              maxShowWidth: 680
+            },
+            {
+              id: 'received',
+              value: row => new Date(row.createdAt).toLocaleDateString(),
+              columnTitle: <FormattedMessage id='lastFeedback' />,
+              maxShowWidth: 440
+            },
+            {
+              component: (
+                <Button style={{
+                  minWidth: '40px'
+                }}><ArrowForward/></Button>
+              ),
+
+              style: { width: '20px' }
+            }
+          ]}
+          onClickRow={this.refreshUser.bind(this)}
+          refresh={this.refresh.bind(this)}
+        />
+      </div>
+    );
 
     // Show the following user details in the dialog
-    const userDetailsDescription = (
+    /*const userDetailsDescription = (
       <div>
         <DialogContentText>
           <b>{ formatMessage({ id: 'userId' })}</b>{`: ${userDetails.data.id}` }
@@ -160,6 +184,23 @@ export default class Users extends React.Component {
           </TableBody>
         </Table>
       </div>
-    );
+    );*/
   }
 }
+
+Users.propTypes = {
+  users: PropTypes.shape({
+    loading: PropTypes.bool.isRequired,
+    data: PropTypes.object.isRequired
+  }).isRequired,
+  dispatch: PropTypes.func.isRequired
+};
+
+function select(state, ownParams) {
+  return {
+    location: ownParams.location,
+    users: state.users
+  };
+}
+
+export default connect(select)(Users);
