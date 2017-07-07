@@ -1,24 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { connect } from 'react-redux';
-import Button from 'material-ui/Button';
-import { red300, lightGreen300 } from 'material-ui/styles/colors';
-import rest from '../utils/rest';
-import { push } from 'react-router-redux';
+import { push } from 'react-router-redux'
+import { FormattedMessage, injectIntl } from 'react-intl';
 
+import Button from 'material-ui/Button';
+//import { LinearProgress } from 'material-ui/Progress';
 import ArrowForward from 'material-ui-icons/ArrowForward';
 import Done from 'material-ui-icons/Done';
+import { red300, lightGreen300 } from 'material-ui/styles/colors';
 import AlertErrorOutline from 'material-ui-icons/ErrorOutline';
-
-import { FormattedMessage, injectIntl } from 'react-intl';
 
 import TableCard from '../components/TableCard';
 import PageHeader from '../components/PageHeader';
 
+import rest from '../utils/rest';
+
 
 @injectIntl
-class SessionTable extends React.Component {
+class Users extends React.Component {
   state = {
     page: 0,
     pageEntries: 20,
@@ -26,8 +26,9 @@ class SessionTable extends React.Component {
     name: '',
     orderBy: 'name',
     order: 'asc'
-  };
+  }
 
+  // Refresh user list when component is first mounted
   componentWillMount() {
     this.refresh();
   }
@@ -47,30 +48,25 @@ class SessionTable extends React.Component {
       order: params.order
     };
 
-    dispatch(rest.actions.sessions(queryParams));
+    dispatch(rest.actions.users(queryParams));
   }
 
-  openSession(id) {
-    const path = '/feedback/' + id;
-    this.props.dispatch(push(path));
-  }
-
-  sortByColumn(sortParams) {
-    this.setState({...this.state, sortParams}, this.refresh);
+  refreshUser(userId) {
+    this.props.dispatch(push('/children/' + userId));
   }
 
   render() {
+    const { users, intl: { formatMessage } } = this.props;
     const initialPage = 0;
     const pageEntries = 20;
-    const { intl: { formatMessage } } = this.props;
 
-    return(
+    return (
       <div>
-        <PageHeader header={formatMessage({id: 'Feedback'})} />
+        <PageHeader header={formatMessage({id: 'Children'})} />
         <TableCard
           initialPage={ initialPage }
           pageEntries={ pageEntries }
-          model={ this.props.sessions }
+          model={ users }
           emptyMsg={ this.props.noFeedbackMsg }
           orderBy={this.state.orderBy}
           order={this.state.order}
@@ -81,14 +77,13 @@ class SessionTable extends React.Component {
                 <Done style={{ verticalAlign: 'middle' }} color={lightGreen300}/> :
                 <AlertErrorOutline style={{ verticalAlign: 'middle' }} color={red300}/>,
 
-              className: 'row-icon',
-              maxShowWidth: 320,
-              disablePadding: true
+              style: { width: '20px' },
+              maxShowWidth: 320
             },
             {
               id: 'name',
-              value: row => row.user.name,
-              columnTitle: <FormattedMessage id='child' />
+              value: row => row.name,
+              columnTitle: <FormattedMessage id='name' />
             },
             {
               id: 'assignee',
@@ -98,9 +93,9 @@ class SessionTable extends React.Component {
               maxShowWidth: 680
             },
             {
-              id: 'createdAt',
+              id: 'received',
               value: row => new Date(row.createdAt).toLocaleDateString(),
-              columnTitle: <FormattedMessage id='feedbackStartDate' />,
+              columnTitle: <FormattedMessage id='lastFeedback' />,
               maxShowWidth: 440
             },
             {
@@ -109,10 +104,11 @@ class SessionTable extends React.Component {
                   minWidth: '40px'
                 }}><ArrowForward/></Button>
               ),
-              className: 'row-action'
+
+              style: { width: '20px' }
             }
           ]}
-          onClickRow={this.openSession.bind(this)}
+          onClickRow={this.refreshUser.bind(this)}
           refresh={this.refresh.bind(this)}
         />
       </div>
@@ -120,8 +116,8 @@ class SessionTable extends React.Component {
   }
 }
 
-SessionTable.propTypes = {
-  sessions: PropTypes.shape({
+Users.propTypes = {
+  users: PropTypes.shape({
     loading: PropTypes.bool.isRequired,
     data: PropTypes.object.isRequired
   }).isRequired,
@@ -131,8 +127,8 @@ SessionTable.propTypes = {
 function select(state, ownParams) {
   return {
     location: ownParams.location,
-    sessions: state.sessions
+    users: state.users
   };
 }
 
-export default connect(select)(SessionTable);
+export default connect(select)(Users);

@@ -38,7 +38,8 @@ class SessionDetail extends React.Component {
 
   refresh() {
     const {dispatch} = this.props;
-    dispatch(rest.actions.sessionDetail({id: this.props.id}));
+
+    dispatch(rest.actions.feedbackDetail({id: this.props.id}));
     dispatch(rest.actions.employees());
   }
 
@@ -66,7 +67,7 @@ function select(state, ownProps) {
   return {
     session: state.sessionDetail,
     employees: state.employees,
-    id: ownProps.params.id
+    id: ownProps.match.params.feedbackId
   };
 }
 

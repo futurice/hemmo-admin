@@ -35,18 +35,18 @@ Routes may optionally contain the following keys:
 
 // Icons
 import HomeIcon from 'material-ui-icons/Home';
-import SessionsIcon from 'material-ui-icons/Assessment';
-import UsersIcon from 'material-ui-icons/SupervisorAccount';
+import FeedbackIcon from 'material-ui-icons/Assessment';
+import ChildrenIcon from 'material-ui-icons/SupervisorAccount';
 import PreferencesIcon from 'material-ui-icons/Settings';
 import LoginIcon from 'material-ui-icons/AccountCircle';
 import LogoutIcon from 'material-ui-icons/ExitToApp';
 
 // Components
 import Home from '../modules/Home';
-import Sessions from '../modules/Sessions';
-import SessionDetail from '../modules/SessionDetail';
-import Users from '../modules/Users';
-import UserDetail from '../modules/UserDetail';
+import Feedbacks from '../modules/Feedbacks';
+import FeedbackDetail from '../modules/FeedbackDetail';
+import Children from '../modules/Children';
+import ChildDetail from '../modules/ChildDetail';
 import Preferences from '../modules/Preferences';
 import Login from '../modules/Login';
 import Logout from '../modules/Logout';
@@ -63,26 +63,26 @@ const routeConfigs = [{
   exact: true
 }, {
   path: '/feedback/:feedbackId',
-  component: SessionDetail,
+  component: FeedbackDetail,
   requiresLogin: true
 }, {
   path: '/feedback',
   name: 'Feedback',
-  component: Sessions,
-  icon: SessionsIcon,
+  component: Feedbacks,
+  icon: FeedbackIcon,
   requiresLogin: true,
   showInMenu: true,
   exact: true
 }, {
-  path: '/users/:userId',
-  component: UserDetail,
+  path: '/children/:userId',
+  component: ChildDetail,
   requiresLogin: true,
   showInMenu: false
 }, {
-  path: '/users',
+  path: '/children',
   name: 'Children',
-  component: Users,
-  icon: UsersIcon,
+  component: Children,
+  icon: ChildrenIcon,
   separator: true,
   requiresLogin: true,
   showInMenu: true,
@@ -174,7 +174,7 @@ class AuthRedirectRoute extends React.Component {
 }
 
 // AuthRedirectRoute wrapper which mounts routeConfig at '/' regardless of configured path
-export const IndexRoute = ({ routeConfig, ...rest }) => {
+/*export const IndexRoute = ({ routeConfig, ...rest }) => {
   const indexRoute = {
     ...routeConfig,
     path: '/',
@@ -191,7 +191,7 @@ export const IndexRoute = ({ routeConfig, ...rest }) => {
 
 IndexRoute.propTypes = {
   routeConfig: RouteConfigShape.isRequired,
-};
+};*/
 
 // Map all configured routes into AuthRedirectRoute components
 export const ConfiguredRoutes = ({ ...rest }) => (

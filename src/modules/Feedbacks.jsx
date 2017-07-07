@@ -1,24 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { push } from 'react-router-redux'
-import { FormattedMessage, injectIntl } from 'react-intl';
 
+import { connect } from 'react-redux';
 import Button from 'material-ui/Button';
-import { LinearProgress } from 'material-ui/Progress';
+import { red300, lightGreen300 } from 'material-ui/styles/colors';
+import rest from '../utils/rest';
+import { push } from 'react-router-redux';
+
 import ArrowForward from 'material-ui-icons/ArrowForward';
 import Done from 'material-ui-icons/Done';
-import { red300, lightGreen300 } from 'material-ui/styles/colors';
 import AlertErrorOutline from 'material-ui-icons/ErrorOutline';
+
+import { FormattedMessage, injectIntl } from 'react-intl';
 
 import TableCard from '../components/TableCard';
 import PageHeader from '../components/PageHeader';
 
-import rest from '../utils/rest';
-
 
 @injectIntl
-class Users extends React.Component {
+class FeedbackTable extends React.Component {
   state = {
     page: 0,
     pageEntries: 20,
@@ -26,9 +26,8 @@ class Users extends React.Component {
     name: '',
     orderBy: 'name',
     order: 'asc'
-  }
+  };
 
-  // Refresh user list when component is first mounted
   componentWillMount() {
     this.refresh();
   }
@@ -48,25 +47,30 @@ class Users extends React.Component {
       order: params.order
     };
 
-    dispatch(rest.actions.users(queryParams));
+    dispatch(rest.actions.feedbacks(queryParams));
   }
 
-  refreshUser(userId) {
-    this.props.dispatch(push('/users/' + userId));
+  openFeedback(id) {
+    const path = '/feedback/' + id;
+    this.props.dispatch(push(path));
+  }
+
+  sortByColumn(sortParams) {
+    this.setState({...this.state, sortParams}, this.refresh);
   }
 
   render() {
-    const { users, refreshUser, userDetails, intl: { formatMessage } } = this.props;
     const initialPage = 0;
     const pageEntries = 20;
+    const { intl: { formatMessage } } = this.props;
 
-    return (
+    return(
       <div>
-        <PageHeader header={formatMessage({id: 'Children'})} />
+        <PageHeader header={formatMessage({id: 'Feedback'})} />
         <TableCard
           initialPage={ initialPage }
           pageEntries={ pageEntries }
-          model={ users }
+          model={ this.props.feedbacks }
           emptyMsg={ this.props.noFeedbackMsg }
           orderBy={this.state.orderBy}
           order={this.state.order}
@@ -77,13 +81,14 @@ class Users extends React.Component {
                 <Done style={{ verticalAlign: 'middle' }} color={lightGreen300}/> :
                 <AlertErrorOutline style={{ verticalAlign: 'middle' }} color={red300}/>,
 
-              style: { width: '20px' },
-              maxShowWidth: 320
+              className: 'row-icon',
+              maxShowWidth: 320,
+              disablePadding: true
             },
             {
               id: 'name',
-              value: row => row.name,
-              columnTitle: <FormattedMessage id='name' />
+              value: row => row.user.name,
+              columnTitle: <FormattedMessage id='child' />
             },
             {
               id: 'assignee',
@@ -93,9 +98,9 @@ class Users extends React.Component {
               maxShowWidth: 680
             },
             {
-              id: 'received',
+              id: 'createdAt',
               value: row => new Date(row.createdAt).toLocaleDateString(),
-              columnTitle: <FormattedMessage id='lastFeedback' />,
+              columnTitle: <FormattedMessage id='feedbackStartDate' />,
               maxShowWidth: 440
             },
             {
@@ -104,11 +109,10 @@ class Users extends React.Component {
                   minWidth: '40px'
                 }}><ArrowForward/></Button>
               ),
-
-              style: { width: '20px' }
+              className: 'row-action'
             }
           ]}
-          onClickRow={this.refreshUser.bind(this)}
+          onClickRow={this.openFeedback.bind(this)}
           refresh={this.refresh.bind(this)}
         />
       </div>
@@ -116,8 +120,8 @@ class Users extends React.Component {
   }
 }
 
-Users.propTypes = {
-  users: PropTypes.shape({
+FeedbackTable.propTypes = {
+  feedbacks: PropTypes.shape({
     loading: PropTypes.bool.isRequired,
     data: PropTypes.object.isRequired
   }).isRequired,
@@ -127,8 +131,8 @@ Users.propTypes = {
 function select(state, ownParams) {
   return {
     location: ownParams.location,
-    users: state.users
+    feedbacks: state.feedbacks
   };
 }
 
-export default connect(select)(Users);
+export default connect(select)(FeedbackTable);
