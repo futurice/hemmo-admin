@@ -44,6 +44,7 @@ import LogoutIcon from 'material-ui-icons/ExitToApp';
 // Components
 import Home from '../modules/Home';
 import Sessions from '../modules/Sessions';
+import SessionDetail from '../modules/SessionDetail';
 import Users from '../modules/Users';
 import UserDetail from '../modules/UserDetail';
 import Preferences from '../modules/Preferences';
@@ -53,25 +54,28 @@ import NotFound from '../modules/NotFound';
 
 // Routes
 const routeConfigs = [{
-  path: '/home',
+  path: '/',
   name: 'Home',
   component: Home,
   icon: HomeIcon,
   requiresLogin: true,
-  showInMenu: true
+  showInMenu: true,
+  exact: true
 }, {
-  path: '/sessions',
+  path: '/feedback/:feedbackId',
+  component: SessionDetail,
+  requiresLogin: true
+}, {
+  path: '/feedback',
   name: 'Feedback',
   component: Sessions,
   icon: SessionsIcon,
   requiresLogin: true,
-  showInMenu: true
+  showInMenu: true,
+  exact: true
 }, {
   path: '/users/:userId',
-  name: 'Child',
   component: UserDetail,
-  icon: UsersIcon,
-  separator: true,
   requiresLogin: true,
   showInMenu: false
 }, {
@@ -81,7 +85,8 @@ const routeConfigs = [{
   icon: UsersIcon,
   separator: true,
   requiresLogin: true,
-  showInMenu: true
+  showInMenu: true,
+  exact: true
 }, {
   path: '/preferences',
   name: 'Preferences',
@@ -116,11 +121,10 @@ Code below this line configures the routes as given by routeConfigs
 // PropTypes "schema" for routeConfig
 export const RouteConfigShape = PropTypes.shape({
   path: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   component: PropTypes.func.isRequired,
-  icon: PropTypes.func.isRequired,
-  requiresLogin: PropTypes.bool,
-  showHeader: PropTypes.bool,
+  icon: PropTypes.func,
+  requiresLogin: PropTypes.bool
 });
 
 const mapStateToProps = state => ({

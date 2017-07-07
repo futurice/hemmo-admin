@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Button from 'material-ui/Button';
 import { red300, lightGreen300 } from 'material-ui/styles/colors';
 import rest from '../utils/rest';
-import { push } from 'react-router-redux'
+import { push } from 'react-router-redux';
 
 import ArrowForward from 'material-ui-icons/ArrowForward';
 import Done from 'material-ui-icons/Done';
@@ -35,7 +35,7 @@ class SessionTable extends React.Component {
   refresh(p = {}) {
     const { dispatch } = this.props;
     const params = Object.assign(this.state, p);
-console.log(p)
+
     this.setState({...this.state, params});
 
     let queryParams = {
@@ -51,7 +51,7 @@ console.log(p)
   }
 
   openSession(id) {
-    const path = '/sessions/' + id;
+    const path = '/feedback/' + id;
     this.props.dispatch(push(path));
   }
 

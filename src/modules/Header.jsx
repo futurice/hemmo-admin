@@ -23,23 +23,6 @@ import { push } from 'react-router-redux';
 import { toggleDrawer } from './NavigationDrawer';
 import routes, { NavigationRoutes } from '../utils/routes';
 
-const getTitle = (path) => {
-  if (path === '/') {
-    return routes[0].name;
-  }
-
-  const foundRoute = routes.find(route => (
-    route.path === path ? route.name : null
-  ));
-
-  if (foundRoute) {
-    return foundRoute.name;
-  }
-  console.warn(`No title found for path '${path}'`);
-  console.warn('Make sure the title name is defined in src/routes.js');
-  return `ERROR: Title not found for path: ${path}`;
-};
-
 
 const mapStateToProps = (state, ownProps) => ({
   path: ownProps.location.pathname,
@@ -98,50 +81,6 @@ export default class Header extends React.Component {
     const scope = user ? user.scope : null;
     const navigationRoutes = NavigationRoutes(user, path);
 
-    /*const rightMenu = user ? (
-      <Menu
-        open={rightMenuOpen}
-        anchorEl={rightMenuAnchorEl}
-        onRequestClose={() => hideMenu()}
-      >
-        <ListItem
-          button
-          onClick={() => { hideMenu(); preferences(); }}
-        >
-          <ListItemIcon>
-            <AccountCircleIcon />
-          </ListItemIcon>
-          <ListItemText primary={user.email} secondary={`Scope: ${user.scope}`} />
-        </ListItem>
-        <Divider />
-        <ListItem
-          button
-          onClick={() => { hideMenu(); logout(); }}
-        >
-          <ListItemIcon>
-            <ExitToAppIcon />
-          </ListItemIcon>
-          <ListItemText primary={formatMessage({ id: 'Logout' })} />
-        </ListItem>
-      </Menu>
-    ) : (
-      <Menu
-        open={rightMenuOpen}
-        anchorEl={rightMenuAnchorEl}
-        onRequestClose={() => hideMenu()}
-      >
-        <ListItem
-          button
-          onClick={() => { hideMenu(); login(); }}
-        >
-          <ListItemIcon>
-            <AccountCircleIcon />
-          </ListItemIcon>
-          <ListItemText primary={formatMessage({ id: 'Login' })} />
-        </ListItem>
-      </Menu>
-    );*/
-
     return (
       <AppBar position="static" >
         <Toolbar>
@@ -172,16 +111,3 @@ export default class Header extends React.Component {
     );
   }
 }
-
-/*
-<IconButton
-  color="contrast"
-  onClick={e => this.setState({
-    rightMenuAnchorEl: e.currentTarget,
-    rightMenuOpen: true,
-  })}
->
-  <MoreVertIcon />
-</IconButton>
-{ rightMenu }
-*/

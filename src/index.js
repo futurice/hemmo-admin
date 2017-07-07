@@ -79,8 +79,7 @@ export default class App extends React.Component {
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
       <NavigationDrawer />
       <Header />
-
-      <IndexRoute routeConfig={routeConfigs[0]} />
+      
       <ConfiguredRoutes />
 
       <ErrorSnackbar />

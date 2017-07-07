@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux'
 import { FormattedMessage, injectIntl } from 'react-intl';
 
 import Button from 'material-ui/Button';
@@ -18,8 +19,6 @@ import rest from '../utils/rest';
 
 @injectIntl
 class Users extends React.Component {
-  // Component initial state.
-  // Here we keep track of whether the user details dialog is open.
   state = {
     page: 0,
     pageEntries: 20,
@@ -52,10 +51,8 @@ class Users extends React.Component {
     dispatch(rest.actions.users(queryParams));
   }
 
-  refreshUser(user) {
-    const { dispatch } = this.props;
-
-    dispatch(rest.actions.userDetails({ userId: user.id }));
+  refreshUser(userId) {
+    this.props.dispatch(push('/users/' + userId));
   }
 
   render() {
@@ -116,75 +113,6 @@ class Users extends React.Component {
         />
       </div>
     );
-
-    // Show the following user details in the dialog
-    /*const userDetailsDescription = (
-      <div>
-        <DialogContentText>
-          <b>{ formatMessage({ id: 'userId' })}</b>{`: ${userDetails.data.id}` }
-        </DialogContentText>
-        <DialogContentText>
-          <b>{ formatMessage({ id: 'email' })}</b>{`: ${userDetails.data.email}` }
-        </DialogContentText>
-        <DialogContentText>
-          <b>{ formatMessage({ id: 'description' })}</b>{`: ${userDetails.data.description}` }
-        </DialogContentText>
-      </div>
-    );
-
-    return (
-      <div>
-        <PageHeader header={formatMessage({ id: 'Children' })} />
-        <DialogWithButtons
-          title={formatMessage({ id: 'userDetails' })}
-          description={userDetailsDescription}
-          submitAction={formatMessage({ id: 'close' })}
-          isOpen={dialogOpen}
-          loading={userDetails.loading}
-          submit={() => this.setState({ dialogOpen: false })}
-          close={() => this.setState({ dialogOpen: false })}
-        />
-
-        { this.renderProgressBar() }
-
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>{formatMessage({ id: 'name' })}</TableCell>
-              <TableCell>{formatMessage({ id: 'lastFeedback' })}</TableCell>
-              <TableCell>{formatMessage({ id: 'assignee' })}</TableCell>
-              <TableCell>{formatMessage({ id: 'email' })}</TableCell>
-              <TableCell />
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {
-              // Loop over each user and render a <TableRow>
-              userList.map((user, i) => (
-                <TableRow key={user.id}>
-                  <TableCell>{user.name}</TableCell>
-                  <TableCell></TableCell>
-                  <TableCell>{user.assignee}</TableCell>
-                  <TableCell></TableCell>
-                  <TableCell numeric>
-                    <Button
-                      color="primary"
-                      onClick={() => {
-                        refreshUser(user);
-                        this.setState({ dialogOpen: true });
-                      }}
-                    >
-                      <ListIcon style={{ paddingRight: 10 }} />
-                      {formatMessage({ id: 'showUserDetails' })}
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))
-            }
-          </TableBody>
-        </Table>
-      </div>
-    );*/
   }
 }
 
