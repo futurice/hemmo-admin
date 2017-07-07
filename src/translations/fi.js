@@ -1,5 +1,6 @@
 export default {
   // Navigation
+  HemmoAdmin: 'Hemmo Admin',
   navigation: 'Navigaatio',
   Home: 'Koti',
   Users: 'Käyttäjät',
@@ -8,11 +9,13 @@ export default {
   Login: 'Kirjaudu sisään',
 
   // Users view
-  userId: 'ID',
+  userId: 'User ID',
   email: 'Sähköpostiosoite',
   description: 'Kuvaus',
   showUserDetails: 'Lisätiedot',
   userDetails: 'Käyttäjän lisätiedot',
+  showAll: 'Näytä kaikki',
+  lastFeedback: 'Viimeisin palaute',
 
   // Preferences view
   language: 'Sovelluksen kieli',
@@ -35,6 +38,8 @@ export default {
 
   routeHome: 'Koti',
   Sessions: 'Palautteet',
+  Children: 'Lapset',
+  Feedback: 'Palautteet',
   routeChildren: 'Lapset',
   routeLogin: 'Kirjaudu sisään',
   routeFeedbackDetails: 'Palautteen tiedot',
@@ -54,9 +59,7 @@ export default {
   feedbackStartDate: 'Päivämäärä',
 
   percentHappy: '{percent}% positiivista palautetta',
-  'assignee:': 'Kohdistettu työntekijä:',
   assigneeExplanation: 'Palautteet lapselta {child} kohdistetaan automattisesti valitulle työntekijälle.',
-  'registrationDate:': 'Käyttäjän luontipvm:',
   feedbackBy: 'Palautetta lapselta {child}',
   deleteUser: 'Poista {child}',
   deleteUserDesc: 'Poista käyttäjä sekä kaikki heidän antamat palautteet järjestelmästä',

@@ -5,6 +5,7 @@ import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import Divider from 'material-ui/Divider';
+import Button from 'material-ui/Button';
 
 import Menu from 'material-ui/Menu';
 import { ListItem, ListItemText, ListItemIcon } from 'material-ui/List';
@@ -16,30 +17,11 @@ import AccountCircleIcon from 'material-ui-icons/AccountCircle';
 import { FormattedMessage, injectIntl } from 'react-intl';
 
 import { withRouter } from 'react-router';
-
 import { connect } from 'react-redux';
-
 import { push } from 'react-router-redux';
 
 import { toggleDrawer } from './NavigationDrawer';
-import routes from '../utils/routes';
-
-const getTitle = (path) => {
-  if (path === '/') {
-    return routes[0].name;
-  }
-
-  const foundRoute = routes.find(route => (
-    route.path === path ? route.name : null
-  ));
-
-  if (foundRoute) {
-    return foundRoute.name;
-  }
-  console.warn(`No title found for path '${path}'`);
-  console.warn('Make sure the title name is defined in src/routes.js');
-  return `ERROR: Title not found for path: ${path}`;
-};
+import routes, { NavigationRoutes } from '../utils/routes';
 
 
 const mapStateToProps = (state, ownProps) => ({
@@ -60,6 +42,9 @@ const mapDispatchToProps = dispatch => ({
   preferences() {
     dispatch(push('/preferences'));
   },
+  changeView(view) {
+    dispatch(push(view.toLowerCase()));
+  }
 });
 
 @withRouter
@@ -83,6 +68,7 @@ export default class Header extends React.Component {
       login,
       preferences,
       logout,
+      changeView,
       intl: { formatMessage },
     } = this.props;
 
@@ -92,50 +78,8 @@ export default class Header extends React.Component {
     } = this.state;
 
     const hideMenu = () => this.setState({ rightMenuOpen: false });
-
-    const rightMenu = user ? (
-      <Menu
-        open={rightMenuOpen}
-        anchorEl={rightMenuAnchorEl}
-        onRequestClose={() => hideMenu()}
-      >
-        <ListItem
-          button
-          onClick={() => { hideMenu(); preferences(); }}
-        >
-          <ListItemIcon>
-            <AccountCircleIcon />
-          </ListItemIcon>
-          <ListItemText primary={user.email} secondary={`Scope: ${user.scope}`} />
-        </ListItem>
-        <Divider />
-        <ListItem
-          button
-          onClick={() => { hideMenu(); logout(); }}
-        >
-          <ListItemIcon>
-            <ExitToAppIcon />
-          </ListItemIcon>
-          <ListItemText primary={formatMessage({ id: 'Logout' })} />
-        </ListItem>
-      </Menu>
-    ) : (
-      <Menu
-        open={rightMenuOpen}
-        anchorEl={rightMenuAnchorEl}
-        onRequestClose={() => hideMenu()}
-      >
-        <ListItem
-          button
-          onClick={() => { hideMenu(); login(); }}
-        >
-          <ListItemIcon>
-            <AccountCircleIcon />
-          </ListItemIcon>
-          <ListItemText primary={formatMessage({ id: 'Login' })} />
-        </ListItem>
-      </Menu>
-    );
+    const scope = user ? user.scope : null;
+    const navigationRoutes = NavigationRoutes(user, path);
 
     return (
       <AppBar position="static" >
@@ -151,18 +95,17 @@ export default class Header extends React.Component {
             type="title"
             color="inherit"
           >
-            <FormattedMessage id={getTitle(path)} />
+            <FormattedMessage id="HemmoAdmin" />
           </Typography>
-          <IconButton
-            color="contrast"
-            onClick={e => this.setState({
-              rightMenuAnchorEl: e.currentTarget,
-              rightMenuOpen: true,
-            })}
-          >
-            <MoreVertIcon />
-          </IconButton>
-          { rightMenu }
+
+          {navigationRoutes.map((route, i) => {
+            return <Button
+              key={i}
+              color="contrast"
+              className={route.active ? 'active' : ''}
+              onClick={() => { changeView(route.path); }}
+            >{route.name}</Button>;
+          })}
         </Toolbar>
       </AppBar>
     );

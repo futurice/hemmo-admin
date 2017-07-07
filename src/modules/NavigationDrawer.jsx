@@ -8,7 +8,6 @@ import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
-
 import Drawer from 'material-ui/Drawer';
 
 import List, {
@@ -25,7 +24,7 @@ import {
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
-import routes from '../utils/routes';
+import routes, { NavigationRoutes } from '../utils/routes';
 import theme from '../utils/theme';
 
 // Action creators
@@ -79,6 +78,7 @@ export default class NavigationDrawer extends React.Component {
 
   render() {
     const { close, changeView, drawerOpened, path, user } = this.props;
+    const navigationRoutes = NavigationRoutes(user, path);
 
     return (
       <Drawer
@@ -105,20 +105,9 @@ export default class NavigationDrawer extends React.Component {
 
         <List>
           {
-            routes.map((route) => {
-              let active = (path === route.path);
-
-              if (route.path === routes[0].path && path === '/') {
-                active = true;
-              }
-
-              const scope = user ? user.scope : null;
+            navigationRoutes.map((route) => {
               const Icon = route.icon;
-
-              if (Array.isArray(route.hideWhenScope) && route.hideWhenScope.includes(scope)) {
-                return null;
-              }
-
+              
               return (
                 <div key={route.path}>
                   <ListItem
@@ -127,13 +116,13 @@ export default class NavigationDrawer extends React.Component {
                     onClick={() => { changeView(route.path); }}
                   >
                     <ListItemIcon
-                      style={active ? { color: theme.palette.primary[500] } : null}
+                      style={route.active ? { color: theme.palette.primary[500] } : null}
                     >
                       <Icon />
                     </ListItemIcon>
 
                     <ListItemText
-                      style={active ? { color: theme.palette.primary[500] } : null}
+                      style={route.active ? { color: theme.palette.primary[500] } : null}
                       primary={<FormattedMessage id={route.name} />}
                     />
                   </ListItem>

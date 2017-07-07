@@ -44,44 +44,64 @@ import LogoutIcon from 'material-ui-icons/ExitToApp';
 // Components
 import Home from '../modules/Home';
 import Sessions from '../modules/Sessions';
+import SessionDetail from '../modules/SessionDetail';
 import Users from '../modules/Users';
+import UserDetail from '../modules/UserDetail';
 import Preferences from '../modules/Preferences';
 import Login from '../modules/Login';
 import Logout from '../modules/Logout';
+import NotFound from '../modules/NotFound';
 
 // Routes
 const routeConfigs = [{
-  path: '/home',
+  path: '/',
   name: 'Home',
   component: Home,
   icon: HomeIcon,
   requiresLogin: true,
+  showInMenu: true,
+  exact: true
 }, {
-  path: '/sessions',
-  name: 'Sessions',
+  path: '/feedback/:feedbackId',
+  component: SessionDetail,
+  requiresLogin: true
+}, {
+  path: '/feedback',
+  name: 'Feedback',
   component: Sessions,
   icon: SessionsIcon,
   requiresLogin: true,
+  showInMenu: true,
+  exact: true
+}, {
+  path: '/users/:userId',
+  component: UserDetail,
+  requiresLogin: true,
+  showInMenu: false
 }, {
   path: '/users',
-  name: 'Users',
+  name: 'Children',
   component: Users,
   icon: UsersIcon,
   separator: true,
   requiresLogin: true,
+  showInMenu: true,
+  exact: true
 }, {
   path: '/preferences',
   name: 'Preferences',
   component: Preferences,
   icon: PreferencesIcon,
   requiresLogin: true,
+  showInMenu: true
 }, {
   path: '/login',
   name: 'Login',
   component: Login,
   icon: LoginIcon,
   requiresLogin: false,
-  hideWhenScope: ['user', 'admin'],
+  hideWhenScope: ['employee', 'admin'],
+  showInMenu: true
 }, {
   path: '/logout',
   name: 'Logout',
@@ -89,6 +109,7 @@ const routeConfigs = [{
   icon: LogoutIcon,
   requiresLogin: false,
   hideWhenScope: [null],
+  showInMenu: true
 }];
 
 export default routeConfigs;
@@ -100,11 +121,10 @@ Code below this line configures the routes as given by routeConfigs
 // PropTypes "schema" for routeConfig
 export const RouteConfigShape = PropTypes.shape({
   path: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   component: PropTypes.func.isRequired,
-  icon: PropTypes.func.isRequired,
-  requiresLogin: PropTypes.bool,
-  showHeader: PropTypes.bool,
+  icon: PropTypes.func,
+  requiresLogin: PropTypes.bool
 });
 
 const mapStateToProps = state => ({
@@ -143,7 +163,7 @@ class AuthRedirectRoute extends React.Component {
             <Redirect
               to={{
                 pathname: '/login',
-                state: { from: props.location },
+                state: { from: props.location }
               }}
             />
           )
@@ -185,9 +205,30 @@ export const ConfiguredRoutes = ({ ...rest }) => (
         />
       ))
     }
-    <Redirect to={{ pathname: '/' }} />
+    <Route component={NotFound} />
   </Switch>
 );
+
+// Return list of routes to show in navigation element(s)
+export const NavigationRoutes = (user, path) => {
+  const scope = user ? user.scope : null;
+
+  return routeConfigs.reduce((ary, route) => {
+    let active = (path === route.path);
+    const hide = Array.isArray(route.hideWhenScope) && route.hideWhenScope.includes(scope);
+    const isAuthenticated = route.requiresLogin ? user !== null : true;
+
+    if (route.path === routeConfigs[0].path && path === '/') {
+      active = true;
+    }
+
+    if (route.showInMenu &&!hide && isAuthenticated) {
+      ary.push({...route, active});
+    }
+
+    return ary;
+  }, []);
+}
 
 // Check that routeConfigs array is a valid RouteConfigShape
 PropTypes.checkPropTypes({

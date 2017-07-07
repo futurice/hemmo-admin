@@ -1,0 +1,35 @@
+html {
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  font-size: 13px;
+  line-height: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+	cursor: pointer !important;
+}
+
+header {
+	button {
+		&.active {
+			&>span:first-child {
+				position: relative;
+
+				&:after {
+					content: '';
+					height: 2px;
+					width: 100%;
+					border-bottom: 2px solid #000;
+					position: absolute;
+					bottom: -5px;
+					left: 50%;
+					transform: translateX(-50%);
+				}
+			}
+		}
+	}
+}

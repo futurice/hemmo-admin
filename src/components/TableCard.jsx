@@ -7,15 +7,6 @@ import CardToolbar from './CardToolbar';
 import ModelTable from './ModelTable';
 
 class TableCard extends React.Component {
-  componentDidMount() {
-    if (this.props.small) {
-      this.props.refresh({
-        page: 0,
-        pageEntries: 20
-      });
-    }
-  }
-
   render() {
     const { model } = this.props;
 
@@ -35,9 +26,12 @@ class TableCard extends React.Component {
     } else {
       body = (
         <ModelTable
+          order={this.props.order}
+          orderBy={this.props.orderBy}
           header={this.props.header}
           entries={this.props.model.data.entries}
           onClickRow={this.props.onClickRow}
+          onSortRequest={this.props.refresh}
         />
       );
     }

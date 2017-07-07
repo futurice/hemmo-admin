@@ -75,9 +75,6 @@ export default class ErrorSnackbar extends React.Component {
       }}
       open={open}
       autoHideDuration={6000}
-      contentProps={{
-        'aria-describedby': 'error-snackbar',
-      }}
       message={<span id="error-snackbar">{ msg }</span>}
       onRequestClose={this.handleRequestClose}
       action={[

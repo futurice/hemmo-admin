@@ -1,25 +1,22 @@
-/*
- * React & Redux
- */
-import { Component, PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import rest from '../../reducers/api';
+import rest from '../utils/rest';
 
 /*
  * Components
  */
-import SessionContents from './SessionContents';
-import Overview from './Overview';
-import Attachment from './Attachment';
-import Error from '../Error';
+//import SessionContents from './SessionContents';
+//import Overview from './Overview';
+//import Attachment from './Attachment';
+//import Error from '../Error';
 
 
 /*
  * MaterialUI
  */
-import CircularProgress from 'material-ui/CircularProgress';
+//import CircularProgress from 'material-ui/CircularProgress';
 
-class SessionDetail extends Component {
+class SessionDetail extends React.Component {
   constructor(props) {
     super(props);
 
@@ -59,7 +56,25 @@ class SessionDetail extends Component {
   render() {
     const { session } = this.props;
 
-    if (session.loading) {
+    return (
+      <div />
+    );
+  }
+}
+
+function select(state, ownProps) {
+  return {
+    session: state.sessionDetail,
+    employees: state.employees,
+    id: ownProps.params.id
+  };
+}
+
+export default connect(select)(SessionDetail);
+
+
+/*
+if (session.loading) {
       return(
         <div style={{textAlign: 'center'}}>
           <CircularProgress/>
@@ -89,14 +104,4 @@ class SessionDetail extends Component {
       );
     }
   }
-}
-
-function select(state, ownProps) {
-  return {
-    session: state.sessionDetail,
-    employees: state.employees,
-    id: ownProps.params.id
-  };
-}
-
-export default connect(select)(SessionDetail);
+  */

@@ -1,5 +1,6 @@
 import reduxApi, { transformers } from 'redux-api';
 import adapterFetch from 'redux-api/lib/adapters/fetch';
+import { push } from 'react-router-redux';
 import jwtDecode from 'jwt-decode';
 
 import { showError } from '../modules/ErrorSnackbar';
@@ -32,7 +33,24 @@ if (process.env.NODE_ENV === 'development') {
 const rest = reduxApi({
   users: {
     url: `${apiRoot}/users`,
-    transformer: transformers.array,
+    transformer(data, prevData = {
+      entries: [],
+      totalEntries: 0,
+      name: 'Users'
+    }, action) {
+      if (data) {
+        return {
+          ...prevData,
+          ...data,
+          entries: data.users || [],
+          totalEntries: data.count || 0
+        };
+      } else {
+        return {
+          ...prevData
+        };
+      }
+    },
     crud: true,
   },
   userDetails: {
@@ -118,27 +136,6 @@ const rest = reduxApi({
       }
     }
   },
-  sessionsExtra: {
-    url: `${apiRoot}/sessions`,
-    transformer(data, prevData = {
-      entries: [],
-      totalEntries: 0,
-      name: 'Feedback'
-    }, action) {
-      if (data) {
-        return {
-          ...prevData,
-          ...data,
-          entries: data.sessions || [],
-          totalEntries: data.count || 0
-        };
-      } else {
-        return {
-          ...prevData
-        };
-      }
-    }
-  },
   sessionDetail: {
     url: `${apiRoot}/sessions/:id`,
     transformer(data, prevData) {
@@ -190,6 +187,11 @@ const rest = reduxApi({
 .use('responseHandler', (err) => {
   if (err) {
     let msg = 'Error';
+
+    // Redirect to login if session has expired
+    if (err.statusCode === 401 && err.message === 'Invalid token') {
+      store.dispatch(push('/login'));
+    }
 
     // error code
     msg += err.statusCode ? ` ${err.statusCode}` : '';
