@@ -80,7 +80,9 @@ export default class App extends React.Component {
       <NavigationDrawer />
       <Header />
       
-      <ConfiguredRoutes />
+      <div className="content-wrapper">
+        <ConfiguredRoutes />
+      </div>
 
       <ErrorSnackbar />
     </div>

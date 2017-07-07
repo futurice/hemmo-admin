@@ -4,6 +4,7 @@ import { push } from 'react-router-redux';
 import jwtDecode from 'jwt-decode';
 
 import { showError } from '../modules/ErrorSnackbar';
+import { reset } from '../modules/Logout';
 
 let store;
 
@@ -190,6 +191,7 @@ const rest = reduxApi({
 
     // Redirect to login if session has expired
     if (err.statusCode === 401 && err.message === 'Invalid token') {
+      store.dispatch(reset());
       store.dispatch(push('/login'));
     }
 

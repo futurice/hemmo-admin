@@ -98,14 +98,16 @@ export default class Header extends React.Component {
             <FormattedMessage id="HemmoAdmin" />
           </Typography>
 
-          {navigationRoutes.map((route, i) => {
-            return <Button
-              key={i}
-              color="contrast"
-              className={route.active ? 'active' : ''}
-              onClick={() => { changeView(route.path); }}
-            >{route.name}</Button>;
-          })}
+          <span className="nav-buttons">
+            {navigationRoutes.map((route, i) => {
+              return <Button
+                key={i}
+                color="contrast"
+                className={route.active ? 'active' : ''}
+                onClick={() => { changeView(route.path); }}
+              >{route.name}</Button>;
+            })}
+          </span>
         </Toolbar>
       </AppBar>
     );

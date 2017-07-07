@@ -30,7 +30,7 @@ export default class ModelTable extends React.Component {
       }
 
       columns.push(
-        <TableCell style={ header.style } key={index}>
+        <TableCell style={ header.style } key={ index } disablePadding={ header.disablePadding } className={ header.className }>
           <TableSortLabel
             active={this.props.orderBy === header.id}
             order={this.props.order}
@@ -69,9 +69,7 @@ export default class ModelTable extends React.Component {
       }
 
       columns.push(
-        <TableCell
-          style={ style }
-          key={ index } >
+        <TableCell style={ style } key={ index } disablePadding={ this.props.header[index].disablePadding } className={ this.props.header[index].className }>
           { body }
         </TableCell>
       );

@@ -10,6 +10,14 @@
 	}
 
 	&>span {
+		flex: 1 0 auto;
+
+		@media(max-width: 1023px) {
+			&:first-child {
+				display: none;
+			}
+		}
+
 		&>div, &>label {
 			margin-right: 2.5rem;
 
@@ -27,6 +35,7 @@
 
 	.pull-right {
 		align-self: flex-end;
+		text-align: right;
 	}
 
 	p {

@@ -81,8 +81,9 @@ class SessionTable extends React.Component {
                 <Done style={{ verticalAlign: 'middle' }} color={lightGreen300}/> :
                 <AlertErrorOutline style={{ verticalAlign: 'middle' }} color={red300}/>,
 
-              style: { width: '20px' },
-              maxShowWidth: 320
+              className: 'row-icon',
+              maxShowWidth: 320,
+              disablePadding: true
             },
             {
               id: 'name',
@@ -108,8 +109,7 @@ class SessionTable extends React.Component {
                   minWidth: '40px'
                 }}><ArrowForward/></Button>
               ),
-
-              style: { width: '20px' }
+              className: 'row-action'
             }
           ]}
           onClickRow={this.openSession.bind(this)}
