@@ -1,0 +1,39 @@
+.toolbar {
+	display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+
+	.select-page-entries {
+		button {
+			vertical-align: middle;
+		}
+	}
+
+	&>span {
+		&>div, &>label {
+			margin-right: 2.5rem;
+
+			&:last-child {
+				margin-right: 0;
+			}
+		}
+	}
+	
+	.text-field {
+		vertical-align: bottom;
+		min-width: 200px;
+		max-width: 300px;
+	}
+
+	.pull-right {
+		align-self: flex-end;
+	}
+
+	p {
+		display: inline-flex;
+	}
+
+	button {
+		vertical-align: middle;
+	}
+}
