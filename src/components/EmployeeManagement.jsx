@@ -112,7 +112,10 @@ class EmployeeManagement extends React.Component {
       }))
     }
     else {
-      dispatch(rest.actions.employeeCreate(null, body, this.closeDialog()))
+      dispatch(rest.actions.employeeCreate(null, body, () => {
+        this.closeDialog();
+        this.loadEmployees();
+      }))
     }
   }
 

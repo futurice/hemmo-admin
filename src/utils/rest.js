@@ -68,7 +68,7 @@ const rest = reduxApi({
     url: `${apiRoot}/admin/employees`,
     transformer(data) {
       if (data) {
-        return data;
+        return data.data;
       } else {
         return [];
       }
