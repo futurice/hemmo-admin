@@ -26,9 +26,9 @@ Information about request: `state.teams.error`, `state.teams.sync`, `state.teams
 let apiRoot;
 
 if (process.env.NODE_ENV === 'development') {
-  apiRoot = 'http://localhost:3001';
+  apiRoot = 'http://localhost:3001/admin';
 } else {
-  apiRoot = 'https://hemmo-backend.herokuapp.com';
+  apiRoot = 'https://hemmo-backend.herokuapp.com/admin';
 }
 
 const rest = reduxApi({
