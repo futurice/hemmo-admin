@@ -31,6 +31,12 @@ if (process.env.NODE_ENV === 'development') {
   apiRoot = 'https://hemmo-backend.herokuapp.com/admin';
 }
 
+const emptyMeta = {
+  count: 0,
+  limit: 30,
+  offset: 0,
+};
+
 const rest = reduxApi({
   users: {
     url: `${apiRoot}/users`,
@@ -120,15 +126,14 @@ const rest = reduxApi({
     url: `${apiRoot}/feedback`,
     transformer(data, prevData = {
       entries: [],
-      totalEntries: 0,
+      meta: emptyMeta,
       name: 'Feedback'
     }, action) {
       if (data) {
         return {
           ...prevData,
-          ...data,
-          entries: data.feedback || [],
-          totalEntries: data.count || 0
+          entries: data.data,
+          meta: data.meta,
         };
       } else {
         return {

@@ -87,7 +87,7 @@ class FeedbackTable extends React.Component {
             },
             {
               id: 'name',
-              value: row => row.user.name,
+              value: row => row.childName,
               columnTitle: <FormattedMessage id='child' />
             },
             {
