@@ -43,7 +43,7 @@ import LogoutIcon from 'material-ui-icons/ExitToApp';
 
 // Components
 import Home from '../modules/Home';
-import Feedbacks from '../modules/Feedbacks';
+import Feedback from '../modules/Feedback';
 import FeedbackDetail from '../modules/FeedbackDetail';
 import Children from '../modules/Children';
 import ChildDetail from '../modules/ChildDetail';
@@ -68,7 +68,7 @@ const routeConfigs = [{
 }, {
   path: '/feedback',
   name: 'Feedback',
-  component: Feedbacks,
+  component: Feedback,
   icon: FeedbackIcon,
   requiresLogin: true,
   showInMenu: true,

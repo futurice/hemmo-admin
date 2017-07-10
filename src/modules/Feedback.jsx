@@ -22,9 +22,9 @@ class FeedbackTable extends React.Component {
   state = {
     page: 0,
     pageEntries: 20,
-    showAll: false,
-    name: '',
-    orderBy: 'name',
+    assigneeId: '',
+    childName: '',
+    orderBy: 'assigneeName',
     order: 'asc'
   };
 
@@ -34,20 +34,24 @@ class FeedbackTable extends React.Component {
 
   refresh(p = {}) {
     const { dispatch } = this.props;
-    const params = Object.assign(this.state, p);
+    const params = {...this.state, p};
 
-    this.setState({...this.state, params});
+    this.setState(params);
 
     let queryParams = {
       offset: params.page * params.pageEntries,
       limit: params.pageEntries,
-      showAll: params.showAll,
-      name: params.name,
+      assigneeId: params.assigneeId,
+      childName: params.childName,
       orderBy: params.orderBy,
       order: params.order
     };
 
+<<<<<<< Updated upstream:src/modules/Feedbacks.jsx
     dispatch(rest.actions.feedbacks(queryParams));
+=======
+    dispatch(rest.actions.feedback(queryParams));
+>>>>>>> Stashed changes:src/modules/Sessions.jsx
   }
 
   openFeedback(id) {
@@ -70,7 +74,11 @@ class FeedbackTable extends React.Component {
         <TableCard
           initialPage={ initialPage }
           pageEntries={ pageEntries }
+<<<<<<< Updated upstream:src/modules/Feedbacks.jsx
           model={ this.props.feedbacks }
+=======
+          model={ this.props.feedback }
+>>>>>>> Stashed changes:src/modules/Sessions.jsx
           emptyMsg={ this.props.noFeedbackMsg }
           orderBy={this.state.orderBy}
           order={this.state.order}
@@ -120,8 +128,13 @@ class FeedbackTable extends React.Component {
   }
 }
 
+<<<<<<< Updated upstream:src/modules/Feedbacks.jsx
 FeedbackTable.propTypes = {
   feedbacks: PropTypes.shape({
+=======
+SessionTable.propTypes = {
+  feedback: PropTypes.shape({
+>>>>>>> Stashed changes:src/modules/Sessions.jsx
     loading: PropTypes.bool.isRequired,
     data: PropTypes.object.isRequired
   }).isRequired,
@@ -131,7 +144,11 @@ FeedbackTable.propTypes = {
 function select(state, ownParams) {
   return {
     location: ownParams.location,
+<<<<<<< Updated upstream:src/modules/Feedbacks.jsx
     feedbacks: state.feedbacks
+=======
+    feedback: state.feedback
+>>>>>>> Stashed changes:src/modules/Sessions.jsx
   };
 }
 

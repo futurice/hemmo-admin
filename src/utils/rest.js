@@ -116,8 +116,8 @@ const rest = reduxApi({
       method: 'put'
     }
   },
-  feedbacks: {
-    url: `${apiRoot}/sessions`,
+  feedback: {
+    url: `${apiRoot}/feedback`,
     transformer(data, prevData = {
       entries: [],
       totalEntries: 0,
@@ -127,7 +127,7 @@ const rest = reduxApi({
         return {
           ...prevData,
           ...data,
-          entries: data.sessions || [],
+          entries: data.feedback || [],
           totalEntries: data.count || 0
         };
       } else {
@@ -138,7 +138,7 @@ const rest = reduxApi({
     }
   },
   feedbackDetail: {
-    url: `${apiRoot}/sessions/:id`,
+    url: `${apiRoot}/feedback/:id`,
     transformer(data, prevData) {
       if (data) {
         return {...prevData, ...data};
