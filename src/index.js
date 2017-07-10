@@ -20,7 +20,7 @@ import NavigationDrawer from './modules/NavigationDrawer';
 import Header from './modules/Header';
 import FullscreenSpinner from './components/FullscreenSpinner';
 
-import routeConfigs, { IndexRoute, ConfiguredRoutes } from './utils/routes';
+import { ConfiguredRoutes } from './utils/routes';
 
 import store from './utils/store';
 import persistStore from './utils/persist';
@@ -80,7 +80,9 @@ export default class App extends React.Component {
       <NavigationDrawer />
       <Header />
       
-      <ConfiguredRoutes />
+      <div className="content-wrapper">
+        <ConfiguredRoutes />
+      </div>
 
       <ErrorSnackbar />
     </div>

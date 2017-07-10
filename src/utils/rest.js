@@ -4,6 +4,7 @@ import { push } from 'react-router-redux';
 import jwtDecode from 'jwt-decode';
 
 import { showError } from '../modules/ErrorSnackbar';
+import { reset } from '../modules/Logout';
 
 let store;
 
@@ -115,7 +116,7 @@ const rest = reduxApi({
       method: 'put'
     }
   },
-  sessions: {
+  feedbacks: {
     url: `${apiRoot}/sessions`,
     transformer(data, prevData = {
       entries: [],
@@ -136,7 +137,7 @@ const rest = reduxApi({
       }
     }
   },
-  sessionDetail: {
+  feedbackDetail: {
     url: `${apiRoot}/sessions/:id`,
     transformer(data, prevData) {
       if (data) {
@@ -190,6 +191,7 @@ const rest = reduxApi({
 
     // Redirect to login if session has expired
     if (err.statusCode === 401 && err.message === 'Invalid token') {
+      store.dispatch(reset());
       store.dispatch(push('/login'));
     }
 

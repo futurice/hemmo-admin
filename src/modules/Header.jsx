@@ -4,15 +4,15 @@ import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
-import Divider from 'material-ui/Divider';
+//import Divider from 'material-ui/Divider';
 import Button from 'material-ui/Button';
 
-import Menu from 'material-ui/Menu';
-import { ListItem, ListItemText, ListItemIcon } from 'material-ui/List';
-import ExitToAppIcon from 'material-ui-icons/ExitToApp';
+//import Menu from 'material-ui/Menu';
+//import { ListItem, ListItemText, ListItemIcon } from 'material-ui/List';
+//import ExitToAppIcon from 'material-ui-icons/ExitToApp';
 import MenuIcon from 'material-ui-icons/Menu';
-import MoreVertIcon from 'material-ui-icons/MoreVert';
-import AccountCircleIcon from 'material-ui-icons/AccountCircle';
+//import MoreVertIcon from 'material-ui-icons/MoreVert';
+//import AccountCircleIcon from 'material-ui-icons/AccountCircle';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
 
@@ -21,7 +21,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
 import { toggleDrawer } from './NavigationDrawer';
-import routes, { NavigationRoutes } from '../utils/routes';
+import { NavigationRoutes } from '../utils/routes';
 
 
 const mapStateToProps = (state, ownProps) => ({
@@ -98,14 +98,16 @@ export default class Header extends React.Component {
             <FormattedMessage id="HemmoAdmin" />
           </Typography>
 
-          {navigationRoutes.map((route, i) => {
-            return <Button
-              key={i}
-              color="contrast"
-              className={route.active ? 'active' : ''}
-              onClick={() => { changeView(route.path); }}
-            >{route.name}</Button>;
-          })}
+          <span className="nav-buttons">
+            {navigationRoutes.map((route, i) => {
+              return <Button
+                key={i}
+                color="contrast"
+                className={route.active ? 'active' : ''}
+                onClick={() => { changeView(route.path); }}
+              >{route.name}</Button>;
+            })}
+          </span>
         </Toolbar>
       </AppBar>
     );
