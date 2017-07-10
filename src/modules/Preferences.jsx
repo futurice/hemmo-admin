@@ -4,22 +4,17 @@ import { injectIntl } from 'react-intl';
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import Typography from 'material-ui/Typography';
-
 import Button from 'material-ui/Button';
-
-import Card, {
-  CardContent,
-} from 'material-ui/Card';
+import Card, { CardContent } from 'material-ui/Card';
 
 import { connect } from 'react-redux';
 import { updateIntl } from 'react-intl-redux';
-
-import { reset } from './Logout';
-
 import { languages, storeLocaleForUser } from '../utils/intl';
 
 import CardGridWrapper from '../components/CardGridWrapper';
 import PageHeader from '../components/PageHeader';
+import EmployeeManagement from '../components/EmployeeManagement';
+import { reset } from './Logout';
 
 const mapStateToProps = state => ({
   activeLanguage: state.intl.locale,
@@ -124,6 +119,8 @@ export default class Preferences extends React.Component {
             </CardContent>
           </Card>
         </CardGridWrapper>
+
+        <EmployeeManagement />
       </div>
     );
   }

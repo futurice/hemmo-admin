@@ -1,4 +1,4 @@
-import reduxApi, { transformers } from 'redux-api';
+import reduxApi from 'redux-api';
 import adapterFetch from 'redux-api/lib/adapters/fetch';
 import { push } from 'react-router-redux';
 import jwtDecode from 'jwt-decode';
@@ -61,45 +61,53 @@ const rest = reduxApi({
     crud: true,
   },
   userDetails: {
-    url: `${apiRoot}/users/:userId`,
-    crud: true,
+    url: `${apiRoot}/admin/employee/:userId`,
+    crud: true
   },
-
   employees: {
-    url: `${apiRoot}/employees`,
+    url: `${apiRoot}/admin/employees`,
     transformer(data) {
       if (data) {
-        return data.employees;
+        return data;
       } else {
         return [];
       }
     }
   },
-  employeePassword: {
-    url: `${apiRoot}/employees/password`,
+  employeeSave: {
+    url: `${apiRoot}/admin/employees/:id`,
     options: {
-      method: 'post'
-    }
-  },
-  employeeVerify: {
-    url: `${apiRoot}/employees/verify/:employeeId`,
-    options: {
-      method: 'post'
-    }
-  },
-  employeeDetail: {
-    url: `${apiRoot}/employees/:id`,
+      method: 'put'
+    },
     transformer(data, prevData) {
       if (data) {
         return {...prevData, ...data};
       } else {
         return {...prevData};
       }
-    },
-    crud: true
+    }
   },
-  userDetail: {
-    url: `${apiRoot}/users/:id`,
+  employeeCreate: {
+    url: `${apiRoot}/admin/employees`,
+    options: {
+      method: 'post'
+    }
+  },
+  employeePassword: {
+    url: `${apiRoot}/employees/password`,
+    options: {
+      method: 'post'
+    },
+    transformer(data, prevData) {
+      if (data) {
+        return {...prevData, ...data};
+      } else {
+        return {...prevData};
+      }
+    }
+  },
+  employeeDetails: {
+    url: `${apiRoot}/admin/employees/:id`,
     transformer(data, prevData) {
       if (data) {
         return {...prevData, ...data};
@@ -158,7 +166,7 @@ const rest = reduxApi({
     crud: true
   },
   auth: {
-    url: `${apiRoot}/employees/authenticate`,
+    url: `${apiRoot}/admin/employees/authenticate`,
     transformer: (data = {}) => {
       if (data.token) {
         return {

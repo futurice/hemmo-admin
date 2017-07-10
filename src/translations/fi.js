@@ -24,8 +24,17 @@ export default {
   resetStateExplanation: 'Käytä tätä toimintoa jos huomaat ongelmia sovelluksen toiminnassa. Vaikuttaa ainoastaan sinun sessioon.',
   resetStateButton: 'Nollaa tila',
 
+  // Employee management
+  employeeManagement: 'Hallinnoi työntekijöitä',
+  addEmployee: 'Lisää uusi käyttäjä',
+  editEmployee: 'Muokkaa käyttäjää',
+  employeeName: 'Työntekijän nimi',
+  createdAt: 'Lisätty',
+  active: 'Aktiivinen',
+
   // Miscellaneous
   close: 'Sulje',
+  save: 'Tallenna',
 
   // Hemmo
   newFeedback: 'Sinun palautteet',

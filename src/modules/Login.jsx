@@ -78,9 +78,7 @@ export default class Login extends React.Component {
 
   render() {
     const { auth } = this.props;
-
     const loading = auth.loading;
-
     const progress = loading ? <LinearProgress /> : null;
 
     return (

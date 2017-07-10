@@ -24,8 +24,17 @@ export default {
   resetStateExplanation: 'Use this if you experience problems with the app. Only affects your session.',
   resetStateButton: 'Clear app state',
 
+  // Employee management
+  employeeManagement: 'Manage Employees',
+  addEmployee: 'Add new employee',
+  editEmployee: 'Edit employee',
+  employeeName: 'Employee name',
+  createdAt: 'Created at',
+  active: 'Active',
+
   // Miscellaneous
   close: 'Close',
+  save: 'Save',
 
   // Hemmo
   newFeedback: 'Your feedback',
