@@ -47,11 +47,7 @@ class FeedbackTable extends React.Component {
       order: params.order
     };
 
-<<<<<<< Updated upstream:src/modules/Feedbacks.jsx
-    dispatch(rest.actions.feedbacks(queryParams));
-=======
     dispatch(rest.actions.feedback(queryParams));
->>>>>>> Stashed changes:src/modules/Sessions.jsx
   }
 
   openFeedback(id) {
@@ -74,11 +70,7 @@ class FeedbackTable extends React.Component {
         <TableCard
           initialPage={ initialPage }
           pageEntries={ pageEntries }
-<<<<<<< Updated upstream:src/modules/Feedbacks.jsx
-          model={ this.props.feedbacks }
-=======
           model={ this.props.feedback }
->>>>>>> Stashed changes:src/modules/Sessions.jsx
           emptyMsg={ this.props.noFeedbackMsg }
           orderBy={this.state.orderBy}
           order={this.state.order}
@@ -128,13 +120,8 @@ class FeedbackTable extends React.Component {
   }
 }
 
-<<<<<<< Updated upstream:src/modules/Feedbacks.jsx
 FeedbackTable.propTypes = {
-  feedbacks: PropTypes.shape({
-=======
-SessionTable.propTypes = {
   feedback: PropTypes.shape({
->>>>>>> Stashed changes:src/modules/Sessions.jsx
     loading: PropTypes.bool.isRequired,
     data: PropTypes.object.isRequired
   }).isRequired,
@@ -144,11 +131,7 @@ SessionTable.propTypes = {
 function select(state, ownParams) {
   return {
     location: ownParams.location,
-<<<<<<< Updated upstream:src/modules/Feedbacks.jsx
-    feedbacks: state.feedbacks
-=======
     feedback: state.feedback
->>>>>>> Stashed changes:src/modules/Sessions.jsx
   };
 }
 
