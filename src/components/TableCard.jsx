@@ -43,6 +43,7 @@ class TableCard extends React.Component {
         modelName={this.props.model.data.name}
         initialPage={ parseInt(this.props.initialPage, 10) }
         pageEntries={ parseInt(this.props.pageEntries, 10) }
+        showAll={this.props.showAll}
       />
     );
 
@@ -72,7 +73,8 @@ TableCard.propTypes = {
   header: PropTypes.arrayOf(PropTypes.object).isRequired,
   refresh: PropTypes.func.isRequired,
   onClickRow: PropTypes.func.isRequired,
-  margin: PropTypes.number
+  margin: PropTypes.number,
+  showAll: PropTypes.bool
 };
 
 export default TableCard;

@@ -65,50 +65,56 @@ export default class CardToolbar extends React.Component {
     const totalEntries = this.props.totalEntries;
     const page = this.state.page;
     const pages = Math.ceil(totalEntries / pageEntries);
+    let toolbarItems = [];
 
-    let leftToolbarItems = [];
-    let rightToolbarItems = [];
+    // Show all rows rgardless are they "own" or now
+    if (this.props.showAll !== false) {
+      toolbarItems.push(<LabelSwitch
+        key="show-all"
+        labelClassName="show-all"
+        label={ formatMessage({ id: 'showAll' }) }
+        checked={this.state.showAll}
+        onChange={(event, checked) => {
+          this.setState({ showAll: checked }, this.refresh);
+        }}
+      />);
+    }
 
-    leftToolbarItems.push(
-      <span key="filter-rows">
-        <LabelSwitch
-          checked={this.state.showAll}
-          onChange={(event, checked) => {
-            this.setState({ showAll: checked }, this.refresh);
-          }}
-          label={formatMessage({ id: 'showAll' })}
-        />
-        <TextField
-          id="name"
-          className="text-field"
-          label={formatMessage({ id: 'name' })}
-          onKeyUp={event => {
-            const val = event.target.value;
-            const keyword = (val.length >= 3) ? val : '';
+    // Free name search
+    toolbarItems.push(
+      <TextField
+        id="name"
+        key="name"
+        className="text-field"
+        label={formatMessage({ id: 'name' })}
+        onKeyUp={event => {
+          const val = event.target.value;
+          const keyword = (val.length >= 3) ? val : '';
 
-            if (keyword !== this.state.name) {
-              this.setState({
-                name: val.length >= 3 ? val : ''
-              }, this.refresh);
-            }
-          }}
-          marginForm
-        />
-      </span>
+          if (keyword !== this.state.name) {
+            this.setState({
+              name: val.length >= 3 ? val : ''
+            }, this.refresh);
+          }
+        }}
+        marginForm
+      />
     );
 
-    rightToolbarItems.push(
-      <Typography type="body1" key="rows-per-page">
-        { formatMessage({ id: 'rowsPerPage' }) }
-      </Typography>
-    );
+    // Rows per page
+    toolbarItems.push(
+      <span
+        key="page-entries"
+        className="select-page-entries">
+        <Typography type="body1" key="rows-per-page">
+          { formatMessage({ id: 'rowsPerPage' }) }
+        </Typography>
 
-    rightToolbarItems.push(
-      <span key="select-rows-per-page">
         <Button aria-owns="simple-menu" aria-haspopup="true" onClick={(e) => this.setState({pageEntriesOpen: true, anchorEl: e.currentTarget})}>
           {this.state.pageEntries}
           <ArrowDropDown />
         </Button>
+        
         <Menu anchorEl={this.state.anchorEl} open={this.state.pageEntriesOpen} onRequestClose={this.setPageEntries}>
           {[5, 20, 50, 100].map((opt, index) => (
             <MenuItem
@@ -122,34 +128,32 @@ export default class CardToolbar extends React.Component {
       </span>
     );
 
-    rightToolbarItems.push(
-      <Button key='back' disabled={this.state.page <= 0} onClick={(e) => {
-        this.changePage(-1);
-      }}>
-        <MiniArrowBack />
-      </Button>
-    );
+    // Pagination
+    toolbarItems.push(
+      <span
+        key="pagination"
+        className="pagination">
+        <Button key='back' disabled={this.state.page <= 0} onClick={(e) => {
+          this.changePage(-1);
+        }}>
+          <MiniArrowBack />
+        </Button>
 
-    rightToolbarItems.push(
-      <Typography type="body1" key='currentPageNum'>
-        {`${page + 1} / ${pages}`}
-      </Typography>
-    );
-        
-    rightToolbarItems.push(
-      <Button key='forward' disabled={this.state.page >= pages - 1} onClick={(e) => {
-        this.changePage(1);
-      }}>
-        <MiniArrowForward/>
-      </Button>
+        <Typography type="body1" key='currentPageNum'>
+          {`${page + 1} / ${pages}`}
+        </Typography>
+
+        <Button key='forward' disabled={this.state.page >= pages - 1} onClick={(e) => {
+          this.changePage(1);
+        }}>
+          <MiniArrowForward/>
+        </Button>
+      </span>
     );
 
     return(
       <Toolbar className="toolbar">
-          { leftToolbarItems }
-          <span className="pull-right">
-            { rightToolbarItems }
-          </span>
+          { toolbarItems }
       </Toolbar>
     );
   }
@@ -158,5 +162,6 @@ export default class CardToolbar extends React.Component {
 CardToolbar.propTypes = {
   refresh: PropTypes.func.isRequired,
   totalEntries: PropTypes.number.isRequired,
-  modelName: PropTypes.string.isRequired
+  modelName: PropTypes.string.isRequired,
+  showAll: PropTypes.bool
 };

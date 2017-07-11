@@ -42,7 +42,7 @@ class Users extends React.Component {
     let queryParams = {
       offset: params.page * params.pageEntries,
       limit: params.pageEntries,
-      showAll: params.showAll,
+      assigneeId: !params.showAll ? this.props.user.id : null,
       name: params.name,
       orderBy: params.orderBy,
       order: params.order
@@ -56,7 +56,7 @@ class Users extends React.Component {
   }
 
   render() {
-    const { users, intl: { formatMessage } } = this.props;
+    const { children, intl: { formatMessage } } = this.props;
     const initialPage = 0;
     const pageEntries = 20;
 
@@ -66,7 +66,7 @@ class Users extends React.Component {
         <TableCard
           initialPage={ initialPage }
           pageEntries={ pageEntries }
-          model={ users }
+          model={ children }
           emptyMsg={ this.props.noFeedbackMsg }
           orderBy={this.state.orderBy}
           order={this.state.order}
@@ -117,7 +117,7 @@ class Users extends React.Component {
 }
 
 Users.propTypes = {
-  users: PropTypes.shape({
+  children: PropTypes.shape({
     loading: PropTypes.bool.isRequired,
     data: PropTypes.object.isRequired
   }).isRequired,
@@ -127,7 +127,8 @@ Users.propTypes = {
 function select(state, ownParams) {
   return {
     location: ownParams.location,
-    users: state.users
+    children: state.users,
+    user: state.auth.data.decoded
   };
 }
 

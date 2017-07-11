@@ -1,41 +1,30 @@
 .toolbar {
-	display: flex;
-    justify-content: space-between;
+    justify-content: center;
     box-sizing: border-box;
+    align-items: flex-end !important;
+    background: #EEEEEE;
+    padding: 0px 0px 10px 0px;
+    height: inherit !important;
+    margin-top: 15px;
+
+    .show-all, .text-field {
+    	margin-right: 25px;
+    }
 
 	.select-page-entries {
+		white-space: nowrap;
+
 		button {
 			vertical-align: middle;
 		}
 	}
 
-	&>span {
-		flex: 1 0 auto;
-
-		@media(max-width: 1023px) {
-			&:first-child {
-				display: none;
-			}
-		}
-
-		&>div, &>label {
-			margin-right: 2.5rem;
-
-			&:last-child {
-				margin-right: 0;
-			}
-		}
-	}
-	
 	.text-field {
-		vertical-align: bottom;
-		min-width: 200px;
-		max-width: 300px;
+		width: 300px;
 	}
 
-	.pull-right {
-		align-self: flex-end;
-		text-align: right;
+	.pagination {
+		white-space: nowrap;
 	}
 
 	p {
@@ -44,5 +33,5 @@
 
 	button {
 		vertical-align: middle;
-	}
+	}	
 }

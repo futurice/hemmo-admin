@@ -1,4 +1,4 @@
-import reduxApi, { transformers } from 'redux-api';
+import reduxApi from 'redux-api';
 import adapterFetch from 'redux-api/lib/adapters/fetch';
 import { push } from 'react-router-redux';
 import jwtDecode from 'jwt-decode';
@@ -39,18 +39,17 @@ const emptyMeta = {
 
 const rest = reduxApi({
   users: {
-    url: `${apiRoot}/users`,
+    url: `${apiRoot}/children`,
     transformer(data, prevData = {
       entries: [],
-      totalEntries: 0,
-      name: 'Users'
+      meta: emptyMeta,
+      name: 'Children'
     }, action) {
       if (data) {
         return {
           ...prevData,
-          ...data,
-          entries: data.users || [],
-          totalEntries: data.count || 0
+          entries: data.data,
+          meta: data.meta,
         };
       } else {
         return {
@@ -61,45 +60,63 @@ const rest = reduxApi({
     crud: true,
   },
   userDetails: {
-    url: `${apiRoot}/users/:userId`,
-    crud: true,
+    url: `${apiRoot}/employee/:userId`,
+    crud: true
   },
-
   employees: {
     url: `${apiRoot}/employees`,
-    transformer(data) {
+    transformer(data, prevData = {
+      entries: [],
+      meta: emptyMeta,
+      name: 'Employees'
+    }) {
       if (data) {
-        return data.employees;
+        return {
+          ...prevData,
+          entries: data.data,
+          meta: data.meta,
+        };
       } else {
-        return [];
+        return {
+          ...prevData
+        };
       }
     }
   },
-  employeePassword: {
-    url: `${apiRoot}/employees/password`,
-    options: {
-      method: 'post'
-    }
-  },
-  employeeVerify: {
-    url: `${apiRoot}/employees/verify/:employeeId`,
-    options: {
-      method: 'post'
-    }
-  },
-  employeeDetail: {
+  employeeSave: {
     url: `${apiRoot}/employees/:id`,
+    options: {
+      method: 'put'
+    },
     transformer(data, prevData) {
       if (data) {
         return {...prevData, ...data};
       } else {
         return {...prevData};
       }
-    },
-    crud: true
+    }
   },
-  userDetail: {
-    url: `${apiRoot}/users/:id`,
+  employeeCreate: {
+    url: `${apiRoot}/employees`,
+    options: {
+      method: 'post'
+    }
+  },
+  employeePassword: {
+    url: `${apiRoot}/employees/password`,
+    options: {
+      method: 'post'
+    },
+    transformer(data, prevData) {
+      if (data) {
+        return {...prevData, ...data};
+      } else {
+        return {...prevData};
+      }
+    }
+  },
+  employeeDetails: {
+    url: `${apiRoot}/employees/:id`,
     transformer(data, prevData) {
       if (data) {
         return {...prevData, ...data};
