@@ -69,15 +69,17 @@ export default class CardToolbar extends React.Component {
     let leftToolbarItems = [];
     let rightToolbarItems = [];
 
+    const showAll = this.props.showAll === false ? '' : <LabelSwitch
+      checked={this.state.showAll}
+      onChange={(event, checked) => {
+        this.setState({ showAll: checked }, this.refresh);
+      }}
+      label={formatMessage({ id: 'showAll' })}
+    />;
+
     leftToolbarItems.push(
       <span key="filter-rows">
-        <LabelSwitch
-          checked={this.state.showAll}
-          onChange={(event, checked) => {
-            this.setState({ showAll: checked }, this.refresh);
-          }}
-          label={formatMessage({ id: 'showAll' })}
-        />
+        { showAll }
         <TextField
           id="name"
           className="text-field"
@@ -158,5 +160,6 @@ export default class CardToolbar extends React.Component {
 CardToolbar.propTypes = {
   refresh: PropTypes.func.isRequired,
   totalEntries: PropTypes.number.isRequired,
-  modelName: PropTypes.string.isRequired
+  modelName: PropTypes.string.isRequired,
+  showAll: PropTypes.bool
 };

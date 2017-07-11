@@ -15,7 +15,7 @@ import TextField from 'material-ui/TextField';
 import Dialog, { DialogTitle, DialogContent, DialogActions } from 'material-ui/Dialog';
 import { CircularProgress } from 'material-ui/Progress';
 
-import ModelTable from './ModelTable';
+import TableCard from '../components/TableCard';
 
 const emptyEmployee = {
   id: null,
@@ -41,7 +41,7 @@ class EmployeeManagement extends React.Component {
 
     this.updateAttr = this.updateAttr.bind(this);
     this.canSubmit = this.canSubmit.bind(this);
-    this.openEmployee = this.openEmployee.bind(this);
+    this.loadEmployee = this.loadEmployee.bind(this);
     this.loadEmployees = this.loadEmployees.bind(this);
     this.saveEmployee = this.saveEmployee.bind(this);
   }
@@ -59,7 +59,6 @@ class EmployeeManagement extends React.Component {
     let queryParams = {
       offset: params.page * params.pageEntries,
       limit: params.pageEntries,
-      showAll: params.showAll,
       name: params.name,
       orderBy: params.orderBy,
       order: params.order
@@ -68,7 +67,7 @@ class EmployeeManagement extends React.Component {
     dispatch(rest.actions.employees(queryParams));
   }
 
-  openEmployee(userId) {
+  loadEmployee(userId) {
     const { dispatch } = this.props;
 
     dispatch(rest.actions.employeeDetails({id: userId}, () => {
@@ -132,7 +131,9 @@ class EmployeeManagement extends React.Component {
   }
 
   render() {
-    const { employeeDetails, scope, intl: { formatMessage } } = this.props;
+    const { employees, employeeDetails, scope, intl: { formatMessage } } = this.props;
+    const initialPage = 0;
+    const pageEntries = 20;
     const header = [
       {
         id: 'name',
@@ -165,31 +166,18 @@ class EmployeeManagement extends React.Component {
             <CardContent className="manage-employees">
               <Typography type="title">{ formatMessage({id: 'employeeManagement'}) }</Typography>
 
-              <Button fab className="add-employee" color="primary" onClick={() => this.addUserDialog()}><AddIcon /></Button>
+              <Button className="add-employee" color="primary" onClick={() => this.addUserDialog()}>{ formatMessage({id: 'addEmployee'}) }</Button>
 
-              <TextField
-                className="text-field"
-                label={formatMessage({ id: 'name' })}
-                onKeyUp={event => {
-                  const val = event.target.value;
-                  const keyword = (val.length >= 3) ? val : '';
-
-                  if (keyword !== this.state.searchName) {
-                    this.setState({
-                      searchName: val.length >= 3 ? val : ''
-                    }, this.refresh);
-                  }
-                }}
-                marginForm
-              />
-
-              <ModelTable
-                orderBy={this.state.orderBy}
-                order={this.state.order}
-                header={header}
-                entries={this.props.employees.data}
-                onClickRow={this.openEmployee}
-                onSortRequest={this.loadEmployees}
+              <TableCard
+                initialPage={ initialPage }
+                pageEntries={ pageEntries }
+                model={ employees }
+                orderBy={ this.state.orderBy }
+                order={ this.state.order }
+                header={ header }
+                onClickRow={ this.loadEmployee }
+                refresh={ this.loadEmployees }
+                showAll={false}
               />
             </CardContent>
           </Card>
@@ -247,3 +235,31 @@ function select(state, ownParams) {
 }
 
 export default connect(select)(EmployeeManagement);
+
+
+/*
+<TextField
+                className="text-field"
+                label={formatMessage({ id: 'name' })}
+                onKeyUp={event => {
+                  const val = event.target.value;
+                  const keyword = (val.length >= 3) ? val : '';
+
+                  if (keyword !== this.state.searchName) {
+                    this.setState({
+                      searchName: val.length >= 3 ? val : ''
+                    }, this.refresh);
+                  }
+                }}
+                marginForm
+              />
+
+              <ModelTable
+                orderBy={this.state.orderBy}
+                order={this.state.order}
+                header={header}
+                entries={this.props.employees.data}
+                onClickRow={this.openEmployee}
+                onSortRequest={this.loadEmployees}
+              />
+*/

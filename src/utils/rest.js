@@ -39,18 +39,17 @@ const emptyMeta = {
 
 const rest = reduxApi({
   users: {
-    url: `${apiRoot}/users`,
+    url: `${apiRoot}/children`,
     transformer(data, prevData = {
       entries: [],
-      totalEntries: 0,
-      name: 'Users'
+      meta: emptyMeta,
+      name: 'Children'
     }, action) {
       if (data) {
         return {
           ...prevData,
-          ...data,
-          entries: data.users || [],
-          totalEntries: data.count || 0
+          entries: data.data,
+          meta: data.meta,
         };
       } else {
         return {
@@ -61,21 +60,31 @@ const rest = reduxApi({
     crud: true,
   },
   userDetails: {
-    url: `${apiRoot}/admin/employee/:userId`,
+    url: `${apiRoot}/employee/:userId`,
     crud: true
   },
   employees: {
-    url: `${apiRoot}/admin/employees`,
-    transformer(data) {
+    url: `${apiRoot}/employees`,
+    transformer(data, prevData = {
+      entries: [],
+      meta: emptyMeta,
+      name: 'Employees'
+    }) {
       if (data) {
-        return data.data;
+        return {
+          ...prevData,
+          entries: data.data,
+          meta: data.meta,
+        };
       } else {
-        return [];
+        return {
+          ...prevData
+        };
       }
     }
   },
   employeeSave: {
-    url: `${apiRoot}/admin/employees/:id`,
+    url: `${apiRoot}/employees/:id`,
     options: {
       method: 'put'
     },
@@ -88,7 +97,7 @@ const rest = reduxApi({
     }
   },
   employeeCreate: {
-    url: `${apiRoot}/admin/employees`,
+    url: `${apiRoot}/employees`,
     options: {
       method: 'post'
     }
@@ -107,7 +116,7 @@ const rest = reduxApi({
     }
   },
   employeeDetails: {
-    url: `${apiRoot}/admin/employees/:id`,
+    url: `${apiRoot}/employees/:id`,
     transformer(data, prevData) {
       if (data) {
         return {...prevData, ...data};
@@ -166,7 +175,7 @@ const rest = reduxApi({
     crud: true
   },
   auth: {
-    url: `${apiRoot}/admin/employees/authenticate`,
+    url: `${apiRoot}/employees/authenticate`,
     transformer: (data = {}) => {
       if (data.token) {
         return {
