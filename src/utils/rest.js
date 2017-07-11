@@ -83,18 +83,16 @@ const rest = reduxApi({
       }
     }
   },
-  employeeSave: {
+  employee: {
     url: `${apiRoot}/employees/:id`,
-    options: {
-      method: 'put'
-    },
     transformer(data, prevData) {
       if (data) {
         return {...prevData, ...data};
       } else {
         return {...prevData};
       }
-    }
+    },
+    crud: true
   },
   employeeCreate: {
     url: `${apiRoot}/employees`,
@@ -114,17 +112,6 @@ const rest = reduxApi({
         return {...prevData};
       }
     }
-  },
-  employeeDetails: {
-    url: `${apiRoot}/employees/:id`,
-    transformer(data, prevData) {
-      if (data) {
-        return {...prevData, ...data};
-      } else {
-        return {...prevData};
-      }
-    },
-    crud: true
   },
   setUserAssignee: {
     url: `${apiRoot}/users/:userId`,

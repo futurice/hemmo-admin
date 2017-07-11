@@ -67,10 +67,10 @@ class EmployeeManagement extends React.Component {
   loadEmployee(userId) {
     const { dispatch } = this.props;
 
-    dispatch(rest.actions.employeeDetails({id: userId}, () => {
+    dispatch(rest.actions.employee.get({id: userId}, () => {
       this.setState({
         dialogOpen: true,
-        user: this.props.employeeDetails.data
+        user: this.props.employee.data
       });
     }));
   }
@@ -102,7 +102,7 @@ class EmployeeManagement extends React.Component {
     };
 
     if (this.state.user.id) {
-      dispatch(rest.actions.employeeSave({id: this.state.user.id}, body, () => {
+      dispatch(rest.actions.employee.patch({id: this.state.user.id}, body, () => {
         this.closeDialog();
         this.loadEmployees();
       }))
@@ -128,7 +128,7 @@ class EmployeeManagement extends React.Component {
   }
 
   render() {
-    const { employees, employeeDetails, intl: { formatMessage } } = this.props;
+    const { employees, employee, intl: { formatMessage } } = this.props;
     const initialPage = 0;
     const pageEntries = 20;
     const header = [
@@ -184,9 +184,9 @@ class EmployeeManagement extends React.Component {
           className="dialog"
         >
 
-          <DialogTitle>{ employeeDetails.data.id ? formatMessage({id: 'editEmployee'}) : formatMessage({id: 'addEmployee'}) }</DialogTitle>
+          <DialogTitle>{ employee.data.id ? formatMessage({id: 'editEmployee'}) : formatMessage({id: 'addEmployee'}) }</DialogTitle>
           <DialogContent className="dialog-content">
-            {employeeDetails.loading ? (
+            {employee.loading ? (
               <div style={{textAlign: 'center'}}>
                 <CircularProgress/>
               </div>) :
@@ -200,7 +200,7 @@ class EmployeeManagement extends React.Component {
               <TextField
                 name="email"
                 value={this.state.user.email}
-                label={formatMessage({ id: 'email' })} 
+                label={formatMessage({ id: 'email' })}
                 onChange={this.updateAttr} />
 
               <LabelSwitch
@@ -229,7 +229,7 @@ class EmployeeManagement extends React.Component {
 function select(state, ownParams) {
   return {
     employees: state.employees,
-    employeeDetails: state.employeeDetails
+    employee: state.employee
   };
 }
 
