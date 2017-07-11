@@ -1,6 +1,10 @@
-.manage-employees {
+.employee-management {
 	position: relative;
-	
+
+	h2 {
+		margin-left: 24px;
+	}
+
 	.add-employee {
 		position: absolute;
 	    right: 9px;

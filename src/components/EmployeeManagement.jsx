@@ -160,13 +160,14 @@ class EmployeeManagement extends React.Component {
     ];
 
     return(
-      <div>
-        <CardGridWrapper>
-          <Card>
-            <CardContent className="manage-employees">
+      <div className="employee-management">
+
               <Typography type="title">{ formatMessage({id: 'employeeManagement'}) }</Typography>
 
-              <Button className="add-employee" color="primary" onClick={() => this.addUserDialog()}>{ formatMessage({id: 'addEmployee'}) }</Button>
+              <IconButton className="add-employee" color="primary" onClick={() => this.addUserDialog()}>
+                <AddIcon />
+                { formatMessage({id: 'addEmployee'}) }
+              </IconButton>
 
               <TableCard
                 initialPage={ initialPage }
@@ -179,9 +180,7 @@ class EmployeeManagement extends React.Component {
                 refresh={ this.loadEmployees }
                 showAll={false}
               />
-            </CardContent>
-          </Card>
-        </CardGridWrapper>
+
 
         <Dialog
           onRequestClose={this.closeDialog.bind(this)}
