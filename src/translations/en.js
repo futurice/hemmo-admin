@@ -31,6 +31,7 @@ export default {
   employeeName: 'Employee name',
   createdAt: 'Created at',
   active: 'Active',
+  resetPassword: 'Reset password',
 
   // Miscellaneous
   close: 'Close',

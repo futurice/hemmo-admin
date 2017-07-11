@@ -210,6 +210,10 @@ class EmployeeManagement extends React.Component {
                   this.setState({ user: {...this.state.user, active: checked} });
                 }}
               />
+
+              <div className="reset-password">
+                <Button raised color="accent">{ formatMessage({id: 'resetPassword'}) }</Button>
+              </div>
             </div>)}
           </DialogContent>
           <DialogActions>

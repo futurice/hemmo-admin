@@ -31,6 +31,7 @@ export default {
   employeeName: 'Työntekijän nimi',
   createdAt: 'Lisätty',
   active: 'Aktiivinen',
+  resetPassword: 'Resetoi salasana',
 
   // Miscellaneous
   close: 'Sulje',
