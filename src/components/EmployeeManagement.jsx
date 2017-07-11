@@ -7,8 +7,6 @@ import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import Typography from 'material-ui/Typography';
 import { LabelSwitch } from 'material-ui/Switch';
-import CardGridWrapper from '../components/CardGridWrapper';
-import Card, { CardContent, } from 'material-ui/Card';
 import Edit from 'material-ui-icons/Edit';
 import TextField from 'material-ui/TextField';
 import Dialog, { DialogTitle, DialogContent, DialogActions } from 'material-ui/Dialog';
@@ -130,7 +128,7 @@ class EmployeeManagement extends React.Component {
   }
 
   render() {
-    const { employees, employeeDetails, scope, intl: { formatMessage } } = this.props;
+    const { employees, employeeDetails, intl: { formatMessage } } = this.props;
     const initialPage = 0;
     const pageEntries = 20;
     const header = [

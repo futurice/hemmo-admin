@@ -65,14 +65,12 @@ export default class CardToolbar extends React.Component {
     const totalEntries = this.props.totalEntries;
     const page = this.state.page;
     const pages = Math.ceil(totalEntries / pageEntries);
-
-    let leftToolbarItems = [];
-    let rightToolbarItems = [];
     let toolbarItems = [];
 
     // Show all rows rgardless are they "own" or now
     if (this.props.showAll !== false) {
       toolbarItems.push(<LabelSwitch
+        key="show-all"
         labelClassName="show-all"
         label={ formatMessage({ id: 'showAll' }) }
         checked={this.state.showAll}
@@ -86,6 +84,7 @@ export default class CardToolbar extends React.Component {
     toolbarItems.push(
       <TextField
         id="name"
+        key="name"
         className="text-field"
         label={formatMessage({ id: 'name' })}
         onKeyUp={event => {
@@ -104,7 +103,9 @@ export default class CardToolbar extends React.Component {
 
     // Rows per page
     toolbarItems.push(
-      <span className="select-page-entries">
+      <span
+        key="page-entries"
+        className="select-page-entries">
         <Typography type="body1" key="rows-per-page">
           { formatMessage({ id: 'rowsPerPage' }) }
         </Typography>
@@ -129,7 +130,9 @@ export default class CardToolbar extends React.Component {
 
     // Pagination
     toolbarItems.push(
-      <span className="pagination">
+      <span
+        key="pagination"
+        className="pagination">
         <Button key='back' disabled={this.state.page <= 0} onClick={(e) => {
           this.changePage(-1);
         }}>
