@@ -6,6 +6,7 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 
 import Button from 'material-ui/Button';
 //import { LinearProgress } from 'material-ui/Progress';
+import Alert from 'material-ui-icons/Warning';
 import ArrowForward from 'material-ui-icons/ArrowForward';
 import Done from 'material-ui-icons/Done';
 import { red300, lightGreen300 } from 'material-ui/styles/colors';
@@ -60,6 +61,9 @@ class Children extends React.Component {
     const initialPage = 0;
     const pageEntries = 20;
 
+    const threeMonthsAgo = new Date();
+    threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+
     return (
       <div>
         <PageHeader header={formatMessage({id: 'Children'})} />
@@ -94,7 +98,14 @@ class Children extends React.Component {
             },
             {
               id: 'received',
-              value: row => new Date(row.createdAt).toLocaleDateString(),
+              value: row => <div>
+                {
+                  row.showAlerts && new Date(row.prevFeedbackDate) < threeMonthsAgo
+                  ? <Alert style={{ paddingRight: 10 }} />
+                  : null
+                }
+                { new Date(row.prevFeedbackDate).toLocaleDateString() }
+              </div>,
               columnTitle: <FormattedMessage id='lastFeedback' />,
               maxShowWidth: 440
             },
