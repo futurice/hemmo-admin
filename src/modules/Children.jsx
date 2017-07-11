@@ -18,7 +18,7 @@ import rest from '../utils/rest';
 
 
 @injectIntl
-class Users extends React.Component {
+class Children extends React.Component {
   state = {
     page: 0,
     pageEntries: 20,
@@ -48,7 +48,7 @@ class Users extends React.Component {
       order: params.order
     };
 
-    dispatch(rest.actions.users(queryParams));
+    dispatch(rest.actions.children(queryParams));
   }
 
   refreshUser(userId) {
@@ -116,7 +116,7 @@ class Users extends React.Component {
   }
 }
 
-Users.propTypes = {
+Children.propTypes = {
   children: PropTypes.shape({
     loading: PropTypes.bool.isRequired,
     data: PropTypes.object.isRequired
@@ -127,9 +127,9 @@ Users.propTypes = {
 function select(state, ownParams) {
   return {
     location: ownParams.location,
-    children: state.users,
+    children: state.children,
     user: state.auth.data.decoded
   };
 }
 
-export default connect(select)(Users);
+export default connect(select)(Children);

@@ -38,7 +38,7 @@ const emptyMeta = {
 };
 
 const rest = reduxApi({
-  users: {
+  children: {
     url: `${apiRoot}/children`,
     transformer(data, prevData = {
       entries: [],
