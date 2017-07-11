@@ -158,8 +158,6 @@ class EmployeeManagement extends React.Component {
       }
     ];
 
-    const addButton = scope.includes('admin') ? (<Button fab className="add-employee" color="primary" onClick={() => this.addUserDialog()}><AddIcon /></Button>) : '';
-
     return(
       <div>
         <CardGridWrapper>
@@ -167,7 +165,7 @@ class EmployeeManagement extends React.Component {
             <CardContent className="manage-employees">
               <Typography type="title">{ formatMessage({id: 'employeeManagement'}) }</Typography>
 
-              {addButton}
+              <Button fab className="add-employee" color="primary" onClick={() => this.addUserDialog()}><AddIcon /></Button>
 
               <TextField
                 className="text-field"
@@ -244,8 +242,7 @@ class EmployeeManagement extends React.Component {
 function select(state, ownParams) {
   return {
     employees: state.employees,
-    employeeDetails: state.employeeDetails,
-    scope: state.auth.data.decoded.scope
+    employeeDetails: state.employeeDetails
   };
 }
 

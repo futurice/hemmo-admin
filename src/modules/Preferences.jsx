@@ -120,7 +120,7 @@ export default class Preferences extends React.Component {
           </Card>
         </CardGridWrapper>
 
-        <EmployeeManagement />
+        {user.scope.includes('admin') ? <EmployeeManagement /> : ''}
       </div>
     );
   }
