@@ -9,7 +9,6 @@ import Typography from 'material-ui/Typography';
 import { LabelSwitch } from 'material-ui/Switch';
 import CardGridWrapper from '../components/CardGridWrapper';
 import Card, { CardContent, } from 'material-ui/Card';
-import AddIcon from 'material-ui-icons/Add';
 import Edit from 'material-ui-icons/Edit';
 import TextField from 'material-ui/TextField';
 import Dialog, { DialogTitle, DialogContent, DialogActions } from 'material-ui/Dialog';
@@ -155,19 +154,18 @@ class EmployeeManagement extends React.Component {
         component: (
           <IconButton onClick={this.toggleEmployee}>
             <Edit />
-          </IconButton>)
+          </IconButton>),
+        className: 'row-action'
       }
     ];
 
     return(
       <div className="employee-management">
-
               <Typography type="title">{ formatMessage({id: 'employeeManagement'}) }</Typography>
 
-              <IconButton className="add-employee" color="primary" onClick={() => this.addUserDialog()}>
-                <AddIcon />
+              <Button className="add-employee" color="primary" onClick={() => this.addUserDialog()}>
                 { formatMessage({id: 'addEmployee'}) }
-              </IconButton>
+              </Button>
 
               <TableCard
                 initialPage={ initialPage }
@@ -209,10 +207,10 @@ class EmployeeManagement extends React.Component {
 
               <LabelSwitch
                 checked={this.state.user.active}
+                label={ formatMessage({ id: 'active' }) }
                 onChange={(event, checked) => {
                   this.setState({ user: {...this.state.user, active: checked} });
                 }}
-                label={ formatMessage({ id: 'active' }) }
               />
             </div>)}
           </DialogContent>
