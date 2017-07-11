@@ -235,31 +235,3 @@ function select(state, ownParams) {
 }
 
 export default connect(select)(EmployeeManagement);
-
-
-/*
-<TextField
-                className="text-field"
-                label={formatMessage({ id: 'name' })}
-                onKeyUp={event => {
-                  const val = event.target.value;
-                  const keyword = (val.length >= 3) ? val : '';
-
-                  if (keyword !== this.state.searchName) {
-                    this.setState({
-                      searchName: val.length >= 3 ? val : ''
-                    }, this.refresh);
-                  }
-                }}
-                marginForm
-              />
-
-              <ModelTable
-                orderBy={this.state.orderBy}
-                order={this.state.order}
-                header={header}
-                entries={this.props.employees.data}
-                onClickRow={this.openEmployee}
-                onSortRequest={this.loadEmployees}
-              />
-*/
