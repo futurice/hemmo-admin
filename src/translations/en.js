@@ -18,6 +18,7 @@ export default {
 
   // Preferences view
   language: 'App language',
+  appLanguageExplain: 'Selected laguage is applied only for this browser.',
   selectedLanguage: 'Selected language',
   resetState: 'Reset app state',
   resetStateExplanation: 'Use this if you experience problems with the app. Only affects your session.',

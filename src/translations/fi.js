@@ -17,6 +17,7 @@ export default {
 
   // Preferences view
   language: 'Sovelluksen kieli',
+  appLanguageExplain: 'Valittu kieli asetetaan vain tälle selaimelle.',
   selectedLanguage: 'Valittu kieli',
   resetState: 'Nollaa sovelluksen tila',
   resetStateExplanation: 'Käytä tätä toimintoa jos huomaat ongelmia sovelluksen toiminnassa. Vaikuttaa ainoastaan sinun sessioon.',
