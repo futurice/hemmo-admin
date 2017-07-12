@@ -6,6 +6,7 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 
 import Button from 'material-ui/Button';
 //import { LinearProgress } from 'material-ui/Progress';
+import Alert from 'material-ui-icons/Warning';
 import ArrowForward from 'material-ui-icons/ArrowForward';
 import Done from 'material-ui-icons/Done';
 import { red300, lightGreen300 } from 'material-ui/styles/colors';
@@ -18,7 +19,7 @@ import rest from '../utils/rest';
 
 
 @injectIntl
-class Users extends React.Component {
+class Children extends React.Component {
   state = {
     page: 0,
     pageEntries: 20,
@@ -48,7 +49,7 @@ class Users extends React.Component {
       order: params.order
     };
 
-    dispatch(rest.actions.users(queryParams));
+    dispatch(rest.actions.children(queryParams));
   }
 
   refreshUser(userId) {
@@ -59,6 +60,9 @@ class Users extends React.Component {
     const { children, intl: { formatMessage } } = this.props;
     const initialPage = 0;
     const pageEntries = 20;
+
+    const threeMonthsAgo = new Date();
+    threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
 
     return (
       <div>
@@ -94,7 +98,14 @@ class Users extends React.Component {
             },
             {
               id: 'received',
-              value: row => new Date(row.createdAt).toLocaleDateString(),
+              value: row => <div>
+                {
+                  row.showAlerts && new Date(row.prevFeedbackDate) < threeMonthsAgo
+                  ? <Alert style={{ paddingRight: 10 }} />
+                  : null
+                }
+                { new Date(row.prevFeedbackDate).toLocaleDateString() }
+              </div>,
               columnTitle: <FormattedMessage id='lastFeedback' />,
               maxShowWidth: 440
             },
@@ -116,7 +127,7 @@ class Users extends React.Component {
   }
 }
 
-Users.propTypes = {
+Children.propTypes = {
   children: PropTypes.shape({
     loading: PropTypes.bool.isRequired,
     data: PropTypes.object.isRequired
@@ -127,9 +138,9 @@ Users.propTypes = {
 function select(state, ownParams) {
   return {
     location: ownParams.location,
-    children: state.users,
+    children: state.children,
     user: state.auth.data.decoded
   };
 }
 
-export default connect(select)(Users);
+export default connect(select)(Children);
