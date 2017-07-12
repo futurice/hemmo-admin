@@ -28,6 +28,15 @@ header button.active > span:first-child {
 .text-field {
   vertical-align: bottom; }
 
+.form-control {
+  width: 100%;
+  margin-bottom: 15px; }
+  .form-control.row {
+    flex-direction: row; }
+
+.paper {
+  padding: 16px; }
+
 .toolbar {
   justify-content: center;
   box-sizing: border-box;
@@ -79,6 +88,12 @@ table .row-action {
     margin-left: 24px; }
   .employee-management .reset-password {
     margin-top: 1rem; }
+  .employee-management .details-updated {
+    align-self: center;
+    margin-left: 25px;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 1rem; }
 
 .dialog-content {
   width: 600px;

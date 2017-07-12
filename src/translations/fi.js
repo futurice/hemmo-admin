@@ -22,6 +22,13 @@ export default {
   resetStateExplanation: 'Käytä tätä toimintoa jos huomaat ongelmia sovelluksen toiminnassa. Vaikuttaa ainoastaan sinun sessioon.',
   resetStateButton: 'Nollaa tila',
 
+  ownDetails: 'Omat tiedot',
+  newPassword: 'Uusi salasana',
+  confirmPassword: 'Vahvista uusi salasana',
+  newPasswordExplain: 'Sinun tarvitsee syöttää salasana vain jos haluat muuttaa sen.',
+  passwordMismatch: 'Salasanat eivät ole identtisiä.',
+  detailsUpdated: 'Tiedot päivitetty',
+
   // Employee management
   employeeManagement: 'Hallinnoi työntekijöitä',
   addEmployee: 'Lisää uusi käyttäjä',

@@ -5,7 +5,12 @@ import List, { ListItem, ListItemText } from 'material-ui/List';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
-import Card, { CardContent } from 'material-ui/Card';
+import TextField from 'material-ui/TextField';
+import FormControl from 'material-ui/Form/FormControl';
+import Paper from 'material-ui/Paper';
+import Grid from 'material-ui/Grid';
+import FormHelperText from 'material-ui/Form/FormHelperText';
+import { green } from 'material-ui/styles/colors';
 
 import { connect } from 'react-redux';
 import { updateIntl } from 'react-intl-redux';
@@ -54,10 +59,13 @@ export default class Preferences extends React.Component {
         password: '',
         password2: ''
       },
-      passwordMismatch: false
+      passwordMismatch: false,
+      detailsUpdated: false,
+      submitting: false
     };
 
     this.canSubmit = this.canSubmit.bind(this);
+    this.preUpdate = this.preUpdate.bind(this);
     this.postUpdate = this.postUpdate.bind(this);
     this.checkPasswords = this.checkPasswords.bind(this);
   }
@@ -78,14 +86,30 @@ export default class Preferences extends React.Component {
   canSubmit() {
     const emailRegexp = new RegExp(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/, 'i');
 
-    return !this.state.passwordMismatch &&
+    return !this.state.submitting &&
+           !this.state.passwordMismatch &&
             this.state.user.name.length &&
             this.state.user.email.length && emailRegexp.test(this.state.user.email);
   }
 
+  preUpdate() {
+    const body = {
+      name: this.state.user.name,
+      email: this.state.user.email,
+      password: this.state.user.password
+    };
+
+    this.setState({submitting: true});
+    this.props.updateDetails(this.props.user.id, body, this.postUpdate);
+  }
+
   postUpdate() {
     this.setState({
+      submitting: false,
+      detailsUpdated: true,
       user: {...this.state.user, password: '', password2: ''}
+    }, () => {
+      setTimeout(() => this.setState({detailsUpdated: false}), 3000);
     });
   }
 
@@ -94,7 +118,6 @@ export default class Preferences extends React.Component {
       activeLanguage,
       changeLanguage,
       doClearState,
-      updateDetails,
       user,
       intl: { formatMessage },
     } = this.props;
@@ -148,20 +171,19 @@ export default class Preferences extends React.Component {
                 {passwordError}
               </FormControl>
 
-              <FormControl>
+              <FormControl className="form-control row">
                 <Button
                   raised
                   disabled={ !this.canSubmit() }
                   color="primary"
-                  onClick={() => {
-                    updateDetails(user.id, {
-                      name: this.state.user.name,
-                      email: this.state.user.email,
-                      password: this.state.user.password
-                    }, this.postUpdate.bind(this))
-                  }}>
+                  onClick={ this.preUpdate }>
                     { formatMessage({id: 'save'}) }
                 </Button>
+
+                {this.state.detailsUpdated ? (
+                  <span className="details-updated" style={{color: green[600]}}>
+                    { formatMessage({id: 'detailsUpdated'}) }
+                  </span>) : ''}
               </FormControl>
             </Paper>
           </Grid>
@@ -194,49 +216,35 @@ export default class Preferences extends React.Component {
                   open={this.state.languageMenuOpen}
                   onRequestClose={() => this.setState({ languageMenuOpen: false })}
                 >
-                  <ListItemText
-                    primary={formatMessage({ id: 'selectedLanguage' })}
-                    secondary={languages[activeLanguage] ? languages[activeLanguage].name : 'unknown'}
-                  />
-                </ListItem>
-              </List>
-              <Menu
-                id="language-menu"
-                anchorEl={this.state.languageMenuAnchor}
-                open={this.state.languageMenuOpen}
-                onRequestClose={() => this.setState({ languageMenuOpen: false })}
-              >
-                {
-                  Object.keys(languages).map(language => (
-                    <MenuItem
-                      key={language}
-                      selected={language === activeLanguage}
-                      onClick={() => {
-                        changeLanguage(user, language);
-                        this.setState({ languageMenuOpen: false });
-                      }}
-                    >
-                      {languages[language].name}
-                    </MenuItem>
-                  ))
-                }
-              </Menu>
-            </CardContent>
-            <CardContent>
-              <Typography type="headline">{formatMessage({ id: 'resetState' })}</Typography>
-              <Typography>{formatMessage({ id: 'resetStateExplanation' })}</Typography>
-            </CardContent>
-            <CardContent>
-              <Button
-                raised
-                color="accent"
-                onClick={doClearState}
-              >
-                {formatMessage({ id: 'resetStateButton' })}
-              </Button>
-            </CardContent>
-          </Card>
-        </CardGridWrapper>
+                  {
+                    Object.keys(languages).map(language => (
+                      <MenuItem
+                        key={language}
+                        selected={language === activeLanguage}
+                        onClick={() => {
+                          changeLanguage(user, language);
+                          this.setState({ languageMenuOpen: false });
+                        }}
+                      >
+                        {languages[language].name}
+                      </MenuItem>
+                    ))
+                  }
+                </Menu>
+
+                <Typography type="headline">{formatMessage({ id: 'resetState' })}</Typography>
+                <Typography>{formatMessage({ id: 'resetStateExplanation' })}</Typography>
+
+                <Button
+                  raised
+                  color="accent"
+                  onClick={doClearState}
+                >
+                  {formatMessage({ id: 'resetStateButton' })}
+                </Button>
+            </Paper>
+          </Grid>
+        </Grid>
 
         {user.scope.includes('admin') ? <EmployeeManagement /> : ''}
       </div>

@@ -27,6 +27,7 @@ export default {
   confirmPassword: 'Confirm new password',
   newPasswordExplain: 'You need to type in new password only if you want to change it.',
   passwordMismatch: 'Passwords are not identical.',
+  detailsUpdated: 'Details updated',
 
   // Employee management
   employeeManagement: 'Manage Employees',

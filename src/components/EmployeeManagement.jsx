@@ -34,7 +34,8 @@ class EmployeeManagement extends React.Component {
       page: 0,
       pageEntries: 20,
       dialogOpen: false,
-      user: emptyEmployee
+      user: emptyEmployee,
+      submitting: false
     };
 
     this.updateAttr = this.updateAttr.bind(this);
@@ -92,6 +93,10 @@ class EmployeeManagement extends React.Component {
     });
   }
 
+  notSubmitting() {
+    this.setState({submitting: false});
+  }
+
   saveEmployee() {
     const { dispatch } = this.props;
     const body = {
@@ -100,19 +105,29 @@ class EmployeeManagement extends React.Component {
       active: this.state.user.active
     };
 
+    this.setState({submitting: true});
+
     if (this.state.user.id) {
       body.resetPassword = this.state.user.resetPassword;
 
-      dispatch(rest.actions.employee.patch({id: this.state.user.id}, {body: JSON.stringify(body)}, () => {
-        this.closeDialog();
-        this.loadEmployees();
-      }))
+      dispatch(rest.actions.employee.patch({id: this.state.user.id}, {body: JSON.stringify(body)}, (response) => {
+        if (!response.error) {
+          this.closeDialog();
+          this.loadEmployees();
+        }
+
+        this.notSubmitting();
+      }));
     }
     else {
-      dispatch(rest.actions.employeeCreate(null, {body: JSON.stringify(body)}, () => {
-        this.closeDialog();
-        this.loadEmployees();
-      }))
+      dispatch(rest.actions.employeeCreate(null, {body: JSON.stringify(body)}, (response) => {
+        if (!response.error) {
+          this.closeDialog();
+          this.loadEmployees();
+        }
+
+        this.notSubmitting();
+      }));
     }
   }
 
@@ -125,7 +140,8 @@ class EmployeeManagement extends React.Component {
 
   canSubmit() {
     const emailRegexp = new RegExp(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/, 'i');
-    return this.state.user.name.length && this.state.user.email.length && emailRegexp.test(this.state.user.email);
+
+    return !this.state.submitting && this.state.user.name.length && this.state.user.email.length && emailRegexp.test(this.state.user.email);
   }
 
   render() {
@@ -194,7 +210,6 @@ class EmployeeManagement extends React.Component {
             (<div>
               <FormControl className="form-control">
                 <TextField
-                  autoFocus
                   className="full-width-text-field"
                   name="name" value={this.state.user.name}
                   label={formatMessage({ id: 'name' })}
