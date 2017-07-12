@@ -49,6 +49,14 @@ header {
 	&.row {
 		flex-direction: row;
 	}
+
+	label {
+		font-size: 1rem;
+	}
+
+	input {
+		font-size: 1rem;
+	}
 }
 
 .paper {

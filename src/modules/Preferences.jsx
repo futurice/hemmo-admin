@@ -11,6 +11,7 @@ import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 import FormHelperText from 'material-ui/Form/FormHelperText';
 import { green } from 'material-ui/styles/colors';
+import ArrowDropDown from 'material-ui-icons/ArrowDropDown';
 
 import { connect } from 'react-redux';
 import { updateIntl } from 'react-intl-redux';
@@ -193,44 +194,47 @@ export default class Preferences extends React.Component {
 
                 <Typography type="headline">{formatMessage({ id: 'language' })}</Typography>
                 <Typography>{ formatMessage({ id: 'appLanguageExplain' }) }</Typography>
-                <List>
-                  <ListItem
-                    button
-                    aria-haspopup="true"
-                    aria-controls="language-menu"
-                    aria-label="App language"
-                    onClick={e => this.setState({
-                      languageMenuOpen: true,
-                      languageMenuAnchor: e.currentTarget,
-                    })}
+                <div className="language-selection">
+                  <List>
+                    <ListItem
+                      button
+                      aria-haspopup="true"
+                      aria-controls="language-menu"
+                      aria-label="App language"
+                      onClick={e => this.setState({
+                        languageMenuOpen: true,
+                        languageMenuAnchor: e.currentTarget,
+                      })}
+                    >
+                      <ListItemText
+                        primary={formatMessage({ id: 'selectedLanguage' })}
+                        secondary={languages[activeLanguage] ? languages[activeLanguage].name : 'unknown'}
+                      /><ArrowDropDown />
+                    </ListItem>
+                  </List>
+
+                  <Menu
+                    id="language-menu"
+                    anchorEl={this.state.languageMenuAnchor}
+                    open={this.state.languageMenuOpen}
+                    onRequestClose={() => this.setState({ languageMenuOpen: false })}
                   >
-                    <ListItemText
-                      primary={formatMessage({ id: 'selectedLanguage' })}
-                      secondary={languages[activeLanguage] ? languages[activeLanguage].name : 'unknown'}
-                    />
-                  </ListItem>
-                </List>
-                <Menu
-                  id="language-menu"
-                  anchorEl={this.state.languageMenuAnchor}
-                  open={this.state.languageMenuOpen}
-                  onRequestClose={() => this.setState({ languageMenuOpen: false })}
-                >
-                  {
-                    Object.keys(languages).map(language => (
-                      <MenuItem
-                        key={language}
-                        selected={language === activeLanguage}
-                        onClick={() => {
-                          changeLanguage(user, language);
-                          this.setState({ languageMenuOpen: false });
-                        }}
-                      >
-                        {languages[language].name}
-                      </MenuItem>
-                    ))
-                  }
-                </Menu>
+                    {
+                      Object.keys(languages).map(language => (
+                        <MenuItem
+                          key={language}
+                          selected={language === activeLanguage}
+                          onClick={() => {
+                            changeLanguage(user, language);
+                            this.setState({ languageMenuOpen: false });
+                          }}
+                        >
+                          {languages[language].name}
+                        </MenuItem>
+                      ))
+                    }
+                  </Menu>
+                </div>
 
                 <Typography type="headline">{formatMessage({ id: 'resetState' })}</Typography>
                 <Typography>{formatMessage({ id: 'resetStateExplanation' })}</Typography>
