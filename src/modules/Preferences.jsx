@@ -9,6 +9,7 @@ import Card, { CardContent } from 'material-ui/Card';
 
 import { connect } from 'react-redux';
 import { updateIntl } from 'react-intl-redux';
+import rest from '../utils/rest';
 import { languages, storeLocaleForUser } from '../utils/intl';
 
 import CardGridWrapper from '../components/CardGridWrapper';
@@ -18,6 +19,7 @@ import { reset } from './Logout';
 
 const mapStateToProps = state => ({
   activeLanguage: state.intl.locale,
+  userDetails: state.employee,
   user: state.auth.data.decoded,
 });
 
@@ -32,28 +34,67 @@ const mapDispatchToProps = dispatch => ({
   doClearState: () => {
     dispatch(reset());
   },
+  updateDetails: (id, data, cb) => {
+    dispatch(rest.actions.employee.patch( {id: id}, {body: JSON.stringify(data)}, cb()));
+  }
 });
 
 @injectIntl
 @connect(mapStateToProps, mapDispatchToProps)
 export default class Preferences extends React.Component {
-  static defaultProps = {
-    user: {
-      email: 'Default user',
-      scope: 'user',
-    },
-  };
+  constructor(props) {
+    super(props);
 
-  state = {
-    languageMenuOpen: false,
-    languageMenuAnchor: null,
-  };
+    this.state = {
+      languageMenuOpen: false,
+      languageMenuAnchor: null,
+      user: {
+        name: props.user.name || '',
+        email: props.user.email || '',
+        password: '',
+        password2: ''
+      },
+      passwordMismatch: false
+    };
+
+    this.canSubmit = this.canSubmit.bind(this);
+    this.postUpdate = this.postUpdate.bind(this);
+    this.checkPasswords = this.checkPasswords.bind(this);
+  }
+
+  updateAttr(event) {
+    const value = event.target.value;
+    const field = event.target.name;
+
+    this.setState( {user: {...this.state.user, [field]: value }} );
+  }
+
+  checkPasswords() {
+    this.setState({
+      passwordMismatch: this.state.user.password && this.state.user.password2 && this.state.user.password !== this.state.user.password2 ? true : false
+    });
+  }
+
+  canSubmit() {
+    const emailRegexp = new RegExp(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/, 'i');
+
+    return !this.state.passwordMismatch &&
+            this.state.user.name.length &&
+            this.state.user.email.length && emailRegexp.test(this.state.user.email);
+  }
+
+  postUpdate() {
+    this.setState({
+      user: {...this.state.user, password: '', password2: ''}
+    });
+  }
 
   render() {
     const {
       activeLanguage,
       changeLanguage,
       doClearState,
+      updateDetails,
       user,
       intl: { formatMessage },
     } = this.props;
@@ -61,20 +102,97 @@ export default class Preferences extends React.Component {
     return (
       <div>
         <PageHeader header={formatMessage({id: 'Preferences'})} />
-        <CardGridWrapper>
-          <Card>
-            <CardContent>
-              <Typography type="headline">{formatMessage({ id: 'language' })}</Typography>
-              <List>
-                <ListItem
-                  button
-                  aria-haspopup="true"
-                  aria-controls="language-menu"
-                  aria-label="App language"
-                  onClick={e => this.setState({
-                    languageMenuOpen: true,
-                    languageMenuAnchor: e.currentTarget,
-                  })}
+
+        <Grid container gutter={24}>
+          <Grid item xs={12} sm={6}>
+            <Paper className="paper" elevation={1}>
+              <Typography type="headline">{ formatMessage({ id: 'ownDetails' }) }</Typography>
+
+              <FormControl className="form-control">
+                <TextField
+                  required={true}
+                  name="name" value={ this.state.user.name }
+                  label={ formatMessage({ id: 'name' }) }
+                  onChange={ this.updateAttr.bind(this) } />
+              </FormControl>
+
+              <FormControl className="form-control">
+                <TextField
+                  required={true}
+                  name="email"
+                  value={ this.state.user.email }
+                  label={ formatMessage({ id: 'email' }) } 
+                  onChange={ this.updateAttr.bind(this) } />
+              </FormControl>
+
+              <Typography className="new-password-explain">{ formatMessage({ id: 'newPasswordExplain' }) }</Typography>
+              <FormControl className="form-control" error={this.state.passwordMismatch}>
+                <TextField
+                  name="password"
+                  type="password"
+                  value={ this.state.user.password }
+                  label={ formatMessage({ id: 'newPassword' }) }
+                  onBlur={ this.checkPasswords }
+                  onChange={ this.updateAttr.bind(this) } />
+                {passwordError}
+              </FormControl>
+
+              <FormControl className="form-control" error={this.state.passwordMismatch}>
+                <TextField
+                  name="password2"
+                  type="password"
+                  value={ this.state.user.password2 }
+                  label={ formatMessage({ id: 'confirmPassword' }) }
+                  onBlur={ this.checkPasswords }
+                  onChange={ this.updateAttr.bind(this) } />
+                {passwordError}
+              </FormControl>
+
+              <FormControl>
+                <Button
+                  raised
+                  disabled={ !this.canSubmit() }
+                  color="primary"
+                  onClick={() => {
+                    updateDetails(user.id, {
+                      name: this.state.user.name,
+                      email: this.state.user.email,
+                      password: this.state.user.password
+                    }, this.postUpdate.bind(this))
+                  }}>
+                    { formatMessage({id: 'save'}) }
+                </Button>
+              </FormControl>
+            </Paper>
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <Paper className="paper">
+
+                <Typography type="headline">{formatMessage({ id: 'language' })}</Typography>
+                <Typography>{ formatMessage({ id: 'appLanguageExplain' }) }</Typography>
+                <List>
+                  <ListItem
+                    button
+                    aria-haspopup="true"
+                    aria-controls="language-menu"
+                    aria-label="App language"
+                    onClick={e => this.setState({
+                      languageMenuOpen: true,
+                      languageMenuAnchor: e.currentTarget,
+                    })}
+                  >
+                    <ListItemText
+                      primary={formatMessage({ id: 'selectedLanguage' })}
+                      secondary={languages[activeLanguage] ? languages[activeLanguage].name : 'unknown'}
+                    />
+                  </ListItem>
+                </List>
+                <Menu
+                  id="language-menu"
+                  anchorEl={this.state.languageMenuAnchor}
+                  open={this.state.languageMenuOpen}
+                  onRequestClose={() => this.setState({ languageMenuOpen: false })}
                 >
                   <ListItemText
                     primary={formatMessage({ id: 'selectedLanguage' })}

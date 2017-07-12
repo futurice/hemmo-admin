@@ -18,7 +18,8 @@ const emptyEmployee = {
   id: null,
   name: '',
   email: '',
-  active: false
+  active: false,
+  resetPassword: false
 };
 
 @injectIntl
@@ -94,21 +95,21 @@ class EmployeeManagement extends React.Component {
   saveEmployee() {
     const { dispatch } = this.props;
     const body = {
-      body: JSON.stringify({
-        name: this.state.user.name,
-        email: this.state.user.email,
-        active: this.state.user.active
-      })
+      name: this.state.user.name,
+      email: this.state.user.email,
+      active: this.state.user.active
     };
 
     if (this.state.user.id) {
-      dispatch(rest.actions.employee.patch({id: this.state.user.id}, body, () => {
+      body.resetPassword = this.state.user.resetPassword;
+
+      dispatch(rest.actions.employee.patch({id: this.state.user.id}, {body: JSON.stringify(body)}, () => {
         this.closeDialog();
         this.loadEmployees();
       }))
     }
     else {
-      dispatch(rest.actions.employeeCreate(null, body, () => {
+      dispatch(rest.actions.employeeCreate(null, {body: JSON.stringify(body)}, () => {
         this.closeDialog();
         this.loadEmployees();
       }))
@@ -191,29 +192,44 @@ class EmployeeManagement extends React.Component {
                 <CircularProgress/>
               </div>) :
             (<div>
-              <TextField
-                autoFocus
-                name="name" value={this.state.user.name}
-                label={formatMessage({ id: 'name' })}
-                onChange={this.updateAttr} />
+              <FormControl className="form-control">
+                <TextField
+                  autoFocus
+                  className="full-width-text-field"
+                  name="name" value={this.state.user.name}
+                  label={formatMessage({ id: 'name' })}
+                  onChange={this.updateAttr} />
+              </FormControl>
 
-              <TextField
-                name="email"
-                value={this.state.user.email}
-                label={formatMessage({ id: 'email' })}
-                onChange={this.updateAttr} />
+              <FormControl className="form-control">
+                <TextField
+                  name="email"
+                  className="full-width-text-field"
+                  value={this.state.user.email}
+                  label={formatMessage({ id: 'email' })} 
+                  onChange={this.updateAttr} />
+              </FormControl>
 
-              <LabelSwitch
-                checked={this.state.user.active}
-                label={ formatMessage({ id: 'active' }) }
-                onChange={(event, checked) => {
-                  this.setState({ user: {...this.state.user, active: checked} });
-                }}
-              />
+              <FormControl className="form-control">
+                <LabelSwitch
+                  checked={this.state.user.active}
+                  label={ formatMessage({ id: 'active' }) }
+                  onChange={(event, checked) => {
+                    this.setState({ user: {...this.state.user, active: checked} });
+                  }}
+                />
+              </FormControl>
 
-              <div className="reset-password">
-                <Button raised color="accent">{ formatMessage({id: 'resetPassword'}) }</Button>
-              </div>
+              <FormControl className="form-control">
+                <LabelSwitch
+                  checked={this.state.user.resetPassword}
+                  label={ formatMessage({ id: 'resetPassword' }) }
+                  onChange={(event, checked) => {
+                    this.setState({ user: {...this.state.user, resetPassword: checked} });
+                  }}
+                />
+                {this.state.user.resetPassword ? <Typography>{ formatMessage({ id: 'resetPasswordExplanation' }) }</Typography> : ''}
+              </FormControl>
             </div>)}
           </DialogContent>
           <DialogActions>

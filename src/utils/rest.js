@@ -100,19 +100,6 @@ const rest = reduxApi({
       method: 'post'
     }
   },
-  employeePassword: {
-    url: `${apiRoot}/employees/password`,
-    options: {
-      method: 'post'
-    },
-    transformer(data, prevData) {
-      if (data) {
-        return {...prevData, ...data};
-      } else {
-        return {...prevData};
-      }
-    }
-  },
   setUserAssignee: {
     url: `${apiRoot}/users/:userId`,
     transformer(data) {
