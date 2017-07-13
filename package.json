@@ -47,7 +47,7 @@
     "prettier": "prettier --single-quote --trailing-comma all --write src/**/*.js src/**/*.jsx"
   },
   "lint-staged": {
-    "*.js": [
+    "*.{js,jsx}": [
       "prettier --single-quote --trailing-comma all --write",
       "git add"
     ]
