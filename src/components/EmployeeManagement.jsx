@@ -44,6 +44,7 @@ class EmployeeManagement extends React.Component {
     this.loadEmployee = this.loadEmployee.bind(this);
     this.loadEmployees = this.loadEmployees.bind(this);
     this.saveEmployee = this.saveEmployee.bind(this);
+    this.notSubmitting = this.notSubmitting.bind(this);
   }
 
   componentWillMount() {
@@ -111,24 +112,22 @@ class EmployeeManagement extends React.Component {
     if (this.state.user.id) {
       body.resetPassword = this.state.user.resetPassword;
 
-      dispatch(rest.actions.employee.patch({id: this.state.user.id}, {body: JSON.stringify(body)})).then(response => {
-        if (!response.error) {
+      dispatch(rest.actions.employee.patch({id: this.state.user.id}, {body: JSON.stringify(body)}))
+        .then(response => {
           this.closeDialog();
           this.loadEmployees();
-        }
-
-        this.notSubmitting();
-      });
+          this.notSubmitting();
+        })
+        .catch(this.notSubmitting);
     }
     else {
-      dispatch(rest.actions.employeeCreate(null, {body: JSON.stringify(body)})).then(response => {
-        if (!response.error) {
+      dispatch(rest.actions.employeeCreate(null, {body: JSON.stringify(body)}))
+        .then(response => {
           this.closeDialog();
           this.loadEmployees();
-        }
-
-        this.notSubmitting();
-      });
+          this.notSubmitting();
+        })
+        .catch(this.notSubmitting)
     }
   }
 
@@ -177,31 +176,29 @@ class EmployeeManagement extends React.Component {
 
     return(
       <div className="employee-management">
-              <Typography type="title">{ formatMessage({id: 'employeeManagement'}) }</Typography>
+        <Typography type="title">{ formatMessage({id: 'employeeManagement'}) }</Typography>
 
-              <Button className="add-employee" color="primary" onClick={() => this.addUserDialog()}>
-                { formatMessage({id: 'addEmployee'}) }
-              </Button>
+        <Button className="add-employee" color="primary" onClick={() => this.addUserDialog()}>
+          { formatMessage({id: 'addEmployee'}) }
+        </Button>
 
-              <TableCard
-                initialPage={ initialPage }
-                pageEntries={ pageEntries }
-                model={ employees }
-                orderBy={ this.state.orderBy }
-                order={ this.state.order }
-                header={ header }
-                onClickRow={ this.loadEmployee }
-                refresh={ this.loadEmployees }
-                hideElems={['showAll', 'name2']}
-              />
-
+        <TableCard
+          initialPage={ initialPage }
+          pageEntries={ pageEntries }
+          model={ employees }
+          orderBy={ this.state.orderBy }
+          order={ this.state.order }
+          header={ header }
+          onClickRow={ this.loadEmployee }
+          refresh={ this.loadEmployees }
+          hideElems={['showAll', 'name2']}
+        />
 
         <Dialog
           onRequestClose={this.closeDialog.bind(this)}
           open={this.state.dialogOpen}
           className="dialog"
         >
-
           <DialogTitle>{ employee.data.id ? formatMessage({id: 'editEmployee'}) : formatMessage({id: 'addEmployee'}) }</DialogTitle>
           <DialogContent className="dialog-content">
             {employee.loading ? (
