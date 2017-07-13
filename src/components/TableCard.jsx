@@ -8,7 +8,7 @@ import ModelTable from './ModelTable';
 
 class TableCard extends React.Component {
   render() {
-    const { model } = this.props;
+    const { model, customLabels, hideElems } = this.props;
 
     let body = null;
     if (model.loading) {
@@ -43,7 +43,8 @@ class TableCard extends React.Component {
         modelName={this.props.model.data.name}
         initialPage={ parseInt(this.props.initialPage, 10) }
         pageEntries={ parseInt(this.props.pageEntries, 10) }
-        showAll={this.props.showAll}
+        hideElems={ hideElems || [] }
+        customLabels={ customLabels || {} }
       />
     );
 
@@ -74,7 +75,8 @@ TableCard.propTypes = {
   refresh: PropTypes.func.isRequired,
   onClickRow: PropTypes.func.isRequired,
   margin: PropTypes.number,
-  showAll: PropTypes.bool
+  hideElems: PropTypes.array,
+  customLabels: PropTypes.object
 };
 
 export default TableCard;

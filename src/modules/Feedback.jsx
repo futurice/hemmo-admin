@@ -23,7 +23,8 @@ class FeedbackTable extends React.Component {
     page: 0,
     pageEntries: 20,
     assigneeId: '',
-    childName: '',
+    name1: '',  // Child's name
+    name2: '',  // Employee name
     orderBy: 'assigneeName',
     order: 'asc'
   };
@@ -34,7 +35,7 @@ class FeedbackTable extends React.Component {
 
   refresh(p = {}) {
     const { dispatch } = this.props;
-    const params = {...this.state, p};
+    const params = Object.assign(this.state, p);
 
     this.setState(params);
 
@@ -42,7 +43,8 @@ class FeedbackTable extends React.Component {
       offset: params.page * params.pageEntries,
       limit: params.pageEntries,
       assigneeId: params.assigneeId,
-      childName: params.childName,
+      childName: params.name1,
+      assigneeName: params.name2,
       orderBy: params.orderBy,
       order: params.order
     };
@@ -63,6 +65,11 @@ class FeedbackTable extends React.Component {
     const initialPage = 0;
     const pageEntries = 20;
     const { intl: { formatMessage } } = this.props;
+    let hideElems = [];
+
+    if (!this.state.showAll) {
+      hideElems.push('name2');
+    }
 
     return(
       <div>
@@ -74,6 +81,11 @@ class FeedbackTable extends React.Component {
           emptyMsg={ this.props.noFeedbackMsg }
           orderBy={this.state.orderBy}
           order={this.state.order}
+          customLabels={{
+            name1: 'childsName',
+            name2: 'employeesName'
+          }}
+          hideElems={hideElems}
           header={[
             {
               id: null,
