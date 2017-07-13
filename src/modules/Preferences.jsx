@@ -41,7 +41,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch(reset());
   },
   updateDetails: (id, data, cb) => {
-    dispatch(rest.actions.employee.patch( {id: id}, {body: JSON.stringify(data)}, cb()));
+    dispatch(rest.actions.employee.patch( {id: id}, {body: JSON.stringify(data)})).then(cb);
+  },
+  renewAuth: (cb) => {
+    dispatch(rest.actions.renewAuth()).then(cb);
   }
 });
 
@@ -101,7 +104,7 @@ export default class Preferences extends React.Component {
     };
 
     this.setState({submitting: true});
-    this.props.updateDetails(this.props.user.id, body, this.postUpdate);
+    this.props.updateDetails(this.props.user.id, body, () => this.props.renewAuth(this.postUpdate));
   }
 
   postUpdate() {

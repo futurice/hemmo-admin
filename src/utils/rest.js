@@ -150,6 +150,7 @@ const rest = reduxApi({
   },
   auth: {
     url: `${apiRoot}/employees/authenticate`,
+    reducerName: 'auth',
     transformer: (data = {}) => {
       if (data.token) {
         return {
@@ -159,10 +160,22 @@ const rest = reduxApi({
       }
       return data;
     },
-
     options: {
       method: 'POST',
     },
+  },
+  renewAuth: {
+    url: `${apiRoot}/employees/authenticate/renew`,
+    reducerName: 'auth',
+    transformer: (data = {}) => {
+      if (data.token) {
+        return {
+          ...data,
+          decoded: jwtDecode(data.token),
+        };
+      }
+      return data;
+    }
   },
 })
 .use('options', (url, params, getState) => {
