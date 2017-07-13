@@ -13,8 +13,6 @@ export default {
   email: 'Sähköpostiosoite',
   description: 'Kuvaus',
   showUserDetails: 'Lisätiedot',
-  userDetails: 'Käyttäjän lisätiedot',
-  showAll: 'Näytä kaikki',
   lastFeedback: 'Viimeisin palaute',
 
   // Preferences view
@@ -32,6 +30,11 @@ export default {
   createdAt: 'Lisätty',
   active: 'Aktiivinen',
   resetPassword: 'Resetoi salasana',
+
+  // Table toolbar
+  childsName: 'Lapsen nimi',
+  employeesName: 'Työntekijän nimi',
+  showAll: 'Näytä kaikki',
 
   // Miscellaneous
   close: 'Sulje',

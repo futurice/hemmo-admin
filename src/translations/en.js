@@ -14,7 +14,6 @@ export default {
   description: 'Description',
   showUserDetails: 'Details',
   userDetails: 'User details',
-  showAll: 'Show all',
   lastFeedback: 'Last Feedback',
 
   // Preferences view
@@ -36,6 +35,11 @@ export default {
   // Miscellaneous
   close: 'Close',
   save: 'Save',
+
+  // Table toolbar
+  childsName: 'Child\'s name',
+  employeesName: 'Employee\'s name',
+  showAll: 'Show all',
 
   // Hemmo
   newFeedback: 'Your feedback',

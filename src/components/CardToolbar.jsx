@@ -23,7 +23,8 @@ export default class CardToolbar extends React.Component {
       page: 0,
       pageEntries: 20,
       pageEntriesOpen: false,
-      name: '',
+      name1: '',
+      name2: '',
       showAll: false
     };
 
@@ -54,13 +55,28 @@ export default class CardToolbar extends React.Component {
   refresh() {
     this.props.refresh({
       showAll: this.state.showAll,
-      name: this.state.name,
+      name1: this.state.name1,
+      name2: this.state.name2,
       page: this.state.page,
       pageEntries: this.state.pageEntries});
   }
 
+  setAttribute(name, value) {
+    this.setState({ [name]: value }, this.refresh);
+  }
+
+  handleKeywordSearch(event) {
+    const name = event.target.name;
+    const value = event.target.value;
+    const keyword = (value.length >= 3) ? value : '';
+
+    if (keyword !== this.state[name]) {
+      this.setAttribute(name, value);
+    }
+  }
+
   render() {
-    const { intl: { formatMessage } } = this.props;
+    const { customLabels, hideElems, intl: { formatMessage } } = this.props;
     const pageEntries = this.state.pageEntries;
     const totalEntries = this.props.totalEntries;
     const page = this.state.page;
@@ -68,38 +84,43 @@ export default class CardToolbar extends React.Component {
     let toolbarItems = [];
 
     // Show all rows rgardless are they "own" or now
-    if (this.props.showAll !== false) {
+    if (hideElems && !hideElems.includes('showAll')) {
       toolbarItems.push(<LabelSwitch
         key="show-all"
         labelClassName="show-all"
         label={ formatMessage({ id: 'showAll' }) }
         checked={this.state.showAll}
         onChange={(event, checked) => {
-          this.setState({ showAll: checked }, this.refresh);
+          this.setAttribute('showAll', checked);
         }}
       />);
     }
 
-    // Free name search
+    // Free textfield search for name #1
     toolbarItems.push(
       <TextField
-        id="name"
-        key="name"
+        key="name1"
+        name="name1"
         className="text-field"
-        label={formatMessage({ id: 'name' })}
-        onKeyUp={event => {
-          const val = event.target.value;
-          const keyword = (val.length >= 3) ? val : '';
-
-          if (keyword !== this.state.name) {
-            this.setState({
-              name: val.length >= 3 ? val : ''
-            }, this.refresh);
-          }
-        }}
+        label={formatMessage({ id: customLabels.name1 ? customLabels.name1 : 'name' })}
+        onChange={this.handleKeywordSearch.bind(this)}
         marginForm
       />
     );
+
+    // Free textfield search for name #2
+    if (hideElems && !hideElems.includes('name2')) {
+      toolbarItems.push(
+        <TextField
+          key="name2"
+          name="name2"
+          className="text-field"
+          label={formatMessage({ id: customLabels.name2 ? customLabels.name2 : 'name' })}
+          onChange={this.handleKeywordSearch.bind(this)}
+          marginForm
+        />
+      );
+    }
 
     // Rows per page
     toolbarItems.push(
@@ -163,5 +184,6 @@ CardToolbar.propTypes = {
   refresh: PropTypes.func.isRequired,
   totalEntries: PropTypes.number.isRequired,
   modelName: PropTypes.string.isRequired,
-  showAll: PropTypes.bool
+  hideElems: PropTypes.array.isRequired,
+  customLabels: PropTypes.object.isRequired
 };

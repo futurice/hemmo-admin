@@ -24,7 +24,8 @@ class Children extends React.Component {
     page: 0,
     pageEntries: 20,
     showAll: false,
-    name: '',
+    name1: '',
+    name2: '',
     orderBy: 'name',
     order: 'asc'
   }
@@ -44,7 +45,8 @@ class Children extends React.Component {
       offset: params.page * params.pageEntries,
       limit: params.pageEntries,
       assigneeId: !params.showAll ? this.props.user.id : null,
-      name: params.name,
+      name: params.name1,
+      assigneeName: params.name2,
       orderBy: params.orderBy,
       order: params.order
     };
@@ -74,6 +76,10 @@ class Children extends React.Component {
           emptyMsg={ this.props.noFeedbackMsg }
           orderBy={this.state.orderBy}
           order={this.state.order}
+          customLabels={{
+            name1: 'childsName',
+            name2: 'employeesName'
+          }}
           header={[
             {
               id: null,
