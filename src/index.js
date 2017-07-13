@@ -13,8 +13,6 @@ import createMuiTheme from 'material-ui/styles/theme';
 
 import { IntlProvider } from 'react-intl-redux';
 
-import './index.css';
-
 import ErrorSnackbar from './modules/ErrorSnackbar';
 import NavigationDrawer from './modules/NavigationDrawer';
 import Header from './modules/Header';
