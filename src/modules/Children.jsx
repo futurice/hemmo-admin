@@ -62,9 +62,14 @@ class Children extends React.Component {
     const { children, intl: { formatMessage } } = this.props;
     const initialPage = 0;
     const pageEntries = 20;
+    let hideElems = [];
 
     const threeMonthsAgo = new Date();
     threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+
+    if (!this.state.showAll) {
+      hideElems.push('name2');
+    }
 
     return (
       <div>
@@ -80,6 +85,7 @@ class Children extends React.Component {
             name1: 'childsName',
             name2: 'employeesName'
           }}
+          hideElems={hideElems}
           header={[
             {
               id: null,

@@ -65,6 +65,11 @@ class FeedbackTable extends React.Component {
     const initialPage = 0;
     const pageEntries = 20;
     const { intl: { formatMessage } } = this.props;
+    let hideElems = [];
+
+    if (!this.state.showAll) {
+      hideElems.push('name2');
+    }
 
     return(
       <div>
@@ -80,6 +85,7 @@ class FeedbackTable extends React.Component {
             name1: 'childsName',
             name2: 'employeesName'
           }}
+          hideElems={hideElems}
           header={[
             {
               id: null,
