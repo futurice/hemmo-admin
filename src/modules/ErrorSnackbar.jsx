@@ -12,10 +12,7 @@ import Dialog, {
 } from 'material-ui/Dialog';
 
 import { connect } from 'react-redux';
-import {
-  createAction,
-  createReducer,
-} from 'redux-act';
+import { createAction, createReducer } from 'redux-act';
 
 const mapStateToProps = state => ({
   err: state.err,
@@ -67,7 +64,7 @@ export default class ErrorSnackbar extends React.Component {
     });
   };
 
-  renderSnackbar = (open, msg) => (
+  renderSnackbar = (open, msg) =>
     <Snackbar
       anchorOrigin={{
         vertical: 'bottom',
@@ -75,7 +72,11 @@ export default class ErrorSnackbar extends React.Component {
       }}
       open={open}
       autoHideDuration={6000}
-      message={<span id="error-snackbar">{ msg }</span>}
+      message={
+        <span id="error-snackbar">
+          {msg}
+        </span>
+      }
       onRequestClose={this.handleRequestClose}
       action={[
         <Button key="undo" color="accent" onClick={this.openDetails}>
@@ -90,30 +91,32 @@ export default class ErrorSnackbar extends React.Component {
           <CloseIcon />
         </IconButton>,
       ]}
-    />
-  );
+    />;
 
-  renderDetails = (open, msg) => (
+  renderDetails = (open, msg) =>
     <Dialog open={open} onRequestClose={this.closeDetails}>
-      <DialogTitle>{'Error details'}</DialogTitle>
+      <DialogTitle>
+        {'Error details'}
+      </DialogTitle>
       <DialogContent>
         <DialogContentText>
-          { msg }
+          {msg}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={this.closeDetails} color="primary">Dismiss</Button>
+        <Button onClick={this.closeDetails} color="primary">
+          Dismiss
+        </Button>
       </DialogActions>
-    </Dialog>
-  );
+    </Dialog>;
 
   render() {
     const { open, msg, detailsOpen, details } = this.state;
 
     return (
       <div>
-        { this.renderSnackbar(open, msg) }
-        { this.renderDetails(detailsOpen, details) }
+        {this.renderSnackbar(open, msg)}
+        {this.renderDetails(detailsOpen, details)}
       </div>
     );
   }
@@ -130,10 +133,13 @@ const initialState = {
 };
 
 // Reducer
-export const reducer = createReducer({
-  [showError]: (state, payload) => ({
-    msg: payload.msg,
-    details: payload.details,
-    id: state.id + 1,
-  }),
-}, initialState);
+export const reducer = createReducer(
+  {
+    [showError]: (state, payload) => ({
+      msg: payload.msg,
+      details: payload.details,
+      id: state.id + 1,
+    }),
+  },
+  initialState,
+);

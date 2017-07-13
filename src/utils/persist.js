@@ -10,14 +10,13 @@ import { reducers as restReducers } from './rest';
  * to the endpoint
  */
 const apiLoadingFilters = Object.keys(restReducers).map(reducer =>
-  createBlacklistFilter(reducer, ['loading'], ['loading']));
+  createBlacklistFilter(reducer, ['loading'], ['loading']),
+);
 
 const persistConfig = {
-  transforms: [
-    ...apiLoadingFilters,
-  ],
+  transforms: [...apiLoadingFilters],
   blacklist: [
-     // Don't restore navigation state
+    // Don't restore navigation state
     'router',
 
     // Clear any errors from previous app state
@@ -25,4 +24,5 @@ const persistConfig = {
   ],
 };
 
-export default (store, callback) => persistStore(store, persistConfig, callback);
+export default (store, callback) =>
+  persistStore(store, persistConfig, callback);

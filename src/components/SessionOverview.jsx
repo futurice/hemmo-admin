@@ -10,7 +10,14 @@ import rest from '../../reducers/api';
 /*
  * MaterialUI
  */
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import {
+  Card,
+  CardActions,
+  CardHeader,
+  CardMedia,
+  CardTitle,
+  CardText,
+} from 'material-ui/Card';
 import Chip from 'material-ui/Chip';
 import Avatar from 'material-ui/Avatar';
 import SelectField from 'material-ui/SelectField';
@@ -29,11 +36,7 @@ import ActionDone from 'material-ui/svg-icons/action/done';
 import Warning from 'material-ui/svg-icons/alert/warning';
 
 // Colors
-import {
-  red300,
-  yellow300,
-  lightGreen300
-} from 'material-ui/styles/colors';
+import { red300, yellow300, lightGreen300 } from 'material-ui/styles/colors';
 
 // Components
 import DeleteDialog from '../Shared/DeleteDialog';
@@ -57,7 +60,7 @@ class Overview extends Component {
     super(props);
 
     this.state = {
-      dialogOpen: false
+      dialogOpen: false,
     };
 
     this.markReviewed = this.markReviewed.bind(this);
@@ -66,39 +69,52 @@ class Overview extends Component {
   }
 
   markReviewed(reviewStatus) {
-    const {dispatch} = this.props;
-    dispatch(rest.actions.sessionDetail.put({id: this.props.id}, {
-      body: JSON.stringify({
-        reviewed: reviewStatus
-      })
-    }));
+    const { dispatch } = this.props;
+    dispatch(
+      rest.actions.sessionDetail.put(
+        { id: this.props.id },
+        {
+          body: JSON.stringify({
+            reviewed: reviewStatus,
+          }),
+        },
+      ),
+    );
   }
 
   openDeleteDialog() {
-    this.setState({dialogOpen: true});
+    this.setState({ dialogOpen: true });
   }
 
   handleDelete() {
-    const {dispatch} = this.props;
-    dispatch(rest.actions.sessionDetail.delete({id: this.props.id}, () => {
-      dispatch(goBack());
-    }));
+    const { dispatch } = this.props;
+    dispatch(
+      rest.actions.sessionDetail.delete({ id: this.props.id }, () => {
+        dispatch(goBack());
+      }),
+    );
   }
 
   setAssignee(event, index, value) {
     this.setState({
-      assigneeId: value
+      assigneeId: value,
     });
 
-    this.props.dispatch(rest.actions.sessionDetail.put({id: this.props.id}, {
-      body: JSON.stringify({
-        assigneeId: value
-      })
-    }, (err) => {
-      if (err) {
-        console.log(err);
-      }
-    }));
+    this.props.dispatch(
+      rest.actions.sessionDetail.put(
+        { id: this.props.id },
+        {
+          body: JSON.stringify({
+            assigneeId: value,
+          }),
+        },
+        err => {
+          if (err) {
+            console.log(err);
+          }
+        },
+      ),
+    );
   }
 
   render() {
@@ -132,7 +148,7 @@ class Overview extends Component {
     const iconSize = '42px';
     const iconStyle = {
       height: iconSize,
-      width: iconSize
+      width: iconSize,
     };
 
     return (
@@ -141,81 +157,118 @@ class Overview extends Component {
           handleDelete={this.handleDelete}
           handleClose={() => {
             this.setState({
-              dialogOpen: false
+              dialogOpen: false,
             });
           }}
           open={this.state.dialogOpen}
-          message={<FormattedMessage id='deleteFeedbackWarn' />} />
-        <Card style={{
-          margin: spacing.desktopGutter,
-          marginBottom: 0
-        }}>
+          message={<FormattedMessage id="deleteFeedbackWarn" />}
+        />
+        <Card
+          style={{
+            margin: spacing.desktopGutter,
+            marginBottom: 0,
+          }}
+        >
           <CardHeader
             title={session.data.user.name}
-            subtitle={avgLikes !== null ? <FormattedMessage id='percentHappyInSession' values={{
-              percent: Math.round((avgLikes + 1) / 2 * 100)
-            }} /> : <FormattedMessage id='noFeedbackGiven' />}
+            subtitle={
+              avgLikes !== null
+                ? <FormattedMessage
+                    id="percentHappyInSession"
+                    values={{
+                      percent: Math.round((avgLikes + 1) / 2 * 100),
+                    }}
+                  />
+                : <FormattedMessage id="noFeedbackGiven" />
+            }
             style={{
-              backgroundColor: avgLikes > 0.5 ? lightGreen300 : avgLikes > -0.5 ? yellow300 : red300
+              backgroundColor:
+                avgLikes > 0.5
+                  ? lightGreen300
+                  : avgLikes > -0.5 ? yellow300 : red300,
             }}
             avatar={
-              avgLikes > 0.5 ? <ThumbUp style={iconStyle}/> : avgLikes > -0.5 ? <Neutral style={iconStyle}/> : <ThumbDown style={iconStyle}/>
-            } />
+              avgLikes > 0.5
+                ? <ThumbUp style={iconStyle} />
+                : avgLikes > -0.5
+                  ? <Neutral style={iconStyle} />
+                  : <ThumbDown style={iconStyle} />
+            }
+          />
 
-          <CardTitle subtitle={<FormattedMessage id='reviewStatus' />}>
-            <CardText> {
-              session.data.reviewed ?
-                <Chip>
-                  <Avatar backgroundColor={lightGreen300} icon={<Done />} />
-                  <FormattedMessage id='reviewed' />
-                </Chip>
-                :
-                <Chip>
-                  <Avatar backgroundColor={red300} icon={<Announcement />} />
-                  <FormattedMessage id='notReviewed' />
-                </Chip>
-              }
+          <CardTitle subtitle={<FormattedMessage id="reviewStatus" />}>
+            <CardText>
+              {' '}{session.data.reviewed
+                ? <Chip>
+                    <Avatar backgroundColor={lightGreen300} icon={<Done />} />
+                    <FormattedMessage id="reviewed" />
+                  </Chip>
+                : <Chip>
+                    <Avatar backgroundColor={red300} icon={<Announcement />} />
+                    <FormattedMessage id="notReviewed" />
+                  </Chip>}
             </CardText>
           </CardTitle>
 
-          <CardTitle subtitle={<FormattedMessage id='assignee:' />}>
+          <CardTitle subtitle={<FormattedMessage id="assignee:" />}>
             <CardText>
-              <SelectField onChange={this.setAssignee} value={session.data.assigneeId}>
-                <MenuItem key={'nobody'} value={null} style={{color: palette.accent3Color}} primaryText={<FormattedMessage id='nobody' />} />
-                {this.props.employees.data.map((row, index) => (
-                  <MenuItem key={index} value={row.employeeId} primaryText={row.name} />
-                ))}
+              <SelectField
+                onChange={this.setAssignee}
+                value={session.data.assigneeId}
+              >
+                <MenuItem
+                  key={'nobody'}
+                  value={null}
+                  style={{ color: palette.accent3Color }}
+                  primaryText={<FormattedMessage id="nobody" />}
+                />
+                {this.props.employees.data.map((row, index) =>
+                  <MenuItem
+                    key={index}
+                    value={row.employeeId}
+                    primaryText={row.name}
+                  />,
+                )}
               </SelectField>
             </CardText>
           </CardTitle>
 
-          <CardTitle subtitle={<FormattedMessage id='feedbackStartDate' />}>
+          <CardTitle subtitle={<FormattedMessage id="feedbackStartDate" />}>
             <CardText>
               {new Date(session.data.createdAt).toLocaleDateString()}
             </CardText>
           </CardTitle>
-          {session.reviewed ?
-            null :
-            <CardActions>
-              <Button label={<FormattedMessage id='back' />}
-                          onTouchTap={() => {
-                            this.props.dispatch(goBack());
-                          }}
-                          icon={<ArrowBack/>} />
-              <Button label={session.data.reviewed ?  <FormattedMessage id='markUnhandled' /> : <FormattedMessage id='markReviewed' />}
-                          onTouchTap={() => {
-                            this.markReviewed(!session.data.reviewed)
-                          }}
-                          primary={!session.data.reviewed}
-                          icon={session.data.reviewed ? <Cancel/> : <ActionDone/>} />
-              <Button label={<FormattedMessage id='deleteFeedback' />}
-                          onTouchTap={() => {
-                            this.openDeleteDialog()
-                          }}
-                          style={{color: red300}}
-                          icon={<Warning/>} />
-            </CardActions>
-          }
+          {session.reviewed
+            ? null
+            : <CardActions>
+                <Button
+                  label={<FormattedMessage id="back" />}
+                  onTouchTap={() => {
+                    this.props.dispatch(goBack());
+                  }}
+                  icon={<ArrowBack />}
+                />
+                <Button
+                  label={
+                    session.data.reviewed
+                      ? <FormattedMessage id="markUnhandled" />
+                      : <FormattedMessage id="markReviewed" />
+                  }
+                  onTouchTap={() => {
+                    this.markReviewed(!session.data.reviewed);
+                  }}
+                  primary={!session.data.reviewed}
+                  icon={session.data.reviewed ? <Cancel /> : <ActionDone />}
+                />
+                <Button
+                  label={<FormattedMessage id="deleteFeedback" />}
+                  onTouchTap={() => {
+                    this.openDeleteDialog();
+                  }}
+                  style={{ color: red300 }}
+                  icon={<Warning />}
+                />
+              </CardActions>}
         </Card>
       </div>
     );
@@ -223,19 +276,19 @@ class Overview extends Component {
 }
 
 Overview.contextTypes = {
-  muiTheme: PropTypes.object.isRequired
+  muiTheme: PropTypes.object.isRequired,
 };
 
 Overview.propTypes = {
   session: PropTypes.shape({
     data: PropTypes.shape({
-      content: PropTypes.array.isRequired
-    }).isRequired
+      content: PropTypes.array.isRequired,
+    }).isRequired,
   }).isRequired,
   employees: PropTypes.shape({
-    data: PropTypes.array.isRequired
+    data: PropTypes.array.isRequired,
   }).isRequired,
-  id: PropTypes.string.isRequired
+  id: PropTypes.string.isRequired,
 };
 
 export default connect()(Overview);

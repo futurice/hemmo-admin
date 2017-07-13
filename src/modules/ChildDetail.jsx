@@ -15,16 +15,15 @@ import PageHeader from '../components/PageHeader';
 import rest from '../utils/rest';
 import NotFound from './NotFound';
 
-
 const mapStateToProps = state => ({
   user: state.userDetails,
   userLoading: state.userDetails.loading,
 });
 
 const mapDispatchToProps = dispatch => ({
-  refresh: (userId) => {
+  refresh: userId => {
     dispatch(rest.actions.userDetails({ userId: userId }));
-  }
+  },
 });
 
 @injectIntl
@@ -41,11 +40,10 @@ export default class Users extends React.Component {
     const { userLoading } = this.props;
 
     return userLoading
-      ? (
-        <div style={{ marginBottom: '-5px' }}>
+      ? <div style={{ marginBottom: '-5px' }}>
           <LinearProgress />
         </div>
-      ) : null;
+      : null;
   }
 
   render() {
@@ -54,17 +52,13 @@ export default class Users extends React.Component {
 
     return (
       <div>
-        { this.renderProgressBar() }
+        {this.renderProgressBar()}
 
-        {userData ? (
-          <PageHeader header={userData.name} />
-        ) : (<NotFound />)}
+        {userData ? <PageHeader header={userData.name} /> : <NotFound />}
       </div>
     );
   }
 }
-
-
 
 /*
 

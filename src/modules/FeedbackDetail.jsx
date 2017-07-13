@@ -10,7 +10,6 @@ import rest from '../utils/rest';
 //import Attachment from './Attachment';
 //import Error from '../Error';
 
-
 /*
  * MaterialUI
  */
@@ -22,7 +21,7 @@ class SessionDetail extends React.Component {
 
     this.state = {
       attachmentOpen: false,
-      openAttachmentContentId: null
+      openAttachmentContentId: null,
     };
 
     this.openAttachment = this.openAttachment.bind(this);
@@ -32,14 +31,14 @@ class SessionDetail extends React.Component {
   handleClose = () => {
     this.setState({
       attachmentOpen: false,
-      openAttachmentContentId: null
+      openAttachmentContentId: null,
     });
   };
 
   refresh() {
-    const {dispatch} = this.props;
+    const { dispatch } = this.props;
 
-    dispatch(rest.actions.feedbackDetail({id: this.props.id}));
+    dispatch(rest.actions.feedbackDetail({ id: this.props.id }));
     dispatch(rest.actions.employees());
   }
 
@@ -50,16 +49,14 @@ class SessionDetail extends React.Component {
   openAttachment(contentId) {
     this.setState({
       attachmentOpen: true,
-      openAttachmentContentId: contentId
+      openAttachmentContentId: contentId,
     });
   }
 
   render() {
     const { session } = this.props;
 
-    return (
-      <div />
-    );
+    return <div />;
   }
 }
 
@@ -67,12 +64,11 @@ function select(state, ownProps) {
   return {
     session: state.sessionDetail,
     employees: state.employees,
-    id: ownProps.match.params.feedbackId
+    id: ownProps.match.params.feedbackId,
   };
 }
 
 export default connect(select)(SessionDetail);
-
 
 /*
 if (session.loading) {

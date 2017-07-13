@@ -53,64 +53,73 @@ import Logout from '../modules/Logout';
 import NotFound from '../modules/NotFound';
 
 // Routes
-const routeConfigs = [{
-  path: '/',
-  name: 'Home',
-  component: Home,
-  icon: HomeIcon,
-  requiresLogin: true,
-  showInMenu: true,
-  exact: true
-}, {
-  path: '/feedback/:feedbackId',
-  component: FeedbackDetail,
-  requiresLogin: true
-}, {
-  path: '/feedback',
-  name: 'Feedback',
-  component: Feedback,
-  icon: FeedbackIcon,
-  requiresLogin: true,
-  showInMenu: true,
-  exact: true
-}, {
-  path: '/children/:userId',
-  component: ChildDetail,
-  requiresLogin: true,
-  showInMenu: false
-}, {
-  path: '/children',
-  name: 'Children',
-  component: Children,
-  icon: ChildrenIcon,
-  separator: true,
-  requiresLogin: true,
-  showInMenu: true,
-  exact: true
-}, {
-  path: '/preferences',
-  name: 'Preferences',
-  component: Preferences,
-  icon: PreferencesIcon,
-  requiresLogin: true,
-  showInMenu: true
-}, {
-  path: '/login',
-  name: 'Login',
-  component: Login,
-  icon: LoginIcon,
-  requiresLogin: false,
-  hideWhenScope: ['employee', 'admin'],
-  showInMenu: true
-}, {
-  path: '/logout',
-  name: 'Logout',
-  component: Logout,
-  icon: LogoutIcon,
-  requiresLogin: false,
-  hideWhenScope: [null],
-  showInMenu: true
-}];
+const routeConfigs = [
+  {
+    path: '/',
+    name: 'Home',
+    component: Home,
+    icon: HomeIcon,
+    requiresLogin: true,
+    showInMenu: true,
+    exact: true,
+  },
+  {
+    path: '/feedback/:feedbackId',
+    component: FeedbackDetail,
+    requiresLogin: true,
+  },
+  {
+    path: '/feedback',
+    name: 'Feedback',
+    component: Feedback,
+    icon: FeedbackIcon,
+    requiresLogin: true,
+    showInMenu: true,
+    exact: true,
+  },
+  {
+    path: '/children/:userId',
+    component: ChildDetail,
+    requiresLogin: true,
+    showInMenu: false,
+  },
+  {
+    path: '/children',
+    name: 'Children',
+    component: Children,
+    icon: ChildrenIcon,
+    separator: true,
+    requiresLogin: true,
+    showInMenu: true,
+    exact: true,
+  },
+  {
+    path: '/preferences',
+    name: 'Preferences',
+    component: Preferences,
+    icon: PreferencesIcon,
+    requiresLogin: true,
+    showInMenu: true,
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+    icon: LoginIcon,
+    requiresLogin: false,
+    hideWhenScope: ['employee', 'admin'],
+    showInMenu: true,
+  },
+  {
+    path: '/logout',
+    name: 'Logout',
+    component: Logout,
+    icon: LogoutIcon,
+    requiresLogin: false,
+    hideWhenScope: [null],
+    showInMenu: true,
+  },
+];
 
 export default routeConfigs;
 
@@ -124,7 +133,7 @@ export const RouteConfigShape = PropTypes.shape({
   name: PropTypes.string,
   component: PropTypes.func.isRequired,
   icon: PropTypes.func,
-  requiresLogin: PropTypes.bool
+  requiresLogin: PropTypes.bool,
 });
 
 const mapStateToProps = state => ({
@@ -151,23 +160,25 @@ class AuthRedirectRoute extends React.Component {
   };
 
   render() {
-    const { component: ChildComponent, loggedIn, requiresLogin, ...rest } = this.props;
+    const {
+      component: ChildComponent,
+      loggedIn,
+      requiresLogin,
+      ...rest
+    } = this.props;
 
     return (
       <Route
         {...rest}
-        render={props => (
-          !requiresLogin || loggedIn ? (
-            <ChildComponent {...props} />
-          ) : (
-            <Redirect
-              to={{
-                pathname: '/login',
-                state: { from: props.location }
-              }}
-            />
-          )
-        )}
+        render={props =>
+          !requiresLogin || loggedIn
+            ? <ChildComponent {...props} />
+            : <Redirect
+                to={{
+                  pathname: '/login',
+                  state: { from: props.location },
+                }}
+              />}
       />
     );
   }
@@ -194,43 +205,42 @@ IndexRoute.propTypes = {
 };*/
 
 // Map all configured routes into AuthRedirectRoute components
-export const ConfiguredRoutes = ({ ...rest }) => (
+export const ConfiguredRoutes = ({ ...rest }) =>
   <Switch>
-    {
-      routeConfigs.map(routeConfig => (
-        <AuthRedirectRoute
-          key={routeConfig.path}
-          {...routeConfig}
-          {...rest}
-        />
-      ))
-    }
+    {routeConfigs.map(routeConfig =>
+      <AuthRedirectRoute key={routeConfig.path} {...routeConfig} {...rest} />,
+    )}
     <Route component={NotFound} />
-  </Switch>
-);
+  </Switch>;
 
 // Return list of routes to show in navigation element(s)
 export const NavigationRoutes = (user, path) => {
   const scope = user ? user.scope : null;
 
   return routeConfigs.reduce((ary, route) => {
-    let active = (path === route.path);
-    const hide = Array.isArray(route.hideWhenScope) && route.hideWhenScope.includes(scope);
+    let active = path === route.path;
+    const hide =
+      Array.isArray(route.hideWhenScope) && route.hideWhenScope.includes(scope);
     const isAuthenticated = route.requiresLogin ? user !== null : true;
 
     if (route.path === routeConfigs[0].path && path === '/') {
       active = true;
     }
 
-    if (route.showInMenu &&!hide && isAuthenticated) {
-      ary.push({...route, active});
+    if (route.showInMenu && !hide && isAuthenticated) {
+      ary.push({ ...route, active });
     }
 
     return ary;
   }, []);
-}
+};
 
 // Check that routeConfigs array is a valid RouteConfigShape
-PropTypes.checkPropTypes({
-  routeConfigs: PropTypes.arrayOf(RouteConfigShape).isRequired,
-}, { routeConfigs }, 'prop', 'routeConfigs');
+PropTypes.checkPropTypes(
+  {
+    routeConfigs: PropTypes.arrayOf(RouteConfigShape).isRequired,
+  },
+  { routeConfigs },
+  'prop',
+  'routeConfigs',
+);

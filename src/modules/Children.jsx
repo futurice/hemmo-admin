@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux'
+import { push } from 'react-router-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
 
 import Button from 'material-ui/Button';
@@ -17,7 +17,6 @@ import PageHeader from '../components/PageHeader';
 
 import rest from '../utils/rest';
 
-
 @injectIntl
 class Children extends React.Component {
   state = {
@@ -27,8 +26,8 @@ class Children extends React.Component {
     name1: '',
     name2: '',
     orderBy: 'name',
-    order: 'asc'
-  }
+    order: 'asc',
+  };
 
   // Refresh user list when component is first mounted
   componentWillMount() {
@@ -39,7 +38,7 @@ class Children extends React.Component {
     const { dispatch } = this.props;
     const params = Object.assign(this.state, p);
 
-    this.setState({...this.state, params});
+    this.setState({ ...this.state, params });
 
     let queryParams = {
       offset: params.page * params.pageEntries,
@@ -48,7 +47,7 @@ class Children extends React.Component {
       name: params.name1,
       assigneeName: params.name2,
       orderBy: params.orderBy,
-      order: params.order
+      order: params.order,
     };
 
     dispatch(rest.actions.children(queryParams));
@@ -73,63 +72,74 @@ class Children extends React.Component {
 
     return (
       <div>
-        <PageHeader header={formatMessage({id: 'Children'})} />
+        <PageHeader header={formatMessage({ id: 'Children' })} />
         <TableCard
-          initialPage={ initialPage }
-          pageEntries={ pageEntries }
-          model={ children }
-          emptyMsg={ this.props.noFeedbackMsg }
+          initialPage={initialPage}
+          pageEntries={pageEntries}
+          model={children}
+          emptyMsg={this.props.noFeedbackMsg}
           orderBy={this.state.orderBy}
           order={this.state.order}
           customLabels={{
             name1: 'childsName',
-            name2: 'employeesName'
+            name2: 'employeesName',
           }}
           hideElems={hideElems}
           header={[
             {
               id: null,
-              value: row => row.reviewed ?
-                <Done style={{ verticalAlign: 'middle' }} color={lightGreen300}/> :
-                <AlertErrorOutline style={{ verticalAlign: 'middle' }} color={red300}/>,
+              value: row =>
+                row.reviewed
+                  ? <Done
+                      style={{ verticalAlign: 'middle' }}
+                      color={lightGreen300}
+                    />
+                  : <AlertErrorOutline
+                      style={{ verticalAlign: 'middle' }}
+                      color={red300}
+                    />,
 
               style: { width: '20px' },
-              maxShowWidth: 320
+              maxShowWidth: 320,
             },
             {
               id: 'name',
               value: row => row.name,
-              columnTitle: <FormattedMessage id='name' />
+              columnTitle: <FormattedMessage id="name" />,
             },
             {
               id: 'assignee',
               value: row => row.assignee,
-              columnTitle: <FormattedMessage id='assignee' />,
+              columnTitle: <FormattedMessage id="assignee" />,
               defaultValue: '(nobody)',
-              maxShowWidth: 680
+              maxShowWidth: 680,
             },
             {
               id: 'received',
-              value: row => <div>
-                {
-                  row.showAlerts && new Date(row.prevFeedbackDate) < threeMonthsAgo
-                  ? <Alert style={{ paddingRight: 10 }} />
-                  : null
-                }
-                { new Date(row.prevFeedbackDate).toLocaleDateString() }
-              </div>,
-              columnTitle: <FormattedMessage id='lastFeedback' />,
-              maxShowWidth: 440
+              value: row =>
+                <div>
+                  {row.showAlerts &&
+                  new Date(row.prevFeedbackDate) < threeMonthsAgo
+                    ? <Alert style={{ paddingRight: 10 }} />
+                    : null}
+                  {new Date(row.prevFeedbackDate).toLocaleDateString()}
+                </div>,
+              columnTitle: <FormattedMessage id="lastFeedback" />,
+              maxShowWidth: 440,
             },
             {
               component: (
-                <Button style={{
-                  minWidth: '40px'
-                }}><ArrowForward/></Button>
+                <Button
+                  style={{
+                    minWidth: '40px',
+                  }}
+                >
+                  <ArrowForward />
+                </Button>
               ),
 
-              style: { width: '20px' }
-            }
+              style: { width: '20px' },
+            },
           ]}
           onClickRow={this.refreshUser.bind(this)}
           refresh={this.refresh.bind(this)}
@@ -142,16 +152,16 @@ class Children extends React.Component {
 Children.propTypes = {
   children: PropTypes.shape({
     loading: PropTypes.bool.isRequired,
-    data: PropTypes.object.isRequired
+    data: PropTypes.object.isRequired,
   }).isRequired,
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
 };
 
 function select(state, ownParams) {
   return {
     location: ownParams.location,
     children: state.children,
-    user: state.auth.data.decoded
+    user: state.auth.data.decoded,
   };
 }
 

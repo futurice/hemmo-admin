@@ -13,14 +13,14 @@ class TableCard extends React.Component {
     let body = null;
     if (model.loading) {
       body = (
-        <div style={{textAlign: 'center'}}>
-          <CircularProgress/>
+        <div style={{ textAlign: 'center' }}>
+          <CircularProgress />
         </div>
       );
     } else if (!this.props.model.data.entries.length && this.props.emptyMsg) {
       return (
         <div>
-          { this.props.emptyMsg }
+          {this.props.emptyMsg}
         </div>
       );
     } else {
@@ -36,25 +36,24 @@ class TableCard extends React.Component {
       );
     }
 
-    let toolbar = this.props.small ? null : (
-      <CardToolbar
-        refresh={this.props.refresh}
-        totalEntries={this.props.model.data.meta.count}
-        modelName={this.props.model.data.name}
-        initialPage={ parseInt(this.props.initialPage, 10) }
-        pageEntries={ parseInt(this.props.pageEntries, 10) }
-        hideElems={ hideElems || [] }
-        customLabels={ customLabels || {} }
-      />
-    );
+    let toolbar = this.props.small
+      ? null
+      : <CardToolbar
+          refresh={this.props.refresh}
+          totalEntries={this.props.model.data.meta.count}
+          modelName={this.props.model.data.name}
+          initialPage={parseInt(this.props.initialPage, 10)}
+          pageEntries={parseInt(this.props.pageEntries, 10)}
+          hideElems={hideElems || []}
+          customLabels={customLabels || {}}
+        />;
 
-    return(
+    return (
       <div>
-        { toolbar }
-        { body }
+        {toolbar}
+        {body}
       </div>
     );
-
   }
 }
 
@@ -68,15 +67,15 @@ TableCard.propTypes = {
         limit: PropTypes.number.isRequired,
         offset: PropTypes.number.isRequired,
       }),
-      name: PropTypes.string.isRequired
-    }).isRequired
+      name: PropTypes.string.isRequired,
+    }).isRequired,
   }).isRequired,
   header: PropTypes.arrayOf(PropTypes.object).isRequired,
   refresh: PropTypes.func.isRequired,
   onClickRow: PropTypes.func.isRequired,
   margin: PropTypes.number,
   hideElems: PropTypes.array,
-  customLabels: PropTypes.object
+  customLabels: PropTypes.object,
 };
 
 export default TableCard;

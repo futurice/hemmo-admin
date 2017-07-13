@@ -21,12 +21,14 @@ export default {
   appLanguageExplain: 'Selected laguage is applied only for this browser.',
   selectedLanguage: 'Selected language',
   resetState: 'Reset app state',
-  resetStateExplanation: 'Use this if you experience problems with the app. Only affects your session.',
+  resetStateExplanation:
+    'Use this if you experience problems with the app. Only affects your session.',
   resetStateButton: 'Clear app state',
   ownDetails: 'Own details',
   newPassword: 'New password',
   confirmPassword: 'Confirm new password',
-  newPasswordExplain: 'You need to type in new password only if you want to change it.',
+  newPasswordExplain:
+    'You need to type in new password only if you want to change it.',
   passwordMismatch: 'Passwords are not identical.',
   detailsUpdated: 'Details updated',
 
@@ -44,8 +46,8 @@ export default {
   save: 'Save',
 
   // Table toolbar
-  childsName: 'Child\'s name',
-  employeesName: 'Employee\'s name',
+  childsName: "Child's name",
+  employeesName: "Employee's name",
   showAll: 'Show all',
 
   // Hemmo
@@ -80,14 +82,18 @@ export default {
   feedbackStartDate: 'Date',
 
   percentHappy: '{percent}% positive feedback',
-  assigneeExplanation: 'New feedback by {child} will be assigned to this employee automatically.',
+  assigneeExplanation:
+    'New feedback by {child} will be assigned to this employee automatically.',
   feedbackBy: 'Feedback by {child}',
   deleteUser: 'Delete {child}',
   deleteUserDesc: 'Delete user and all their feedback',
-  deleteUserWarn: 'Deleting this user will destroy the user and all their feedback forever! Only proceed if you are absolutely sure.',
-  deleteFeedbackWarn: 'Deleting this feedback will destroy it forever! Only proceed if you are absolutely sure.',
+  deleteUserWarn:
+    'Deleting this user will destroy the user and all their feedback forever! Only proceed if you are absolutely sure.',
+  deleteFeedbackWarn:
+    'Deleting this feedback will destroy it forever! Only proceed if you are absolutely sure.',
 
-  deleteDefaultWarn: 'Deleting this item will destroy it forever! Only proceed if you are absolutely sure.',
+  deleteDefaultWarn:
+    'Deleting this item will destroy it forever! Only proceed if you are absolutely sure.',
   areYouSure: 'Are you sure?',
   cancel: 'Cancel',
   delete: 'Delete',
@@ -105,7 +111,8 @@ export default {
 
   back: 'Back',
 
-  attachmentFetchError: 'An error occurred while fetching attachment. Please try again later.',
+  attachmentFetchError:
+    'An error occurred while fetching attachment. Please try again later.',
   attachment: 'Attachment',
   downloadAttachment: 'Download attachment',
 

@@ -31,44 +31,46 @@ export default class CardGridWrapper extends React.Component {
     // eslint-disable-next-line
     classes: PropTypes.object.isRequired,
     width: PropTypes.string.isRequired,
-  }
+  };
 
-  renderChildDesktop = (component, index) => (
+  renderChildDesktop = (component, index) =>
     <Hidden key={index} xsDown>
       <Grid item sm={12} md={10} lg={6} xl={4}>
-        { component }
+        {component}
       </Grid>
-    </Hidden>
-  );
+    </Hidden>;
 
-  renderChildMobile = component => (
+  renderChildMobile = component =>
     <Grid item xs={12}>
-      { component }
-    </Grid>
-  );
+      {component}
+    </Grid>;
 
   render() {
     const { children, classes, width } = this.props;
 
     // Justify center if only one column present
-    const desktopJustify = (
-      React.Children.count(children) === 1 ||
-      isWidthDown('md', width)
-    ) ? 'center' : 'flex-start';
+    const desktopJustify =
+      React.Children.count(children) === 1 || isWidthDown('md', width)
+        ? 'center'
+        : 'flex-start';
 
     return (
       <div>
         <Hidden xsDown>
           <div className={classes.desktopContainer}>
-            <Grid container justify={desktopJustify} className={classes.desktopGrid}>
-              { React.Children.map(children, this.renderChildDesktop) }
+            <Grid
+              container
+              justify={desktopJustify}
+              className={classes.desktopGrid}
+            >
+              {React.Children.map(children, this.renderChildDesktop)}
             </Grid>
           </div>
         </Hidden>
         <Hidden smUp>
           <div className={classes.mobileContainer}>
             <Grid container>
-              { React.Children.map(children, this.renderChildMobile) }
+              {React.Children.map(children, this.renderChildMobile)}
             </Grid>
           </div>
         </Hidden>

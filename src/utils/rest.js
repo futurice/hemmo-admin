@@ -8,7 +8,7 @@ import { reset } from '../modules/Logout';
 
 let store;
 
-export const injectStore = (_store) => {
+export const injectStore = _store => {
   store = _store;
 };
 
@@ -40,11 +40,15 @@ const emptyMeta = {
 const rest = reduxApi({
   children: {
     url: `${apiRoot}/children`,
-    transformer(data, prevData = {
-      entries: [],
-      meta: emptyMeta,
-      name: 'Children'
-    }, action) {
+    transformer(
+      data,
+      prevData = {
+        entries: [],
+        meta: emptyMeta,
+        name: 'Children',
+      },
+      action,
+    ) {
       if (data) {
         return {
           ...prevData,
@@ -53,7 +57,7 @@ const rest = reduxApi({
         };
       } else {
         return {
-          ...prevData
+          ...prevData,
         };
       }
     },
@@ -61,15 +65,18 @@ const rest = reduxApi({
   },
   userDetails: {
     url: `${apiRoot}/employee/:userId`,
-    crud: true
+    crud: true,
   },
   employees: {
     url: `${apiRoot}/employees`,
-    transformer(data, prevData = {
-      entries: [],
-      meta: emptyMeta,
-      name: 'Employees'
-    }) {
+    transformer(
+      data,
+      prevData = {
+        entries: [],
+        meta: emptyMeta,
+        name: 'Employees',
+      },
+    ) {
       if (data) {
         return {
           ...prevData,
@@ -78,27 +85,27 @@ const rest = reduxApi({
         };
       } else {
         return {
-          ...prevData
+          ...prevData,
         };
       }
-    }
+    },
   },
   employee: {
     url: `${apiRoot}/employees/:id`,
     transformer(data, prevData) {
       if (data) {
-        return {...prevData, ...data};
+        return { ...prevData, ...data };
       } else {
-        return {...prevData};
+        return { ...prevData };
       }
     },
-    crud: true
+    crud: true,
   },
   employeeCreate: {
     url: `${apiRoot}/employees`,
     options: {
-      method: 'post'
-    }
+      method: 'post',
+    },
   },
   setUserAssignee: {
     url: `${apiRoot}/users/:userId`,
@@ -110,16 +117,20 @@ const rest = reduxApi({
       }
     },
     options: {
-      method: 'put'
-    }
+      method: 'put',
+    },
   },
   feedback: {
     url: `${apiRoot}/feedback`,
-    transformer(data, prevData = {
-      entries: [],
-      meta: emptyMeta,
-      name: 'Feedback'
-    }, action) {
+    transformer(
+      data,
+      prevData = {
+        entries: [],
+        meta: emptyMeta,
+        name: 'Feedback',
+      },
+      action,
+    ) {
       if (data) {
         return {
           ...prevData,
@@ -128,25 +139,25 @@ const rest = reduxApi({
         };
       } else {
         return {
-          ...prevData
+          ...prevData,
         };
       }
-    }
+    },
   },
   feedbackDetail: {
     url: `${apiRoot}/feedback/:id`,
     transformer(data, prevData) {
       if (data) {
-        return {...prevData, ...data};
+        return { ...prevData, ...data };
       } else {
-        return {...prevData};
+        return { ...prevData };
       }
     },
-    crud: true
+    crud: true,
   },
   locale: {
     url: `${apiRoot}/locale`,
-    crud: true
+    crud: true,
   },
   auth: {
     url: `${apiRoot}/employees/authenticate`,
@@ -175,51 +186,53 @@ const rest = reduxApi({
         };
       }
       return data;
-    }
+    },
   },
 })
-.use('options', (url, params, getState) => {
-  const { auth: { data: { token } } } = getState();
+  .use('options', (url, params, getState) => {
+    const { auth: { data: { token } } } = getState();
 
-  const headers = {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-  };
+    const headers = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    };
 
-  // Add token to request headers
-  if (token) {
-    return { headers: { ...headers, Authorization: `Bearer ${token}` } };
-  }
-
-  return { headers };
-})
-.use('fetch', adapterFetch(fetch))
-.use('responseHandler', (err) => {
-  if (err) {
-    let msg = 'Error';
-
-    // Redirect to login if session has expired
-    if (err.statusCode === 401 && err.message === 'Invalid token') {
-      store.dispatch(reset());
-      store.dispatch(push('/login'));
+    // Add token to request headers
+    if (token) {
+      return { headers: { ...headers, Authorization: `Bearer ${token}` } };
     }
 
-    // error code
-    msg += err.statusCode ? ` ${err.statusCode}` : '';
+    return { headers };
+  })
+  .use('fetch', adapterFetch(fetch))
+  .use('responseHandler', err => {
+    if (err) {
+      let msg = 'Error';
 
-    // error reason
-    msg += err.error ? ` ${err.error}` : '';
+      // Redirect to login if session has expired
+      if (err.statusCode === 401 && err.message === 'Invalid token') {
+        store.dispatch(reset());
+        store.dispatch(push('/login'));
+      }
 
-    // error description
-    msg += err.message ? `: ${err.message}` : '';
-    store.dispatch(showError({
-      msg,
-      details: JSON.stringify(err, Object.getOwnPropertyNames(err), 4),
-    }));
+      // error code
+      msg += err.statusCode ? ` ${err.statusCode}` : '';
 
-    throw err;
-  }
-});
+      // error reason
+      msg += err.error ? ` ${err.error}` : '';
+
+      // error description
+      msg += err.message ? `: ${err.message}` : '';
+      store.dispatch(
+        showError({
+          msg,
+          details: JSON.stringify(err, Object.getOwnPropertyNames(err), 4),
+        }),
+      );
+
+      throw err;
+    }
+  });
 
 export default rest;
 export const reducers = rest.reducers;

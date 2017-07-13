@@ -51,10 +51,7 @@ class DialogWithButtons extends React.Component {
     title: PropTypes.string.isRequired,
     cancelAction: PropTypes.string,
     submitAction: PropTypes.string.isRequired,
-    description: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.node,
-    ]),
+    description: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     submit: PropTypes.func.isRequired,
     close: PropTypes.func.isRequired,
     isOpen: PropTypes.bool.isRequired,
@@ -74,13 +71,12 @@ class DialogWithButtons extends React.Component {
     file: null,
   };
 
-  setImageUrl = file => (
+  setImageUrl = file =>
     this.setState({
       file,
-    })
-  );
+    });
 
-  keyDown = (event) => {
+  keyDown = event => {
     const { submit, close } = this.props;
 
     if (event.keyCode === 13) {
@@ -89,7 +85,7 @@ class DialogWithButtons extends React.Component {
     }
   };
 
-  handleChange = (event) => {
+  handleChange = event => {
     this.setState({
       value: event.target.value,
     });
@@ -114,11 +110,7 @@ class DialogWithButtons extends React.Component {
     const actions = [];
     if (cancelAction) {
       actions.push(
-        <Button
-          color="primary"
-          key="cancel"
-          onClick={close}
-        >
+        <Button color="primary" key="cancel" onClick={close}>
           {cancelAction}
         </Button>,
       );
@@ -128,7 +120,9 @@ class DialogWithButtons extends React.Component {
       <Button
         color="primary"
         key="submit"
-        disabled={(textField && !this.state.value) || (imageUpload && !this.state.file)}
+        disabled={
+          (textField && !this.state.value) || (imageUpload && !this.state.file)
+        }
         onClick={() => {
           submit(this.state);
           close();
@@ -140,55 +134,54 @@ class DialogWithButtons extends React.Component {
 
     const dialogContents = (
       <div style={styles.container}>
-
         <div style={loading ? styles.fadeContainer : styles.opaqueContainer}>
-          { description }
+          {description}
 
-          { textField ?
-            <DialogContentText>
-              <TextField
-                floatingLabelText={textField.label}
-                value={this.state.value}
-                onChange={this.handleChange}
-                autoFocus
-                onKeyDown={this.keyDown}
-              />
-            </DialogContentText>
-            :
-            null
-          }
+          {textField
+            ? <DialogContentText>
+                <TextField
+                  floatingLabelText={textField.label}
+                  value={this.state.value}
+                  onChange={this.handleChange}
+                  autoFocus
+                  onKeyDown={this.keyDown}
+                />
+              </DialogContentText>
+            : null}
 
           <DialogContentText>
-            { textField && textField.textAfter }
+            {textField && textField.textAfter}
           </DialogContentText>
 
-          { imageUpload ?
-            <DialogContentText>
-              <ImageUpload setImageUrl={this.setImageUrl} label={imageUpload.label} />
-            </DialogContentText>
-            :
-            null
-          }
+          {imageUpload
+            ? <DialogContentText>
+                <ImageUpload
+                  setImageUrl={this.setImageUrl}
+                  label={imageUpload.label}
+                />
+              </DialogContentText>
+            : null}
 
           <DialogContentText>
-            { imageUpload && imageUpload.textAfter }
+            {imageUpload && imageUpload.textAfter}
           </DialogContentText>
         </div>
       </div>
     );
 
     return (
-      <Dialog
-        open={isOpen}
-        onRequestClose={close}
-      >
-        <DialogTitle>{title}</DialogTitle>
+      <Dialog open={isOpen} onRequestClose={close}>
+        <DialogTitle>
+          {title}
+        </DialogTitle>
         <DialogContent>
-          { dialogContents }
+          {dialogContents}
         </DialogContent>
-        <DialogActions>{actions}</DialogActions>
+        <DialogActions>
+          {actions}
+        </DialogActions>
 
-        { progress }
+        {progress}
       </Dialog>
     );
   }

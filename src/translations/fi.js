@@ -20,13 +20,15 @@ export default {
   appLanguageExplain: 'Valittu kieli asetetaan vain tälle selaimelle.',
   selectedLanguage: 'Valittu kieli',
   resetState: 'Nollaa sovelluksen tila',
-  resetStateExplanation: 'Käytä tätä toimintoa jos huomaat ongelmia sovelluksen toiminnassa. Vaikuttaa ainoastaan sinun sessioon.',
+  resetStateExplanation:
+    'Käytä tätä toimintoa jos huomaat ongelmia sovelluksen toiminnassa. Vaikuttaa ainoastaan sinun sessioon.',
   resetStateButton: 'Nollaa tila',
 
   ownDetails: 'Omat tiedot',
   newPassword: 'Uusi salasana',
   confirmPassword: 'Vahvista uusi salasana',
-  newPasswordExplain: 'Sinun tarvitsee syöttää salasana vain jos haluat muuttaa sen.',
+  newPasswordExplain:
+    'Sinun tarvitsee syöttää salasana vain jos haluat muuttaa sen.',
   passwordMismatch: 'Salasanat eivät ole identtisiä.',
   detailsUpdated: 'Tiedot päivitetty',
 
@@ -80,13 +82,17 @@ export default {
   feedbackStartDate: 'Päivämäärä',
 
   percentHappy: '{percent}% positiivista palautetta',
-  assigneeExplanation: 'Palautteet lapselta {child} kohdistetaan automattisesti valitulle työntekijälle.',
+  assigneeExplanation:
+    'Palautteet lapselta {child} kohdistetaan automattisesti valitulle työntekijälle.',
   feedbackBy: 'Palautetta lapselta {child}',
   deleteUser: 'Poista {child}',
-  deleteUserDesc: 'Poista käyttäjä sekä kaikki heidän antamat palautteet järjestelmästä',
+  deleteUserDesc:
+    'Poista käyttäjä sekä kaikki heidän antamat palautteet järjestelmästä',
 
-  deleteUserWarn: 'Käyttäjän poistamista ei voi perua! Tämä toiminto poistaa käyttäjän lisäksi kaikki käyttäjän lähettämät palautteet.',
-  deleteFeedbackWarn: 'Palautteen poistamista ei voi perua! Tämä toiminto poistaa palautteen lopullisesti.',
+  deleteUserWarn:
+    'Käyttäjän poistamista ei voi perua! Tämä toiminto poistaa käyttäjän lisäksi kaikki käyttäjän lähettämät palautteet.',
+  deleteFeedbackWarn:
+    'Palautteen poistamista ei voi perua! Tämä toiminto poistaa palautteen lopullisesti.',
 
   deleteDefaultWarn: 'Tätä toimintoa ei voi perua! Oletko varma?',
   areYouSure: 'Oletko varma?',
@@ -113,5 +119,5 @@ export default {
   feedbackRound: 'Kierros {round}',
   feedbackHappyMood: 'Mieliala: Iloinen',
   feedbackUnhappyMood: 'Mieliala: Onneton',
-  feedbackNeutralMood: 'Mieliala: Neutraali'
+  feedbackNeutralMood: 'Mieliala: Neutraali',
 };

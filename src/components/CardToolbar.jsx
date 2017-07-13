@@ -13,7 +13,6 @@ import TextField from 'material-ui/TextField';
 
 import { injectIntl } from 'react-intl';
 
-
 @injectIntl
 export default class CardToolbar extends React.Component {
   constructor(props) {
@@ -25,7 +24,7 @@ export default class CardToolbar extends React.Component {
       pageEntriesOpen: false,
       name1: '',
       name2: '',
-      showAll: false
+      showAll: false,
     };
 
     this.changePage = this.changePage.bind(this);
@@ -33,14 +32,17 @@ export default class CardToolbar extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.page !== this.state.page || prevState.pageEntries !== this.state.pageEntries) {
+    if (
+      prevState.page !== this.state.page ||
+      prevState.pageEntries !== this.state.pageEntries
+    ) {
       this.props.refresh(this.state);
     }
   }
 
   changePage(offset) {
     this.setState({
-      page: parseInt(this.state.page, 10) + offset
+      page: parseInt(this.state.page, 10) + offset,
     });
   }
 
@@ -48,7 +50,7 @@ export default class CardToolbar extends React.Component {
     this.setState({
       page: 0,
       pageEntries: pageEntries || this.state.pageEntries,
-      pageEntriesOpen: false
+      pageEntriesOpen: false,
     });
   }
 
@@ -58,7 +60,8 @@ export default class CardToolbar extends React.Component {
       name1: this.state.name1,
       name2: this.state.name2,
       page: this.state.page,
-      pageEntries: this.state.pageEntries});
+      pageEntries: this.state.pageEntries,
+    });
   }
 
   setAttribute(name, value) {
@@ -68,7 +71,7 @@ export default class CardToolbar extends React.Component {
   handleKeywordSearch(event) {
     const name = event.target.name;
     const value = event.target.value;
-    const keyword = (value.length >= 3) ? value : '';
+    const keyword = value.length >= 3 ? value : '';
 
     if (keyword !== this.state[name]) {
       this.setAttribute(name, value);
@@ -85,15 +88,17 @@ export default class CardToolbar extends React.Component {
 
     // Show all rows rgardless are they "own" or now
     if (hideElems && !hideElems.includes('showAll')) {
-      toolbarItems.push(<LabelSwitch
-        key="show-all"
-        labelClassName="show-all"
-        label={ formatMessage({ id: 'showAll' }) }
-        checked={this.state.showAll}
-        onChange={(event, checked) => {
-          this.setAttribute('showAll', checked);
-        }}
-      />);
+      toolbarItems.push(
+        <LabelSwitch
+          key="show-all"
+          labelClassName="show-all"
+          label={formatMessage({ id: 'showAll' })}
+          checked={this.state.showAll}
+          onChange={(event, checked) => {
+            this.setAttribute('showAll', checked);
+          }}
+        />,
+      );
     }
 
     // Free textfield search for name #1
@@ -102,10 +107,12 @@ export default class CardToolbar extends React.Component {
         key="name1"
         name="name1"
         className="text-field"
-        label={formatMessage({ id: customLabels.name1 ? customLabels.name1 : 'name' })}
+        label={formatMessage({
+          id: customLabels.name1 ? customLabels.name1 : 'name',
+        })}
         onChange={this.handleKeywordSearch.bind(this)}
         marginForm
-      />
+      />,
     );
 
     // Free textfield search for name #2
@@ -115,66 +122,82 @@ export default class CardToolbar extends React.Component {
           key="name2"
           name="name2"
           className="text-field"
-          label={formatMessage({ id: customLabels.name2 ? customLabels.name2 : 'name' })}
+          label={formatMessage({
+            id: customLabels.name2 ? customLabels.name2 : 'name',
+          })}
           onChange={this.handleKeywordSearch.bind(this)}
           marginForm
-        />
+        />,
       );
     }
 
     // Rows per page
     toolbarItems.push(
-      <span
-        key="page-entries"
-        className="select-page-entries">
+      <span key="page-entries" className="select-page-entries">
         <Typography type="body1" key="rows-per-page">
-          { formatMessage({ id: 'rowsPerPage' }) }
+          {formatMessage({ id: 'rowsPerPage' })}
         </Typography>
 
-        <Button aria-owns="simple-menu" aria-haspopup="true" onClick={(e) => this.setState({pageEntriesOpen: true, anchorEl: e.currentTarget})}>
+        <Button
+          aria-owns="simple-menu"
+          aria-haspopup="true"
+          onClick={e =>
+            this.setState({ pageEntriesOpen: true, anchorEl: e.currentTarget })}
+        >
           {this.state.pageEntries}
           <ArrowDropDown />
         </Button>
-        
-        <Menu anchorEl={this.state.anchorEl} open={this.state.pageEntriesOpen} onRequestClose={this.setPageEntries}>
-          {[5, 20, 50, 100].map((opt, index) => (
+
+        <Menu
+          anchorEl={this.state.anchorEl}
+          open={this.state.pageEntriesOpen}
+          onRequestClose={this.setPageEntries}
+        >
+          {[5, 20, 50, 100].map((opt, index) =>
             <MenuItem
               key={opt}
               selected={opt === this.state.pageEntries}
-              onClick={event => this.setPageEntries(event, opt)}>
+              onClick={event => this.setPageEntries(event, opt)}
+            >
               {opt}
-            </MenuItem>
-          ))}
+            </MenuItem>,
+          )}
         </Menu>
-      </span>
+      </span>,
     );
 
     // Pagination
     toolbarItems.push(
-      <span
-        key="pagination"
-        className="pagination">
-        <Button key='back' disabled={this.state.page <= 0} onClick={(e) => {
-          this.changePage(-1);
-        }}>
+      <span key="pagination" className="pagination">
+        <Button
+          key="back"
+          disabled={this.state.page <= 0}
+          onClick={e => {
+            this.changePage(-1);
+          }}
+        >
           <MiniArrowBack />
         </Button>
 
-        <Typography type="body1" key='currentPageNum'>
+        <Typography type="body1" key="currentPageNum">
           {`${page + 1} / ${pages}`}
         </Typography>
 
-        <Button key='forward' disabled={this.state.page >= pages - 1} onClick={(e) => {
-          this.changePage(1);
-        }}>
-          <MiniArrowForward/>
+        <Button
+          key="forward"
+          disabled={this.state.page >= pages - 1}
+          onClick={e => {
+            this.changePage(1);
+          }}
+        >
+          <MiniArrowForward />
         </Button>
-      </span>
+      </span>,
     );
 
-    return(
+    return (
       <Toolbar className="toolbar">
-          { toolbarItems }
+        {toolbarItems}
       </Toolbar>
     );
   }
@@ -185,5 +208,5 @@ CardToolbar.propTypes = {
   totalEntries: PropTypes.number.isRequired,
   modelName: PropTypes.string.isRequired,
   hideElems: PropTypes.array.isRequired,
-  customLabels: PropTypes.object.isRequired
+  customLabels: PropTypes.object.isRequired,
 };

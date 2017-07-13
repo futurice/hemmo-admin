@@ -6,7 +6,7 @@ import Table, {
   TableHead,
   TableRow,
   TableCell,
-  TableSortLabel
+  TableSortLabel,
 } from 'material-ui/Table';
 
 export default class ModelTable extends React.Component {
@@ -18,38 +18,49 @@ export default class ModelTable extends React.Component {
       order = 'desc';
     }
 
-    this.props.onSortRequest({orderBy, order});  
-  }
+    this.props.onSortRequest({ orderBy, order });
+  };
 
   getHeaderColumns = () => {
     let columns = [];
 
     this.props.header.forEach((header, index) => {
-      if (header.maxShowWidth && this.props.containerWidth < header.maxShowWidth) {
+      if (
+        header.maxShowWidth &&
+        this.props.containerWidth < header.maxShowWidth
+      ) {
         return;
       }
 
       columns.push(
-        <TableCell style={ header.style } key={ index } disablePadding={ header.disablePadding } className={ header.className }>
+        <TableCell
+          style={header.style}
+          key={index}
+          disablePadding={header.disablePadding}
+          className={header.className}
+        >
           <TableSortLabel
             active={this.props.orderBy === header.id}
             order={this.props.order}
             onClick={this.sortHandler(header.id)}
           >
-            { header.columnTitle || '' }
+            {header.columnTitle || ''}
           </TableSortLabel>
-        </TableCell>
+        </TableCell>,
       );
     });
 
     return columns;
-  }
+  };
 
   getRowColumns = (row, index) => {
     let columns = [];
 
     this.props.header.forEach((header, index) => {
-      if (header.maxShowWidth && this.props.containerWidth < header.maxShowWidth) {
+      if (
+        header.maxShowWidth &&
+        this.props.containerWidth < header.maxShowWidth
+      ) {
         return;
       }
 
@@ -69,36 +80,43 @@ export default class ModelTable extends React.Component {
       }
 
       columns.push(
-        <TableCell style={ style } key={ index } disablePadding={ this.props.header[index].disablePadding } className={ this.props.header[index].className }>
-          { body }
-        </TableCell>
+        <TableCell
+          style={style}
+          key={index}
+          disablePadding={this.props.header[index].disablePadding}
+          className={this.props.header[index].className}
+        >
+          {body}
+        </TableCell>,
       );
     });
 
     return (
-      <TableRow hover key={index} onClick={(e) => {
-        this.props.onClickRow(row.id);
-      }}>
-        { columns }
+      <TableRow
+        hover
+        key={index}
+        onClick={e => {
+          this.props.onClickRow(row.id);
+        }}
+      >
+        {columns}
       </TableRow>
     );
-  }
+  };
 
   render() {
     const entries = this.props.entries;
 
-    return(
+    return (
       <Table>
         <TableHead>
           <TableRow>
-            { this.getHeaderColumns() }
+            {this.getHeaderColumns()}
           </TableRow>
         </TableHead>
 
         <TableBody>
-          {entries.map((row, index) => (
-            this.getRowColumns(row, index)
-          ))}
+          {entries.map((row, index) => this.getRowColumns(row, index))}
         </TableBody>
       </Table>
     );
@@ -111,5 +129,5 @@ ModelTable.propTypes = {
   onClickRow: PropTypes.func.isRequired,
   onSortRequest: PropTypes.func.isRequired,
   order: PropTypes.string.isRequired,
-  orderBy: PropTypes.string.isRequired
+  orderBy: PropTypes.string.isRequired,
 };

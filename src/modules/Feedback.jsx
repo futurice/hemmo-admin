@@ -16,17 +16,16 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import TableCard from '../components/TableCard';
 import PageHeader from '../components/PageHeader';
 
-
 @injectIntl
 class FeedbackTable extends React.Component {
   state = {
     page: 0,
     pageEntries: 20,
     assigneeId: '',
-    name1: '',  // Child's name
-    name2: '',  // Employee name
+    name1: '', // Child's name
+    name2: '', // Employee name
     orderBy: 'assigneeName',
-    order: 'asc'
+    order: 'asc',
   };
 
   componentWillMount() {
@@ -46,7 +45,7 @@ class FeedbackTable extends React.Component {
       childName: params.name1,
       assigneeName: params.name2,
       orderBy: params.orderBy,
-      order: params.order
+      order: params.order,
     };
 
     dispatch(rest.actions.feedback(queryParams));
@@ -58,7 +57,7 @@ class FeedbackTable extends React.Component {
   }
 
   sortByColumn(sortParams) {
-    this.setState({...this.state, sortParams}, this.refresh);
+    this.setState({ ...this.state, sortParams }, this.refresh);
   }
 
   render() {
@@ -71,58 +70,69 @@ class FeedbackTable extends React.Component {
       hideElems.push('name2');
     }
 
-    return(
+    return (
       <div>
-        <PageHeader header={formatMessage({id: 'Feedback'})} />
+        <PageHeader header={formatMessage({ id: 'Feedback' })} />
         <TableCard
-          initialPage={ initialPage }
-          pageEntries={ pageEntries }
-          model={ this.props.feedback }
-          emptyMsg={ this.props.noFeedbackMsg }
+          initialPage={initialPage}
+          pageEntries={pageEntries}
+          model={this.props.feedback}
+          emptyMsg={this.props.noFeedbackMsg}
           orderBy={this.state.orderBy}
           order={this.state.order}
           customLabels={{
             name1: 'childsName',
-            name2: 'employeesName'
+            name2: 'employeesName',
           }}
           hideElems={hideElems}
           header={[
             {
               id: null,
-              value: row => row.reviewed ?
-                <Done style={{ verticalAlign: 'middle' }} color={lightGreen300}/> :
-                <AlertErrorOutline style={{ verticalAlign: 'middle' }} color={red300}/>,
+              value: row =>
+                row.reviewed
+                  ? <Done
+                      style={{ verticalAlign: 'middle' }}
+                      color={lightGreen300}
+                    />
+                  : <AlertErrorOutline
+                      style={{ verticalAlign: 'middle' }}
+                      color={red300}
+                    />,
 
               className: 'row-icon',
               maxShowWidth: 320,
-              disablePadding: true
+              disablePadding: true,
             },
             {
               id: 'name',
               value: row => row.childName,
-              columnTitle: <FormattedMessage id='child' />
+              columnTitle: <FormattedMessage id="child" />,
             },
             {
               id: 'assignee',
               value: row => row.assignee,
-              columnTitle: <FormattedMessage id='assignee' />,
+              columnTitle: <FormattedMessage id="assignee" />,
               defaultValue: '(nobody)',
-              maxShowWidth: 680
+              maxShowWidth: 680,
             },
             {
               id: 'createdAt',
               value: row => new Date(row.createdAt).toLocaleDateString(),
-              columnTitle: <FormattedMessage id='feedbackStartDate' />,
-              maxShowWidth: 440
+              columnTitle: <FormattedMessage id="feedbackStartDate" />,
+              maxShowWidth: 440,
             },
             {
               component: (
-                <Button style={{
-                  minWidth: '40px'
-                }}><ArrowForward/></Button>
+                <Button
+                  style={{
+                    minWidth: '40px',
+                  }}
+                >
+                  <ArrowForward />
+                </Button>
               ),
-              className: 'row-action'
-            }
+              className: 'row-action',
+            },
           ]}
           onClickRow={this.openFeedback.bind(this)}
           refresh={this.refresh.bind(this)}
@@ -135,15 +145,15 @@ class FeedbackTable extends React.Component {
 FeedbackTable.propTypes = {
   feedback: PropTypes.shape({
     loading: PropTypes.bool.isRequired,
-    data: PropTypes.object.isRequired
+    data: PropTypes.object.isRequired,
   }).isRequired,
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
 };
 
 function select(state, ownParams) {
   return {
     location: ownParams.location,
-    feedback: state.feedback
+    feedback: state.feedback,
   };
 }
 

@@ -5,39 +5,36 @@ import Button from 'material-ui/Button';
 import RaisedButton from 'material-ui/RaisedButton';
 
 // Colors
-import {
-  red300
-} from 'material-ui/styles/colors';
+import { red300 } from 'material-ui/styles/colors';
 
 export default class DeleteDialog extends Component {
   render() {
     const actions = [
       <Button
-        label={<FormattedMessage id='cancel' />}
+        label={<FormattedMessage id="cancel" />}
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.props.handleClose}
       />,
       <Button
-        label={<FormattedMessage id='delete' />}
-        style={{color: red300}}
+        label={<FormattedMessage id="delete" />}
+        style={{ color: red300 }}
         onTouchTap={this.props.handleDelete}
-      />
+      />,
     ];
 
     return (
-      <FormattedMessage id='areYouSure'>
-      { title => (
-        <Dialog
-          title={title}
-          actions={actions}
-          modal={false}
-          open={this.props.open}
-          onRequestClose={this.props.handleClose}
-        >
-          {this.props.message || <FormattedMessage id='deleteDefaultWarn' />}
-        </Dialog>
-      )}
+      <FormattedMessage id="areYouSure">
+        {title =>
+          <Dialog
+            title={title}
+            actions={actions}
+            modal={false}
+            open={this.props.open}
+            onRequestClose={this.props.handleClose}
+          >
+            {this.props.message || <FormattedMessage id="deleteDefaultWarn" />}
+          </Dialog>}
       </FormattedMessage>
     );
   }
@@ -46,5 +43,5 @@ export default class DeleteDialog extends Component {
 DeleteDialog.propTypes = {
   handleDelete: PropTypes.func.isRequired,
   handleClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired
-}
+  open: PropTypes.bool.isRequired,
+};

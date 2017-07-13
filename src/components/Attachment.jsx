@@ -23,7 +23,7 @@ class DialogContents extends Component {
 
     this.state = {
       blobUrl: '',
-      error: ''
+      error: '',
     };
   }
 
@@ -37,13 +37,15 @@ class DialogContents extends Component {
     request.responseType = 'blob';
 
     request.onreadystatechange = () => {
-      if(request.readyState === 4) {
-        if(request.status === 200) {
+      if (request.readyState === 4) {
+        if (request.status === 200) {
           let blobUrl = window.URL.createObjectURL(request.response);
 
-          this.setState({blobUrl});
+          this.setState({ blobUrl });
         } else {
-          this.setState({error: <FormattedMessage id='attachmentFetchError' />});
+          this.setState({
+            error: <FormattedMessage id="attachmentFetchError" />,
+          });
         }
       }
     };
@@ -53,27 +55,40 @@ class DialogContents extends Component {
 
   render() {
     if (this.state.error) {
-      return <div style={{textAlign: 'center'}} >
-        { this.state.error }
-      </div>;
+      return (
+        <div style={{ textAlign: 'center' }}>
+          {this.state.error}
+        </div>
+      );
     } else if (!this.state.blobUrl) {
-      return <div style={{textAlign: 'center'}} >
-        <CircularProgress />
-      </div>;
+      return (
+        <div style={{ textAlign: 'center' }}>
+          <CircularProgress />
+        </div>
+      );
     } else {
       return (
         <div>
-          <audio src={this.state.blobUrl} controls autoPlay style={{
-            width: '100%',
-            paddingBottom: '24px'
-          }} />
+          <audio
+            src={this.state.blobUrl}
+            controls
+            autoPlay
+            style={{
+              width: '100%',
+              paddingBottom: '24px',
+            }}
+          />
 
-          <Button download={'attachment.mp4'} href={this.state.blobUrl}
-            label={<FormattedMessage id='downloadAttachment' />} icon={<FileDownload/>} primary={false}/>
+          <Button
+            download={'attachment.mp4'}
+            href={this.state.blobUrl}
+            label={<FormattedMessage id="downloadAttachment" />}
+            icon={<FileDownload />}
+            primary={false}
+          />
         </div>
       );
     }
-
   }
 }
 
@@ -83,28 +98,27 @@ class Attachment extends Component {
       <Button
         primary={false}
         onTouchTap={this.props.handleClose}
-        icon={<Close/>}
+        icon={<Close />}
       >
-        <FormattedMessage id='close' />
-      </Button>
+        <FormattedMessage id="close" />
+      </Button>,
     ];
 
     return (
-      <FormattedMessage id='attachment'>
-        {title => (
+      <FormattedMessage id="attachment">
+        {title =>
           <Dialog
-            title={ title }
-            modal={ false }
-            open={ this.props.open }
-            onRequestClose={ this.props.handleClose }
-            actions={ actions } >
-
+            title={title}
+            modal={false}
+            open={this.props.open}
+            onRequestClose={this.props.handleClose}
+            actions={actions}
+          >
             <DialogContents
-              contentId={ this.props.contentId }
-              token={ this.props.token } />
-
-          </Dialog>
-        )}
+              contentId={this.props.contentId}
+              token={this.props.token}
+            />
+          </Dialog>}
       </FormattedMessage>
     );
   }
@@ -112,7 +126,7 @@ class Attachment extends Component {
 
 function select(state, ownProps) {
   return {
-    token: state.auth.data.token
+    token: state.auth.data.token,
   };
 }
 

@@ -11,10 +11,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   rootReducer,
   undefined,
-  composeEnhancers(
-    applyMiddleware(...middleware),
-    autoRehydrate(),
-  ),
+  composeEnhancers(applyMiddleware(...middleware), autoRehydrate()),
 );
 
 // this is to get rid of cyclic dependencies

@@ -23,7 +23,6 @@ import { push } from 'react-router-redux';
 import { toggleDrawer } from './NavigationDrawer';
 import { NavigationRoutes } from '../utils/routes';
 
-
 const mapStateToProps = (state, ownProps) => ({
   path: ownProps.location.pathname,
   user: state.auth.data.decoded,
@@ -44,7 +43,7 @@ const mapDispatchToProps = dispatch => ({
   },
   changeView(view) {
     dispatch(push(view.toLowerCase()));
-  }
+  },
 });
 
 @withRouter
@@ -72,40 +71,36 @@ export default class Header extends React.Component {
       intl: { formatMessage },
     } = this.props;
 
-    const {
-      rightMenuOpen,
-      rightMenuAnchorEl,
-    } = this.state;
+    const { rightMenuOpen, rightMenuAnchorEl } = this.state;
 
     const hideMenu = () => this.setState({ rightMenuOpen: false });
     const scope = user ? user.scope : null;
     const navigationRoutes = NavigationRoutes(user, path);
 
     return (
-      <AppBar position="static" >
+      <AppBar position="static">
         <Toolbar>
-          <IconButton
-            color="contrast"
-            onClick={() => doToggleDrawer()}
-          >
+          <IconButton color="contrast" onClick={() => doToggleDrawer()}>
             <MenuIcon />
           </IconButton>
-          <Typography
-            style={{ flex: 1 }}
-            type="title"
-            color="inherit"
-          >
+          <Typography style={{ flex: 1 }} type="title" color="inherit">
             <FormattedMessage id="HemmoAdmin" />
           </Typography>
 
           <span className="nav-buttons">
             {navigationRoutes.map((route, i) => {
-              return <Button
-                key={i}
-                color="contrast"
-                className={route.active ? 'active' : ''}
-                onClick={() => { changeView(route.path); }}
-              >{route.name}</Button>;
+              return (
+                <Button
+                  key={i}
+                  color="contrast"
+                  className={route.active ? 'active' : ''}
+                  onClick={() => {
+                    changeView(route.path);
+                  }}
+                >
+                  {route.name}
+                </Button>
+              );
             })}
           </span>
         </Toolbar>

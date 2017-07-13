@@ -29,7 +29,9 @@
   },
   "devDependencies": {
     "custom-react-scripts": "0.0.23",
-    "eslint": "^3.19.0"
+    "eslint": "^3.19.0",
+    "husky": "^0.14.3",
+    "lint-staged": "^4.0.1"
   },
   "scripts": {
     "build-css": "node-sass src/scss/index.scss --recursive -o public/ --output-style=compressed",
@@ -39,8 +41,15 @@
     "build": "npm run build-css && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
+    "precommit": "lint-staged",
     "lint": "eslint --ext .jsx --ext .js src",
-    "lint:fix": "eslint --ext .jsx --ext .js --fix src"
+    "lint:fix": "eslint --ext .jsx --ext .js --fix src",
+    "prettier": "prettier --single-quote --trailing-comma all --write src/**/*.js src/**/*.jsx"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --single-quote --trailing-comma all --write",
+      "git add"
+    ]
   }
 }
-
