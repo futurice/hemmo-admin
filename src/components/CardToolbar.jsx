@@ -47,7 +47,7 @@ export default class CardToolbar extends React.Component {
   setPageEntries(event, pageEntries) {
     this.setState({
       page: 0,
-      pageEntries: pageEntries,
+      pageEntries: pageEntries || this.state.pageEntries,
       pageEntriesOpen: false
     });
   }

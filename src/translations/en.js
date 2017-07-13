@@ -18,10 +18,17 @@ export default {
 
   // Preferences view
   language: 'App language',
+  appLanguageExplain: 'Selected laguage is applied only for this browser.',
   selectedLanguage: 'Selected language',
   resetState: 'Reset app state',
   resetStateExplanation: 'Use this if you experience problems with the app. Only affects your session.',
   resetStateButton: 'Clear app state',
+  ownDetails: 'Own details',
+  newPassword: 'New password',
+  confirmPassword: 'Confirm new password',
+  newPasswordExplain: 'You need to type in new password only if you want to change it.',
+  passwordMismatch: 'Passwords are not identical.',
+  detailsUpdated: 'Details updated',
 
   // Employee management
   employeeManagement: 'Manage Employees',
