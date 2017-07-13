@@ -9,7 +9,6 @@ import TextField from 'material-ui/TextField';
 import FormControl from 'material-ui/Form/FormControl';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
-import FormHelperText from 'material-ui/Form/FormHelperText';
 import { green } from 'material-ui/styles/colors';
 import ArrowDropDown from 'material-ui-icons/ArrowDropDown';
 
@@ -18,7 +17,6 @@ import { updateIntl } from 'react-intl-redux';
 import rest from '../utils/rest';
 import { languages, storeLocaleForUser } from '../utils/intl';
 
-import CardGridWrapper from '../components/CardGridWrapper';
 import PageHeader from '../components/PageHeader';
 import EmployeeManagement from '../components/EmployeeManagement';
 import { reset } from './Logout';
@@ -125,6 +123,8 @@ export default class Preferences extends React.Component {
       user,
       intl: { formatMessage },
     } = this.props;
+
+    const passwordError = this.state.passwordMismatch ? <Typography>{ formatMessage({id: 'passwordMismatch'}) }</Typography> : null;
 
     return (
       <div>

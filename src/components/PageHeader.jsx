@@ -7,7 +7,7 @@ export default class PageHeader extends React.Component {
   render() {
 
     return (
-      <Typography type="display1" className="page-header">
+      <Typography type="display1" style={{'margin': '2rem auto'}}>
         {this.props.header}
       </Typography>
     );

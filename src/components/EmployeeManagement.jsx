@@ -11,6 +11,7 @@ import Edit from 'material-ui-icons/Edit';
 import TextField from 'material-ui/TextField';
 import Dialog, { DialogTitle, DialogContent, DialogActions } from 'material-ui/Dialog';
 import { CircularProgress } from 'material-ui/Progress';
+import FormControl from 'material-ui/Form/FormControl';
 
 import TableCard from '../components/TableCard';
 
@@ -30,7 +31,7 @@ class EmployeeManagement extends React.Component {
     this.state = {
       orderBy: 'name',
       order: 'asc',
-      searchName: '',
+      name1: '',
       page: 0,
       pageEntries: 20,
       dialogOpen: false,
@@ -58,7 +59,7 @@ class EmployeeManagement extends React.Component {
     let queryParams = {
       offset: params.page * params.pageEntries,
       limit: params.pageEntries,
-      name: params.name,
+      name: params.name1,
       orderBy: params.orderBy,
       order: params.order
     };
@@ -110,24 +111,24 @@ class EmployeeManagement extends React.Component {
     if (this.state.user.id) {
       body.resetPassword = this.state.user.resetPassword;
 
-      dispatch(rest.actions.employee.patch({id: this.state.user.id}, {body: JSON.stringify(body)}, (response) => {
+      dispatch(rest.actions.employee.patch({id: this.state.user.id}, {body: JSON.stringify(body)})).then(response => {
         if (!response.error) {
           this.closeDialog();
           this.loadEmployees();
         }
 
         this.notSubmitting();
-      }));
+      });
     }
     else {
-      dispatch(rest.actions.employeeCreate(null, {body: JSON.stringify(body)}, (response) => {
+      dispatch(rest.actions.employeeCreate(null, {body: JSON.stringify(body)})).then(response => {
         if (!response.error) {
           this.closeDialog();
           this.loadEmployees();
         }
 
         this.notSubmitting();
-      }));
+      });
     }
   }
 
@@ -191,7 +192,7 @@ class EmployeeManagement extends React.Component {
                 header={ header }
                 onClickRow={ this.loadEmployee }
                 refresh={ this.loadEmployees }
-                showAll={false}
+                hideElems={['showAll', 'name2']}
               />
 
 
