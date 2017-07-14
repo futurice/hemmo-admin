@@ -8,6 +8,12 @@ export default {
   Logout: 'Kirjaudu ulos',
   Login: 'Kirjaudu sisään',
 
+  // Home
+  latestFeedback: 'Viimeisimmät palautteet',
+  needingAttention: 'Huomiota kaipaavat',
+  needingAttentionExpalain:
+    'Lapset ketkä eivät ole antaneet palautetta pitkään aikaan.',
+
   // Users view
   userId: 'User ID',
   email: 'Sähköpostiosoite',

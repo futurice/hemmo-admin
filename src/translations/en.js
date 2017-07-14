@@ -8,6 +8,12 @@ export default {
   Logout: 'Logout',
   Login: 'Login',
 
+  // Home
+  latestFeedback: 'Latest feedback',
+  needingAttention: 'Needing attention',
+  needingAttentionExpalain:
+    "Children who haven't send any feedback for long time.",
+
   // Users view
   userId: 'User ID',
   email: 'E-mail',

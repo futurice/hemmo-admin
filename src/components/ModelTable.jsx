@@ -9,6 +9,8 @@ import Table, {
   TableSortLabel,
 } from 'material-ui/Table';
 
+const windowWidth = window.innerWidth;
+
 export default class ModelTable extends React.Component {
   sortHandler = property => event => {
     const orderBy = property;
@@ -18,19 +20,31 @@ export default class ModelTable extends React.Component {
       order = 'desc';
     }
 
-    this.props.onSortRequest({ orderBy, order });
+    this.props.onSortRequest({
+      page: 0,
+      orderBy,
+      order,
+    });
   };
 
   getHeaderColumns = () => {
     let columns = [];
 
     this.props.header.forEach((header, index) => {
-      if (
-        header.maxShowWidth &&
-        this.props.containerWidth < header.maxShowWidth
-      ) {
+      if (header.maxShowWidth && windowWidth < header.maxShowWidth) {
         return;
       }
+
+      const sortLabel =
+        this.props.tableSort !== false
+          ? <TableSortLabel
+              active={this.props.orderBy === header.id}
+              order={this.props.order}
+              onClick={this.sortHandler(header.id)}
+            >
+              {header.columnTitle || ''}
+            </TableSortLabel>
+          : null;
 
       columns.push(
         <TableCell
@@ -39,13 +53,7 @@ export default class ModelTable extends React.Component {
           disablePadding={header.disablePadding}
           className={header.className}
         >
-          <TableSortLabel
-            active={this.props.orderBy === header.id}
-            order={this.props.order}
-            onClick={this.sortHandler(header.id)}
-          >
-            {header.columnTitle || ''}
-          </TableSortLabel>
+          {sortLabel ? sortLabel : header.columnTitle || ''}
         </TableCell>,
       );
     });
@@ -57,10 +65,7 @@ export default class ModelTable extends React.Component {
     let columns = [];
 
     this.props.header.forEach((header, index) => {
-      if (
-        header.maxShowWidth &&
-        this.props.containerWidth < header.maxShowWidth
-      ) {
+      if (header.maxShowWidth && windowWidth < header.maxShowWidth) {
         return;
       }
 
@@ -127,7 +132,8 @@ ModelTable.propTypes = {
   entries: PropTypes.array.isRequired,
   header: PropTypes.arrayOf(PropTypes.object).isRequired,
   onClickRow: PropTypes.func.isRequired,
-  onSortRequest: PropTypes.func.isRequired,
+  onSortRequest: PropTypes.func,
   order: PropTypes.string.isRequired,
   orderBy: PropTypes.string.isRequired,
+  tableSort: PropTypes.bool,
 };

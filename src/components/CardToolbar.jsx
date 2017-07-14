@@ -19,8 +19,8 @@ export default class CardToolbar extends React.Component {
     super(props);
 
     this.state = {
-      page: 0,
-      pageEntries: 20,
+      page: props.initialPage,
+      pageEntries: props.pageEntries,
       pageEntriesOpen: false,
       name1: '',
       name2: '',
@@ -31,19 +31,20 @@ export default class CardToolbar extends React.Component {
     this.setPageEntries = this.setPageEntries.bind(this);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      prevState.page !== this.state.page ||
-      prevState.pageEntries !== this.state.pageEntries
-    ) {
-      this.props.refresh(this.state);
-    }
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      page: nextProps.initialPage,
+      pageEntries: nextProps.pageEntries,
+    });
   }
 
   changePage(offset) {
-    this.setState({
-      page: parseInt(this.state.page, 10) + offset,
-    });
+    this.setState(
+      {
+        page: parseInt(this.state.page, 10) + offset,
+      },
+      this.refresh,
+    );
   }
 
   setPageEntries(event, pageEntries) {
@@ -180,7 +181,7 @@ export default class CardToolbar extends React.Component {
         </Button>
 
         <Typography type="body1" key="currentPageNum">
-          {`${page + 1} / ${pages}`}
+          {`${this.state.page + 1} / ${pages}`}
         </Typography>
 
         <Button

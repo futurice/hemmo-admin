@@ -7,6 +7,14 @@
     height: inherit !important;
     margin-top: 15px;
 
+    @media(max-width: 1024px) {
+    	flex-direction: column;
+
+    	&>label, &>div, &>span {
+    		align-self: flex-start;
+    	}
+    }
+
     .show-all, .text-field {
     	margin-right: 25px;
     }
