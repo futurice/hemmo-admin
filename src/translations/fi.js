@@ -55,6 +55,7 @@ export default {
   // Miscellaneous
   close: 'Sulje',
   save: 'Tallenna',
+  noDatatoShow: 'Saatavilla ei ole dataa mitä näyttää.',
 
   // Hemmo
   newFeedback: 'Sinun palautteet',

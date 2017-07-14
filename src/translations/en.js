@@ -50,6 +50,7 @@ export default {
   // Miscellaneous
   close: 'Close',
   save: 'Save',
+  noDatatoShow: 'There is no data to display.',
 
   // Table toolbar
   childsName: "Child's name",

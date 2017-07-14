@@ -9,8 +9,12 @@ import Table, {
   TableSortLabel,
 } from 'material-ui/Table';
 
+import { injectIntl } from 'react-intl';
+import { blueGrey } from 'material-ui/styles/colors';
+
 const windowWidth = window.innerWidth;
 
+@injectIntl
 export default class ModelTable extends React.Component {
   sortHandler = property => event => {
     const orderBy = property;
@@ -110,20 +114,32 @@ export default class ModelTable extends React.Component {
   };
 
   render() {
-    const entries = this.props.entries;
+    const { entries, noDataMessage, intl: { formatMessage } } = this.props;
 
     return (
-      <Table>
-        <TableHead>
-          <TableRow>
-            {this.getHeaderColumns()}
-          </TableRow>
-        </TableHead>
+      <div className="data-table">
+        {entries.length
+          ? <Table>
+              <TableHead>
+                <TableRow>
+                  {this.getHeaderColumns()}
+                </TableRow>
+              </TableHead>
 
-        <TableBody>
-          {entries.map((row, index) => this.getRowColumns(row, index))}
-        </TableBody>
-      </Table>
+              <TableBody>
+                {entries.map((row, index) => this.getRowColumns(row, index))}
+              </TableBody>
+            </Table>
+          : <div
+              className="no-entries"
+              style={{
+                background: blueGrey[50],
+                border: `1px solid ${blueGrey[100]}`,
+              }}
+            >
+              {formatMessage({ id: noDataMessage || 'noDatatoShow' })}
+            </div>}
+      </div>
     );
   }
 }
@@ -136,4 +152,5 @@ ModelTable.propTypes = {
   order: PropTypes.string.isRequired,
   orderBy: PropTypes.string.isRequired,
   tableSort: PropTypes.bool,
+  noDataMessage: PropTypes.string,
 };
