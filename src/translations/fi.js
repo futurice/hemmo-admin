@@ -8,6 +8,12 @@ export default {
   Logout: 'Kirjaudu ulos',
   Login: 'Kirjaudu sisään',
 
+  // Home
+  latestFeedback: 'Viimeisimmät palautteet',
+  needingAttention: 'Huomiota kaipaavat',
+  needingAttentionExpalain:
+    'Lapset ketkä eivät ole antaneet palautetta pitkään aikaan.',
+
   // Users view
   userId: 'User ID',
   email: 'Sähköpostiosoite',
@@ -49,6 +55,7 @@ export default {
   // Miscellaneous
   close: 'Sulje',
   save: 'Tallenna',
+  noDatatoShow: 'Saatavilla ei ole dataa mitä näyttää.',
 
   // Hemmo
   newFeedback: 'Sinun palautteet',

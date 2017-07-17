@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 import Button from 'material-ui/Button';
-import { red300, lightGreen300 } from 'material-ui/styles/colors';
+import { red, lightGreen } from 'material-ui/styles/colors';
 import rest from '../utils/rest';
 import { push } from 'react-router-redux';
 
@@ -24,8 +24,8 @@ class FeedbackTable extends React.Component {
     assigneeId: '',
     name1: '', // Child's name
     name2: '', // Employee name
-    orderBy: 'assigneeName',
-    order: 'asc',
+    orderBy: 'createdAt',
+    order: 'desc',
   };
 
   componentWillMount() {
@@ -61,8 +61,6 @@ class FeedbackTable extends React.Component {
   }
 
   render() {
-    const initialPage = 0;
-    const pageEntries = 20;
     const { intl: { formatMessage } } = this.props;
     let hideElems = [];
 
@@ -74,8 +72,8 @@ class FeedbackTable extends React.Component {
       <div>
         <PageHeader header={formatMessage({ id: 'Feedback' })} />
         <TableCard
-          initialPage={initialPage}
-          pageEntries={pageEntries}
+          initialPage={this.state.page}
+          pageEntries={this.state.pageEntries}
           model={this.props.feedback}
           emptyMsg={this.props.noFeedbackMsg}
           orderBy={this.state.orderBy}
@@ -90,44 +88,42 @@ class FeedbackTable extends React.Component {
               id: null,
               value: row =>
                 row.reviewed
-                  ? <Done
-                      style={{ verticalAlign: 'middle' }}
-                      color={lightGreen300}
-                    />
-                  : <AlertErrorOutline
-                      style={{ verticalAlign: 'middle' }}
-                      color={red300}
-                    />,
+                  ? <Done color={lightGreen[300]} />
+                  : <AlertErrorOutline color={red[300]} />,
 
               className: 'row-icon',
               maxShowWidth: 320,
               disablePadding: true,
             },
             {
-              id: 'name',
+              id: 'childName',
               value: row => row.childName,
               columnTitle: <FormattedMessage id="child" />,
             },
             {
-              id: 'assignee',
-              value: row => row.assignee,
+              id: 'assigneeName',
+              value: row => row.assigneeName,
               columnTitle: <FormattedMessage id="assignee" />,
               defaultValue: '(nobody)',
               maxShowWidth: 680,
             },
             {
               id: 'createdAt',
-              value: row => new Date(row.createdAt).toLocaleDateString(),
+              value: row =>
+                new Date(
+                  row.createdAt,
+                ).toLocaleDateString(navigator.languages, {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                }),
               columnTitle: <FormattedMessage id="feedbackStartDate" />,
+              className: 'date',
               maxShowWidth: 440,
             },
             {
               component: (
-                <Button
-                  style={{
-                    minWidth: '40px',
-                  }}
-                >
+                <Button>
                   <ArrowForward />
                 </Button>
               ),

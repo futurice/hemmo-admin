@@ -16,6 +16,7 @@ import Dialog, {
 } from 'material-ui/Dialog';
 import { CircularProgress } from 'material-ui/Progress';
 import FormControl from 'material-ui/Form/FormControl';
+import Divider from 'material-ui/Divider';
 
 import TableCard from '../components/TableCard';
 
@@ -258,7 +259,7 @@ class EmployeeManagement extends React.Component {
                     />
                   </FormControl>
 
-                  <FormControl className="form-control">
+                  <FormControl className="form-control" style={{marginBottom: 0}}>
                     <LabelSwitch
                       checked={this.state.user.active}
                       label={formatMessage({ id: 'active' })}
@@ -269,7 +270,7 @@ class EmployeeManagement extends React.Component {
                       }}
                     />
                   </FormControl>
-
+                  <Divider />
                   <FormControl className="form-control">
                     <LabelSwitch
                       checked={this.state.user.resetPassword}

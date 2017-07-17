@@ -9,7 +9,7 @@ import Button from 'material-ui/Button';
 import Alert from 'material-ui-icons/Warning';
 import ArrowForward from 'material-ui-icons/ArrowForward';
 import Done from 'material-ui-icons/Done';
-import { red300, lightGreen300 } from 'material-ui/styles/colors';
+import { red, lightGreen, orange } from 'material-ui/styles/colors';
 import AlertErrorOutline from 'material-ui-icons/ErrorOutline';
 
 import TableCard from '../components/TableCard';
@@ -59,12 +59,7 @@ class Children extends React.Component {
 
   render() {
     const { children, intl: { formatMessage } } = this.props;
-    const initialPage = 0;
-    const pageEntries = 20;
     let hideElems = [];
-
-    const threeMonthsAgo = new Date();
-    threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
 
     if (!this.state.showAll) {
       hideElems.push('name2');
@@ -74,8 +69,8 @@ class Children extends React.Component {
       <div>
         <PageHeader header={formatMessage({ id: 'Children' })} />
         <TableCard
-          initialPage={initialPage}
-          pageEntries={pageEntries}
+          initialPage={this.state.page}
+          pageEntries={this.state.pageEntries}
           model={children}
           emptyMsg={this.props.noFeedbackMsg}
           orderBy={this.state.orderBy}
@@ -90,14 +85,8 @@ class Children extends React.Component {
               id: null,
               value: row =>
                 row.reviewed
-                  ? <Done
-                      style={{ verticalAlign: 'middle' }}
-                      color={lightGreen300}
-                    />
-                  : <AlertErrorOutline
-                      style={{ verticalAlign: 'middle' }}
-                      color={red300}
-                    />,
+                  ? <Done color={lightGreen[300]} />
+                  : <AlertErrorOutline color={red[300]} />,
 
               style: { width: '20px' },
               maxShowWidth: 320,
@@ -108,37 +97,40 @@ class Children extends React.Component {
               columnTitle: <FormattedMessage id="name" />,
             },
             {
-              id: 'assignee',
-              value: row => row.assignee,
+              id: 'assigneeName',
+              value: row => row.assigneeName,
               columnTitle: <FormattedMessage id="assignee" />,
               defaultValue: '(nobody)',
               maxShowWidth: 680,
             },
             {
-              id: 'received',
+              id: 'prevFeedbackDate',
               value: row =>
                 <div>
-                  {row.showAlerts &&
-                  new Date(row.prevFeedbackDate) < threeMonthsAgo
-                    ? <Alert style={{ paddingRight: 10 }} />
-                    : null}
-                  {new Date(row.prevFeedbackDate).toLocaleDateString()}
+                  <span className="icon">
+                    {row.showAlerts && row.alert
+                      ? <Alert style={{ color: orange[600] }} />
+                      : null}
+                  </span>
+                  {new Date(
+                    row.lastFeedbackDate,
+                  ).toLocaleDateString(navigator.languages, {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                  })}
                 </div>,
               columnTitle: <FormattedMessage id="lastFeedback" />,
+              className: 'date',
               maxShowWidth: 440,
             },
             {
               component: (
-                <Button
-                  style={{
-                    minWidth: '40px',
-                  }}
-                >
+                <Button>
                   <ArrowForward />
                 </Button>
               ),
-
-              style: { width: '20px' },
+              className: 'row-action',
             },
           ]}
           onClickRow={this.refreshUser.bind(this)}

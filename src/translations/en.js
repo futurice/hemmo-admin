@@ -8,6 +8,12 @@ export default {
   Logout: 'Logout',
   Login: 'Login',
 
+  // Home
+  latestFeedback: 'Latest feedback',
+  needingAttention: 'Needing attention',
+  needingAttentionExpalain:
+    "Children who haven't send any feedback for long time.",
+
   // Users view
   userId: 'User ID',
   email: 'E-mail',
@@ -44,6 +50,7 @@ export default {
   // Miscellaneous
   close: 'Close',
   save: 'Save',
+  noDatatoShow: 'There is no data to display.',
 
   // Table toolbar
   childsName: "Child's name",

@@ -1,95 +1,159 @@
 import React from 'react';
 
-import Card, { CardContent, CardActions, CardMedia } from 'material-ui/Card';
-
-import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
+import Paper from 'material-ui/Paper';
+import Grid from 'material-ui/Grid';
+import { red, lightGreen, grey } from 'material-ui/styles/colors';
+import ArrowForward from 'material-ui-icons/ArrowForward';
+import Done from 'material-ui-icons/Done';
+import AlertErrorOutline from 'material-ui-icons/ErrorOutline';
+import Button from 'material-ui/Button';
 
-import CardGridWrapper from '../components/CardGridWrapper';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
+import rest from '../utils/rest';
+import { withRouter } from 'react-router';
+import { push } from 'react-router-redux';
 
-import theme from '../utils/theme';
+import PageHeader from '../components/PageHeader';
+import ModelTable from '../components/ModelTable';
 
-import chilicorn from '../assets/chilicorn/chilicorn_no_text-256.png';
-import placeholder from '../assets/placeholder.png';
+const mapStateToProps = state => ({
+  feedback: state.feedback,
+  children: state.children,
+  user: state.auth.data.decoded,
+});
 
-const styles = {
-  chilicornHeader: {
-    height: 240,
-    background: `url(${chilicorn})`,
-    backgroundColor: theme.palette.primary[100],
-    backgroundSize: 'contain',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
+const mapDispatchToProps = dispatch => ({
+  getFeedback: params => {
+    dispatch(rest.actions.feedback(params));
   },
-  loremHeader: {
-    height: 240,
-    background: `url(${placeholder})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    objectFit: 'cover',
-    width: '100%',
+  getChildren: params => {
+    dispatch(rest.actions.children({ ...params, orderBy: 'alert', alert: 1 }));
   },
-};
+  changeView(view) {
+    dispatch(push(view.toLowerCase()));
+  },
+});
 
+@injectIntl
+@withRouter
+@connect(mapStateToProps, mapDispatchToProps)
 export default class Home extends React.Component {
-  renderChilicornCard = () =>
-    <Card>
-      <CardMedia>
-        <div style={styles.chilicornHeader} />
-      </CardMedia>
-      <CardContent>
-        <Typography type="headline" component="h2">
-          Title 1
-        </Typography>
+  state = {
+    assigneeId: this.props.user.id,
+    orderBy: 'createdAt',
+    order: 'desc',
+    offset: 0,
+    limit: 20,
+  };
 
-        <Typography component="p">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
-          lobortis, diam id dapibus auctor, augue urna bibendum ligula, id
-          finibus est tortor vel dolor. Phasellus a nulla tellus. Phasellus
-          augue ante, consequat vel condimentum eu, vulputate vitae nulla. Morbi
-          ut finibus risus. Etiam gravida felis lectus, eu sagittis dolor auctor
-          et. Vivamus nec leo non ligula tincidunt vulputate quis efficitur mi.
-          In est eros, dignissim ut aliquet ut, ultrices eget nisi.
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button color="primary">Share</Button>
-        <Button color="primary">Learn More</Button>
-      </CardActions>
-    </Card>;
+  componentDidMount() {
+    this.props.getFeedback(this.state);
+    this.props.getChildren(this.state);
+  }
 
-  renderPlaceholderCard = () =>
-    <Card>
-      <CardMedia>
-        <div style={styles.loremHeader} />
-      </CardMedia>
-      <CardContent>
-        <Typography type="headline" component="h2">
-          Title 2
-        </Typography>
+  generateTable(data, onClickRow) {
+    const reviewed = <Done color={lightGreen[300]} />;
+    const notReviewed = <AlertErrorOutline color={red[300]} />;
 
-        <Typography component="p">
-          Proin odio dolor, aliquet ac tellus sit amet, blandit venenatis massa.
-          Phasellus id aliquet dui, eu rutrum lectus. Suspendisse hendrerit
-          sollicitudin mauris, sed venenatis augue tristique et. Proin sed
-          tortor lacinia, finibus diam eget, vulputate elit. Sed venenatis nunc
-          nec urna molestie aliquet a at tortor. Proin dignissim diam ac turpis
-          viverra auctor. Sed ac faucibus mauris, at consequat ipsum. Nunc
-          cursus nunc id augue aliquet, sed vulputate nisl commodo.
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button color="primary">Share</Button>
-        <Button color="primary">Learn More</Button>
-      </CardActions>
-    </Card>;
+    const header = [
+      {
+        id: null,
+        value: row => (row.reviewed ? reviewed : notReviewed),
+
+        className: 'row-icon',
+        maxShowWidth: 320,
+        disablePadding: true,
+      },
+      {
+        id: 'name',
+        value: row => row.childName || row.name,
+        columnTitle: <FormattedMessage id="child" />,
+      },
+      {
+        id: 'createdAt',
+        value: row =>
+          new Date(row.createdAt).toLocaleDateString(navigator.languages, {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+          }),
+        columnTitle: <FormattedMessage id="feedbackStartDate" />,
+        className: 'date',
+        maxShowWidth: 440,
+      },
+      {
+        component: (
+          <Button>
+            <ArrowForward />
+          </Button>
+        ),
+        className: 'row-action',
+      },
+    ];
+
+    return (
+      <ModelTable
+        order={this.state.order}
+        orderBy={this.state.orderBy}
+        header={header}
+        entries={data.data.entries}
+        onClickRow={onClickRow}
+        tableSort={false}
+      />
+    );
+  }
+
+  openFeedback(id) {
+    const path = '/feedback/' + id;
+    this.props.changeView(path);
+  }
+
+  openChild(id) {
+    const path = '/children/' + id;
+    this.props.changeView(path);
+  }
 
   render() {
+    const { feedback, children, intl: { formatMessage } } = this.props;
+
+    const renderFeedback = (
+      <Grid item xs={12} sm={6}>
+        <Paper className="paper" elevation={1}>
+          <Typography type="headline">
+            {formatMessage({ id: 'latestFeedback' })}
+          </Typography>
+
+          {this.generateTable(feedback, this.openFeedback.bind(this))}
+        </Paper>
+      </Grid>
+    );
+
+    const renderChildren = (
+      <Grid item xs={12} sm={6}>
+        <Paper className="paper" elevation={1}>
+          <Typography type="headline">
+            {formatMessage({ id: 'needingAttention' })}
+          </Typography>
+          <Typography style={{ color: grey[600] }}>
+            {formatMessage({ id: 'needingAttentionExpalain' })}
+          </Typography>
+
+          {this.generateTable(children, this.openChild.bind(this))}
+        </Paper>
+      </Grid>
+    );
+
     return (
-      <CardGridWrapper>
-        {this.renderChilicornCard()}
-        {this.renderPlaceholderCard()}
-      </CardGridWrapper>
+      <div>
+        <PageHeader header={formatMessage({ id: 'HemmoAdmin' })} />
+
+        <Grid container gutter={24}>
+          {renderFeedback}
+          {renderChildren}
+        </Grid>
+      </div>
     );
   }
 }

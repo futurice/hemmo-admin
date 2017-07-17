@@ -1,12 +1,38 @@
 table {
+	td:not(.row-icon):not(.row-action) {
+		padding: 0 24px 0 24px !important;
+	}
+
 	.row-icon {
-		padding-left: 24px;
 		text-align: center;
 		width: 30px;
 	}
 
 	.row-action {
-		width: 50px;
+		text-align: right;
 		padding-right: 0 !important;
+
+		button {
+			min-width: 40px;
+		}
+	}
+
+	.date {
+		text-align: left;
+
+		.icon {
+			vertical-align: middle;
+			padding-right: 10px;
+			display: inline-block;
+			width: 24px;
+		}
+	}
+}
+
+.data-table {
+	.no-entries {
+		text-align: center;
+		padding: 10px 15px;
+		margin: 10px 0;
 	}
 }
