@@ -105,7 +105,7 @@ export default class ModelTable extends React.Component {
         hover
         key={index}
         onClick={e => {
-          this.props.onClickRow(row.id);
+          this.props.onClickRow(row);
         }}
       >
         {columns}

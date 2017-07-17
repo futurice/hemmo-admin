@@ -27,7 +27,6 @@ export default {
   next30days: 'Next 30 days',
 
   // Preferences view
-  language: 'App language',
   appLanguageExplain: 'Selected laguage is applied only for this browser.',
   selectedLanguage: 'Selected language',
   resetState: 'Reset app state',
@@ -50,6 +49,7 @@ export default {
   createdAt: 'Created at',
   active: 'Active',
   resetPassword: 'Reset password',
+  resetPasswordExplanation: 'A new password will be emailed to the user.',
 
   // Miscellaneous
   close: 'Close',
