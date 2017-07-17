@@ -14,20 +14,32 @@ import AlertErrorOutline from 'material-ui-icons/ErrorOutline';
 
 import TableCard from '../components/TableCard';
 import PageHeader from '../components/PageHeader';
+import SnoozeDialog from '../components/SnoozeDialog';
 
 import rest from '../utils/rest';
 
 @injectIntl
 class Children extends React.Component {
-  state = {
-    page: 0,
-    pageEntries: 20,
-    showAll: false,
-    name1: '',
-    name2: '',
-    orderBy: 'name',
-    order: 'asc',
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      page: 0,
+      pageEntries: 20,
+      showAll: true,
+      name1: '',
+      name2: '',
+      orderBy: 'name',
+      order: 'asc',
+      snoozeOpen: false,
+      childId: null,
+    };
+
+    this.openSnoozeDialog = this.openSnoozeDialog.bind(this);
+    this.refreshUser = this.refreshUser.bind(this);
+    this.refresh = this.refresh.bind(this);
+    this.snoozeAlerts = this.snoozeAlerts.bind(this);
+  }
 
   // Refresh user list when component is first mounted
   componentWillMount() {
@@ -53,8 +65,45 @@ class Children extends React.Component {
     dispatch(rest.actions.children(queryParams));
   }
 
-  refreshUser(userId) {
-    this.props.dispatch(push('/children/' + userId));
+  refreshUser(childId) {
+    this.props.dispatch(push('/children/' + childId));
+  }
+
+  openSnoozeDialog(event, childId) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.setState({
+      snoozeOpen: true,
+      childId: childId,
+    });
+  }
+
+  snoozeAlerts(snooze) {
+    if (snooze && snooze.length) {
+      const { dispatch } = this.props;
+      const payload = {
+        showAlerts: snooze === 'forever' ? false : true,
+      };
+
+      if (snooze !== 'forever') {
+        const date = new Date();
+        date.setMonth(date.getMonth() + 3);
+        payload.alertDismissedAt = date;
+      }
+
+      dispatch(
+        rest.actions.child.patch(
+          { childId: this.state.childId },
+          { body: JSON.stringify(payload) },
+        ),
+      ).then(this.refresh);
+    }
+
+    this.setState({
+      snoozeOpen: false,
+      childId: null,
+    });
   }
 
   render() {
@@ -106,7 +155,7 @@ class Children extends React.Component {
             {
               id: 'prevFeedbackDate',
               value: row =>
-                <div>
+                <div onClick={e => this.openSnoozeDialog(e, row.id)}>
                   <span className="icon">
                     {row.showAlerts && row.alert
                       ? <Alert style={{ color: orange[600] }} />
@@ -133,9 +182,17 @@ class Children extends React.Component {
               className: 'row-action',
             },
           ]}
-          onClickRow={this.refreshUser.bind(this)}
-          refresh={this.refresh.bind(this)}
+          onClickRow={this.refreshUser}
+          refresh={this.refresh}
         />
+
+        {this.state.snoozeOpen
+          ? <SnoozeDialog
+              open={this.state.snoozeOpen}
+              handleRequestClose={this.snoozeAlerts}
+              childId={this.state.childId}
+            />
+          : null}
       </div>
     );
   }

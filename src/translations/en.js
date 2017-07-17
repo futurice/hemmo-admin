@@ -14,13 +14,17 @@ export default {
   needingAttentionExpalain:
     "Children who haven't send any feedback for long time.",
 
-  // Users view
-  userId: 'User ID',
+  // Children view
   email: 'E-mail',
   description: 'Description',
   showUserDetails: 'Details',
   userDetails: 'User details',
   lastFeedback: 'Last Feedback',
+  snoozeAlerts: 'Snooze alerts',
+  snoozeAlertsExplain:
+    "Choose whether to snooze alerts for chosen child for next 30 days or until turned back again from child's profile.",
+  forever: 'Forever',
+  next30days: 'Next 30 days',
 
   // Preferences view
   language: 'App language',

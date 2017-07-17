@@ -63,6 +63,10 @@ const rest = reduxApi({
     },
     crud: true,
   },
+  child: {
+    url: `${apiRoot}/children/:childId`,
+    crud: true,
+  },
   userDetails: {
     url: `${apiRoot}/employee/:userId`,
     crud: true,
