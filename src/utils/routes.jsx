@@ -46,7 +46,7 @@ import Home from '../modules/Home';
 import Feedback from '../modules/Feedback';
 import FeedbackDetail from '../modules/FeedbackDetail';
 import Children from '../modules/Children';
-import ChildDetail from '../modules/ChildDetail';
+import ChildWrapper from '../modules/ChildWrapper';
 import Preferences from '../modules/Preferences';
 import Login from '../modules/Login';
 import Logout from '../modules/Logout';
@@ -74,7 +74,7 @@ const routeConfigs = [
   },
   {
     path: '/children/:childId',
-    component: ChildDetail,
+    component: ChildWrapper,
     requiresLogin: true,
     showInMenu: false,
   },
