@@ -64,17 +64,17 @@ export default class Header extends React.Component {
       path,
       doToggleDrawer,
       user,
-      login,
-      preferences,
-      logout,
+      //      login,
+      //      preferences,
+      //      logout,
       changeView,
-      intl: { formatMessage },
+      //      intl: { formatMessage },
     } = this.props;
 
-    const { rightMenuOpen, rightMenuAnchorEl } = this.state;
+    //    const { rightMenuOpen, rightMenuAnchorEl } = this.state;
 
-    const hideMenu = () => this.setState({ rightMenuOpen: false });
-    const scope = user ? user.scope : null;
+    //    const hideMenu = () => this.setState({ rightMenuOpen: false });
+    //    const scope = user ? user.scope : null;
     const navigationRoutes = NavigationRoutes(user, path);
 
     return (

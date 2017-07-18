@@ -25,11 +25,16 @@ export default {
   forever: 'lopullisesti',
   next30days: 'Seuraavaksi 30 päiväksi',
 
+  // Feedback
+  deleteFeedbackWarn:
+    'Palautteen poistamista ei voi perua! Tämä toiminto poistaa palautteen lopullisesti.',
+
   // Child view
   showAlerts: 'Näytä hälytykset, jos palautetta ei ole annettu 3 kuukauteen.',
   deleteChild: 'Poista lapsi',
   deleteChildWarn:
     'Lapsen poistamista ei voi perua! Tämä toiminto poistaa lapsen lisäksi kaikki hänen lähettämät palautteet.',
+  childDetails: 'Lapsen tiedot',
 
   // Preferences view
   language: 'Sovelluksen kieli',
@@ -82,7 +87,7 @@ export default {
   unhandledFeedbackDesc: 'Kaikki käsittelemättömät palautteet',
   unhandledFeedbackEmpty: 'Kaikki järjestelmässä olevat palautteet käsitelty!',
 
-  routeHome: 'Koti',
+  /*routeHome: 'Koti',
   Sessions: 'Palautteet',
   Children: 'Lapset',
   Feedback: 'Palautteet',
@@ -91,7 +96,7 @@ export default {
   routeFeedbackDetails: 'Palautteen tiedot',
   routeChildDetails: 'Lapsen tiedot',
   routePreferences: 'Asetukset',
-  routeLogout: 'Kirjaudu ulos',
+  routeLogout: 'Kirjaudu ulos',*/
 
   feedback: 'Palautteet',
   children: 'Lapset',
@@ -114,8 +119,7 @@ export default {
 
   deleteUserWarn:
     'Käyttäjän poistamista ei voi perua! Tämä toiminto poistaa käyttäjän lisäksi kaikki käyttäjän lähettämät palautteet.',
-  deleteFeedbackWarn:
-    'Palautteen poistamista ei voi perua! Tämä toiminto poistaa palautteen lopullisesti.',
+  
 
   deleteDefaultWarn: 'Tätä toimintoa ei voi perua! Oletko varma?',
   areYouSure: 'Oletko varma?',

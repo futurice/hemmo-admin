@@ -149,10 +149,10 @@ const rest = reduxApi({
     },
   },
   feedbackDetail: {
-    url: `${apiRoot}/feedback/:id`,
+    url: `${apiRoot}/feedback/:feedbackId`,
     transformer(data, prevData) {
       if (data) {
-        return { ...prevData, ...data };
+        return { ...data };
       } else {
         return { ...prevData };
       }

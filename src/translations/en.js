@@ -31,6 +31,11 @@ export default {
   deleteChild: 'Delete child',
   deleteChildWarn:
     'Deleting this child will destroy the child and all their feedback forever! Only proceed if you are absolutely sure.',
+  childDetails: "Child's details",
+
+  // Feedback
+  deleteFeedbackWarn:
+    'Deleting this feedback will destroy it forever! Only proceed if you are absolutely sure.',
 
   // Preferences view
   appLanguageExplain: 'Selected laguage is applied only for this browser.',
@@ -80,7 +85,7 @@ export default {
   unhandledFeedbackDesc: 'All unhandled feedback',
   unhandledFeedbackEmpty: 'All feedback in the system has been handled!',
 
-  routeHome: 'Home',
+  /*routeHome: 'Home',
   Sessions: 'Sessions',
   Children: 'Children',
   Feedback: 'Feedback',
@@ -89,7 +94,7 @@ export default {
   routeFeedbackDetails: 'Feedback details',
   routeChildDetails: 'Child details',
   routePreferences: 'Preferences',
-  routeLogout: 'Logout',
+  routeLogout: 'Logout',*/
 
   feedback: 'Feedback',
   children: 'Children',
@@ -110,8 +115,7 @@ export default {
   deleteUserDesc: 'Delete user and all their feedback',
   deleteUserWarn:
     'Deleting this user will destroy the user and all their feedback forever! Only proceed if you are absolutely sure.',
-  deleteFeedbackWarn:
-    'Deleting this feedback will destroy it forever! Only proceed if you are absolutely sure.',
+  
 
   deleteDefaultWarn:
     'Deleting this item will destroy it forever! Only proceed if you are absolutely sure.',

@@ -3,17 +3,19 @@ import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 
 import Card, { CardActions, CardContent } from 'material-ui/Card';
-import { LabelSwitch } from 'material-ui/Switch';
-import { red } from 'material-ui/styles/colors';
 import Button from 'material-ui/Button';
+import FormControl from 'material-ui/Form/FormControl';
 import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
+import List, { ListItem, ListItemText } from 'material-ui/List';
+import Menu, { MenuItem } from 'material-ui/Menu';
+import { red } from 'material-ui/styles/colors';
 
 import DeleteDialog from './DeleteDialog';
 import SelectMenu from './SelectMenu';
 
 @injectIntl
-export default class ChildDetails extends React.Component {
+export default class FeedbackDetails extends React.Component {
   constructor(props) {
     super(props);
 
@@ -22,12 +24,6 @@ export default class ChildDetails extends React.Component {
     };
 
     this.selectAssignee = this.selectAssignee.bind(this);
-  }
-
-  updateAlertSetting(event, checked) {
-    this.props.onUpdate(this.props.child.id, {
-      showAlerts: checked,
-    });
   }
 
   formatDate(date) {
@@ -39,71 +35,67 @@ export default class ChildDetails extends React.Component {
   }
 
   handleDelete() {
-    this.props.onDelete(this.props.child.id);
+    this.props.onDelete(this.props.childId, this.props.data.id);
   }
 
-  selectAssignee(assigneeId) {
+  selectAssignee(event, assigneeId) {
     this.props.onUpdate(this.props.child.id, {
       assigneeId: assigneeId,
     });
   }
 
   render() {
-    const { employees, child, intl: { formatMessage } } = this.props;
+    const { data, employees, intl: { formatMessage } } = this.props;
 
     return (
       <div>
         <Card>
           <CardContent style={{ paddingBottom: 0 }}>
             <Typography type="headline">
-              {formatMessage({ id: 'childDetails' })}
+              {formatMessage({ id: 'feedback' })}
             </Typography>
           </CardContent>
           <CardContent>
-            <Grid container>
-              <Grid item xs={12} sm={6} style={{ alignSelf: 'center' }}>
+            <Grid container gutter={0}>
+              <Grid item xs={12} sm={4} style={{ alignSelf: 'center' }}>
                 <Typography type="subheading">
                   {formatMessage({ id: 'createdAt' })}:{' '}
-                  {this.formatDate(child.createdAt)}
+                  {this.formatDate(data.createdAt)}
                 </Typography>
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item item xs={12} md={4}>
                 <Typography
                   type="subheading"
                   component="span"
                   className="assignee"
                 >
-                  {formatMessage({ id: 'assignee' })}:
+                  {formatMessage({ id: 'assignee' })}
                 </Typography>
                 <SelectMenu
-                  id="assignee-child"
-                  selectedId={child.assigneeId}
+                  id="assignee-feedback"
+                  selectedId={data.assigneeId}
                   loading={employees.loading}
                   data={employees.data.entries}
-                  label={child.assigneeName}
+                  label={data.assigneeName}
                   onSelect={this.selectAssignee}
                 />
               </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={4}
+                style={{ alignSelf: 'center', textAlign: 'right' }}
+              >
+                <Button
+                  color="accent"
+                  style={{ color: red[300] }}
+                  onClick={() => this.setState({ dialogOpen: true })}
+                >
+                  {formatMessage({ id: 'deleteFeedback' })}
+                </Button>
+              </Grid>
             </Grid>
           </CardContent>
-          <CardActions>
-            <Grid item xs={12} sm={9}>
-              <LabelSwitch
-                checked={this.props.child.showAlerts}
-                label={formatMessage({ id: 'showAlerts' })}
-                onChange={this.updateAlertSetting.bind(this)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              <Button
-                color="accent"
-                style={{ color: red[300] }}
-                onClick={() => this.setState({ dialogOpen: true })}
-              >
-                {formatMessage({ id: 'deleteChild' })}
-              </Button>
-            </Grid>
-          </CardActions>
         </Card>
 
         <DeleteDialog
@@ -114,15 +106,16 @@ export default class ChildDetails extends React.Component {
             });
           }}
           open={this.state.dialogOpen}
-          message={formatMessage({ id: 'deleteChildWarn' })}
+          message={formatMessage({ id: 'deleteFeedbackWarn' })}
         />
       </div>
     );
   }
 }
 
-ChildDetails.propTypes = {
-  child: PropTypes.object.isRequired,
+FeedbackDetails.propTypes = {
+  childId: PropTypes.string.isRequired,
+  data: PropTypes.object.isRequired,
   employees: PropTypes.object.isRequired,
   onUpdate: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,

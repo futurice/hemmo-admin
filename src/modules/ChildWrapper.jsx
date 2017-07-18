@@ -1,16 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { injectIntl } from 'react-intl';
-import { goBack } from 'react-router-redux';
+import { goBack, push } from 'react-router-redux';
 
 import { LinearProgress } from 'material-ui/Progress';
-import ListIcon from 'material-ui-icons/List';
 import Grid from 'material-ui/Grid';
-
-import Typography from 'material-ui/Typography';
 
 import PageHeader from '../components/PageHeader';
 import ChildDetails from '../components/ChildDetails';
+import FeedbackDetails from '../components/FeedbackDetails';
 import rest from '../utils/rest';
 import NotFound from './NotFound';
 
@@ -18,6 +15,7 @@ const mapStateToProps = state => ({
   child: state.child,
   childLoading: state.child.loading,
   employees: state.employees,
+  feedback: state.feedbackDetail,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -42,17 +40,27 @@ const mapDispatchToProps = dispatch => ({
   getEmployees: () => {
     dispatch(rest.actions.employees());
   },
+  getFeedback: feedbackId => {
+    dispatch(rest.actions.feedbackDetail.get({ feedbackId: feedbackId }));
+  },
+  deleteFeedback: (childId, feedbackId) => {
+    dispatch(
+      rest.actions.feedbackDetail.delete({ feedbackId: feedbackId }, () => {
+        dispatch(push(`/children/${childId}`));
+      }),
+    );
+  },
+  updateFeedback: () => {},
 });
 
-@injectIntl
 @connect(mapStateToProps, mapDispatchToProps)
 export default class ChildWrapper extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentWillMount() {
     this.props.getEmployees();
+
+    if (this.props.match.params.feedbackId) {
+      this.props.getFeedback(this.props.match.params.feedbackId);
+    }
   }
 
   componentDidMount() {
@@ -72,8 +80,8 @@ export default class ChildWrapper extends React.Component {
   }
 
   render() {
-    const { child, childLoading, intl: { formatMessage } } = this.props;
-    const basicDetails = (
+    const { child, childLoading, feedback } = this.props;
+    const renderChildDetails = (
       <Grid item xs={12} sm={6}>
         <ChildDetails
           child={this.props.child.data}
@@ -84,26 +92,34 @@ export default class ChildWrapper extends React.Component {
       </Grid>
     );
 
-    const trend = (
+    const renderTrend = (
       <Grid item xs={12} sm={6}>
         Trend
       </Grid>
     );
 
-    const activeFeedback = (
+    const renderActiveFeedback = (
       <Grid item xs={12} sm={12}>
-        Feedback
+        <FeedbackDetails
+          childId={this.props.child.data.id}
+          data={feedback.data}
+          employees={this.props.employees}
+          onUpdate={this.props.updateFeedback.bind(this)}
+          onDelete={this.props.deleteFeedback.bind(this)}
+        />
       </Grid>
     );
 
     const renderWrapper = (
-      <div>
+      <div className="child-profile">
         <PageHeader header={child.data.name} />
 
         <Grid container gutter={24}>
-          {basicDetails}
-          {trend}
-          {activeFeedback}
+          {renderChildDetails}
+          {renderTrend}
+          {!feedback.loading && this.props.match.params.feedbackId
+            ? renderActiveFeedback
+            : null}
         </Grid>
       </div>
     );
@@ -112,7 +128,7 @@ export default class ChildWrapper extends React.Component {
       <div>
         {childLoading
           ? this.renderProgressBar()
-          : child.data && child.data.length ? renderWrapper : <NotFound />}
+          : child.data && child.data.id ? renderWrapper : <NotFound />}
       </div>
     );
   }

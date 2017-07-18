@@ -44,7 +44,6 @@ import LogoutIcon from 'material-ui-icons/ExitToApp';
 // Components
 import Home from '../modules/Home';
 import Feedback from '../modules/Feedback';
-import FeedbackDetail from '../modules/FeedbackDetail';
 import Children from '../modules/Children';
 import ChildWrapper from '../modules/ChildWrapper';
 import Preferences from '../modules/Preferences';
@@ -71,6 +70,12 @@ const routeConfigs = [
     requiresLogin: true,
     showInMenu: true,
     exact: true,
+  },
+  {
+    path: '/children/:childId/feedback/:feedbackId',
+    component: ChildWrapper,
+    requiresLogin: true,
+    showInMenu: false,
   },
   {
     path: '/children/:childId',
