@@ -17,6 +17,7 @@ import NotFound from './NotFound';
 const mapStateToProps = state => ({
   child: state.child,
   childLoading: state.child.loading,
+  employees: state.employees,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -38,6 +39,9 @@ const mapDispatchToProps = dispatch => ({
       }),
     );
   },
+  getEmployees: () => {
+    dispatch(rest.actions.employees());
+  },
 });
 
 @injectIntl
@@ -45,14 +49,10 @@ const mapDispatchToProps = dispatch => ({
 export default class ChildWrapper extends React.Component {
   constructor(props) {
     super(props);
+  }
 
-    this.state = {
-      id: this.props.child.data.id || null,
-      name: this.props.child.data.name,
-      createdAt: this.props.child.data.createdAt,
-      showAlerts: this.props.child.data.showAlerts,
-      dialogOpen: false,
-    };
+  componentWillMount() {
+    this.props.getEmployees();
   }
 
   componentDidMount() {
@@ -72,11 +72,12 @@ export default class ChildWrapper extends React.Component {
   }
 
   render() {
-    const { childLoading, intl: { formatMessage } } = this.props;
+    const { child, childLoading, intl: { formatMessage } } = this.props;
     const basicDetails = (
       <Grid item xs={12} sm={6}>
         <ChildDetails
           child={this.props.child.data}
+          employees={this.props.employees}
           onUpdate={this.props.update.bind(this)}
           onDelete={this.props.delete.bind(this)}
         />
@@ -95,9 +96,9 @@ export default class ChildWrapper extends React.Component {
       </Grid>
     );
 
-    const wrapper = (
+    const renderWrapper = (
       <div>
-        <PageHeader header={this.state.name} />
+        <PageHeader header={child.data.name} />
 
         <Grid container gutter={24}>
           {basicDetails}
@@ -109,9 +110,9 @@ export default class ChildWrapper extends React.Component {
 
     return (
       <div>
-        {this.renderProgressBar()}
-
-        {!childLoading ? (this.state.id ? wrapper : <NotFound />) : null}
+        {childLoading
+          ? this.renderProgressBar()
+          : child.data ? renderWrapper : <NotFound />}
       </div>
     );
   }
