@@ -71,6 +71,7 @@ export default {
   deleteDefaultTitle: 'Vahvista poisto',
   cancel: 'Peruuta',
   delete: 'Poista',
+  pageNotFound: 'Haettua sivua ei löytynyt.',
 
   // Hemmo
   newFeedback: 'Sinun palautteet',

@@ -112,7 +112,7 @@ export default class ChildWrapper extends React.Component {
       <div>
         {childLoading
           ? this.renderProgressBar()
-          : child.data ? renderWrapper : <NotFound />}
+          : child.data && child.data.length ? renderWrapper : <NotFound />}
       </div>
     );
   }

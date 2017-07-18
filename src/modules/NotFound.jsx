@@ -1,23 +1,20 @@
 import React from 'react';
+import { injectIntl } from 'react-intl';
 
 import { connect } from 'react-redux';
-import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
+import { lightBlue } from 'material-ui/styles/colors';
 
-const mapStateToProps = (state, ownProps) => ({});
-
-const mapDispatchToProps = dispatch => ({});
-
-@connect(mapStateToProps, mapDispatchToProps)
+@injectIntl
 export default class NotFound extends React.Component {
   render() {
+    const { intl: { formatMessage } } = this.props;
+
     return (
       <div className="not-found">
-        <Paper elevation={4}>
-          <Typography type="headline" component="h3">
-            Page you tried to load could't be found
-          </Typography>
-        </Paper>
+        <Typography type="display1" component="h3">
+          {formatMessage({ id: 'pageNotFound' })}
+        </Typography>
       </div>
     );
   }

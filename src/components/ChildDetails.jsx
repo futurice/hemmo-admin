@@ -75,7 +75,7 @@ export default class ChildBasic extends React.Component {
 
   render() {
     const { employees, child, intl: { formatMessage } } = this.props;
-    console.log(child);
+
     return (
       <div>
         <Card>

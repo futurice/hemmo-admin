@@ -64,6 +64,7 @@ export default {
   deleteDefaultTitle: 'Confirm delete',
   cancel: 'Cancel',
   delete: 'Delete',
+  pageNotFound: 'Requested page could not be found.',
 
   // Table toolbar
   childsName: "Child's name",
