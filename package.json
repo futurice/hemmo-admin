@@ -46,7 +46,7 @@
     "precommit": "lint-staged",
     "lint": "eslint --ext .jsx --ext .js src",
     "lint:fix": "eslint --ext .jsx --ext .js --fix src",
-    "prettier": "prettier --single-quote --trailing-comma all --write src/**/*.js src/**/*.jsx"
+    "prettier": "prettier --single-quote --trailing-comma all --write \"{,!(node_modules|build)/**/}*.js*\""
   },
   "lint-staged": {
     "*.{js,jsx}": [

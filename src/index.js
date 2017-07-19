@@ -73,24 +73,22 @@ export default class App extends React.Component {
     persistStore(store, () => this.setState({ rehydrated: true }));
   }
 
-  renderApp = () => (
+  renderApp = () =>
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
       <NavigationDrawer />
       <Header />
-      
+
       <div className="content-wrapper">
         <ConfiguredRoutes />
       </div>
 
       <ErrorSnackbar />
-    </div>
-  );
+    </div>;
 
-  renderLoading = () => (
+  renderLoading = () =>
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
       <FullscreenSpinner />
-    </div>
-  );
+    </div>;
 
   render() {
     const { rehydrated } = this.state;
@@ -100,10 +98,7 @@ export default class App extends React.Component {
         <Provider store={store}>
           <IntlProvider>
             <ConnectedRouter history={history}>
-              { rehydrated
-                ? this.renderApp()
-                : this.renderLoading()
-              }
+              {rehydrated ? this.renderApp() : this.renderLoading()}
             </ConnectedRouter>
           </IntlProvider>
         </Provider>
