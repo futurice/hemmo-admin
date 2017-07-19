@@ -64,11 +64,6 @@ const routeConfigs = [
     exact: true,
   },
   {
-    path: '/feedback/:feedbackId',
-    component: FeedbackDetail,
-    requiresLogin: true,
-  },
-  {
     path: '/feedback',
     name: 'Feedback',
     component: Feedback,
@@ -78,7 +73,7 @@ const routeConfigs = [
     exact: true,
   },
   {
-    path: '/children/:userId',
+    path: '/children/:childId',
     component: ChildDetail,
     requiresLogin: true,
     showInMenu: false,

@@ -4,29 +4,12 @@ import rest from '../utils/rest';
 import { injectIntl } from 'react-intl';
 
 import Button from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
 import Typography from 'material-ui/Typography';
-import { LabelSwitch } from 'material-ui/Switch';
+import IconButton from 'material-ui/IconButton';
 import Edit from 'material-ui-icons/Edit';
-import TextField from 'material-ui/TextField';
-import Dialog, {
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from 'material-ui/Dialog';
-import { CircularProgress } from 'material-ui/Progress';
-import FormControl from 'material-ui/Form/FormControl';
-import Divider from 'material-ui/Divider';
 
 import TableCard from '../components/TableCard';
-
-const emptyEmployee = {
-  id: null,
-  name: '',
-  email: '',
-  active: false,
-  resetPassword: false,
-};
+import EditEmployeeDialog from '../components/EditEmployeeDialog';
 
 @injectIntl
 class EmployeeManagement extends React.Component {
@@ -40,12 +23,10 @@ class EmployeeManagement extends React.Component {
       page: 0,
       pageEntries: 20,
       dialogOpen: false,
-      user: emptyEmployee,
+      user: {},
       submitting: false,
     };
 
-    this.updateAttr = this.updateAttr.bind(this);
-    this.canSubmit = this.canSubmit.bind(this);
     this.loadEmployee = this.loadEmployee.bind(this);
     this.loadEmployees = this.loadEmployees.bind(this);
     this.saveEmployee = this.saveEmployee.bind(this);
@@ -73,33 +54,29 @@ class EmployeeManagement extends React.Component {
     dispatch(rest.actions.employees(queryParams));
   }
 
-  loadEmployee(userId) {
+  loadEmployee(user) {
     const { dispatch } = this.props;
 
     dispatch(
-      rest.actions.employee.get({ id: userId }, () => {
+      rest.actions.employee.get({ id: user.id }, () => {
         this.setState({
           dialogOpen: true,
-          user: this.props.employee.data,
         });
       }),
     );
   }
 
-  addUserDialog() {
+  openDialog() {
     this.setState({
       dialogOpen: true,
-      user: {
-        ...emptyEmployee,
-        active: true,
-      },
+      user: {},
     });
   }
 
   closeDialog() {
     this.setState({
       dialogOpen: false,
-      user: emptyEmployee,
+      user: {},
     });
   }
 
@@ -107,23 +84,16 @@ class EmployeeManagement extends React.Component {
     this.setState({ submitting: false });
   }
 
-  saveEmployee() {
+  saveEmployee(employeeId, data) {
     const { dispatch } = this.props;
-    const body = {
-      name: this.state.user.name,
-      email: this.state.user.email,
-      active: this.state.user.active,
-    };
 
     this.setState({ submitting: true });
 
-    if (this.state.user.id) {
-      body.resetPassword = this.state.user.resetPassword;
-
+    if (employeeId) {
       dispatch(
         rest.actions.employee.patch(
-          { id: this.state.user.id },
-          { body: JSON.stringify(body) },
+          { id: employeeId },
+          { body: JSON.stringify(data) },
         ),
       )
         .then(response => {
@@ -134,7 +104,7 @@ class EmployeeManagement extends React.Component {
         .catch(this.notSubmitting);
     } else {
       dispatch(
-        rest.actions.employeeCreate(null, { body: JSON.stringify(body) }),
+        rest.actions.employeeCreate(null, { body: JSON.stringify(data) }),
       )
         .then(response => {
           this.closeDialog();
@@ -143,27 +113,6 @@ class EmployeeManagement extends React.Component {
         })
         .catch(this.notSubmitting);
     }
-  }
-
-  updateAttr(event) {
-    const value = event.target.value;
-    const field = event.target.name;
-
-    this.setState({ user: { ...this.state.user, [field]: value } });
-  }
-
-  canSubmit() {
-    const emailRegexp = new RegExp(
-      /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/,
-      'i',
-    );
-
-    return (
-      !this.state.submitting &&
-      this.state.user.name.length &&
-      this.state.user.email.length &&
-      emailRegexp.test(this.state.user.email)
-    );
   }
 
   render() {
@@ -196,7 +145,7 @@ class EmployeeManagement extends React.Component {
         className: 'row-action',
       },
     ];
-
+    console.log(employee);
     return (
       <div className="employee-management">
         <Typography type="title">
@@ -206,7 +155,7 @@ class EmployeeManagement extends React.Component {
         <Button
           className="add-employee"
           color="primary"
-          onClick={() => this.addUserDialog()}
+          onClick={() => this.openDialog()}
         >
           {formatMessage({ id: 'addEmployee' })}
         </Button>
@@ -223,85 +172,16 @@ class EmployeeManagement extends React.Component {
           hideElems={['showAll', 'name2']}
         />
 
-        <Dialog
-          onRequestClose={this.closeDialog.bind(this)}
-          open={this.state.dialogOpen}
-          className="dialog"
-        >
-          <DialogTitle>
-            {employee.data.id
-              ? formatMessage({ id: 'editEmployee' })
-              : formatMessage({ id: 'addEmployee' })}
-          </DialogTitle>
-          <DialogContent className="dialog-content">
-            {employee.loading
-              ? <div style={{ textAlign: 'center' }}>
-                  <CircularProgress />
-                </div>
-              : <div>
-                  <FormControl className="form-control">
-                    <TextField
-                      className="full-width-text-field"
-                      name="name"
-                      value={this.state.user.name}
-                      label={formatMessage({ id: 'name' })}
-                      onChange={this.updateAttr}
-                    />
-                  </FormControl>
-
-                  <FormControl className="form-control">
-                    <TextField
-                      name="email"
-                      className="full-width-text-field"
-                      value={this.state.user.email}
-                      label={formatMessage({ id: 'email' })}
-                      onChange={this.updateAttr}
-                    />
-                  </FormControl>
-
-                  <FormControl className="form-control" style={{marginBottom: 0}}>
-                    <LabelSwitch
-                      checked={this.state.user.active}
-                      label={formatMessage({ id: 'active' })}
-                      onChange={(event, checked) => {
-                        this.setState({
-                          user: { ...this.state.user, active: checked },
-                        });
-                      }}
-                    />
-                  </FormControl>
-                  <Divider />
-                  <FormControl className="form-control">
-                    <LabelSwitch
-                      checked={this.state.user.resetPassword}
-                      label={formatMessage({ id: 'resetPassword' })}
-                      onChange={(event, checked) => {
-                        this.setState({
-                          user: { ...this.state.user, resetPassword: checked },
-                        });
-                      }}
-                    />
-                    {this.state.user.resetPassword
-                      ? <Typography>
-                          {formatMessage({ id: 'resetPasswordExplanation' })}
-                        </Typography>
-                      : ''}
-                  </FormControl>
-                </div>}
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.closeDialog.bind(this)}>
-              {formatMessage({ id: 'close' })}
-            </Button>
-            <Button
-              onClick={this.saveEmployee.bind(this)}
-              disabled={!this.canSubmit()}
-              color="primary"
-            >
-              {formatMessage({ id: 'save' })}
-            </Button>
-          </DialogActions>
-        </Dialog>
+        {this.state.dialogOpen
+          ? <EditEmployeeDialog
+              open={this.state.dialogOpen}
+              employeeDetails={employee.data}
+              loading={this.state.loading}
+              saving={this.state.submitting}
+              onRequestSave={this.saveEmployee.bind(this)}
+              onRequestClose={this.closeDialog.bind(this)}
+            />
+          : null}
       </div>
     );
   }

@@ -50,6 +50,8 @@ export default {
   createdAt: 'Lisätty',
   active: 'Aktiivinen',
   resetPassword: 'Resetoi salasana',
+  resetPasswordExplanation:
+    'Uusi salasana lähetetään käyttäjälle sähköpostilla.',
 
   // Table toolbar
   childsName: 'Lapsen nimi',

@@ -65,8 +65,8 @@ class Children extends React.Component {
     dispatch(rest.actions.children(queryParams));
   }
 
-  refreshUser(childId) {
-    this.props.dispatch(push('/children/' + childId));
+  refreshUser(row) {
+    this.props.dispatch(push('/children/' + row.id));
   }
 
   openSnoozeDialog(event, childId) {

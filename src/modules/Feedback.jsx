@@ -51,8 +51,8 @@ class FeedbackTable extends React.Component {
     dispatch(rest.actions.feedback(queryParams));
   }
 
-  openFeedback(id) {
-    const path = '/feedback/' + id;
+  openFeedback(row) {
+    const path = `/children/${row.childId}/feedback/${row.id}`;
     this.props.dispatch(push(path));
   }
 
