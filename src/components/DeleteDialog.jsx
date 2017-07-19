@@ -1,41 +1,44 @@
-import { Component, PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+
 import { FormattedMessage } from 'react-intl';
-import Dialog from 'material-ui/Dialog';
+import Dialog, {
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from 'material-ui/Dialog';
 import Button from 'material-ui/Button';
-import RaisedButton from 'material-ui/RaisedButton';
 
 // Colors
-import { red300 } from 'material-ui/styles/colors';
+import { red } from 'material-ui/styles/colors';
 
-export default class DeleteDialog extends Component {
+export default class DeleteDialog extends React.Component {
   render() {
-    const actions = [
-      <Button
-        label={<FormattedMessage id="cancel" />}
-        primary={true}
-        keyboardFocused={true}
-        onTouchTap={this.props.handleClose}
-      />,
-      <Button
-        label={<FormattedMessage id="delete" />}
-        style={{ color: red300 }}
-        onTouchTap={this.props.handleDelete}
-      />,
-    ];
-
     return (
-      <FormattedMessage id="areYouSure">
-        {title =>
-          <Dialog
-            title={title}
-            actions={actions}
-            modal={false}
-            open={this.props.open}
-            onRequestClose={this.props.handleClose}
-          >
+      <Dialog open={this.props.open} onRequestClose={this.handleClose}>
+        <DialogTitle>
+          {this.props.title || <FormattedMessage id="deleteDefaultTitle" />}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
             {this.props.message || <FormattedMessage id="deleteDefaultWarn" />}
-          </Dialog>}
-      </FormattedMessage>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button color="primary" onClick={this.props.handleClose}>
+            <FormattedMessage id="cancel" />
+          </Button>
+
+          <Button
+            color="accent"
+            style={{ color: red[300] }}
+            onClick={this.props.handleDelete}
+          >
+            <FormattedMessage id="delete" />
+          </Button>
+        </DialogActions>
+      </Dialog>
     );
   }
 }

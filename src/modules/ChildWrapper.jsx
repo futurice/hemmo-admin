@@ -1,45 +1,70 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
+import { goBack } from 'react-router-redux';
 
-import Table, {
-  TableBody,
-  TableHead,
-  TableRow,
-  TableCell,
-} from 'material-ui/Table';
 import { LinearProgress } from 'material-ui/Progress';
 import ListIcon from 'material-ui-icons/List';
-import PageHeader from '../components/PageHeader';
+import Grid from 'material-ui/Grid';
 
+import Typography from 'material-ui/Typography';
+
+import PageHeader from '../components/PageHeader';
+import ChildDetails from '../components/ChildDetails';
 import rest from '../utils/rest';
 import NotFound from './NotFound';
 
 const mapStateToProps = state => ({
-  user: state.userDetails,
-  userLoading: state.userDetails.loading,
+  child: state.child,
+  childLoading: state.child.loading,
+  employees: state.employees,
 });
 
 const mapDispatchToProps = dispatch => ({
-  refresh: userId => {
-    dispatch(rest.actions.userDetails({ userId: userId }));
+  refresh: childId => {
+    dispatch(rest.actions.child.get({ childId: childId }));
+  },
+  update: (childId, data) => {
+    dispatch(
+      rest.actions.child.patch(
+        { childId: childId },
+        { body: JSON.stringify(data) },
+      ),
+    );
+  },
+  delete: childId => {
+    dispatch(
+      rest.actions.child.delete({ childId: childId }, () => {
+        dispatch(goBack());
+      }),
+    );
+  },
+  getEmployees: () => {
+    dispatch(rest.actions.employees());
   },
 });
 
 @injectIntl
 @connect(mapStateToProps, mapDispatchToProps)
-export default class Users extends React.Component {
-  // Refresh user list when component is first mounted
+export default class ChildWrapper extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentWillMount() {
+    this.props.getEmployees();
+  }
+
   componentDidMount() {
     const { refresh } = this.props;
 
-    refresh(this.props.match.params.userId);
+    refresh(this.props.match.params.childId);
   }
 
   renderProgressBar() {
-    const { userLoading } = this.props;
+    const { childLoading } = this.props;
 
-    return userLoading
+    return childLoading
       ? <div style={{ marginBottom: '-5px' }}>
           <LinearProgress />
         </div>
@@ -47,14 +72,47 @@ export default class Users extends React.Component {
   }
 
   render() {
-    const { user, intl: { formatMessage } } = this.props;
-    const userData = user.data ? user.data : null;
+    const { child, childLoading, intl: { formatMessage } } = this.props;
+    const basicDetails = (
+      <Grid item xs={12} sm={6}>
+        <ChildDetails
+          child={this.props.child.data}
+          employees={this.props.employees}
+          onUpdate={this.props.update.bind(this)}
+          onDelete={this.props.delete.bind(this)}
+        />
+      </Grid>
+    );
+
+    const trend = (
+      <Grid item xs={12} sm={6}>
+        Trend
+      </Grid>
+    );
+
+    const activeFeedback = (
+      <Grid item xs={12} sm={12}>
+        Feedback
+      </Grid>
+    );
+
+    const renderWrapper = (
+      <div>
+        <PageHeader header={child.data.name} />
+
+        <Grid container gutter={24}>
+          {basicDetails}
+          {trend}
+          {activeFeedback}
+        </Grid>
+      </div>
+    );
 
     return (
       <div>
-        {this.renderProgressBar()}
-
-        {userData ? <PageHeader header={userData.name} /> : <NotFound />}
+        {childLoading
+          ? this.renderProgressBar()
+          : child.data && child.data.length ? renderWrapper : <NotFound />}
       </div>
     );
   }
@@ -111,9 +169,7 @@ class UserDetail extends Component {
     this.handleDelete = this.handleDelete.bind(this);
   }
 
-  openDeleteDialog() {
-    this.setState({dialogOpen: true});
-  }
+  
 
   handleDelete() {
     const {dispatch} = this.props;

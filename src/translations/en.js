@@ -26,6 +26,12 @@ export default {
   forever: 'Forever',
   next30days: 'Next 30 days',
 
+  // Child view
+  showAlerts: 'Show alerts if not received any feedback in 3 months.',
+  deleteChild: 'Delete child',
+  deleteChildWarn:
+    'Deleting this child will destroy the child and all their feedback forever! Only proceed if you are absolutely sure.',
+
   // Preferences view
   appLanguageExplain: 'Selected laguage is applied only for this browser.',
   selectedLanguage: 'Selected language',
@@ -55,6 +61,10 @@ export default {
   close: 'Close',
   save: 'Save',
   noDatatoShow: 'There is no data to display.',
+  deleteDefaultTitle: 'Confirm delete',
+  cancel: 'Cancel',
+  delete: 'Delete',
+  pageNotFound: 'Requested page could not be found.',
 
   // Table toolbar
   childsName: "Child's name",
@@ -92,7 +102,7 @@ export default {
   nobody: '(nobody)',
   feedbackStartDate: 'Date',
 
-  percentHappy: '{percent}% positive feedback',
+  /*percentHappy: '{percent}% positive feedback',
   assigneeExplanation:
     'New feedback by {child} will be assigned to this employee automatically.',
   feedbackBy: 'Feedback by {child}',
@@ -106,8 +116,7 @@ export default {
   deleteDefaultWarn:
     'Deleting this item will destroy it forever! Only proceed if you are absolutely sure.',
   areYouSure: 'Are you sure?',
-  cancel: 'Cancel',
-  delete: 'Delete',
+  */
 
   percentHappyInSession: '{percent}% positive in feedback',
   noFeedbackGiven: 'No feedback given yet',

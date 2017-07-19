@@ -10,7 +10,7 @@ import Dialog, {
   DialogContent,
   DialogActions,
 } from 'material-ui/Dialog';
-import { CircularProgress } from 'material-ui/Progress';
+import FullscreenSpinner from './FullscreenSpinner';
 import FormControl from 'material-ui/Form/FormControl';
 import Divider from 'material-ui/Divider';
 
@@ -89,9 +89,7 @@ export default class EditEmployeeDialog extends React.Component {
         </DialogTitle>
         <DialogContent className="dialog-content">
           {loading
-            ? <div style={{ textAlign: 'center' }}>
-                <CircularProgress />
-              </div>
+            ? <FullscreenSpinner />
             : <div>
                 <FormControl className="form-control">
                   <TextField
