@@ -145,7 +145,7 @@ class EmployeeManagement extends React.Component {
         className: 'row-action',
       },
     ];
-    console.log(employee);
+
     return (
       <div className="employee-management">
         <Typography type="title">

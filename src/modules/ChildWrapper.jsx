@@ -50,7 +50,14 @@ const mapDispatchToProps = dispatch => ({
       }),
     );
   },
-  updateFeedback: () => {},
+  updateFeedback: (feedbackId, data) => {
+    dispatch(
+      rest.actions.feedbackDetail.patch(
+        { feedbackId: feedbackId },
+        { body: JSON.stringify(data) },
+      ),
+    );
+  },
 });
 
 @connect(mapStateToProps, mapDispatchToProps)
@@ -94,7 +101,7 @@ export default class ChildWrapper extends React.Component {
 
     const renderTrend = (
       <Grid item xs={12} sm={6}>
-        Trend
+        Placeholder for Trend
       </Grid>
     );
 

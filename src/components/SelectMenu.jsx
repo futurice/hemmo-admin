@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { injectIntl } from 'react-intl';
 
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import Menu, { MenuItem } from 'material-ui/Menu';
 
+@injectIntl
 export default class SelectMenu extends React.Component {
   constructor(props) {
     super(props);
@@ -41,6 +43,8 @@ export default class SelectMenu extends React.Component {
   }
 
   render() {
+    const { intl: { formatMessage } } = this.props;
+
     return (
       <span style={{ display: 'inline-flex' }}>
         <List>
@@ -51,7 +55,9 @@ export default class SelectMenu extends React.Component {
             aria-label={this.props.label}
             onClick={this.openMenu}
           >
-            <ListItemText primary={this.props.label} />
+            <ListItemText
+              primary={this.props.label || formatMessage({ id: 'selectValue' })}
+            />
           </ListItem>
         </List>
         <Menu

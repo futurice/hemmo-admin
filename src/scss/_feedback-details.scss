@@ -1,0 +1,70 @@
+.feedback-details {
+	.subheading {
+		&>div {
+			padding: 0 0.6rem;
+			display: inline-block;
+			position: relative;
+
+			&:not(:last-child):after {
+				content: '';
+				background: #757575;
+				width: 1px;
+				height: 14px;
+				display: block;
+				position: absolute;
+				right: 0;
+				top: 50%;
+				transform: translateY(-50%);
+			}
+
+			&:first-child {
+				padding-left: 0;
+			}
+			
+			&:last-child {
+				padding-right: 0;
+			}
+
+			@media(max-width: 1024px) {
+				&:last-child {
+					padding-left: 0;
+					margin-top: 5px;
+				}
+			}
+		}
+
+		svg {
+			vertical-align: text-bottom;
+			margin-right: 5px;
+		}
+
+		.mood-wrapper {
+			.mood {
+				display: inline-block;
+				margin-right: 5px;
+				background: #EEEEEE;
+				border: 1px solid #E0E0E0;
+				border-radius: 15px;
+				padding: 0px 8px;
+				font-size: 0.85rem;
+
+				&:last-child {
+					margin-right: 0;
+				}
+			}
+		}
+	}
+
+	.assignee {
+		display: inline-block;
+		white-space: nowrap;
+
+		@media (max-width: 667px) {
+			width: 100%;
+		}
+	}
+
+	.activities {
+		margin-top: 1rem;
+	}
+}

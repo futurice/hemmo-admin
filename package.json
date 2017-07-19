@@ -37,7 +37,7 @@
   },
   "scripts": {
     "build-css": "node-sass src/scss/index.scss --recursive -o public/ --output-style=compressed",
-    "watch-css": "npm run build-css && node-sass -w src/scss/index.scss --recursive -o src/",
+    "watch-css": "npm run build-css && node-sass -w src/scss/index.scss --recursive -o public/",
     "start-js": "react-scripts start",
     "start": "npm-run-all -p watch-css start-js",
     "build": "npm run build-css && react-scripts build",

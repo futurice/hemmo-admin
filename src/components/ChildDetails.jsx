@@ -77,10 +77,10 @@ export default class ChildDetails extends React.Component {
                 </Typography>
                 <SelectMenu
                   id="assignee-child"
-                  selectedId={child.assigneeId}
+                  selectedId={child.assigneeId || ''}
                   loading={employees.loading}
                   data={employees.data.entries}
-                  label={child.assigneeName}
+                  label={child.assigneeName || ''}
                   onSelect={this.selectAssignee}
                 />
               </Grid>
