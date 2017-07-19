@@ -14,12 +14,16 @@ export default {
   needingAttentionExpalain:
     'Lapset ketkä eivät ole antaneet palautetta pitkään aikaan.',
 
-  // Users view
-  userId: 'User ID',
+  // Children view
   email: 'Sähköpostiosoite',
   description: 'Kuvaus',
   showUserDetails: 'Lisätiedot',
   lastFeedback: 'Viimeisin palaute',
+  snoozeAlerts: 'Hiljennä hälytykset',
+  snoozeAlertsExpalin:
+    'Valitse haluatko huljentää hälytykset kyseiselle lapselle seuraavaksi 30 päiväksi vai siihen asti kunnes ne laitetaan takaisin päälle lapsen profiilisivulta.',
+  forever: 'lopullisesti',
+  next30days: 'Seuraavaksi 30 päiväksi',
 
   // Preferences view
   language: 'Sovelluksen kieli',
