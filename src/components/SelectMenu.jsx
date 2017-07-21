@@ -4,6 +4,7 @@ import { injectIntl } from 'react-intl';
 
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import Menu, { MenuItem } from 'material-ui/Menu';
+import ArrowDropDown from 'material-ui-icons/ArrowDropDown';
 
 @injectIntl
 export default class SelectMenu extends React.Component {
@@ -58,6 +59,7 @@ export default class SelectMenu extends React.Component {
             <ListItemText
               primary={this.props.label || formatMessage({ id: 'selectValue' })}
             />
+            <ArrowDropDown />
           </ListItem>
         </List>
         <Menu

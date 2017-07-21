@@ -46,8 +46,14 @@ export default {
   moods: 'Moods',
   date: 'Date',
   activities: 'Activities',
+  attachments: 'Attachments',
+  downloadAttachment: 'Download attachment',
+  attachmentFetchError:
+    'An error occurred while fetching attachment. Please try again later.',
+  attachment: 'Attachment',
 
   // Preferences view
+  language: 'App language',
   appLanguageExplain: 'Selected laguage is applied only for this browser.',
   selectedLanguage: 'Selected language',
   resetState: 'Reset app state',
@@ -61,7 +67,6 @@ export default {
     'You need to type in new password only if you want to change it.',
   passwordMismatch: 'Passwords are not identical.',
   detailsUpdated: 'Details updated',
-  language: 'Language',
 
   // Employee management
   employeeManagement: 'Manage Employees',
@@ -138,11 +143,7 @@ export default {
   
 
   back: 'Back',
-
-  attachmentFetchError:
-    'An error occurred while fetching attachment. Please try again later.',
-  attachment: 'Attachment',
-  downloadAttachment: 'Download attachment',
+  
 
   feedbackRound: 'Round {round}',
   feedbackHappyMood: 'Mood: Happy',

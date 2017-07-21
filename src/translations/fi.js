@@ -38,6 +38,10 @@ export default {
   moods: 'Mielialat',
   date: 'Päivämäärä',
   activities: 'Aktiviteetit',
+  attachments: 'Liitteet',
+  downloadAttachment: 'Lataa liitetiedosto',
+  attachmentFetchError: 'Virhe ladatessa liitettä. Yritä uudelleen myöhemmin.',
+  attachment: 'Liite',
 
   // Child view
   showAlerts: 'Näytä hälytykset, jos palautetta ei ole annettu 3 kuukauteen.',
@@ -54,7 +58,6 @@ export default {
   resetStateExplanation:
     'Käytä tätä toimintoa jos huomaat ongelmia sovelluksen toiminnassa. Vaikuttaa ainoastaan sinun sessioon.',
   resetStateButton: 'Nollaa tila',
-  language: 'Kieli',
 
   ownDetails: 'Omat tiedot',
   newPassword: 'Uusi salasana',
@@ -142,9 +145,7 @@ export default {
 
   back: 'Takaisin',
 
-  attachmentFetchError: 'Virhe ladatessa liitettä. Yritä uudelleen myöhemmin.',
-  attachment: 'Liite',
-  downloadAttachment: 'Lataa liitetiedosto',
+  
 
   feedbackRound: 'Kierros {round}',
   feedbackHappyMood: 'Mieliala: Iloinen',

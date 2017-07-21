@@ -4,6 +4,7 @@
 			padding: 0 0.6rem;
 			display: inline-block;
 			position: relative;
+			vertical-align: middle;
 
 			&:not(:last-child):after {
 				content: '';
@@ -37,34 +38,84 @@
 			vertical-align: text-bottom;
 			margin-right: 5px;
 		}
+	}
 
-		.mood-wrapper {
-			.mood {
-				display: inline-block;
-				margin-right: 5px;
-				background: #EEEEEE;
-				border: 1px solid #E0E0E0;
-				border-radius: 15px;
-				padding: 0px 8px;
-				font-size: 0.85rem;
+	.moods {
+		margin: 1rem auto;
 
-				&:last-child {
-					margin-right: 0;
+		.mood {
+			display: inline-block;
+			margin-right: 5px;
+			background: #EEEEEE;
+			border: 1px solid #E0E0E0;
+			border-radius: 15px;
+			padding: 0px 8px;
+			font-size: 0.85rem;
+
+			&:last-child {
+				margin-right: 0;
+			}
+		}
+	}
+
+	.activities {
+		margin: 1rem auto;
+		display: flex;
+
+		.activity {
+			display: inline-flex;
+			flex-wrap: wrap;
+			margin-right: 1rem;
+			margin-bottom: 1rem;
+			border-radius: 4px;
+
+			h3 {
+				background-repeat: no-repeat;
+				background-position: 0 50%;
+				background-size: contain;
+				padding-left: 30px;
+			}
+
+			&>div {
+				padding: 16px;
+			}
+
+			&.positive {
+				h3 {
+					background-image: url('assets/thumb-positive.png');
+				}
+			}
+
+			&.neutral {
+				h3 {
+					background-image: url('assets/thumb-neutral.png');
+				}
+			}
+
+			&.negative {
+				h3 {
+					background-image: url('assets/thumb-negative.png');
+					color: #fff;
 				}
 			}
 		}
 	}
 
-	.assignee {
-		display: inline-block;
-		white-space: nowrap;
+	.attachments {
+		margin: 1rem auto;
 
-		@media (max-width: 667px) {
-			width: 100%;
+		h3 {
+			margin-bottom: 1rem;
 		}
-	}
 
-	.activities {
-		margin-top: 1rem;
+		svg {
+			margin-right: 5px;
+		}
+
+		.indent {
+			&>div {
+				margin-left: 2rem;
+			}
+		}
 	}
 }

@@ -1,133 +1,113 @@
-/*
- * React & Redux
- */
-import { Component, PropTypes } from 'react';
-import { FormattedMessage } from 'react-intl';
+import React from 'react';
 import { connect } from 'react-redux';
-import config from 'config';
+import { injectIntl } from 'react-intl';
 
-/*
- * MaterialUI
- */
 import Button from 'material-ui/Button';
-import CircularProgress from 'material-ui/CircularProgress';
-import Dialog from 'material-ui/Dialog';
+import FileDownload from 'material-ui-icons/FileDownload';
+import Typography from 'material-ui/Typography';
 
-// Icons
-import FileDownload from 'material-ui/svg-icons/file/file-download';
-import Close from 'material-ui/svg-icons/navigation/close';
+import rest, { root } from '../utils/rest';
 
-class DialogContents extends Component {
-  constructor() {
-    super();
+const mapStateToProps = state => ({
+  token: state.auth.data.token,
+});
 
-    this.state = {
-      blobUrl: '',
-      error: '',
-    };
-  }
+const mapDispatchToProps = dispatch => ({
+  getAttachment: attachmentId => {
+    dispatch(
+      rest.actions.attachment({
+        attachmentId: attachmentId,
+      }),
+    );
+  },
+});
+
+@injectIntl
+@connect(mapStateToProps)
+export default class Attachment extends React.Component {
+  xhr = null;
+  state = {
+    error: false,
+    attachment: null,
+  };
 
   componentDidMount() {
-    let url = `${config.API_ROOT}/attachment/${this.props.contentId}`;
+    const url = `${root}/attachments/${this.props.id}`;
+    const isAudio = this.props.mime.includes('audio');
 
-    let request = new XMLHttpRequest();
+    this.xhr = new XMLHttpRequest();
 
-    request.open('GET', url);
-    request.setRequestHeader('Authorization', `Bearer ${this.props.token}`);
-    request.responseType = 'blob';
+    this.xhr.open('GET', url);
+    this.xhr.setRequestHeader('Authorization', `Bearer ${this.props.token}`);
 
-    request.onreadystatechange = () => {
-      if (request.readyState === 4) {
-        if (request.status === 200) {
-          let blobUrl = window.URL.createObjectURL(request.response);
+    if (isAudio) {
+      this.xhr.responseType = 'blob';
+    }
 
-          this.setState({ blobUrl });
+    this.xhr.onreadystatechange = () => {
+      if (this.xhr.readyState === 4) {
+        if (this.xhr.status === 200) {
+          this.setState({
+            attachment: isAudio
+              ? window.URL.createObjectURL(this.xhr.response)
+              : this.xhr.response,
+            error: false,
+          });
         } else {
           this.setState({
-            error: <FormattedMessage id="attachmentFetchError" />,
+            error: true,
+            blobUrl: null,
           });
         }
       }
     };
 
-    request.send();
+    this.xhr.send();
+  }
+
+  componentWillUnmount() {
+    this.xhr.abort();
   }
 
   render() {
+    const { mime, intl: { formatMessage } } = this.props;
+    const url = `${root}/attachments/${this.props.id}`;
+
     if (this.state.error) {
       return (
-        <div style={{ textAlign: 'center' }}>
-          {this.state.error}
+        <div className="error">
+          {formatMessage({ id: 'attachmentFetchError' })}
         </div>
       );
-    } else if (!this.state.blobUrl) {
-      return (
-        <div style={{ textAlign: 'center' }}>
-          <CircularProgress />
-        </div>
-      );
-    } else {
+    } else if (mime.includes('audio')) {
       return (
         <div>
           <audio
-            src={this.state.blobUrl}
+            src={this.state.attachment}
+            type={mime}
             controls
-            autoPlay
+            autoPlay={false}
             style={{
               width: '100%',
-              paddingBottom: '24px',
             }}
           />
 
-          <Button
-            download={'attachment.mp4'}
-            href={this.state.blobUrl}
-            label={<FormattedMessage id="downloadAttachment" />}
-            icon={<FileDownload />}
-            primary={false}
-          />
+          <Button download="attachment.mp4" dense href={this.state.attachment}>
+            <FileDownload />
+            {formatMessage({ id: 'downloadAttachment' })}
+          </Button>
         </div>
+      );
+    } else if (mime.includes('text')) {
+      return (
+        <Typography
+          type="body1"
+          component="p"
+          style={{ margin: '0.5rem 0 1rem 0' }}
+        >
+          {this.state.attachment}
+        </Typography>
       );
     }
   }
 }
-
-class Attachment extends Component {
-  render() {
-    const actions = [
-      <Button
-        primary={false}
-        onTouchTap={this.props.handleClose}
-        icon={<Close />}
-      >
-        <FormattedMessage id="close" />
-      </Button>,
-    ];
-
-    return (
-      <FormattedMessage id="attachment">
-        {title =>
-          <Dialog
-            title={title}
-            modal={false}
-            open={this.props.open}
-            onRequestClose={this.props.handleClose}
-            actions={actions}
-          >
-            <DialogContents
-              contentId={this.props.contentId}
-              token={this.props.token}
-            />
-          </Dialog>}
-      </FormattedMessage>
-    );
-  }
-}
-
-function select(state, ownProps) {
-  return {
-    token: state.auth.data.token,
-  };
-}
-
-export default connect(select)(Attachment);

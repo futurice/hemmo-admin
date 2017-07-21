@@ -172,7 +172,7 @@ class AuthRedirectRoute extends React.Component {
         {...rest}
         render={props =>
           !requiresLogin || loggedIn
-            ? <ChildComponent {...props} />
+            ? <ChildComponent {...props} routes={rest.routes} />
             : <Redirect
                 to={{
                   pathname: '/login',
