@@ -172,7 +172,7 @@ class AuthRedirectRoute extends React.Component {
         {...rest}
         render={props =>
           !requiresLogin || loggedIn
-            ? <ChildComponent {...props} routes={rest.routes} />
+            ? <ChildComponent {...props} />
             : <Redirect
                 to={{
                   pathname: '/login',
@@ -183,26 +183,6 @@ class AuthRedirectRoute extends React.Component {
     );
   }
 }
-
-// AuthRedirectRoute wrapper which mounts routeConfig at '/' regardless of configured path
-/*export const IndexRoute = ({ routeConfig, ...rest }) => {
-  const indexRoute = {
-    ...routeConfig,
-    path: '/',
-  };
-
-  return (
-    <AuthRedirectRoute
-      exact
-      {...rest}
-      {...indexRoute}
-    />
-  );
-};
-
-IndexRoute.propTypes = {
-  routeConfig: RouteConfigShape.isRequired,
-};*/
 
 // Map all configured routes into AuthRedirectRoute components
 export const ConfiguredRoutes = ({ ...rest }) =>
