@@ -148,6 +148,30 @@ const rest = reduxApi({
       }
     },
   },
+  feedbackMoods: {
+    url: `${apiRoot}/feedback/moods`,
+    transformer(
+      data,
+      prevData = {
+        entries: [],
+        meta: emptyMeta,
+        name: 'FeedbackMoods',
+      },
+      action,
+    ) {
+      if (data) {
+        return {
+          ...prevData,
+          entries: data.data,
+          meta: data.meta,
+        };
+      } else {
+        return {
+          ...prevData,
+        };
+      }
+    },
+  },
   feedbackDetail: {
     url: `${apiRoot}/feedback/:feedbackId`,
     transformer(data, prevData) {

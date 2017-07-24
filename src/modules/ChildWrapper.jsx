@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { goBack, push } from 'react-router-redux';
 import { Route } from 'react-router-dom';
+import { injectIntl } from 'react-intl';
 
 import { LinearProgress } from 'material-ui/Progress';
 import Grid from 'material-ui/Grid';
@@ -9,6 +10,7 @@ import Grid from 'material-ui/Grid';
 import PageHeader from '../components/PageHeader';
 import ChildDetails from '../components/ChildDetails';
 import FeedbackDetails from '../components/FeedbackDetails';
+import FeedbackOverview from '../components/FeedbackOverview';
 import rest from '../utils/rest';
 import NotFound from './NotFound';
 
@@ -17,6 +19,7 @@ const mapStateToProps = state => ({
   childLoading: state.child.loading,
   employees: state.employees,
   feedback: state.feedbackDetail,
+  moods: state.feedbackMoods,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -41,9 +44,6 @@ const mapDispatchToProps = dispatch => ({
   getEmployees: () => {
     dispatch(rest.actions.employees());
   },
-  getFeedback: feedbackId => {
-    dispatch(rest.actions.feedbackDetail.get({ feedbackId: feedbackId }));
-  },
   deleteFeedback: (childId, feedbackId) => {
     dispatch(
       rest.actions.feedbackDetail.delete({ feedbackId: feedbackId }, () => {
@@ -58,6 +58,16 @@ const mapDispatchToProps = dispatch => ({
         { body: JSON.stringify(data) },
       ),
     );
+  },
+  getFeedback: params => {
+    dispatch(rest.actions.feedback(params));
+  },
+  getMoods: params => {
+    dispatch(rest.actions.feedbackMoods(params));
+  },
+  openFeedback: (childId, feedbackId) => {
+    const path = `/children/${childId}/feedback/${feedbackId}`;
+    dispatch(push(path));
   },
 });
 
@@ -88,7 +98,50 @@ export default class ChildWrapper extends React.Component {
   }
 
   render() {
-    const { child, childLoading, feedback } = this.props;
+    const {
+      feedback,
+      moods,
+      child,
+      childLoading,
+      intl: { formatMessage },
+    } = this.props;
+    const basicDetails = (
+      <Grid item xs={12} sm={6}>
+        <ChildDetails
+          child={this.props.child.data}
+          employees={this.props.employees}
+          onUpdate={this.props.update.bind(this)}
+          onDelete={this.props.delete.bind(this)}
+        />
+      </Grid>
+    );
+
+    const trend = (
+      <Grid item xs={12} sm={6}>
+        <FeedbackOverview
+          childId={this.props.match.params.childId}
+          feedback={feedback}
+          moods={moods}
+          refreshMoods={this.props.getMoods}
+          refreshFeedback={this.props.getFeedback}
+          openFeedback={this.props.openFeedback}
+        />
+      </Grid>
+    );
+
+    const activeFeedback = <Grid item xs={12} sm={12} />;
+
+    const renderWrapper = (
+      <div>
+        <PageHeader header={child.data.name} />
+
+        <Grid container gutter={24}>
+          {basicDetails}
+          {trend}
+          {activeFeedback}
+        </Grid>
+      </div>
+    );
 
     return (
       <div>
@@ -124,6 +177,7 @@ export default class ChildWrapper extends React.Component {
                 </Grid>
               </div>
             : <NotFound />}
+          : child.data && child.data.id ? renderWrapper : <NotFound />}
       </div>
     );
   }

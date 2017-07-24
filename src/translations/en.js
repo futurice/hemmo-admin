@@ -51,6 +51,8 @@ export default {
   attachmentFetchError:
     'An error occurred while fetching attachment. Please try again later.',
   attachment: 'Attachment',
+  feedbackList: 'Feedback List',
+  feedbackTrend: 'Feedback trend',
 
   // Preferences view
   language: 'App language',

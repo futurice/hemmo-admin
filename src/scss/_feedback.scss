@@ -1,0 +1,45 @@
+.feedback-trend {
+	height: 150px;
+	width: 100%;
+	position: relative;
+
+	.axis {
+		border-left: 1px solid #9E9E9E;
+		border-bottom: 1px solid #9E9E9E;
+		height: 100%;
+		width: 100%;
+		position: absolute;
+	}
+
+	.positive, .neutral, .negative {
+		position: absolute;
+		left: 0;
+		width: 32px;
+		height: 32px;
+		background-size: contain;
+		background-position: 50% 0;
+    	background-repeat: no-repeat;
+		cursor: pointer;
+
+		span {
+			position: absolute;
+			bottom: -21px;
+			left: -50%;
+		}
+	}
+
+	.positive {
+		background-image: url(/assets/thumb-good.png);
+		top: 0;
+	}
+
+	.neutral {
+		background-image: url(/assets/thumb-neutral.png);
+		top: calc(50% - 16px);
+	}
+
+	.negative {
+		background-image: url(/assets/thumb-negative.png);
+		bottom: 0;
+	}
+}

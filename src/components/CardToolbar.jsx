@@ -102,18 +102,20 @@ export default class CardToolbar extends React.Component {
     }
 
     // Free textfield search for name #1
-    toolbarItems.push(
-      <TextField
-        key="name1"
-        name="name1"
-        className="text-field"
-        label={formatMessage({
-          id: customLabels.name1 ? customLabels.name1 : 'name',
-        })}
-        onChange={this.handleKeywordSearch.bind(this)}
-        marginForm
-      />,
-    );
+    if (hideElems && !hideElems.includes('name1')) {
+      toolbarItems.push(
+        <TextField
+          key="name1"
+          name="name1"
+          className="text-field"
+          label={formatMessage({
+            id: customLabels.name1 ? customLabels.name1 : 'name',
+          })}
+          onChange={this.handleKeywordSearch.bind(this)}
+          marginForm
+        />,
+      );
+    }
 
     // Free textfield search for name #2
     if (hideElems && !hideElems.includes('name2')) {

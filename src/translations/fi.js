@@ -49,6 +49,8 @@ export default {
   deleteChildWarn:
     'Lapsen poistamista ei voi perua! Tämä toiminto poistaa lapsen lisäksi kaikki hänen lähettämät palautteet.',
   childDetails: 'Lapsen tiedot',
+  feedbackList: 'Palautelista',
+  feedbackTrend: 'Palautteen trendi',
 
   // Preferences view
   language: 'Sovelluksen kieli',

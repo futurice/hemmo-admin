@@ -105,13 +105,13 @@ export default class Home extends React.Component {
     );
   }
 
-  openFeedback(id) {
-    const path = '/feedback/' + id;
+  openFeedback(row) {
+    const path = '/feedback/' + row.id;
     this.props.changeView(path);
   }
 
-  openChild(id) {
-    const path = '/children/' + id;
+  openChild(row) {
+    const path = '/children/' + row.id;
     this.props.changeView(path);
   }
 
