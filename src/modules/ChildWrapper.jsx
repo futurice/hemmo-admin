@@ -98,13 +98,7 @@ export default class ChildWrapper extends React.Component {
   }
 
   render() {
-    const {
-      feedback,
-      moods,
-      child,
-      childLoading,
-      intl: { formatMessage },
-    } = this.props;
+    const { feedback, moods, child, childLoading } = this.props;
     const basicDetails = (
       <Grid item xs={12} sm={6}>
         <ChildDetails

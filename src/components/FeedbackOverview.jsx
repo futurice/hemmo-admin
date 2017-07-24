@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 
-import Card, { CardActions, CardContent } from 'material-ui/Card';
+import Card, { CardContent } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
 import { red, lightGreen } from 'material-ui/styles/colors';
 import ArrowForward from 'material-ui-icons/ArrowForward';
@@ -41,7 +41,6 @@ export default class FeedbackOverview extends React.Component {
   }
 
   refreshFeedback(p = {}) {
-    const { dispatch } = this.props;
     const params = Object.assign(this.state, p);
 
     this.setState(params);
@@ -58,7 +57,6 @@ export default class FeedbackOverview extends React.Component {
   }
 
   refreshMoods(p = {}) {
-    const { dispatch } = this.props;
     const params = Object.assign(this.state, p);
 
     this.setState(params);
@@ -216,7 +214,7 @@ export default class FeedbackOverview extends React.Component {
                         onBack={this.handleBack}
                         onNext={this.handleNext}
                         disableBack={this.state.page === 0}
-                        disableNext={this.state.page == pageCount}
+                        disableNext={this.state.page === pageCount}
                       />
                     : null}
                 </div>
