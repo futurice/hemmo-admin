@@ -5,6 +5,7 @@ import { replace } from 'react-router-redux';
 import { createAction } from 'redux-act';
 
 import FullscreenSpinner from '../components/FullscreenSpinner';
+import rest from '../utils/rest';
 
 export const reset = createAction('Reset app state');
 
@@ -14,7 +15,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   doLogout() {
-    dispatch(reset());
+    dispatch(
+      rest.actions.logout(null, () => {
+        dispatch(reset());
+      }),
+    );
   },
   redirect(path) {
     dispatch(replace(path));

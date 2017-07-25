@@ -41,7 +41,6 @@ class TableCard extends React.Component {
       : <CardToolbar
           refresh={this.props.refresh}
           totalEntries={this.props.model.data.meta.count}
-          modelName={this.props.model.data.name}
           initialPage={parseInt(this.props.initialPage, 10)}
           pageEntries={parseInt(this.props.pageEntries, 10)}
           hideElems={hideElems || []}
@@ -67,7 +66,6 @@ TableCard.propTypes = {
         limit: PropTypes.number.isRequired,
         offset: PropTypes.number.isRequired,
       }),
-      name: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
   header: PropTypes.arrayOf(PropTypes.object).isRequired,

@@ -149,10 +149,10 @@ const rest = reduxApi({
     },
   },
   feedbackDetail: {
-    url: `${apiRoot}/feedback/:id`,
+    url: `${apiRoot}/feedback/:feedbackId`,
     transformer(data, prevData) {
       if (data) {
-        return { ...prevData, ...data };
+        return { ...data };
       } else {
         return { ...prevData };
       }
@@ -174,6 +174,16 @@ const rest = reduxApi({
         };
       }
       return data;
+    },
+    options: {
+      method: 'POST',
+    },
+  },
+  logout: {
+    url: `${apiRoot}/employees/logout`,
+    reducerName: 'auth',
+    transformer: (data = {}) => {
+      return {};
     },
     options: {
       method: 'POST',
@@ -239,4 +249,5 @@ const rest = reduxApi({
   });
 
 export default rest;
+export const root = apiRoot;
 export const reducers = rest.reducers;

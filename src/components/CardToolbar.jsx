@@ -83,7 +83,6 @@ export default class CardToolbar extends React.Component {
     const { customLabels, hideElems, intl: { formatMessage } } = this.props;
     const pageEntries = this.state.pageEntries;
     const totalEntries = this.props.totalEntries;
-    const page = this.state.page;
     const pages = Math.ceil(totalEntries / pageEntries);
     let toolbarItems = [];
 
@@ -207,7 +206,6 @@ export default class CardToolbar extends React.Component {
 CardToolbar.propTypes = {
   refresh: PropTypes.func.isRequired,
   totalEntries: PropTypes.number.isRequired,
-  modelName: PropTypes.string.isRequired,
   hideElems: PropTypes.array.isRequired,
   customLabels: PropTypes.object.isRequired,
 };

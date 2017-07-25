@@ -68,13 +68,7 @@ export default class EditEmployeeDialog extends React.Component {
   }
 
   render() {
-    const {
-      open,
-      loading,
-      saving,
-      closeDialog,
-      intl: { formatMessage },
-    } = this.props;
+    const { open, loading, intl: { formatMessage } } = this.props;
 
     return (
       <Dialog

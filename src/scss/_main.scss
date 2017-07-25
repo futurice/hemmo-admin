@@ -70,6 +70,14 @@ header {
 	padding: 16px;
 }
 
-.indent {
-	margin-left: 1rem !important;
+.error {
+	align-self: center;
+	margin-left: 25px;
+	font-weight: 400;
+	font-size: 1rem;
+	border: 1px solid #D32F2F;
+	background: #FFCDD2;
+	padding: 16px;
+	margin: 16px auto;
+	text-align: center;
 }

@@ -7,6 +7,8 @@ export default {
   Preferences: 'Preferences',
   Logout: 'Logout',
   Login: 'Login',
+  Children: 'Children',
+  Feedback: 'Feedback',
 
   // Home
   latestFeedback: 'Latest feedback',
@@ -31,8 +33,27 @@ export default {
   deleteChild: 'Delete child',
   deleteChildWarn:
     'Deleting this child will destroy the child and all their feedback forever! Only proceed if you are absolutely sure.',
+  childDetails: "Child's details",
+
+  // Feedback
+  deleteFeedbackWarn:
+    'Deleting this feedback will destroy it forever! Only proceed if you are absolutely sure.',
+  notReviewed: 'Not reviewed',
+  reviewed: 'Reviewed',
+  markUnhandled: 'Mark unhandled',
+  markReviewed: 'Mark reviewed',
+  deleteFeedback: 'Delete feedback',
+  moods: 'Moods',
+  date: 'Date',
+  activities: 'Activities',
+  attachments: 'Attachments',
+  downloadAttachment: 'Download attachment',
+  attachmentFetchError:
+    'An error occurred while fetching attachment. Please try again later.',
+  attachment: 'Attachment',
 
   // Preferences view
+  language: 'App language',
   appLanguageExplain: 'Selected laguage is applied only for this browser.',
   selectedLanguage: 'Selected language',
   resetState: 'Reset app state',
@@ -65,6 +86,7 @@ export default {
   cancel: 'Cancel',
   delete: 'Delete',
   pageNotFound: 'Requested page could not be found.',
+  selectValue: '- select -',
 
   // Table toolbar
   childsName: "Child's name",
@@ -72,7 +94,7 @@ export default {
   showAll: 'Show all',
 
   // Hemmo
-  newFeedback: 'Your feedback',
+  /*newFeedback: 'Your feedback',
   newFeedbackDesc: 'Feedback that has been assigned to you',
   newFeedbackEmpty: 'All of your feedback has been handled!',
 
@@ -82,14 +104,12 @@ export default {
 
   routeHome: 'Home',
   Sessions: 'Sessions',
-  Children: 'Children',
-  Feedback: 'Feedback',
   routeChildren: 'Children',
   routeLogin: 'Login',
   routeFeedbackDetails: 'Feedback details',
   routeChildDetails: 'Child details',
   routePreferences: 'Preferences',
-  routeLogout: 'Logout',
+  routeLogout: 'Logout',*/
 
   feedback: 'Feedback',
   children: 'Children',
@@ -110,34 +130,23 @@ export default {
   deleteUserDesc: 'Delete user and all their feedback',
   deleteUserWarn:
     'Deleting this user will destroy the user and all their feedback forever! Only proceed if you are absolutely sure.',
-  deleteFeedbackWarn:
-    'Deleting this feedback will destroy it forever! Only proceed if you are absolutely sure.',
+  
 
   deleteDefaultWarn:
     'Deleting this item will destroy it forever! Only proceed if you are absolutely sure.',
   areYouSure: 'Are you sure?',
-  */
+  
 
   percentHappyInSession: '{percent}% positive in feedback',
   noFeedbackGiven: 'No feedback given yet',
   reviewStatus: 'Review status',
-  notReviewed: 'Not reviewed',
-  reviewed: 'Reviewed',
-
-  markUnhandled: 'Mark unhandled',
-  markReviewed: 'Mark reviewed',
-
-  deleteFeedback: 'Delete feedback',
+  
 
   back: 'Back',
-
-  attachmentFetchError:
-    'An error occurred while fetching attachment. Please try again later.',
-  attachment: 'Attachment',
-  downloadAttachment: 'Download attachment',
+  
 
   feedbackRound: 'Round {round}',
   feedbackHappyMood: 'Mood: Happy',
   feedbackUnhappyMood: 'Mood: Unhappy',
-  feedbackNeutralMood: 'Mood: Neutral',
+  feedbackNeutralMood: 'Mood: Neutral',*/
 };
