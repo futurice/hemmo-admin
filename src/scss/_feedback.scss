@@ -11,11 +11,13 @@
 		position: absolute;
 	}
 
-	.positive, .neutral, .negative {
+	.mood {
 		position: absolute;
+		top: calc(50% - 16px);
 		left: 0;
 		width: 32px;
 		height: 32px;
+		background-image: url(/assets/thumb-unknown.png);
 		background-size: contain;
 		background-position: 50% 0;
     	background-repeat: no-repeat;
@@ -26,20 +28,20 @@
 			bottom: -21px;
 			left: -50%;
 		}
-	}
 
-	.positive {
-		background-image: url(/assets/thumb-good.png);
-		top: 0;
-	}
+		.positive {
+			background-image: url(/assets/thumb-good.png);
+			top: 0;
+		}
 
-	.neutral {
-		background-image: url(/assets/thumb-neutral.png);
-		top: calc(50% - 16px);
-	}
+		.neutral {
+			background-image: url(/assets/thumb-neutral.png);
+			top: calc(50% - 16px);
+		}
 
-	.negative {
-		background-image: url(/assets/thumb-negative.png);
-		bottom: 0;
+		.negative {
+			background-image: url(/assets/thumb-negative.png);
+			bottom: 0;
+		}
 	}
 }

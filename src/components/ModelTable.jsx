@@ -131,7 +131,7 @@ export default class ModelTable extends React.Component {
               </TableBody>
             </Table>
           : <div
-              className="no-entries"
+              className="info"
               style={{
                 background: blueGrey[50],
                 border: `1px solid ${blueGrey[100]}`,

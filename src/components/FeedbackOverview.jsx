@@ -148,14 +148,20 @@ export default class FeedbackOverview extends React.Component {
                   value="trend"
                   onClick={event => this.closeMenu(event, 'trend')}
                 >
-                  {formatMessage({ id: 'feedbackTrend' })}
+                  {formatMessage({ id: 'givenMoods' })}
                 </MenuItem>
               </Menu>
               {formatMessage({
-                id:
-                  this.state.type === 'list' ? 'feedbackList' : 'feedbackTrend',
+                id: this.state.type === 'list' ? 'feedbackList' : 'givenMoods',
               })}
             </Typography>
+            {this.state.type === 'trend'
+              ? <Typography
+                  style={{ marginLeft: '2rem', marginTop: '-0.7rem' }}
+                >
+                  {formatMessage({ id: 'givenMoodsExplain' })}
+                </Typography>
+              : null}
             {this.state.type === 'list'
               ? <div>
                   <TableCard
@@ -221,16 +227,18 @@ export default class FeedbackOverview extends React.Component {
               : <div className="feedback-trend">
                   <div className="axis" />
                   {moods.data.entries.map((mood, i) => {
-                    const positive = mood.mood === 1 ? 'positive' : null;
-                    const neutral = mood.mood === 0 ? 'neutral' : null;
-                    const negative = mood.mood === -1 ? 'negative' : null;
+                    const positive = mood.givenMood === 1 ? 'positive' : null;
+                    const neutral = mood.givenMood === 0 ? 'neutral' : null;
+                    const negative = mood.givenMood === -1 ? 'negative' : null;
                     const pos = Math.round(100 / moodCount) * (i + 1);
 
                     return (
                       <div
                         key={i}
                         style={{ left: `${pos}%` }}
-                        className={[positive, neutral, negative].join(' ')}
+                        className={
+                          'mood ' + [positive, neutral, negative].join(' ')
+                        }
                         onClick={() => this.openFeedback(mood)}
                       >
                         <span>

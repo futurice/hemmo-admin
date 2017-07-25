@@ -243,7 +243,7 @@ export default class Preferences extends React.Component {
           <Grid item xs={12} sm={6}>
             <Paper className="paper">
               <Typography type="headline">
-                {formatMessage({ id: 'language' })}
+                {formatMessage({ id: 'appLanguage' })}
               </Typography>
               <Typography>
                 {formatMessage({ id: 'appLanguageExplain' })}

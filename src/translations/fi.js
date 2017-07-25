@@ -50,10 +50,12 @@ export default {
     'Lapsen poistamista ei voi perua! Tämä toiminto poistaa lapsen lisäksi kaikki hänen lähettämät palautteet.',
   childDetails: 'Lapsen tiedot',
   feedbackList: 'Palautelista',
-  feedbackTrend: 'Palautteen trendi',
+  givenMoods: 'Annetut fiilikset',
+  givenMoodsExplain: 'Työntekijän antamat fiilikset annetuille palautteille.',
+  selectFeedback: 'Valitse haluamasi palaute ylhäältä.',
 
   // Preferences view
-  language: 'Sovelluksen kieli',
+  appLanguage: 'Sovelluksen kieli',
   appLanguageExplain: 'Valittu kieli asetetaan vain tälle selaimelle.',
   selectedLanguage: 'Valittu kieli',
   resetState: 'Nollaa sovelluksen tila',

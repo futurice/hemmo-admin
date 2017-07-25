@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
 import { goBack, push } from 'react-router-redux';
 import { Route } from 'react-router-dom';
 import { injectIntl } from 'react-intl';
 
 import { LinearProgress } from 'material-ui/Progress';
 import Grid from 'material-ui/Grid';
+import { blueGrey } from 'material-ui/styles/colors';
 
 import PageHeader from '../components/PageHeader';
 import ChildDetails from '../components/ChildDetails';
@@ -71,6 +73,7 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
+@injectIntl
 @connect(mapStateToProps, mapDispatchToProps)
 export default class ChildWrapper extends React.Component {
   componentWillMount() {
@@ -98,7 +101,13 @@ export default class ChildWrapper extends React.Component {
   }
 
   render() {
-    const { feedback, moods, child, childLoading } = this.props;
+    const {
+      feedback,
+      moods,
+      child,
+      childLoading,
+      intl: { formatMessage },
+    } = this.props;
     const basicDetails = (
       <Grid item xs={12} sm={6}>
         <ChildDetails
@@ -135,6 +144,19 @@ export default class ChildWrapper extends React.Component {
           {activeFeedback}
         </Grid>
       </div>
+    );
+
+    const selectFeedback = (
+      <Grid
+        item
+        className="info"
+        style={{
+          background: blueGrey[50],
+          border: `1px solid ${blueGrey[100]}`,
+        }}
+      >
+        {formatMessage({ id: 'selectFeedback' })}
+      </Grid>
     );
 
     return (
