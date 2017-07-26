@@ -77,8 +77,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 @injectIntl
-@connect(mapStateToProps, mapDispatchToProps)
-export default class ChildWrapper extends React.Component {
+class ChildWrapper extends React.Component {
   componentWillMount() {
     this.props.getEmployees();
 
@@ -183,3 +182,5 @@ export default class ChildWrapper extends React.Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChildWrapper);

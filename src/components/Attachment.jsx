@@ -23,8 +23,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 @injectIntl
-@connect(mapStateToProps)
-export default class Attachment extends React.Component {
+class Attachment extends React.Component {
   xhr = null;
   state = {
     error: false,
@@ -111,3 +110,5 @@ export default class Attachment extends React.Component {
     }
   }
 }
+
+export default connect(mapStateToProps)(Attachment);

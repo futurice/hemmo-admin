@@ -23,8 +23,7 @@ import { push } from 'react-router-redux';
 import { toggleDrawer } from './NavigationDrawer';
 import { NavigationRoutes } from '../utils/routes';
 
-const mapStateToProps = (state, ownProps) => ({
-  path: ownProps.location.pathname,
+const mapStateToProps = state => ({
   user: state.auth.data.decoded,
 });
 
@@ -48,8 +47,7 @@ const mapDispatchToProps = dispatch => ({
 
 @withRouter
 @injectIntl
-@connect(mapStateToProps, mapDispatchToProps)
-export default class Header extends React.Component {
+class Header extends React.Component {
   static defaultProps = {
     user: null,
   };
@@ -60,21 +58,8 @@ export default class Header extends React.Component {
   };
 
   render() {
-    const {
-      path,
-      doToggleDrawer,
-      user,
-      //      login,
-      //      preferences,
-      //      logout,
-      changeView,
-      //      intl: { formatMessage },
-    } = this.props;
-
-    //    const { rightMenuOpen, rightMenuAnchorEl } = this.state;
-
-    //    const hideMenu = () => this.setState({ rightMenuOpen: false });
-    //    const scope = user ? user.scope : null;
+    const { doToggleDrawer, user, changeView } = this.props;
+    const path = this.props.location.pathname;
     const navigationRoutes = NavigationRoutes(user, path);
 
     return (
@@ -108,3 +93,5 @@ export default class Header extends React.Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

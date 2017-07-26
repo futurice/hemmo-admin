@@ -18,8 +18,7 @@ const mapStateToProps = state => ({
   err: state.err,
 });
 
-@connect(mapStateToProps)
-export default class ErrorSnackbar extends React.Component {
+class ErrorSnackbar extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -143,3 +142,5 @@ export const reducer = createReducer(
   },
   initialState,
 );
+
+export default connect(mapStateToProps)(ErrorSnackbar);

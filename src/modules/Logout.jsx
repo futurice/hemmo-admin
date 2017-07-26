@@ -22,8 +22,7 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-@connect(mapStateToProps, mapDispatchToProps)
-export default class Logout extends React.Component {
+class Logout extends React.Component {
   componentDidMount() {
     if (!this.props.auth.data.token) {
       this.deauthSuccess();
@@ -51,3 +50,5 @@ export default class Logout extends React.Component {
     return <FullscreenSpinner />;
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Logout);

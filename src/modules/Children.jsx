@@ -18,6 +18,11 @@ import SnoozeDialog from '../components/SnoozeDialog';
 
 import rest from '../utils/rest';
 
+const mapStateToProps = state => ({
+  children: state.children,
+  user: state.auth.data.decoded,
+});
+
 @injectIntl
 class Children extends React.Component {
   constructor(props) {
@@ -209,12 +214,4 @@ Children.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
-function select(state, ownParams) {
-  return {
-    location: ownParams.location,
-    children: state.children,
-    user: state.auth.data.decoded,
-  };
-}
-
-export default connect(select)(Children);
+export default connect(mapStateToProps)(Children);

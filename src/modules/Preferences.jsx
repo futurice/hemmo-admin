@@ -51,8 +51,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 @injectIntl
-@connect(mapStateToProps, mapDispatchToProps)
-export default class Preferences extends React.Component {
+class Preferences extends React.Component {
   constructor(props) {
     super(props);
 
@@ -310,3 +309,5 @@ export default class Preferences extends React.Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Preferences);
