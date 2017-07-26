@@ -136,16 +136,6 @@ class Children extends React.Component {
           hideElems={hideElems}
           header={[
             {
-              id: null,
-              value: row =>
-                row.reviewed
-                  ? <Done color={lightGreen[300]} />
-                  : <AlertErrorOutline color={red[300]} />,
-
-              style: { width: '20px' },
-              maxShowWidth: 320,
-            },
-            {
               id: 'name',
               value: row => row.name,
               columnTitle: <FormattedMessage id="name" />,
