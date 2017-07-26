@@ -36,7 +36,7 @@ class TableCard extends React.Component {
       );
     }
 
-    let toolbar = this.props.small
+    let toolbar = this.props.hideToolbar
       ? null
       : <CardToolbar
           refresh={this.props.refresh}

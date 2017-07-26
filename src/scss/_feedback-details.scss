@@ -6,16 +6,18 @@
 			position: relative;
 			vertical-align: middle;
 
-			&:not(:last-child):after {
-				content: '';
-				background: #757575;
-				width: 1px;
-				height: 14px;
-				display: block;
-				position: absolute;
-				right: 0;
-				top: 50%;
-				transform: translateY(-50%);
+			@media(min-width: 768px) {
+				&:not(:last-child):after {
+					content: '';
+					background: #757575;
+					width: 1px;
+					height: 14px;
+					display: block;
+					position: absolute;
+					right: 0;
+					top: 50%;
+					transform: translateY(-50%);
+				}
 			}
 
 			&:first-child {
@@ -26,10 +28,19 @@
 				padding-right: 0;
 			}
 
+			&.assignee {
+				padding-left: 0;
+			}
+
 			@media(max-width: 1024px) {
-				&:last-child {
+				&.assignee, &.given-mood {
 					padding-left: 0;
-					margin-top: 5px;
+				}
+
+				&.assignee, &.given-mood, &:nth-child(2) {
+					&:after {
+						width: 0;
+					}
 				}
 			}
 		}
@@ -37,24 +48,6 @@
 		svg {
 			vertical-align: text-bottom;
 			margin-right: 5px;
-		}
-	}
-
-	.moods {
-		margin: 1rem auto;
-
-		.mood {
-			display: inline-block;
-			margin-right: 5px;
-			background: #EEEEEE;
-			border: 1px solid #E0E0E0;
-			border-radius: 15px;
-			padding: 0px 8px;
-			font-size: 0.85rem;
-
-			&:last-child {
-				margin-right: 0;
-			}
 		}
 	}
 
@@ -73,30 +66,44 @@
 				background-repeat: no-repeat;
 				background-position: 0 50%;
 				background-size: contain;
-				padding-left: 30px;
+				padding-left: 43px;
+				position: relative;
+
+				&:after {
+					content: '';
+					left: -4px;
+					top: 50%;
+					transform: translateY(-50%);
+					position: absolute;
+					height: 32px;
+					width: 32px;
+					display: block;
+					vertical-align: middle;
+					background-size: 20px;
+					background-repeat: no-repeat;
+					background-position: 50% 50%;
+					border: 0px;
+					border-radius: 50%;
+				}
 			}
 
 			&>div {
 				padding: 16px;
 			}
 
-			&.positive {
-				h3 {
-					background-image: url('assets/thumb-positive.png');
-				}
+			&.positive h3:after {
+				background-image: url(/assets/thumb-positive.png);
+				background-color: $activity-positive;
 			}
 
-			&.neutral {
-				h3 {
-					background-image: url('assets/thumb-neutral.png');
-				}
+			&.neutral h3:after {
+				background-image: url(/assets/thumb-neutral.png);
+				background-color: $activity-neutral;
 			}
 
-			&.negative {
-				h3 {
-					background-image: url('assets/thumb-negative.png');
-					color: #fff;
-				}
+			&.negative h3:after {
+				background-image: url(/assets/thumb-negative.png);
+				background-color: $activity-negative;
 			}
 		}
 	}

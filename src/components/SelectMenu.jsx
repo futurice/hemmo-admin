@@ -87,9 +87,10 @@ export default class SelectMenu extends React.Component {
 
 SelectMenu.propTypes = {
   id: PropTypes.string.isRequired,
-  selectedId: PropTypes.string.isRequired,
+  selectedId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    .isRequired,
   loading: PropTypes.bool.isRequired,
   data: PropTypes.array.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   onSelect: PropTypes.func.isRequired,
 };

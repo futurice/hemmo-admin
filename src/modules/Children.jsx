@@ -155,10 +155,13 @@ class Children extends React.Component {
             {
               id: 'prevFeedbackDate',
               value: row =>
-                <div onClick={e => this.openSnoozeDialog(e, row.id)}>
+                <div>
                   <span className="icon">
                     {row.showAlerts && row.alert
-                      ? <Alert style={{ color: orange[600] }} />
+                      ? <Alert
+                          style={{ color: orange[600], cursor: 'pointer' }}
+                          onClick={e => this.openSnoozeDialog(e, row.id)}
+                        />
                       : null}
                   </span>
                   {new Date(
