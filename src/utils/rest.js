@@ -203,16 +203,6 @@ const rest = reduxApi({
       method: 'POST',
     },
   },
-  logout: {
-    url: `${apiRoot}/employees/logout`,
-    reducerName: 'auth',
-    transformer: (data = {}) => {
-      return {};
-    },
-    options: {
-      method: 'POST',
-    },
-  },
   renewAuth: {
     url: `${apiRoot}/employees/authenticate/renew`,
     reducerName: 'auth',

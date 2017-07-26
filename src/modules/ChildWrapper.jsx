@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { goBack, push } from 'react-router-redux';
 import { Route } from 'react-router-dom';
-import { injectIntl } from 'react-intl';
 
 import { LinearProgress } from 'material-ui/Progress';
 import Grid from 'material-ui/Grid';
@@ -20,7 +19,8 @@ const mapStateToProps = state => ({
   child: state.child,
   childLoading: state.child.loading,
   employees: state.employees,
-  feedback: state.feedbackDetail,
+  feedbackDetail: state.feedbackDetail,
+  feedback: state.feedback,
   moods: state.feedbackMoods,
 });
 
@@ -71,6 +71,9 @@ const mapDispatchToProps = dispatch => ({
     const path = `/children/${childId}/feedback/${feedbackId}`;
     dispatch(push(path));
   },
+  getFeedbackDetail: feedbackId => {
+    dispatch(rest.actions.feedbackDetail.get({ feedbackId }));
+  },
 });
 
 @injectIntl
@@ -80,7 +83,17 @@ export default class ChildWrapper extends React.Component {
     this.props.getEmployees();
 
     if (this.props.match.params.feedbackId) {
-      this.props.getFeedback(this.props.match.params.feedbackId);
+      this.props.getFeedbackDetail(this.props.match.params.feedbackId);
+    }
+  }
+
+  componentWillReceiveProps(newProps) {
+    const hasFeedbackId = newProps.match.params.feedbackId;
+    const feedbackIdChanged =
+      newProps.match.params.feedbackId !== this.props.match.params.feedbackId;
+
+    if (hasFeedbackId && feedbackIdChanged) {
+      this.props.getFeedbackDetail(this.props.match.params.feedbackId);
     }
   }
 
@@ -102,49 +115,13 @@ export default class ChildWrapper extends React.Component {
 
   render() {
     const {
+      feedbackDetail,
       feedback,
       moods,
       child,
       childLoading,
       intl: { formatMessage },
     } = this.props;
-    const basicDetails = (
-      <Grid item xs={12} sm={6}>
-        <ChildDetails
-          child={this.props.child.data}
-          employees={this.props.employees}
-          onUpdate={this.props.update.bind(this)}
-          onDelete={this.props.delete.bind(this)}
-        />
-      </Grid>
-    );
-
-    const trend = (
-      <Grid item xs={12} sm={6}>
-        <FeedbackOverview
-          childId={this.props.match.params.childId}
-          feedback={feedback}
-          moods={moods}
-          refreshMoods={this.props.getMoods}
-          refreshFeedback={this.props.getFeedback}
-          openFeedback={this.props.openFeedback}
-        />
-      </Grid>
-    );
-
-    const activeFeedback = <Grid item xs={12} sm={12} />;
-
-    const renderWrapper = (
-      <div>
-        <PageHeader header={child.data.name} />
-
-        <Grid container gutter={24}>
-          {basicDetails}
-          {trend}
-          {activeFeedback}
-        </Grid>
-      </div>
-    );
 
     const selectFeedback = (
       <Grid
@@ -178,22 +155,30 @@ export default class ChildWrapper extends React.Component {
                   </Grid>
 
                   <Grid item xs={12} sm={6}>
-                    Placeholder for Trend
+                    <FeedbackOverview
+                      childId={this.props.match.params.childId}
+                      feedback={feedback}
+                      moods={moods}
+                      refreshMoods={this.props.getMoods}
+                      refreshFeedback={this.props.getFeedback}
+                      openFeedback={this.props.openFeedback}
+                    />
                   </Grid>
 
                   <Grid item xs={12} sm={12}>
-                    <FeedbackDetails
-                      childId={child.data.id}
-                      data={feedback.data}
-                      employees={this.props.employees}
-                      onUpdate={this.props.updateFeedback.bind(this)}
-                      onDelete={this.props.deleteFeedback.bind(this)}
-                    />
+                    {this.props.match.params.feedbackId
+                      ? <FeedbackDetails
+                          childId={child.data.id}
+                          details={feedbackDetail}
+                          employees={this.props.employees}
+                          onUpdate={this.props.updateFeedback.bind(this)}
+                          onDelete={this.props.deleteFeedback.bind(this)}
+                        />
+                      : selectFeedback}
                   </Grid>
                 </Grid>
               </div>
             : <NotFound />}
-          : child.data && child.data.id ? renderWrapper : <NotFound />}
       </div>
     );
   }

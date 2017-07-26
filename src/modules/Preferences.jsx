@@ -38,11 +38,7 @@ const mapDispatchToProps = dispatch => ({
     );
   },
   doClearState: () => {
-    dispatch(
-      rest.actions.logout(null, () => {
-        dispatch(reset());
-      }),
-    );
+    dispatch(dispatch(reset()));
   },
   updateDetails: (id, data, cb) => {
     dispatch(

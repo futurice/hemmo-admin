@@ -42,6 +42,9 @@ export default {
   downloadAttachment: 'Lataa liitetiedosto',
   attachmentFetchError: 'Virhe ladatessa liitettä. Yritä uudelleen myöhemmin.',
   attachment: 'Liite',
+  positive: 'Positiivinen',
+  negative: 'Negatiivinen',
+  neutral: 'Neutraali',
 
   // Child view
   showAlerts: 'Näytä hälytykset, jos palautetta ei ole annettu 3 kuukauteen.',
@@ -50,6 +53,7 @@ export default {
     'Lapsen poistamista ei voi perua! Tämä toiminto poistaa lapsen lisäksi kaikki hänen lähettämät palautteet.',
   childDetails: 'Lapsen tiedot',
   feedbackList: 'Palautelista',
+  givenMood: 'Anna fiilis',
   givenMoods: 'Annetut fiilikset',
   givenMoodsExplain: 'Työntekijän antamat fiilikset annetuille palautteille.',
   selectFeedback: 'Valitse haluamasi palaute ylhäältä.',

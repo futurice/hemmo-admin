@@ -15,11 +15,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   doLogout() {
-    dispatch(
-      rest.actions.logout(null, () => {
-        dispatch(reset());
-      }),
-    );
+    dispatch(dispatch(reset()));
   },
   redirect(path) {
     dispatch(replace(path));

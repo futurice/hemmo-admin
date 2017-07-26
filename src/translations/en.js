@@ -52,9 +52,13 @@ export default {
     'An error occurred while fetching attachment. Please try again later.',
   attachment: 'Attachment',
   feedbackList: 'Feedback List',
+  givenMood: 'Give a mood',
   givenMoods: 'Given moods',
   givenMoodsExplain: 'Average moods that an employee has given for feedbacks.',
   selectFeedback: 'Please select a feedback above.',
+  positive: 'Positive',
+  negative: 'Negative',
+  neutral: 'Neutral',
 
   // Preferences view
   appLanguage: 'App language',

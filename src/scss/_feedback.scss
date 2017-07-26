@@ -2,6 +2,7 @@
 	height: 150px;
 	width: 100%;
 	position: relative;
+	margin-top: 0.5rem;
 
 	.axis {
 		border-left: 1px solid #9E9E9E;
@@ -18,10 +19,12 @@
 		width: 32px;
 		height: 32px;
 		background-image: url(/assets/thumb-unknown.png);
-		background-size: contain;
-		background-position: 50% 0;
-    	background-repeat: no-repeat;
+		background-position: 50% 50%;
+		background-size: 24px;
+		background-repeat: no-repeat;
 		cursor: pointer;
+		border: 0px;
+		border-radius: 50%;
 
 		span {
 			position: absolute;
@@ -29,18 +32,21 @@
 			left: -50%;
 		}
 
-		.positive {
-			background-image: url(/assets/thumb-good.png);
+		&.positive {
+			background-image: url(/assets/thumb-positive.png);
+			background-color: $activity-positive;
 			top: 0;
 		}
 
-		.neutral {
+		&.neutral {
 			background-image: url(/assets/thumb-neutral.png);
+			background-color: $activity-neutral;
 			top: calc(50% - 16px);
 		}
 
-		.negative {
+		&.negative {
 			background-image: url(/assets/thumb-negative.png);
+			background-color: $activity-negative;
 			bottom: 0;
 		}
 	}
