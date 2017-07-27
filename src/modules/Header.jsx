@@ -4,18 +4,10 @@ import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
-//import Divider from 'material-ui/Divider';
 import Button from 'material-ui/Button';
-
-//import Menu from 'material-ui/Menu';
-//import { ListItem, ListItemText, ListItemIcon } from 'material-ui/List';
-//import ExitToAppIcon from 'material-ui-icons/ExitToApp';
 import MenuIcon from 'material-ui-icons/Menu';
-//import MoreVertIcon from 'material-ui-icons/MoreVert';
-//import AccountCircleIcon from 'material-ui-icons/AccountCircle';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
-
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
@@ -23,9 +15,9 @@ import { push } from 'react-router-redux';
 import { toggleDrawer } from './NavigationDrawer';
 import { NavigationRoutes } from '../utils/routes';
 
-const mapStateToProps = (state, ownProps) => ({
-  path: ownProps.location.pathname,
+const mapStateToProps = state => ({
   user: state.auth.data.decoded,
+  path: state.router.location.pathname,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -46,10 +38,9 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-@withRouter
 @injectIntl
-@connect(mapStateToProps, mapDispatchToProps)
-export default class Header extends React.Component {
+@withRouter
+class Header extends React.Component {
   static defaultProps = {
     user: null,
   };
@@ -60,21 +51,7 @@ export default class Header extends React.Component {
   };
 
   render() {
-    const {
-      path,
-      doToggleDrawer,
-      user,
-      //      login,
-      //      preferences,
-      //      logout,
-      changeView,
-      //      intl: { formatMessage },
-    } = this.props;
-
-    //    const { rightMenuOpen, rightMenuAnchorEl } = this.state;
-
-    //    const hideMenu = () => this.setState({ rightMenuOpen: false });
-    //    const scope = user ? user.scope : null;
+    const { doToggleDrawer, path, user, changeView } = this.props;
     const navigationRoutes = NavigationRoutes(user, path);
 
     return (
@@ -108,3 +85,5 @@ export default class Header extends React.Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

@@ -16,6 +16,10 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import TableCard from '../components/TableCard';
 import PageHeader from '../components/PageHeader';
 
+const mapStateToProps = state => ({
+  feedback: state.feedback,
+});
+
 @injectIntl
 class FeedbackTable extends React.Component {
   state = {
@@ -146,11 +150,4 @@ FeedbackTable.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
-function select(state, ownParams) {
-  return {
-    location: ownParams.location,
-    feedback: state.feedback,
-  };
-}
-
-export default connect(select)(FeedbackTable);
+export default connect(mapStateToProps)(FeedbackTable);

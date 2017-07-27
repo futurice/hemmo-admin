@@ -5,18 +5,20 @@ import { push } from 'react-router-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
 
 import Button from 'material-ui/Button';
-//import { LinearProgress } from 'material-ui/Progress';
 import Alert from 'material-ui-icons/Warning';
 import ArrowForward from 'material-ui-icons/ArrowForward';
-import Done from 'material-ui-icons/Done';
-import { red, lightGreen, orange } from 'material-ui/styles/colors';
-import AlertErrorOutline from 'material-ui-icons/ErrorOutline';
+import { orange } from 'material-ui/styles/colors';
 
 import TableCard from '../components/TableCard';
 import PageHeader from '../components/PageHeader';
 import SnoozeDialog from '../components/SnoozeDialog';
 
 import rest from '../utils/rest';
+
+const mapStateToProps = state => ({
+  children: state.children,
+  user: state.auth.data.decoded,
+});
 
 @injectIntl
 class Children extends React.Component {
@@ -26,7 +28,7 @@ class Children extends React.Component {
     this.state = {
       page: 0,
       pageEntries: 20,
-      showAll: true,
+      showAll: false,
       name1: '',
       name2: '',
       orderBy: 'name',
@@ -131,16 +133,6 @@ class Children extends React.Component {
           hideElems={hideElems}
           header={[
             {
-              id: null,
-              value: row =>
-                row.reviewed
-                  ? <Done color={lightGreen[300]} />
-                  : <AlertErrorOutline color={red[300]} />,
-
-              style: { width: '20px' },
-              maxShowWidth: 320,
-            },
-            {
               id: 'name',
               value: row => row.name,
               columnTitle: <FormattedMessage id="name" />,
@@ -209,12 +201,4 @@ Children.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
-function select(state, ownParams) {
-  return {
-    location: ownParams.location,
-    children: state.children,
-    user: state.auth.data.decoded,
-  };
-}
-
-export default connect(select)(Children);
+export default connect(mapStateToProps)(Children);

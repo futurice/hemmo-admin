@@ -49,9 +49,8 @@ export const reducer = createReducer(
   initialState,
 );
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
   drawerOpened: state.drawer.drawerOpened,
-  path: ownProps.location.pathname,
   user: state.auth.data.decoded,
 });
 
@@ -66,14 +65,14 @@ const mapDispatchToProps = dispatch => ({
 });
 
 @withRouter
-@connect(mapStateToProps, mapDispatchToProps)
-export default class NavigationDrawer extends React.Component {
+class NavigationDrawer extends React.Component {
   static defaultProps = {
     user: null,
   };
 
   render() {
-    const { close, changeView, drawerOpened, path, user } = this.props;
+    const { close, changeView, drawerOpened, user } = this.props;
+    const path = this.props.location.pathname;
     const navigationRoutes = NavigationRoutes(user, path);
 
     return (
@@ -129,3 +128,5 @@ export default class NavigationDrawer extends React.Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavigationDrawer);

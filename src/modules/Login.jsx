@@ -45,8 +45,7 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-@connect(mapStateToProps, mapDispatchToProps)
-export default class Login extends React.Component {
+class Login extends React.Component {
   state = {
     email: '',
     password: '',
@@ -163,3 +162,5 @@ export default class Login extends React.Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

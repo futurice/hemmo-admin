@@ -6,11 +6,10 @@ import Card, { CardContent } from 'material-ui/Card';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
-import { red, green, amber } from 'material-ui/styles/colors';
+import { red } from 'material-ui/styles/colors';
 import Divider from 'material-ui/Divider';
 import { LabelSwitch } from 'material-ui/Switch';
 import { CircularProgress } from 'material-ui/Progress';
-import Chip from 'material-ui/Chip';
 
 import DeleteDialog from '../components/DeleteDialog';
 import SelectMenu from '../components/SelectMenu';
@@ -163,9 +162,11 @@ export default class FeedbackDetails extends React.Component {
                           <Typography type="subheading">
                             {formatMessage({ id: 'moods' })}
                           </Typography>
-                          {data.moods.map((mood, i) => {
-                            return <Chip key={i} label={mood} />;
-                          })}
+                          {data.moods.map((mood, i) =>
+                            <span key={i} className="mood">
+                              {mood}
+                            </span>,
+                          )}
                         </Grid>
                       </Grid>
                     </div>
@@ -179,28 +180,12 @@ export default class FeedbackDetails extends React.Component {
                         </Typography>
                         <Grid item xs={12}>
                           {data.activities.map((act, i) => {
-                            const styles = {
-                              '1': {
-                                backgroundColor: green[500],
-                              },
-                              '0': {
-                                backgroundColor: amber[500],
-                              },
-                              '-1': {
-                                backgroundColor: red[500],
-                              },
-                            };
-
                             const classes = {
                               '1': 'positive',
                               '0': 'neutral',
                               '-1': 'negative',
                             };
 
-                            const moodStyle =
-                              act.like !== undefined
-                                ? styles[act.like.toString()]
-                                : null;
                             const moodClass =
                               act.like !== undefined
                                 ? classes[act.like.toString()]

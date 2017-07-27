@@ -51,6 +51,24 @@
 		}
 	}
 
+	.moods {
+		margin: 1rem auto;
+
+		.mood {
+			display: inline-block;
+			margin-right: 5px;
+			background: #EEEEEE;
+			border: 1px solid #E0E0E0;
+			border-radius: 15px;
+			padding: 0px 8px;
+			font-size: 0.85rem;
+
+			&:last-child {
+				margin-right: 0;
+			}
+		}
+	}
+
 	.activities {
 		margin: 1rem auto;
 		display: flex;

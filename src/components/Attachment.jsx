@@ -6,25 +6,14 @@ import Button from 'material-ui/Button';
 import FileDownload from 'material-ui-icons/FileDownload';
 import Typography from 'material-ui/Typography';
 
-import rest, { root } from '../utils/rest';
+import { root } from '../utils/rest';
 
 const mapStateToProps = state => ({
   token: state.auth.data.token,
 });
 
-const mapDispatchToProps = dispatch => ({
-  getAttachment: attachmentId => {
-    dispatch(
-      rest.actions.attachment({
-        attachmentId: attachmentId,
-      }),
-    );
-  },
-});
-
 @injectIntl
-@connect(mapStateToProps)
-export default class Attachment extends React.Component {
+class Attachment extends React.Component {
   xhr = null;
   state = {
     error: false,
@@ -71,7 +60,6 @@ export default class Attachment extends React.Component {
 
   render() {
     const { mime, intl: { formatMessage } } = this.props;
-    const url = `${root}/attachments/${this.props.id}`;
 
     if (this.state.error) {
       return (
@@ -111,3 +99,5 @@ export default class Attachment extends React.Component {
     }
   }
 }
+
+export default connect(mapStateToProps)(Attachment);

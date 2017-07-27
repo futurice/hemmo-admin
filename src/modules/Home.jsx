@@ -38,8 +38,7 @@ const mapDispatchToProps = dispatch => ({
 
 @injectIntl
 @withRouter
-@connect(mapStateToProps, mapDispatchToProps)
-export default class Home extends React.Component {
+class Home extends React.Component {
   state = {
     assigneeId: this.props.user.id,
     orderBy: 'createdAt',
@@ -157,3 +156,5 @@ export default class Home extends React.Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

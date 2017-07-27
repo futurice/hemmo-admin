@@ -11,6 +11,11 @@ import Edit from 'material-ui-icons/Edit';
 import TableCard from '../components/TableCard';
 import EditEmployeeDialog from '../components/EditEmployeeDialog';
 
+const mapStateToProps = state => ({
+  employees: state.employees,
+  employee: state.employee,
+});
+
 @injectIntl
 class EmployeeManagement extends React.Component {
   constructor(props) {
@@ -187,11 +192,4 @@ class EmployeeManagement extends React.Component {
   }
 }
 
-function select(state, ownParams) {
-  return {
-    employees: state.employees,
-    employee: state.employee,
-  };
-}
-
-export default connect(select)(EmployeeManagement);
+export default connect(mapStateToProps)(EmployeeManagement);

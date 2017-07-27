@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { goBack, push } from 'react-router-redux';
-import { Route } from 'react-router-dom';
 
 import { LinearProgress } from 'material-ui/Progress';
 import Grid from 'material-ui/Grid';
@@ -77,8 +76,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 @injectIntl
-@connect(mapStateToProps, mapDispatchToProps)
-export default class ChildWrapper extends React.Component {
+class ChildWrapper extends React.Component {
   componentWillMount() {
     this.props.getEmployees();
 
@@ -183,3 +181,5 @@ export default class ChildWrapper extends React.Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChildWrapper);

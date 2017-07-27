@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Typography from 'material-ui/Typography';
 
@@ -11,3 +12,7 @@ export default class PageHeader extends React.Component {
     );
   }
 }
+
+PageHeader.propTypes = {
+  header: PropTypes.string.isRequired,
+};
