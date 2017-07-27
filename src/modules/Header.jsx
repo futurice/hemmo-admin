@@ -4,18 +4,10 @@ import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
-//import Divider from 'material-ui/Divider';
 import Button from 'material-ui/Button';
-
-//import Menu from 'material-ui/Menu';
-//import { ListItem, ListItemText, ListItemIcon } from 'material-ui/List';
-//import ExitToAppIcon from 'material-ui-icons/ExitToApp';
 import MenuIcon from 'material-ui-icons/Menu';
-//import MoreVertIcon from 'material-ui-icons/MoreVert';
-//import AccountCircleIcon from 'material-ui-icons/AccountCircle';
 
 import { FormattedMessage, injectIntl } from 'react-intl';
-
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
@@ -25,6 +17,7 @@ import { NavigationRoutes } from '../utils/routes';
 
 const mapStateToProps = state => ({
   user: state.auth.data.decoded,
+  path: state.router.location.pathname,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -45,8 +38,8 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-@withRouter
 @injectIntl
+@withRouter
 class Header extends React.Component {
   static defaultProps = {
     user: null,
@@ -58,8 +51,7 @@ class Header extends React.Component {
   };
 
   render() {
-    const { doToggleDrawer, user, changeView } = this.props;
-    const path = this.props.location.pathname;
+    const { doToggleDrawer, path, user, changeView } = this.props;
     const navigationRoutes = NavigationRoutes(user, path);
 
     return (

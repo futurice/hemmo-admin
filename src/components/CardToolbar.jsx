@@ -187,7 +187,7 @@ export default class CardToolbar extends React.Component {
 
         <Button
           key="forward"
-          disabled={this.state.page >= pages - 1}
+          //disabled={this.state.page >= pages - 1}
           onClick={e => {
             this.changePage(1);
           }}
