@@ -5,12 +5,9 @@ import { push } from 'react-router-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
 
 import Button from 'material-ui/Button';
-//import { LinearProgress } from 'material-ui/Progress';
 import Alert from 'material-ui-icons/Warning';
 import ArrowForward from 'material-ui-icons/ArrowForward';
-import Done from 'material-ui-icons/Done';
-import { red, lightGreen, orange } from 'material-ui/styles/colors';
-import AlertErrorOutline from 'material-ui-icons/ErrorOutline';
+import { orange } from 'material-ui/styles/colors';
 
 import TableCard from '../components/TableCard';
 import PageHeader from '../components/PageHeader';
