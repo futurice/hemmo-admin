@@ -10,7 +10,6 @@ import { red } from 'material-ui/styles/colors';
 import Divider from 'material-ui/Divider';
 import { LabelSwitch } from 'material-ui/Switch';
 import { CircularProgress } from 'material-ui/Progress';
-import Chip from 'material-ui/Chip';
 
 import DeleteDialog from '../components/DeleteDialog';
 import SelectMenu from '../components/SelectMenu';
@@ -163,9 +162,11 @@ export default class FeedbackDetails extends React.Component {
                           <Typography type="subheading">
                             {formatMessage({ id: 'moods' })}
                           </Typography>
-                          {data.moods.map((mood, i) => {
-                            return <Chip key={i} label={mood} />;
-                          })}
+                          {data.moods.map((mood, i) =>
+                            <span key={i} className="mood">
+                              {mood}
+                            </span>,
+                          )}
                         </Grid>
                       </Grid>
                     </div>
