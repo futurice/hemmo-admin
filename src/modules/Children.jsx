@@ -28,7 +28,7 @@ class Children extends React.Component {
     this.state = {
       page: 0,
       pageEntries: 20,
-      showAll: true,
+      showAll: false,
       name1: '',
       name2: '',
       orderBy: 'name',
