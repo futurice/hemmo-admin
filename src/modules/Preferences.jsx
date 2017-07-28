@@ -9,7 +9,7 @@ import TextField from 'material-ui/TextField';
 import FormControl from 'material-ui/Form/FormControl';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
-import { green } from 'material-ui/styles/colors';
+import { green } from 'material-ui/colors';
 import ArrowDropDown from 'material-ui-icons/ArrowDropDown';
 
 import { connect } from 'react-redux';
@@ -150,7 +150,7 @@ class Preferences extends React.Component {
       : null;
 
     return (
-      <div>
+      <div className="employee-management">
         <PageHeader header={formatMessage({ id: 'Preferences' })} />
 
         <Grid container gutter={24}>

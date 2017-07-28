@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 import Button from 'material-ui/Button';
-import { red, lightGreen } from 'material-ui/styles/colors';
+import { red, lightGreen } from 'material-ui/colors';
 import rest from '../utils/rest';
 import { push } from 'react-router-redux';
 
@@ -18,6 +18,7 @@ import PageHeader from '../components/PageHeader';
 
 const mapStateToProps = state => ({
   feedback: state.feedback,
+  user: state.auth.data.decoded,
 });
 
 @injectIntl
@@ -25,6 +26,7 @@ class FeedbackTable extends React.Component {
   state = {
     page: 0,
     pageEntries: 20,
+    showAll: false,
     assigneeId: '',
     name1: '', // Child's name
     name2: '', // Employee name
@@ -45,7 +47,7 @@ class FeedbackTable extends React.Component {
     let queryParams = {
       offset: params.page * params.pageEntries,
       limit: params.pageEntries,
-      assigneeId: params.assigneeId,
+      assigneeId: !params.showAll ? this.props.user.id : null,
       childName: params.name1,
       assigneeName: params.name2,
       orderBy: params.orderBy,

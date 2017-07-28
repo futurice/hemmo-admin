@@ -13,30 +13,10 @@ button {
 	cursor: pointer !important;
 }
 
-header {
-	button {
-		&.active {
-			&>span:first-child {
-				position: relative;
-
-				&:after {
-					content: '';
-					height: 2px;
-					width: 100%;
-					border-bottom: 2px solid #000;
-					position: absolute;
-					bottom: -5px;
-					left: 50%;
-					transform: translateX(-50%);
-				}
-			}
-		}
-	}
-}
-
 .content-wrapper {
 	margin-left: 16px;
 	margin-right: 16px;
+	margin-top: 2rem;
 
 	@media(min-width: 1440px) {
 		width: 1440px;
@@ -47,6 +27,7 @@ header {
 
 .text-field {
 	vertical-align: bottom;
+	margin-bottom: 8px;
 }
 
 .form-control {
@@ -56,14 +37,14 @@ header {
 	&.row {
 		flex-direction: row;
 	}
+}
 
-	label {
-		font-size: 1rem;
-	}
+label {
+	font-size: 1rem;
+}
 
-	input {
-		font-size: 1rem;
-	}
+input {
+	font-size: 1rem !important;
 }
 
 .paper {

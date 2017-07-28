@@ -95,6 +95,7 @@ export default {
   delete: 'Delete',
   pageNotFound: 'Requested page could not be found.',
   selectValue: '- select -',
+  pleaseLogin: 'Please login',
 
   // Table toolbar
   childsName: "Child's name",

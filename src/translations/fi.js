@@ -100,6 +100,7 @@ export default {
   delete: 'Poista',
   pageNotFound: 'Haettua sivua ei löytynyt.',
   selectValue: '- valitse -',
+  pleaseLogin: 'Kirjaudu sisään, ole hyvä',
 
   name: 'Nimi',
   registrationDate: 'Käyttäjän luontipvm.',

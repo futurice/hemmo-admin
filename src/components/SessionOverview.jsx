@@ -36,7 +36,7 @@ import ActionDone from 'material-ui/svg-icons/action/done';
 import Warning from 'material-ui/svg-icons/alert/warning';
 
 // Colors
-import { red300, yellow300, lightGreen300 } from 'material-ui/styles/colors';
+import { red300, yellow300, lightGreen300 } from 'material-ui/colors';
 
 // Components
 import DeleteDialog from '../Shared/DeleteDialog';
