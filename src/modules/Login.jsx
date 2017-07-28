@@ -2,16 +2,15 @@ import React from 'react';
 
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
-
 import Card, { CardActions, CardHeader, CardContent } from 'material-ui/Card';
 import Avatar from 'material-ui/Avatar';
 import AccountCircleIcon from 'material-ui-icons/AccountCircle';
-
 import { LinearProgress } from 'material-ui/Progress';
 
 import { connect } from 'react-redux';
 import { replace } from 'react-router-redux';
 import { updateIntl } from 'react-intl-redux';
+import { injectIntl } from 'react-intl';
 
 import CardGridWrapper from '../components/CardGridWrapper';
 
@@ -45,6 +44,7 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
+@injectIntl
 class Login extends React.Component {
   state = {
     email: '',
@@ -78,7 +78,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { auth } = this.props;
+    const { auth, intl: { formatMessage } } = this.props;
     const loading = auth.loading;
     const progress = loading ? <LinearProgress /> : null;
 
@@ -91,13 +91,14 @@ class Login extends React.Component {
                 <AccountCircleIcon />
               </Avatar>
             }
-            title="frontend-kit"
-            subheader="Please log in:"
+            title={formatMessage({ id: 'HemmoAdmin' })}
+            subheader={formatMessage({ id: 'pleaseLogin' })}
           />
-          <CardContent style={{ display: 'flex', flexDirection: 'column' }}>
+          <CardContent className="login-form">
             <TextField
               type="text"
               label="Email"
+              className="text-field"
               onChange={event => {
                 if (event.keyCode !== 13) {
                   this.handleChange(event, 'email');
@@ -114,11 +115,11 @@ class Login extends React.Component {
               inputProps={{
                 autoFocus: true,
               }}
-              marginForm
             />
             <TextField
               type="password"
               label="Password"
+              className="text-field"
               onChange={event => {
                 if (event.keyCode !== 13) {
                   this.handleChange(event, 'password');
@@ -132,7 +133,6 @@ class Login extends React.Component {
                   });
                 }
               }}
-              marginForm
             />
           </CardContent>
           <CardActions

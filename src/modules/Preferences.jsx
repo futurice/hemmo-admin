@@ -150,7 +150,7 @@ class Preferences extends React.Component {
       : null;
 
     return (
-      <div>
+      <div className="employee-management">
         <PageHeader header={formatMessage({ id: 'Preferences' })} />
 
         <Grid container gutter={24}>

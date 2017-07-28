@@ -37,6 +37,7 @@ header {
 .content-wrapper {
 	margin-left: 16px;
 	margin-right: 16px;
+	margin-top: 2rem;
 
 	@media(min-width: 1440px) {
 		width: 1440px;
@@ -47,6 +48,7 @@ header {
 
 .text-field {
 	vertical-align: bottom;
+	margin-bottom: 8px;
 }
 
 .form-control {
@@ -56,14 +58,14 @@ header {
 	&.row {
 		flex-direction: row;
 	}
+}
 
-	label {
-		font-size: 1rem;
-	}
+label {
+	font-size: 1rem;
+}
 
-	input {
-		font-size: 1rem;
-	}
+input {
+	font-size: 1rem !important;
 }
 
 .paper {
