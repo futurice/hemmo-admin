@@ -17,7 +17,10 @@ import { NavigationRoutes } from '../utils/routes';
 
 const mapStateToProps = state => ({
   user: state.auth.data.decoded,
-  path: state.router.location.pathname,
+  path:
+    state.router && state.router.location
+      ? state.router.location.pathname
+      : '/',
 });
 
 const mapDispatchToProps = dispatch => ({

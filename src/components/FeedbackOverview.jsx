@@ -4,7 +4,7 @@ import { injectIntl } from 'react-intl';
 
 import Card, { CardContent } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
-import { red, lightGreen } from 'material-ui/styles/colors';
+import { red, lightGreen } from 'material-ui/colors';
 import ArrowForward from 'material-ui-icons/ArrowForward';
 import Done from 'material-ui-icons/Done';
 import AlertErrorOutline from 'material-ui-icons/ErrorOutline';
@@ -110,144 +110,166 @@ export default class FeedbackOverview extends React.Component {
     });
   }
 
-  render() {
-    const { feedback, moods, intl: { formatMessage } } = this.props;
+  renderShortFeedbackList = () => {
+    const { intl: { formatMessage } } = this.props;
     const pageCount =
-      Math.floor(feedback.data.meta.count / this.state.pageEntries) - 1;
-    const moodCount = moods.data.entries.length + 1;
+      Math.floor(this.props.feedback.data.meta.count / this.state.pageEntries) -
+      1;
 
     return (
       <div>
+        <TableCard
+          initialPage={this.state.page}
+          pageEntries={this.state.pageEntries}
+          model={this.props.feedback}
+          emptyMsg={this.props.noFeedbackMsg}
+          orderBy={this.state.orderBy}
+          order={this.state.order}
+          hideElems={['name1', 'name2', 'showAll']}
+          hideToolbar={true}
+          header={[
+            {
+              id: null,
+              value: row =>
+                row.reviewed
+                  ? <Done color={lightGreen[300]} />
+                  : <AlertErrorOutline color={red[300]} />,
+
+              className: 'row-icon',
+              maxShowWidth: 320,
+              disablePadding: true,
+            },
+            {
+              id: 'createdAt',
+              value: row =>
+                new Date(
+                  row.createdAt,
+                ).toLocaleDateString(navigator.languages, {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                }),
+              columnTitle: formatMessage({ id: 'feedbackStartDate' }),
+              className: 'date',
+              maxShowWidth: 440,
+            },
+            {
+              component: (
+                <Button>
+                  <ArrowForward />
+                </Button>
+              ),
+              className: 'row-action',
+            },
+          ]}
+          onClickRow={this.openFeedback.bind(this)}
+          refresh={this.refreshFeedback.bind(this)}
+        />
+        {pageCount > 0
+          ? <MobileStepper
+              type="progress"
+              steps={pageCount}
+              position="static"
+              activeStep={this.state.page}
+              onBack={this.handleBack}
+              onNext={this.handleNext}
+              disableBack={this.state.page === 0}
+              disableNext={this.state.page === pageCount}
+            />
+          : null}
+      </div>
+    );
+  };
+
+  renderHeadline = () => {
+    const { intl: { formatMessage } } = this.props;
+    const trendVisible = this.state.type === 'trend';
+    const headlineText = !trendVisible ? 'feedbackList' : 'givenMoods';
+
+    return (
+      <div>
+        <Typography type="headline" className="headline">
+          <IconButton
+            className="more"
+            aria-owns="feedback-list-type"
+            aria-haspopup="true"
+            onClick={this.openMenu}
+          >
+            <MoreVert />
+          </IconButton>
+          <Menu
+            id="feedback-list-type"
+            anchorEl={this.state.anchorEl}
+            open={this.state.open}
+            onRequestClose={this.closeMenu}
+          >
+            <MenuItem
+              value="list"
+              onClick={event => this.closeMenu(event, 'list')}
+            >
+              {formatMessage({ id: 'feedbackList' })}
+            </MenuItem>
+            <MenuItem
+              value="trend"
+              onClick={event => this.closeMenu(event, 'trend')}
+            >
+              {formatMessage({ id: 'givenMoods' })}
+            </MenuItem>
+          </Menu>
+          {formatMessage({ id: headlineText })}
+        </Typography>
+        {trendVisible
+          ? <Typography className="sub">
+              {formatMessage({ id: 'givenMoodsExplain' })}
+            </Typography>
+          : null}
+      </div>
+    );
+  };
+
+  renderMoodChart = () => {
+    const moodCount = this.props.moods.data.entries.length + 1;
+
+    return (
+      <div className="feedback-trend">
+        <div className="axis" />
+        {this.props.moods.data.entries.map((mood, i) => {
+          const positive = mood.givenMood === 1 ? 'positive' : null;
+          const neutral = mood.givenMood === 0 ? 'neutral' : null;
+          const negative = mood.givenMood === -1 ? 'negative' : null;
+          const pos = Math.round(100 / moodCount) * (i + 1);
+
+          return (
+            <div
+              key={i}
+              style={{ left: `${pos}%` }}
+              className={
+                'mood ' +
+                [positive, neutral, negative].join(' ') +
+                (this.props.activeFeedback === mood.id ? ' active' : '')
+              }
+              onClick={() => this.openFeedback(mood)}
+            >
+              <span>
+                {this.formatDate(mood.createdAt)}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  render() {
+    return (
+      <div className="feedback-overview">
         <Card>
           <CardContent>
-            <Typography
-              type="headline"
-              style={{ left: '-16px', position: 'relative' }}
-            >
-              <IconButton
-                style={{ verticalAlign: 'sub' }}
-                aria-owns="feedback-list-type"
-                aria-haspopup="true"
-                onClick={this.openMenu}
-              >
-                <MoreVert />
-              </IconButton>
-              <Menu
-                id="feedback-list-type"
-                anchorEl={this.state.anchorEl}
-                open={this.state.open}
-                onRequestClose={this.closeMenu}
-              >
-                <MenuItem
-                  value="list"
-                  onClick={event => this.closeMenu(event, 'list')}
-                >
-                  {formatMessage({ id: 'feedbackList' })}
-                </MenuItem>
-                <MenuItem
-                  value="trend"
-                  onClick={event => this.closeMenu(event, 'trend')}
-                >
-                  {formatMessage({ id: 'givenMoods' })}
-                </MenuItem>
-              </Menu>
-              {formatMessage({
-                id: this.state.type === 'list' ? 'feedbackList' : 'givenMoods',
-              })}
-            </Typography>
-            {this.state.type === 'trend'
-              ? <Typography
-                  style={{ marginLeft: '2rem', marginTop: '-0.7rem' }}
-                >
-                  {formatMessage({ id: 'givenMoodsExplain' })}
-                </Typography>
-              : null}
+            {this.renderHeadline()}
+
             {this.state.type === 'list'
-              ? <div>
-                  <TableCard
-                    initialPage={this.state.page}
-                    pageEntries={this.state.pageEntries}
-                    model={feedback}
-                    emptyMsg={this.props.noFeedbackMsg}
-                    orderBy={this.state.orderBy}
-                    order={this.state.order}
-                    hideElems={['name1', 'name2', 'showAll']}
-                    hideToolbar={true}
-                    header={[
-                      {
-                        id: null,
-                        value: row =>
-                          row.reviewed
-                            ? <Done color={lightGreen[300]} />
-                            : <AlertErrorOutline color={red[300]} />,
-
-                        className: 'row-icon',
-                        maxShowWidth: 320,
-                        disablePadding: true,
-                      },
-                      {
-                        id: 'createdAt',
-                        value: row =>
-                          new Date(
-                            row.createdAt,
-                          ).toLocaleDateString(navigator.languages, {
-                            day: '2-digit',
-                            month: '2-digit',
-                            year: 'numeric',
-                          }),
-                        columnTitle: formatMessage({ id: 'feedbackStartDate' }),
-                        className: 'date',
-                        maxShowWidth: 440,
-                      },
-                      {
-                        component: (
-                          <Button>
-                            <ArrowForward />
-                          </Button>
-                        ),
-                        className: 'row-action',
-                      },
-                    ]}
-                    onClickRow={this.openFeedback.bind(this)}
-                    refresh={this.refreshFeedback.bind(this)}
-                  />
-                  {pageCount > 0
-                    ? <MobileStepper
-                        type="progress"
-                        steps={pageCount}
-                        position="static"
-                        activeStep={this.state.page}
-                        onBack={this.handleBack}
-                        onNext={this.handleNext}
-                        disableBack={this.state.page === 0}
-                        disableNext={this.state.page === pageCount}
-                      />
-                    : null}
-                </div>
-              : <div className="feedback-trend">
-                  <div className="axis" />
-                  {moods.data.entries.map((mood, i) => {
-                    const positive = mood.givenMood === 1 ? 'positive' : null;
-                    const neutral = mood.givenMood === 0 ? 'neutral' : null;
-                    const negative = mood.givenMood === -1 ? 'negative' : null;
-                    const pos = Math.round(100 / moodCount) * (i + 1);
-
-                    return (
-                      <div
-                        key={i}
-                        style={{ left: `${pos}%` }}
-                        className={
-                          'mood ' + [positive, neutral, negative].join(' ')
-                        }
-                        onClick={() => this.openFeedback(mood)}
-                      >
-                        <span>
-                          {this.formatDate(mood.createdAt)}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>}
+              ? this.renderShortFeedbackList()
+              : this.renderMoodChart()}
           </CardContent>
         </Card>
       </div>
@@ -257,6 +279,7 @@ export default class FeedbackOverview extends React.Component {
 
 FeedbackOverview.propTypes = {
   childId: PropTypes.string.isRequired,
+  activeFeedback: PropTypes.string,
   feedback: PropTypes.object.isRequired,
   moods: PropTypes.object.isRequired,
   refreshFeedback: PropTypes.func.isRequired,

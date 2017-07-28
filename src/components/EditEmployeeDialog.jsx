@@ -3,7 +3,8 @@ import { injectIntl } from 'react-intl';
 
 import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
-import { LabelSwitch } from 'material-ui/Switch';
+import Switch from 'material-ui/Switch';
+import { FormControlLabel } from 'material-ui/Form';
 import TextField from 'material-ui/TextField';
 import Dialog, {
   DialogTitle,
@@ -109,30 +110,38 @@ export default class EditEmployeeDialog extends React.Component {
                   className="form-control"
                   style={{ marginBottom: 0 }}
                 >
-                  <LabelSwitch
-                    checked={this.state.active}
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={this.state.active}
+                        onChange={(event, checked) => {
+                          this.setState({
+                            ...this.state.user,
+                            active: checked,
+                          });
+                        }}
+                      />
+                    }
                     label={formatMessage({ id: 'active' })}
-                    onChange={(event, checked) => {
-                      this.setState({
-                        ...this.state.user,
-                        active: checked,
-                      });
-                    }}
                   />
                 </FormControl>
                 {this.state.id
                   ? <div>
                       <Divider />
                       <FormControl className="form-control">
-                        <LabelSwitch
-                          checked={this.state.resetPassword}
+                        <FormControlLabel
+                          control={
+                            <Switch
+                              checked={this.state.resetPassword}
+                              onChange={(event, checked) => {
+                                this.setState({
+                                  ...this.state,
+                                  resetPassword: checked,
+                                });
+                              }}
+                            />
+                          }
                           label={formatMessage({ id: 'resetPassword' })}
-                          onChange={(event, checked) => {
-                            this.setState({
-                              ...this.state,
-                              resetPassword: checked,
-                            });
-                          }}
                         />
                         {this.state.resetPassword
                           ? <Typography>

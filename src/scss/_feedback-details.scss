@@ -28,10 +28,6 @@
 				padding-right: 0;
 			}
 
-			&.assignee {
-				padding-left: 0;
-			}
-
 			@media(max-width: 1024px) {
 				&.assignee, &.given-mood {
 					padding-left: 0;

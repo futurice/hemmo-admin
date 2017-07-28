@@ -6,9 +6,10 @@ import Card, { CardContent } from 'material-ui/Card';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
-import { red } from 'material-ui/styles/colors';
+import { red } from 'material-ui/colors';
 import Divider from 'material-ui/Divider';
-import { LabelSwitch } from 'material-ui/Switch';
+import Switch from 'material-ui/Switch';
+import { FormControlLabel } from 'material-ui/Form';
 import { CircularProgress } from 'material-ui/Progress';
 
 import DeleteDialog from '../components/DeleteDialog';
@@ -41,7 +42,7 @@ export default class FeedbackDetails extends React.Component {
     this.props.onDelete(this.props.childId, this.props.details.data.id);
   }
 
-  selectAssignee(event, assigneeId) {
+  selectAssignee(assigneeId) {
     this.props.onUpdate(this.props.details.data.id, {
       assigneeId: assigneeId,
     });
@@ -59,11 +60,122 @@ export default class FeedbackDetails extends React.Component {
     });
   }
 
-  render() {
-    const { details, employees, intl: { formatMessage } } = this.props;
-    const data = details.data;
-    const loading = details.loading;
-    const indentAttachemnts = data.attachments && data.attachments.length > 1;
+  renderAttachments = () => {
+    const { attachments } = this.props.details.data;
+    const { intl: { formatMessage } } = this.props;
+    const indentAttachments = attachments && attachments.length > 1;
+
+    return attachments && attachments.length
+      ? <div>
+          <Divider />
+          <Grid container gutter={0} className="attachments">
+            <Typography type="subheading">
+              {formatMessage({ id: 'attachments' })}
+            </Typography>
+            <Grid item xs={12}>
+              {attachments.map((attachment, i) =>
+                <div key={i} className={indentAttachments ? 'indent' : null}>
+                  {indentAttachments
+                    ? <Typography>
+                        {formatMessage({ id: 'attachment' })} {i + 1}
+                      </Typography>
+                    : null}
+                  <div>
+                    <Attachment id={attachment.id} mime={attachment.mime} />
+                  </div>
+                </div>,
+              )}
+            </Grid>
+          </Grid>
+        </div>
+      : null;
+  };
+
+  renderActivities = () => {
+    const { activities } = this.props.details.data;
+    const { intl: { formatMessage } } = this.props;
+    const classes = {
+      '1': 'positive',
+      '0': 'neutral',
+      '-1': 'negative',
+    };
+
+    return activities && activities.length
+      ? <div>
+          <Divider />
+          <Grid container gutter={0} className="activities">
+            <Typography type="subheading">
+              {formatMessage({ id: 'activities' })}
+            </Typography>
+            <Grid item xs={12}>
+              {activities.map((act, i) => {
+                const moodClass =
+                  act.like !== undefined ? classes[act.like.toString()] : null;
+
+                return (
+                  <Card key={i} className={'activity ' + moodClass}>
+                    <CardContent>
+                      <Typography type="subheading">
+                        {act.main}, {act.sub}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </Grid>
+          </Grid>
+        </div>
+      : null;
+  };
+
+  renderMoods = () => {
+    const { moods } = this.props.details.data;
+    const { intl: { formatMessage } } = this.props;
+
+    return moods && moods.length
+      ? <div>
+          <Divider />
+          <Grid container gutter={0} className="moods">
+            <Grid item>
+              <Typography type="subheading">
+                {formatMessage({ id: 'moods' })}
+              </Typography>
+              {moods.map((mood, i) =>
+                <span key={i} className="mood">
+                  {mood}
+                </span>,
+              )}
+            </Grid>
+          </Grid>
+        </div>
+      : null;
+  };
+
+  renderAssignee = () => {
+    const { data } = this.props.details;
+    const { employees } = this.props;
+    const { intl: { formatMessage } } = this.props;
+
+    return (
+      <div className="assignee">
+        <Typography type="subheading" component="span" className="assignee">
+          {formatMessage({ id: 'assignee' })}
+        </Typography>
+        <SelectMenu
+          id="assignee-feedback"
+          selectedId={data.assigneeId || ''}
+          loading={employees.loading}
+          data={employees.data.entries}
+          label={data.assigneeName || ''}
+          onSelect={this.selectAssignee}
+        />
+      </div>
+    );
+  };
+
+  renderGivenMood = () => {
+    const { data } = this.props.details;
+    const { intl: { formatMessage } } = this.props;
     const moodList = [
       { id: 0, name: formatMessage({ id: 'neutral' }) },
       { id: 1, name: formatMessage({ id: 'positive' }) },
@@ -72,6 +184,45 @@ export default class FeedbackDetails extends React.Component {
     const moodIndex = Object.keys(moodList).filter(i => {
       return moodList[i].id === data.givenMood;
     });
+
+    return (
+      <div className="given-mood">
+        <Typography type="subheading" component="span" className="given-mood">
+          {formatMessage({ id: 'givenMood' })}
+        </Typography>
+        <SelectMenu
+          id="given-mood"
+          selectedId={data.givenMood || ''}
+          loading={false}
+          data={moodList}
+          label={moodIndex.length ? moodList[moodIndex].name : ''}
+          onSelect={this.setGivenMood}
+        />
+      </div>
+    );
+  };
+
+  renderConfirmDelete = () => {
+    const { intl: { formatMessage } } = this.props;
+
+    return this.state.dialogOpen
+      ? <DeleteDialog
+          handleDelete={this.handleDelete.bind(this)}
+          handleClose={() => {
+            this.setState({
+              dialogOpen: false,
+            });
+          }}
+          open={this.state.dialogOpen}
+          message={formatMessage({ id: 'deleteFeedbackWarn' })}
+        />
+      : null;
+  };
+
+  render() {
+    const { details, intl: { formatMessage } } = this.props;
+    const data = details.data;
+    const loading = details.loading;
 
     return (
       <div className="feedback-details">
@@ -89,48 +240,18 @@ export default class FeedbackDetails extends React.Component {
                         {this.formatDate(data.createdAt)}
                       </div>
                       <div>
-                        <LabelSwitch
-                          checked={data.reviewed}
-                          label={formatMessage({ id: 'reviewed' })}
-                          onChange={this.toggleReviewStatus}
-                        />
-                      </div>
-                      <div className="given-mood">
-                        <Typography
-                          type="subheading"
-                          component="span"
-                          className="given-mood"
-                        >
-                          {formatMessage({ id: 'givenMood' })}
-                        </Typography>
-                        <SelectMenu
-                          id="given-mood"
-                          selectedId={data.givenMood || ''}
-                          loading={false}
-                          data={moodList}
-                          label={
-                            moodIndex.length ? moodList[moodIndex].name : ''
+                        <FormControlLabel
+                          control={
+                            <Switch
+                              checked={data.reviewed}
+                              onChange={this.toggleReviewStatus}
+                            />
                           }
-                          onSelect={this.setGivenMood}
+                          label={formatMessage({ id: 'reviewed' })}
                         />
                       </div>
-                      <div className="assignee">
-                        <Typography
-                          type="subheading"
-                          component="span"
-                          className="assignee"
-                        >
-                          {formatMessage({ id: 'assignee' })}
-                        </Typography>
-                        <SelectMenu
-                          id="assignee-feedback"
-                          selectedId={data.assigneeId || ''}
-                          loading={employees.loading}
-                          data={employees.data.entries}
-                          label={data.assigneeName || ''}
-                          onSelect={this.selectAssignee}
-                        />
-                      </div>
+                      {this.renderGivenMood()}
+                      {this.renderAssignee()}
                     </Typography>
                   </Grid>
                   <Grid
@@ -143,8 +264,6 @@ export default class FeedbackDetails extends React.Component {
                       color="accent"
                       style={{
                         color: red[300],
-                        top: '50%',
-                        transform: 'translateY(-50%)',
                       }}
                       onClick={() => this.setState({ dialogOpen: true })}
                     >
@@ -154,104 +273,16 @@ export default class FeedbackDetails extends React.Component {
                 </Grid>
               </CardContent>
               <CardContent>
-                {data.moods && data.moods.length
-                  ? <div>
-                      <Divider />
-                      <Grid container gutter={0} className="moods">
-                        <Grid item>
-                          <Typography type="subheading">
-                            {formatMessage({ id: 'moods' })}
-                          </Typography>
-                          {data.moods.map((mood, i) =>
-                            <span key={i} className="mood">
-                              {mood}
-                            </span>,
-                          )}
-                        </Grid>
-                      </Grid>
-                    </div>
-                  : null}
-                {data.activities && data.activities.length
-                  ? <div>
-                      <Divider />
-                      <Grid container gutter={0} className="activities">
-                        <Typography type="subheading">
-                          {formatMessage({ id: 'activities' })}
-                        </Typography>
-                        <Grid item xs={12}>
-                          {data.activities.map((act, i) => {
-                            const classes = {
-                              '1': 'positive',
-                              '0': 'neutral',
-                              '-1': 'negative',
-                            };
-
-                            const moodClass =
-                              act.like !== undefined
-                                ? classes[act.like.toString()]
-                                : null;
-
-                            return (
-                              <Card key={i} className={'activity ' + moodClass}>
-                                <CardContent>
-                                  <Typography type="subheading">
-                                    {act.main}, {act.sub}
-                                  </Typography>
-                                </CardContent>
-                              </Card>
-                            );
-                          })}
-                        </Grid>
-                      </Grid>
-                    </div>
-                  : null}
-                {data.attachments && data.attachments.length
-                  ? <div>
-                      <Divider />
-                      <Grid container gutter={0} className="attachments">
-                        <Typography type="subheading">
-                          {formatMessage({ id: 'attachments' })}
-                        </Typography>
-                        <Grid item xs={12}>
-                          {data.attachments.map((attachment, i) =>
-                            <div
-                              key={i}
-                              className={indentAttachemnts ? 'indent' : null}
-                            >
-                              {indentAttachemnts
-                                ? <Typography>
-                                    {formatMessage({ id: 'attachment' })}{' '}
-                                    {i + 1}
-                                  </Typography>
-                                : null}
-                              <div>
-                                <Attachment
-                                  id={attachment.id}
-                                  mime={attachment.mime}
-                                />
-                              </div>
-                            </div>,
-                          )}
-                        </Grid>
-                      </Grid>
-                    </div>
-                  : null}
+                {this.renderMoods()}
+                {this.renderActivities()}
+                {this.renderAttachments()}
               </CardContent>
             </Card>
           : <div style={{ textAlign: 'center' }}>
               <CircularProgress />
             </div>}
 
-        <DeleteDialog
-          handleDelete={this.handleDelete.bind(this)}
-          handleClose={() => {
-            this.setState({
-              dialogOpen: false,
-            });
-          }}
-          open={this.state.dialogOpen}
-          message={formatMessage({ id: 'deleteFeedbackWarn' })}
-        />
+        {this.renderConfirmDelete()}
       </div>
     );
   }

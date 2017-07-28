@@ -1,3 +1,19 @@
+.feedback-overview {
+	.headline {
+		left: -16px;
+		position: relative;
+	}
+
+	.more {
+		vertical-align: sub;
+	}
+
+	.sub {
+		margin-left: 2rem;
+		margin-top: -0.7rem;
+	}
+}
+
 .feedback-trend {
 	height: 150px;
 	width: 100%;
@@ -23,7 +39,7 @@
 		background-size: 24px;
 		background-repeat: no-repeat;
 		cursor: pointer;
-		border: 0px;
+		border: 2px solid transparent;
 		border-radius: 50%;
 		background-color: #dcdcdc;
 
@@ -31,6 +47,10 @@
 			position: absolute;
 			bottom: -21px;
 			left: -50%;
+		}
+
+		&.active {
+			border-color: #1B5E20;
 		}
 
 		&.positive {

@@ -10,7 +10,7 @@ import Table, {
 } from 'material-ui/Table';
 
 import { injectIntl } from 'react-intl';
-import { blueGrey } from 'material-ui/styles/colors';
+import { blueGrey } from 'material-ui/colors';
 
 const windowWidth = window.innerWidth;
 

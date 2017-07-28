@@ -11,7 +11,7 @@ import Dialog, {
 import Button from 'material-ui/Button';
 
 // Colors
-import { red } from 'material-ui/styles/colors';
+import { red } from 'material-ui/colors';
 
 export default class DeleteDialog extends React.Component {
   render() {

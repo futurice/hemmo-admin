@@ -8,7 +8,8 @@ import MiniArrowBack from 'material-ui-icons/KeyboardArrowLeft';
 import MiniArrowForward from 'material-ui-icons/KeyboardArrowRight';
 import ArrowDropDown from 'material-ui-icons/ArrowDropDown';
 import Typography from 'material-ui/Typography';
-import { LabelSwitch } from 'material-ui/Switch';
+import Switch from 'material-ui/Switch';
+import { FormControlLabel } from 'material-ui/Form';
 import TextField from 'material-ui/TextField';
 
 import { injectIntl } from 'react-intl';
@@ -89,14 +90,18 @@ export default class CardToolbar extends React.Component {
     // Show all rows rgardless are they "own" or now
     if (hideElems && !hideElems.includes('showAll')) {
       toolbarItems.push(
-        <LabelSwitch
+        <FormControlLabel
           key="show-all"
-          labelClassName="show-all"
+          className="show-all"
+          control={
+            <Switch
+              checked={this.state.showAll}
+              onChange={(event, checked) => {
+                this.setAttribute('showAll', checked);
+              }}
+            />
+          }
           label={formatMessage({ id: 'showAll' })}
-          checked={this.state.showAll}
-          onChange={(event, checked) => {
-            this.setAttribute('showAll', checked);
-          }}
         />,
       );
     }
@@ -112,7 +117,6 @@ export default class CardToolbar extends React.Component {
             id: customLabels.name1 ? customLabels.name1 : 'name',
           })}
           onChange={this.handleKeywordSearch.bind(this)}
-          marginForm
         />,
       );
     }
@@ -128,7 +132,6 @@ export default class CardToolbar extends React.Component {
             id: customLabels.name2 ? customLabels.name2 : 'name',
           })}
           onChange={this.handleKeywordSearch.bind(this)}
-          marginForm
         />,
       );
     }
