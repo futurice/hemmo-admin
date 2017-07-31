@@ -216,6 +216,28 @@ const rest = reduxApi({
       return data;
     },
   },
+  organisations: {
+    url: `${apiRoot}/organisations`,
+    transformer(data, prevData) {
+      if (data) {
+        return { ...data };
+      } else {
+        return { ...prevData };
+      }
+    },
+    crud: true,
+  },
+  organisation: {
+    url: `${apiRoot}/organisations/:organisationId`,
+    transformer(data, prevData) {
+      if (data) {
+        return { ...data };
+      } else {
+        return { ...prevData };
+      }
+    },
+    crud: true,
+  },
 })
   .use('options', (url, params, getState) => {
     const { auth: { data: { token } } } = getState();

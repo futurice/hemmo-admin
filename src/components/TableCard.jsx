@@ -74,6 +74,7 @@ TableCard.propTypes = {
   margin: PropTypes.number,
   hideElems: PropTypes.array,
   customLabels: PropTypes.object,
+  hideToolbar: PropTypes.boolean,
 };
 
 export default TableCard;
