@@ -216,6 +216,58 @@ const rest = reduxApi({
       return data;
     },
   },
+  organisations: {
+    url: `${apiRoot}/organisations`,
+    transformer(
+      data,
+      prevData = {
+        entries: [],
+        meta: emptyMeta,
+        name: 'Organisations',
+      },
+      action,
+    ) {
+      if (data) {
+        return {
+          ...prevData,
+          entries: data.data,
+          meta: data.meta,
+        };
+      } else {
+        return {
+          ...prevData,
+        };
+      }
+    },
+    options: {
+      method: 'GET',
+    },
+  },
+  organisationCreate: {
+    url: `${apiRoot}/organisations`,
+    reducerName: 'organisationUnit',
+    transformer(data, prevData) {
+      if (data) {
+        return { ...data };
+      } else {
+        return { ...prevData };
+      }
+    },
+    options: {
+      method: 'POST',
+    },
+  },
+  organisationUnit: {
+    url: `${apiRoot}/organisations/:organisationId`,
+    transformer(data, prevData) {
+      if (data) {
+        return { ...data };
+      } else {
+        return { ...prevData };
+      }
+    },
+    crud: true,
+  },
 })
   .use('options', (url, params, getState) => {
     const { auth: { data: { token } } } = getState();

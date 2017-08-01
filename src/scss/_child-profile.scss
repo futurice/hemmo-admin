@@ -2,4 +2,12 @@
 	.assignee, .given-mood {
 		display: inline-flex;
 	}
+
+	.delete-child {
+		text-align: right;
+
+		button {
+			white-space: nowrap;
+		}
+	}
 }

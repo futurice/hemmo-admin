@@ -3,7 +3,7 @@ import React from 'react';
 import Typography from 'material-ui/Typography';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
-import { red, lightGreen, grey } from 'material-ui/styles/colors';
+import { red, lightGreen, grey } from 'material-ui/colors';
 import ArrowForward from 'material-ui-icons/ArrowForward';
 import Done from 'material-ui-icons/Done';
 import AlertErrorOutline from 'material-ui-icons/ErrorOutline';

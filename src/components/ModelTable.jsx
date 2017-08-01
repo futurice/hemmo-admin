@@ -10,7 +10,7 @@ import Table, {
 } from 'material-ui/Table';
 
 import { injectIntl } from 'react-intl';
-import { blueGrey } from 'material-ui/styles/colors';
+import { blueGrey } from 'material-ui/colors';
 
 const windowWidth = window.innerWidth;
 
@@ -73,7 +73,10 @@ export default class ModelTable extends React.Component {
         return;
       }
 
-      let body = header.component;
+      let body =
+        typeof header.component === 'function'
+          ? header.component(row)
+          : header.component;
       let style = header.style;
 
       if (!body && header.value) {
@@ -93,7 +96,11 @@ export default class ModelTable extends React.Component {
           style={style}
           key={index}
           disablePadding={this.props.header[index].disablePadding}
-          className={this.props.header[index].className}
+          className={
+            (this.props.header[index].className
+              ? this.props.header[index].className
+              : '') + (row.className ? ` ${row.className}` : '')
+          }
         >
           {body}
         </TableCell>,
@@ -105,7 +112,12 @@ export default class ModelTable extends React.Component {
         hover
         key={index}
         onClick={e => {
-          this.props.onClickRow(row);
+          if (
+            this.props.onClickRow &&
+            typeof this.props.onClickRow === 'function'
+          ) {
+            this.props.onClickRow(row);
+          }
         }}
       >
         {columns}
@@ -147,7 +159,7 @@ export default class ModelTable extends React.Component {
 ModelTable.propTypes = {
   entries: PropTypes.array.isRequired,
   header: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onClickRow: PropTypes.func.isRequired,
+  onClickRow: PropTypes.func,
   onSortRequest: PropTypes.func,
   order: PropTypes.string.isRequired,
   orderBy: PropTypes.string.isRequired,

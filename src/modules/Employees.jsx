@@ -4,10 +4,10 @@ import rest from '../utils/rest';
 import { injectIntl } from 'react-intl';
 
 import Button from 'material-ui/Button';
-import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import Edit from 'material-ui-icons/Edit';
 
+import PageHeader from '../components/PageHeader';
 import TableCard from '../components/TableCard';
 import EditEmployeeDialog from '../components/EditEmployeeDialog';
 
@@ -153,9 +153,7 @@ class EmployeeManagement extends React.Component {
 
     return (
       <div className="employee-management">
-        <Typography type="title">
-          {formatMessage({ id: 'employeeManagement' })}
-        </Typography>
+        <PageHeader header={formatMessage({ id: 'employeeManagement' })} />
 
         <Button
           className="add-employee"

@@ -70,10 +70,11 @@ TableCard.propTypes = {
   }).isRequired,
   header: PropTypes.arrayOf(PropTypes.object).isRequired,
   refresh: PropTypes.func.isRequired,
-  onClickRow: PropTypes.func.isRequired,
+  onClickRow: PropTypes.func,
   margin: PropTypes.number,
   hideElems: PropTypes.array,
   customLabels: PropTypes.object,
+  hideToolbar: PropTypes.bool,
 };
 
 export default TableCard;

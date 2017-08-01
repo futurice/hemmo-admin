@@ -7,7 +7,7 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import Button from 'material-ui/Button';
 import Alert from 'material-ui-icons/Warning';
 import ArrowForward from 'material-ui-icons/ArrowForward';
-import { orange } from 'material-ui/styles/colors';
+import { orange } from 'material-ui/colors';
 
 import TableCard from '../components/TableCard';
 import PageHeader from '../components/PageHeader';

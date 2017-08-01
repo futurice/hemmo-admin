@@ -86,6 +86,16 @@ export default {
   resetPasswordExplanation:
     'Uusi salasana lähetetään käyttäjälle sähköpostilla.',
 
+  // Organisation Managements
+  organisationManagement: 'Organisaation hallinta',
+  organisationUnit: 'Yksikön nimi',
+  addOrganisationUnit: 'Lisää yksikkö',
+  editOrganisationUnit: 'Muokkaa yksikköä',
+  addUnitUnder: 'Lisää lapseksi...',
+  addUnitAfter: 'Lisää jälkeen...',
+  deleteOrganisationUnitWarn:
+    'Tämän yksikön poistaminen (sekä mahdollisten alayksiköiden) on peruuttamatonta ja se poistaa myös kaikki liitokset työntekijöihin! Etene vain, jos olet täysin varma.',
+
   // Table toolbar
   childsName: 'Lapsen nimi',
   employeesName: 'Työntekijän nimi',
@@ -100,6 +110,7 @@ export default {
   delete: 'Poista',
   pageNotFound: 'Haettua sivua ei löytynyt.',
   selectValue: '- valitse -',
+  pleaseLogin: 'Kirjaudu sisään, ole hyvä',
 
   name: 'Nimi',
   registrationDate: 'Käyttäjän luontipvm.',

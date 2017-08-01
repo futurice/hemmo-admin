@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 
-import Card, { CardActions, CardContent } from 'material-ui/Card';
-import { LabelSwitch } from 'material-ui/Switch';
-import { red } from 'material-ui/styles/colors';
+import Card, { CardContent } from 'material-ui/Card';
+import Switch from 'material-ui/Switch';
+import { FormControlLabel } from 'material-ui/Form';
+import { red } from 'material-ui/colors';
 import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
@@ -61,13 +62,13 @@ export default class ChildDetails extends React.Component {
           </CardContent>
           <CardContent>
             <Grid container>
-              <Grid item xs={12} sm={6} style={{ alignSelf: 'center' }}>
+              <Grid item xs={12} style={{ alignSelf: 'center' }}>
                 <Typography type="subheading">
                   {formatMessage({ id: 'createdAt' })}:{' '}
                   {this.formatDate(child.createdAt)}
                 </Typography>
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <Typography
                   type="subheading"
                   component="span"
@@ -84,26 +85,29 @@ export default class ChildDetails extends React.Component {
                   onSelect={this.selectAssignee}
                 />
               </Grid>
+
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={this.props.child.showAlerts}
+                      onChange={this.updateAlertSetting.bind(this)}
+                    />
+                  }
+                  label={formatMessage({ id: 'showAlerts' })}
+                />
+              </Grid>
+              <Grid item xs={12} className="delete-child">
+                <Button
+                  color="accent"
+                  style={{ color: red[300] }}
+                  onClick={() => this.setState({ dialogOpen: true })}
+                >
+                  {formatMessage({ id: 'deleteChild' })}
+                </Button>
+              </Grid>
             </Grid>
           </CardContent>
-          <CardActions>
-            <Grid item xs={12} sm={9}>
-              <LabelSwitch
-                checked={this.props.child.showAlerts}
-                label={formatMessage({ id: 'showAlerts' })}
-                onChange={this.updateAlertSetting.bind(this)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              <Button
-                color="accent"
-                style={{ color: red[300] }}
-                onClick={() => this.setState({ dialogOpen: true })}
-              >
-                {formatMessage({ id: 'deleteChild' })}
-              </Button>
-            </Grid>
-          </CardActions>
         </Card>
 
         <DeleteDialog

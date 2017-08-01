@@ -9,7 +9,7 @@ import TextField from 'material-ui/TextField';
 import FormControl from 'material-ui/Form/FormControl';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
-import { green } from 'material-ui/styles/colors';
+import { green } from 'material-ui/colors';
 import ArrowDropDown from 'material-ui-icons/ArrowDropDown';
 
 import { connect } from 'react-redux';
@@ -18,7 +18,6 @@ import rest from '../utils/rest';
 import { languages, storeLocaleForUser } from '../utils/intl';
 
 import PageHeader from '../components/PageHeader';
-import EmployeeManagement from '../components/EmployeeManagement';
 import { reset } from './Logout';
 
 const mapStateToProps = state => ({
@@ -134,7 +133,94 @@ class Preferences extends React.Component {
     );
   }
 
-  render() {
+  renderOwnDetails = () => {
+    const { intl: { formatMessage } } = this.props;
+    const passwordError = this.state.passwordMismatch
+      ? <Typography>
+          {formatMessage({ id: 'passwordMismatch' })}
+        </Typography>
+      : null;
+
+    return (
+      <Paper className="paper" elevation={1}>
+        <Typography type="headline">
+          {formatMessage({ id: 'ownDetails' })}
+        </Typography>
+
+        <FormControl className="form-control">
+          <TextField
+            required={true}
+            name="name"
+            value={this.state.user.name}
+            label={formatMessage({ id: 'name' })}
+            onChange={this.updateAttr.bind(this)}
+          />
+        </FormControl>
+
+        <FormControl className="form-control">
+          <TextField
+            required={true}
+            name="email"
+            value={this.state.user.email}
+            label={formatMessage({ id: 'email' })}
+            onChange={this.updateAttr.bind(this)}
+          />
+        </FormControl>
+
+        <Typography className="new-password-explain">
+          {formatMessage({ id: 'newPasswordExplain' })}
+        </Typography>
+        <FormControl
+          className="form-control"
+          error={this.state.passwordMismatch}
+        >
+          <TextField
+            name="password"
+            type="password"
+            value={this.state.user.password}
+            label={formatMessage({ id: 'newPassword' })}
+            onBlur={this.checkPasswords}
+            onChange={this.updateAttr.bind(this)}
+          />
+          {passwordError}
+        </FormControl>
+
+        <FormControl
+          className="form-control"
+          error={this.state.passwordMismatch}
+        >
+          <TextField
+            name="password2"
+            type="password"
+            value={this.state.user.password2}
+            label={formatMessage({ id: 'confirmPassword' })}
+            onBlur={this.checkPasswords}
+            onChange={this.updateAttr.bind(this)}
+          />
+          {passwordError}
+        </FormControl>
+
+        <FormControl className="form-control row">
+          <Button
+            raised
+            disabled={!this.canSubmit()}
+            color="primary"
+            onClick={this.preUpdate}
+          >
+            {formatMessage({ id: 'save' })}
+          </Button>
+
+          {this.state.detailsUpdated
+            ? <span className="details-updated" style={{ color: green[600] }}>
+                {formatMessage({ id: 'detailsUpdated' })}
+              </span>
+            : ''}
+        </FormControl>
+      </Paper>
+    );
+  };
+
+  renderSystemMngt = () => {
     const {
       activeLanguage,
       changeLanguage,
@@ -143,168 +229,90 @@ class Preferences extends React.Component {
       intl: { formatMessage },
     } = this.props;
 
-    const passwordError = this.state.passwordMismatch
-      ? <Typography>
-          {formatMessage({ id: 'passwordMismatch' })}
+    return (
+      <Paper className="paper">
+        <Typography type="headline">
+          {formatMessage({ id: 'appLanguage' })}
         </Typography>
-      : null;
+        <Typography>
+          {formatMessage({ id: 'appLanguageExplain' })}
+        </Typography>
+        <div className="language-selection">
+          <List>
+            <ListItem
+              button
+              aria-haspopup="true"
+              aria-controls="language-menu"
+              aria-label="App language"
+              onClick={e =>
+                this.setState({
+                  languageMenuOpen: true,
+                  languageMenuAnchor: e.currentTarget,
+                })}
+            >
+              <ListItemText
+                primary={formatMessage({ id: 'selectedLanguage' })}
+                secondary={
+                  languages[activeLanguage]
+                    ? languages[activeLanguage].name
+                    : 'unknown'
+                }
+              />
+              <ArrowDropDown />
+            </ListItem>
+          </List>
+
+          <Menu
+            id="language-menu"
+            anchorEl={this.state.languageMenuAnchor}
+            open={this.state.languageMenuOpen}
+            onRequestClose={() => this.setState({ languageMenuOpen: false })}
+          >
+            {Object.keys(languages).map(language =>
+              <MenuItem
+                key={language}
+                selected={language === activeLanguage}
+                onClick={() => {
+                  changeLanguage(user, language);
+                  this.setState({ languageMenuOpen: false });
+                }}
+              >
+                {languages[language].name}
+              </MenuItem>,
+            )}
+          </Menu>
+        </div>
+
+        <Typography type="headline">
+          {formatMessage({ id: 'resetState' })}
+        </Typography>
+        <Typography>
+          {formatMessage({ id: 'resetStateExplanation' })}
+        </Typography>
+
+        <Button raised color="accent" onClick={doClearState}>
+          {formatMessage({ id: 'resetStateButton' })}
+        </Button>
+      </Paper>
+    );
+  };
+
+  render() {
+    const { intl: { formatMessage } } = this.props;
 
     return (
-      <div>
+      <div className="employee-management">
         <PageHeader header={formatMessage({ id: 'Preferences' })} />
 
         <Grid container gutter={24}>
           <Grid item xs={12} sm={6}>
-            <Paper className="paper" elevation={1}>
-              <Typography type="headline">
-                {formatMessage({ id: 'ownDetails' })}
-              </Typography>
-
-              <FormControl className="form-control">
-                <TextField
-                  required={true}
-                  name="name"
-                  value={this.state.user.name}
-                  label={formatMessage({ id: 'name' })}
-                  onChange={this.updateAttr.bind(this)}
-                />
-              </FormControl>
-
-              <FormControl className="form-control">
-                <TextField
-                  required={true}
-                  name="email"
-                  value={this.state.user.email}
-                  label={formatMessage({ id: 'email' })}
-                  onChange={this.updateAttr.bind(this)}
-                />
-              </FormControl>
-
-              <Typography className="new-password-explain">
-                {formatMessage({ id: 'newPasswordExplain' })}
-              </Typography>
-              <FormControl
-                className="form-control"
-                error={this.state.passwordMismatch}
-              >
-                <TextField
-                  name="password"
-                  type="password"
-                  value={this.state.user.password}
-                  label={formatMessage({ id: 'newPassword' })}
-                  onBlur={this.checkPasswords}
-                  onChange={this.updateAttr.bind(this)}
-                />
-                {passwordError}
-              </FormControl>
-
-              <FormControl
-                className="form-control"
-                error={this.state.passwordMismatch}
-              >
-                <TextField
-                  name="password2"
-                  type="password"
-                  value={this.state.user.password2}
-                  label={formatMessage({ id: 'confirmPassword' })}
-                  onBlur={this.checkPasswords}
-                  onChange={this.updateAttr.bind(this)}
-                />
-                {passwordError}
-              </FormControl>
-
-              <FormControl className="form-control row">
-                <Button
-                  raised
-                  disabled={!this.canSubmit()}
-                  color="primary"
-                  onClick={this.preUpdate}
-                >
-                  {formatMessage({ id: 'save' })}
-                </Button>
-
-                {this.state.detailsUpdated
-                  ? <span
-                      className="details-updated"
-                      style={{ color: green[600] }}
-                    >
-                      {formatMessage({ id: 'detailsUpdated' })}
-                    </span>
-                  : ''}
-              </FormControl>
-            </Paper>
+            {this.renderOwnDetails()}
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <Paper className="paper">
-              <Typography type="headline">
-                {formatMessage({ id: 'appLanguage' })}
-              </Typography>
-              <Typography>
-                {formatMessage({ id: 'appLanguageExplain' })}
-              </Typography>
-              <div className="language-selection">
-                <List>
-                  <ListItem
-                    button
-                    aria-haspopup="true"
-                    aria-controls="language-menu"
-                    aria-label="App language"
-                    onClick={e =>
-                      this.setState({
-                        languageMenuOpen: true,
-                        languageMenuAnchor: e.currentTarget,
-                      })}
-                  >
-                    <ListItemText
-                      primary={formatMessage({ id: 'selectedLanguage' })}
-                      secondary={
-                        languages[activeLanguage]
-                          ? languages[activeLanguage].name
-                          : 'unknown'
-                      }
-                    />
-                    <ArrowDropDown />
-                  </ListItem>
-                </List>
-
-                <Menu
-                  id="language-menu"
-                  anchorEl={this.state.languageMenuAnchor}
-                  open={this.state.languageMenuOpen}
-                  onRequestClose={() =>
-                    this.setState({ languageMenuOpen: false })}
-                >
-                  {Object.keys(languages).map(language =>
-                    <MenuItem
-                      key={language}
-                      selected={language === activeLanguage}
-                      onClick={() => {
-                        changeLanguage(user, language);
-                        this.setState({ languageMenuOpen: false });
-                      }}
-                    >
-                      {languages[language].name}
-                    </MenuItem>,
-                  )}
-                </Menu>
-              </div>
-
-              <Typography type="headline">
-                {formatMessage({ id: 'resetState' })}
-              </Typography>
-              <Typography>
-                {formatMessage({ id: 'resetStateExplanation' })}
-              </Typography>
-
-              <Button raised color="accent" onClick={doClearState}>
-                {formatMessage({ id: 'resetStateButton' })}
-              </Button>
-            </Paper>
+            {this.renderSystemMngt()}
           </Grid>
         </Grid>
-
-        {user.scope.includes('admin') ? <EmployeeManagement /> : ''}
       </div>
     );
   }
