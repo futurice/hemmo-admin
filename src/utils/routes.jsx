@@ -40,6 +40,8 @@ import ChildrenIcon from 'material-ui-icons/SupervisorAccount';
 import PreferencesIcon from 'material-ui-icons/Settings';
 import LoginIcon from 'material-ui-icons/AccountCircle';
 import LogoutIcon from 'material-ui-icons/ExitToApp';
+import Business from 'material-ui-icons/Business';
+import Group from 'material-ui-icons/Group';
 
 // Components
 import Home from '../modules/Home';
@@ -47,6 +49,8 @@ import Feedback from '../modules/Feedback';
 import Children from '../modules/Children';
 import ChildWrapper from '../modules/ChildWrapper';
 import Preferences from '../modules/Preferences';
+import Employees from '../modules/Employees';
+import Organisation from '../modules/Organisation';
 import Login from '../modules/Login';
 import Logout from '../modules/Logout';
 import NotFound from '../modules/NotFound';
@@ -99,6 +103,24 @@ const routeConfigs = [
     component: Preferences,
     icon: PreferencesIcon,
     requiresLogin: true,
+    showInMenu: true,
+  },
+  {
+    path: '/employees',
+    name: 'Employees',
+    component: Employees,
+    icon: Group,
+    requiresLogin: true,
+    hideWhenScope: ['employee'],
+    showInMenu: true,
+  },
+  {
+    path: '/organization',
+    name: 'Organisation',
+    component: Organisation,
+    icon: Business,
+    requiresLogin: true,
+    hideWhenScope: ['employee'],
     showInMenu: true,
   },
   {

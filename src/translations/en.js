@@ -77,7 +77,7 @@ export default {
   detailsUpdated: 'Details updated',
 
   // Employee management
-  employeeManagement: 'Manage Employees',
+  employeeManagement: 'Employee management',
   addEmployee: 'Add new employee',
   editEmployee: 'Edit employee',
   employeeName: 'Employee name',

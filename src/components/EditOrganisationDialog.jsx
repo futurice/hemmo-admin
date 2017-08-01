@@ -2,7 +2,6 @@ import React from 'react';
 import { injectIntl } from 'react-intl';
 
 import Button from 'material-ui/Button';
-import Typography from 'material-ui/Typography';
 import TextField from 'material-ui/TextField';
 import Dialog, {
   DialogTitle,
@@ -81,14 +80,12 @@ export default class EditOrganisationDialog extends React.Component {
   }
 
   render() {
-    let indent = 0;
     let hasChilds = false;
     let indentLevel = 0;
     let closingRightIds = [];
 
     const {
       organisations,
-      organisation,
       open,
       loading,
       intl: { formatMessage },
@@ -97,7 +94,7 @@ export default class EditOrganisationDialog extends React.Component {
       hasChilds = org.leftId + 1 === org.rightId ? false : true;
 
       if (closingRightIds.includes(org.leftId - 1)) {
-        indentLevel = indentLevel - 1;
+        indentLevel -= 1;
       }
 
       if (hasChilds) {
@@ -108,10 +105,10 @@ export default class EditOrganisationDialog extends React.Component {
 
       // Has child so increate indentation
       if (hasChilds) {
-        indentLevel = indentLevel + 1;
+        indentLevel += 1;
       } else if (closingRightIds.includes(org.rightId + 1)) {
         // We're closing indentation; calcuate how much to subtract
-        indentLevel = indentLevel - (org.rightId + 1 - org.rightId);
+        indentLevel -= org.rightId + 1 - org.rightId;
       }
 
       return newObj;

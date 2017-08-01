@@ -4,7 +4,6 @@ import rest from '../utils/rest';
 import { injectIntl } from 'react-intl';
 
 import Button from 'material-ui/Button';
-import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import Edit from 'material-ui-icons/Edit';
 

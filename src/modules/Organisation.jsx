@@ -4,7 +4,6 @@ import rest from '../utils/rest';
 import { injectIntl } from 'react-intl';
 
 import Button from 'material-ui/Button';
-import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import Edit from 'material-ui-icons/Edit';
 import Delete from 'material-ui-icons/Delete';
@@ -85,7 +84,6 @@ class OrganisationManagement extends React.Component {
   }
 
   loadOrganisations(p = {}) {
-    const { dispatch } = this.props;
     const params = Object.assign(this.state, p);
 
     this.setState({ ...this.state, params });
@@ -197,9 +195,11 @@ class OrganisationManagement extends React.Component {
   };
 
   render() {
+    let hasChilds = false;
+    let indentLevel = 0;
+    let closingRightIds = [];
     const { organisations, intl: { formatMessage } } = this.props;
-    const initialPage = 0;
-    const pageEntries = 20;
+
     const header = [
       {
         id: 'name',
@@ -219,6 +219,29 @@ class OrganisationManagement extends React.Component {
         className: 'row-action',
       },
     ];
+    const formattedOrganisations = organisations.data.entries.map(org => {
+      hasChilds = org.leftId + 1 === org.rightId ? false : true;
+
+      if (closingRightIds.includes(org.leftId - 1)) {
+        indentLevel -= 1;
+      }
+
+      if (hasChilds) {
+        closingRightIds.push(org.rightId);
+      }
+
+      const newObj = { ...org, className: `indent-${indentLevel}` };
+
+      // Has child so increate indentation
+      if (hasChilds) {
+        indentLevel += 1;
+      } else if (closingRightIds.includes(org.rightId + 1)) {
+        // We're closing indentation; calcuate how much to subtract
+        indentLevel -= org.rightId + 1 - org.rightId;
+      }
+
+      return newObj;
+    });
 
     return (
       <div className="organisation-management">
@@ -235,7 +258,10 @@ class OrganisationManagement extends React.Component {
         <TableCard
           order={this.state.order}
           orderBy={this.state.orderBy}
-          model={organisations}
+          model={{
+            ...organisations,
+            data: { entries: formattedOrganisations },
+          }}
           header={header}
           refresh={this.loadOrganisations}
           hideToolbar={true}

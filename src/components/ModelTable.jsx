@@ -96,7 +96,11 @@ export default class ModelTable extends React.Component {
           style={style}
           key={index}
           disablePadding={this.props.header[index].disablePadding}
-          className={this.props.header[index].className}
+          className={
+            (this.props.header[index].className
+              ? this.props.header[index].className
+              : '') + (row.className ? ` ${row.className}` : '')
+          }
         >
           {body}
         </TableCell>,

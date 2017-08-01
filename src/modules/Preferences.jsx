@@ -18,8 +18,6 @@ import rest from '../utils/rest';
 import { languages, storeLocaleForUser } from '../utils/intl';
 
 import PageHeader from '../components/PageHeader';
-import EmployeeManagement from '../components/EmployeeManagement';
-import OrganisationManagement from '../components/OrganisationManagement';
 import { reset } from './Logout';
 
 const mapStateToProps = state => ({
@@ -300,7 +298,7 @@ class Preferences extends React.Component {
   };
 
   render() {
-    const { user, intl: { formatMessage } } = this.props;
+    const { intl: { formatMessage } } = this.props;
 
     return (
       <div className="employee-management">
@@ -315,13 +313,6 @@ class Preferences extends React.Component {
             {this.renderSystemMngt()}
           </Grid>
         </Grid>
-
-        {user.scope.includes('admin')
-          ? <div>
-              <EmployeeManagement />
-              <OrganisationManagement />
-            </div>
-          : ''}
       </div>
     );
   }
