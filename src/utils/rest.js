@@ -218,6 +218,34 @@ const rest = reduxApi({
   },
   organisations: {
     url: `${apiRoot}/organisations`,
+    transformer(
+      data,
+      prevData = {
+        entries: [],
+        meta: emptyMeta,
+        name: 'Organisations',
+      },
+      action,
+    ) {
+      if (data) {
+        return {
+          ...prevData,
+          entries: data.data,
+          meta: data.meta,
+        };
+      } else {
+        return {
+          ...prevData,
+        };
+      }
+    },
+    options: {
+      method: 'GET',
+    },
+  },
+  organisationCreate: {
+    url: `${apiRoot}/organisations`,
+    reducerName: 'organisationUnit',
     transformer(data, prevData) {
       if (data) {
         return { ...data };
@@ -225,9 +253,11 @@ const rest = reduxApi({
         return { ...prevData };
       }
     },
-    crud: true,
+    options: {
+      method: 'POST',
+    },
   },
-  organisation: {
+  organisationUnit: {
     url: `${apiRoot}/organisations/:organisationId`,
     transformer(data, prevData) {
       if (data) {

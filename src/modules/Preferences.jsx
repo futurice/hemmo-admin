@@ -227,74 +227,76 @@ class Preferences extends React.Component {
       activeLanguage,
       changeLanguage,
       doClearState,
+      user,
       intl: { formatMessage },
     } = this.props;
 
-    return;
-    <Paper className="paper">
-      <Typography type="headline">
-        {formatMessage({ id: 'appLanguage' })}
-      </Typography>
-      <Typography>
-        {formatMessage({ id: 'appLanguageExplain' })}
-      </Typography>
-      <div className="language-selection">
-        <List>
-          <ListItem
-            button
-            aria-haspopup="true"
-            aria-controls="language-menu"
-            aria-label="App language"
-            onClick={e =>
-              this.setState({
-                languageMenuOpen: true,
-                languageMenuAnchor: e.currentTarget,
-              })}
-          >
-            <ListItemText
-              primary={formatMessage({ id: 'selectedLanguage' })}
-              secondary={
-                languages[activeLanguage]
-                  ? languages[activeLanguage].name
-                  : 'unknown'
-              }
-            />
-            <ArrowDropDown />
-          </ListItem>
-        </List>
-
-        <Menu
-          id="language-menu"
-          anchorEl={this.state.languageMenuAnchor}
-          open={this.state.languageMenuOpen}
-          onRequestClose={() => this.setState({ languageMenuOpen: false })}
-        >
-          {Object.keys(languages).map(language =>
-            <MenuItem
-              key={language}
-              selected={language === activeLanguage}
-              onClick={() => {
-                changeLanguage(user, language);
-                this.setState({ languageMenuOpen: false });
-              }}
+    return (
+      <Paper className="paper">
+        <Typography type="headline">
+          {formatMessage({ id: 'appLanguage' })}
+        </Typography>
+        <Typography>
+          {formatMessage({ id: 'appLanguageExplain' })}
+        </Typography>
+        <div className="language-selection">
+          <List>
+            <ListItem
+              button
+              aria-haspopup="true"
+              aria-controls="language-menu"
+              aria-label="App language"
+              onClick={e =>
+                this.setState({
+                  languageMenuOpen: true,
+                  languageMenuAnchor: e.currentTarget,
+                })}
             >
-              {languages[language].name}
-            </MenuItem>,
-          )}
-        </Menu>
-      </div>
+              <ListItemText
+                primary={formatMessage({ id: 'selectedLanguage' })}
+                secondary={
+                  languages[activeLanguage]
+                    ? languages[activeLanguage].name
+                    : 'unknown'
+                }
+              />
+              <ArrowDropDown />
+            </ListItem>
+          </List>
 
-      <Typography type="headline">
-        {formatMessage({ id: 'resetState' })}
-      </Typography>
-      <Typography>
-        {formatMessage({ id: 'resetStateExplanation' })}
-      </Typography>
+          <Menu
+            id="language-menu"
+            anchorEl={this.state.languageMenuAnchor}
+            open={this.state.languageMenuOpen}
+            onRequestClose={() => this.setState({ languageMenuOpen: false })}
+          >
+            {Object.keys(languages).map(language =>
+              <MenuItem
+                key={language}
+                selected={language === activeLanguage}
+                onClick={() => {
+                  changeLanguage(user, language);
+                  this.setState({ languageMenuOpen: false });
+                }}
+              >
+                {languages[language].name}
+              </MenuItem>,
+            )}
+          </Menu>
+        </div>
 
-      <Button raised color="accent" onClick={doClearState}>
-        {formatMessage({ id: 'resetStateButton' })}
-      </Button>
-    </Paper>;
+        <Typography type="headline">
+          {formatMessage({ id: 'resetState' })}
+        </Typography>
+        <Typography>
+          {formatMessage({ id: 'resetStateExplanation' })}
+        </Typography>
+
+        <Button raised color="accent" onClick={doClearState}>
+          {formatMessage({ id: 'resetStateButton' })}
+        </Button>
+      </Paper>
+    );
   };
 
   render() {

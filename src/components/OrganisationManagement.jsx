@@ -7,45 +7,52 @@ import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import Edit from 'material-ui-icons/Edit';
+import Delete from 'material-ui-icons/Delete';
 
+import PageHeader from '../components/PageHeader';
+import DeleteDialog from '../components/DeleteDialog';
 import TableCard from '../components/TableCard';
+import EditOrganisationDialog from '../components/EditOrganisationDialog';
 
 const mapStateToProps = state => ({
-  organisation: state.employees,
+  organisations: state.organisations,
+  organisationUnit: state.organisationUnit,
 });
 
 const mapDispatchToProp = dispatch => ({
-  loadOrganisation: () => {
-    dispatch(rest.actions.organisations.get());
+  getOrganisations: params => {
+    dispatch(rest.actions.organisations(params));
   },
-  saveOrganisationUnit: (id, leftId, rightId, name) => {
+  loadOrganisationUnit: organisationId => {
+    dispatch(rest.actions.organisationUnit.get({ organisationId }));
+  },
+  saveOrganisationUnit: (id, body, cb, fail) => {
+    console.log(cb);
     dispatch(
-      rest.actions.organisations.put(
+      rest.actions.organisationUnit.put(
         { organisationId: id },
-        {
-          body: {
-            leftId,
-            rightId,
-            name,
-          },
-        },
+        { body: JSON.stringify(body) },
       ),
-    );
+    )
+      .then(cb)
+      .catch(fail);
   },
-  createOrganisationUnit: (parent, name) => {
+  createOrganisationUnit: (body, cb, fail) => {
+    console.log(body);
     dispatch(
-      rest.actions.organisations.post({
-        parent,
-        name,
-      }),
-    );
+      rest.actions.organisationCreate(null, { body: JSON.stringify(body) }),
+    )
+      .then(cb)
+      .catch(fail);
   },
-  deleteOrganisationUnit: id => {
+  deleteOrganisationUnit: (id, cb, fail) => {
     dispatch(
-      rest.actions.organisations.delete({
+      rest.actions.organisationUnit.delete({
         organisationId: id,
       }),
-    );
+    )
+      .then(cb)
+      .catch(fail);
   },
 });
 
@@ -55,24 +62,29 @@ class OrganisationManagement extends React.Component {
     super(props);
 
     this.state = {
-      orderBy: 'name',
+      orderBy: 'leftId',
       order: 'asc',
       name1: '',
       page: 0,
       pageEntries: 20,
-      dialogOpen: false,
+      editDialogOpen: false,
+      deleteDialogOpen: false,
       submitting: false,
+      unit: {},
     };
 
     this.saveOrganisationUnit = this.saveOrganisationUnit.bind(this);
+    this.editOrganisationUnit = this.editOrganisationUnit.bind(this);
+    this.deleteOrganisationUnit = this.deleteOrganisationUnit.bind(this);
     this.notSubmitting = this.notSubmitting.bind(this);
+    this.closeAndLoad = this.closeAndLoad.bind(this);
   }
 
   componentWillMount() {
-    this.loadEmployees();
+    this.loadOrganisations();
   }
 
-  loadEmployees(p = {}) {
+  loadOrganisations(p = {}) {
     const { dispatch } = this.props;
     const params = Object.assign(this.state, p);
 
@@ -86,32 +98,33 @@ class OrganisationManagement extends React.Component {
       order: params.order,
     };
 
-    dispatch(rest.actions.employees(queryParams));
+    this.props.getOrganisations(queryParams);
   }
 
-  loadEmployee(user) {
-    const { dispatch } = this.props;
-
-    dispatch(
-      rest.actions.employee.get({ id: user.id }, () => {
-        this.setState({
-          dialogOpen: true,
-        });
-      }),
-    );
+  editOrganisationUnit(row) {
+    this.props.loadOrganisationUnit(row.id);
+    this.openEditDialog();
   }
 
-  openDialog() {
+  deleteOrganisationUnit(row) {
     this.setState({
-      dialogOpen: true,
-      user: {},
+      deleteDialogOpen: true,
+      unit: row,
     });
   }
 
-  closeDialog() {
+  openEditDialog(organisationId) {
     this.setState({
-      dialogOpen: false,
-      user: {},
+      editDialogOpen: true,
+      unit: {},
+    });
+  }
+
+  closeDialogs() {
+    this.setState({
+      editDialogOpen: false,
+      deleteDialogOpen: false,
+      unit: {},
     });
   }
 
@@ -119,36 +132,69 @@ class OrganisationManagement extends React.Component {
     this.setState({ submitting: false });
   }
 
-  saveEmployee(employeeId, data) {
-    const { dispatch } = this.props;
-
+  saveOrganisationUnit(organisationId, data) {
     this.setState({ submitting: true });
 
-    if (employeeId) {
-      dispatch(
-        rest.actions.employee.patch(
-          { id: employeeId },
-          { body: JSON.stringify(data) },
-        ),
-      )
-        .then(response => {
-          this.closeDialog();
-          this.loadEmployees();
-          this.notSubmitting();
-        })
-        .catch(this.notSubmitting);
+    if (organisationId) {
+      this.props.saveOrganisationUnit(
+        organisationId,
+        data,
+        this.closeAndLoad,
+        this.notSubmitting,
+      );
     } else {
-      dispatch(
-        rest.actions.employeeCreate(null, { body: JSON.stringify(data) }),
-      )
-        .then(response => {
-          this.closeDialog();
-          this.loadEmployees();
-          this.notSubmitting();
-        })
-        .catch(this.notSubmitting);
+      this.props.createOrganisationUnit(
+        data,
+        this.closeAndLoad,
+        this.notSubmitting,
+      );
     }
   }
+
+  closeAndLoad() {
+    this.closeDialogs();
+    this.loadOrganisations();
+    this.notSubmitting();
+  }
+
+  renderEditDialog = () => {
+    const { organisations, organisationUnit } = this.props;
+
+    return this.state.editDialogOpen
+      ? <EditOrganisationDialog
+          open={this.state.editDialogOpen}
+          organisation={organisationUnit.data}
+          organisations={organisations.data.entries}
+          loading={organisationUnit.loading}
+          saving={this.state.submitting}
+          onRequestSave={this.saveOrganisationUnit.bind(this)}
+          onRequestClose={this.closeDialogs.bind(this)}
+        />
+      : null;
+  };
+
+  renderConfirmDelete = () => {
+    const { intl: { formatMessage } } = this.props;
+
+    return this.state.deleteDialogOpen
+      ? <DeleteDialog
+          handleDelete={() =>
+            this.props.deleteOrganisationUnit(
+              this.state.unit.id,
+              this.closeDialogs,
+              this.closeAndLoad,
+            )}
+          handleClose={event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            this.closeDialogs();
+          }}
+          open={this.state.deleteDialogOpen}
+          message={formatMessage({ id: 'deleteOrganisationUnitWarn' })}
+        />
+      : null;
+  };
 
   render() {
     const { organisations, intl: { formatMessage } } = this.props;
@@ -161,47 +207,42 @@ class OrganisationManagement extends React.Component {
         columnTitle: formatMessage({ id: 'organisationUnit' }),
       },
       {
-        component: (
-          <IconButton onClick={this.toggleEmployee}>
-            <Edit />
-          </IconButton>
-        ),
+        component: row =>
+          <div>
+            <IconButton onClick={() => this.editOrganisationUnit(row)}>
+              <Edit />
+            </IconButton>
+            <IconButton onClick={() => this.deleteOrganisationUnit(row)}>
+              <Delete />
+            </IconButton>
+          </div>,
         className: 'row-action',
       },
     ];
 
     return (
-      <div className="employee-management">
-        <Typography type="title">
-          {formatMessage({ id: 'employeeManagement' })}
-        </Typography>
+      <div className="organisation-management">
+        <PageHeader header={formatMessage({ id: 'organisationManagement' })} />
 
         <Button
-          className="add-employee"
+          className="add-organisation"
           color="primary"
-          onClick={() => this.openDialog()}
+          onClick={() => this.openEditDialog()}
         >
-          {formatMessage({ id: 'addEmployee' })}
+          {formatMessage({ id: 'addOrganisationUnit' })}
         </Button>
 
         <TableCard
+          order={this.state.order}
+          orderBy={this.state.orderBy}
           model={organisations}
           header={header}
-          onClickRow={this.loadEmployee}
-          refresh={this.loadOrganisation}
+          refresh={this.loadOrganisations}
           hideToolbar={true}
         />
 
-        {this.state.dialogOpen
-          ? <EditEmployeeDialog
-              open={this.state.dialogOpen}
-              employeeDetails={employee.data}
-              loading={this.state.loading}
-              saving={this.state.submitting}
-              onRequestSave={this.saveEmployee.bind(this)}
-              onRequestClose={this.closeDialog.bind(this)}
-            />
-          : null}
+        {this.renderEditDialog()}
+        {this.renderConfirmDelete()}
       </div>
     );
   }

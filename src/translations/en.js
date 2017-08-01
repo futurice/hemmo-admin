@@ -86,6 +86,16 @@ export default {
   resetPassword: 'Reset password',
   resetPasswordExplanation: 'A new password will be emailed to the user.',
 
+  // Organisation Managements
+  organisationManagement: 'Organisation management',
+  organisationUnit: 'Unit name',
+  addOrganisationUnit: 'Add organisation unit',
+  editOrganisationUnit: 'Edit organisation unit',
+  addUnitUnder: 'Add as a child of...',
+  addUnitAfter: 'Add after...',
+  deleteOrganisationUnitWarn:
+    'Deleting this organisation unit will remove it (and possible child units) permanently and unassign all employess from it! Only proceed if you are absolutely sure.',
+
   // Miscellaneous
   close: 'Close',
   save: 'Save',

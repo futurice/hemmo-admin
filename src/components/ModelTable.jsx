@@ -73,7 +73,10 @@ export default class ModelTable extends React.Component {
         return;
       }
 
-      let body = header.component;
+      let body =
+        typeof header.component === 'function'
+          ? header.component(row)
+          : header.component;
       let style = header.style;
 
       if (!body && header.value) {
@@ -105,7 +108,12 @@ export default class ModelTable extends React.Component {
         hover
         key={index}
         onClick={e => {
-          this.props.onClickRow(row);
+          if (
+            this.props.onClickRow &&
+            typeof this.props.onClickRow === 'function'
+          ) {
+            this.props.onClickRow(row);
+          }
         }}
       >
         {columns}
@@ -147,7 +155,7 @@ export default class ModelTable extends React.Component {
 ModelTable.propTypes = {
   entries: PropTypes.array.isRequired,
   header: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onClickRow: PropTypes.func.isRequired,
+  onClickRow: PropTypes.func,
   onSortRequest: PropTypes.func,
   order: PropTypes.string.isRequired,
   orderBy: PropTypes.string.isRequired,
