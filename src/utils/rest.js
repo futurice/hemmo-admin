@@ -228,9 +228,36 @@ const rest = reduxApi({
       action,
     ) {
       if (data) {
+        let hasChilds = false;
+        let indentLevel = 0;
+        let closingRightIds = [];
+        const formattedOrganisations = data.data.map(org => {
+          hasChilds = org.leftId + 1 === org.rightId ? false : true;
+
+          if (closingRightIds.includes(org.leftId - 1)) {
+            indentLevel -= 1;
+          }
+
+          if (hasChilds) {
+            closingRightIds.push(org.rightId);
+          }
+
+          const newObj = { ...org, className: `indent-${indentLevel}` };
+
+          // Has child so increate indentation
+          if (hasChilds) {
+            indentLevel += 1;
+          } else if (closingRightIds.includes(org.rightId + 1)) {
+            // We're closing indentation; calcuate how much to subtract
+            indentLevel -= org.rightId + 1 - org.rightId;
+          }
+
+          return newObj;
+        });
+
         return {
           ...prevData,
-          entries: data.data,
+          entries: formattedOrganisations,
           meta: data.meta,
         };
       } else {

@@ -195,11 +195,7 @@ class OrganisationManagement extends React.Component {
   };
 
   render() {
-    let hasChilds = false;
-    let indentLevel = 0;
-    let closingRightIds = [];
     const { organisations, intl: { formatMessage } } = this.props;
-
     const header = [
       {
         id: 'name',
@@ -219,29 +215,6 @@ class OrganisationManagement extends React.Component {
         className: 'row-action',
       },
     ];
-    const formattedOrganisations = organisations.data.entries.map(org => {
-      hasChilds = org.leftId + 1 === org.rightId ? false : true;
-
-      if (closingRightIds.includes(org.leftId - 1)) {
-        indentLevel -= 1;
-      }
-
-      if (hasChilds) {
-        closingRightIds.push(org.rightId);
-      }
-
-      const newObj = { ...org, className: `indent-${indentLevel}` };
-
-      // Has child so increate indentation
-      if (hasChilds) {
-        indentLevel += 1;
-      } else if (closingRightIds.includes(org.rightId + 1)) {
-        // We're closing indentation; calcuate how much to subtract
-        indentLevel -= org.rightId + 1 - org.rightId;
-      }
-
-      return newObj;
-    });
 
     return (
       <div className="organisation-management">
@@ -258,10 +231,7 @@ class OrganisationManagement extends React.Component {
         <TableCard
           order={this.state.order}
           orderBy={this.state.orderBy}
-          model={{
-            ...organisations,
-            data: { entries: formattedOrganisations },
-          }}
+          model={organisations}
           header={header}
           refresh={this.loadOrganisations}
           hideToolbar={true}

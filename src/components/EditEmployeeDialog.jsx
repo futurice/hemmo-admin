@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 
 import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 import Switch from 'material-ui/Switch';
-import { FormControlLabel } from 'material-ui/Form';
+import { FormControlLabel, FormLabel } from 'material-ui/Form';
 import TextField from 'material-ui/TextField';
 import Dialog, {
   DialogTitle,
@@ -15,18 +16,34 @@ import FullscreenSpinner from './FullscreenSpinner';
 import FormControl from 'material-ui/Form/FormControl';
 import Divider from 'material-ui/Divider';
 
+import SelectMenu from '../components/SelectMenu';
+
 @injectIntl
 export default class EditEmployeeDialog extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      id: null,
+      name: '',
+      email: '',
+      active: true,
+      organisationId: null,
+      organisationName: '',
+      resetPassword: false,
+    };
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.setState({
       id: this.props.employeeDetails.id || null,
       name: this.props.employeeDetails.name || '',
       email: this.props.employeeDetails.email || '',
       active: this.props.employeeDetails.active || true,
+      organisationId: this.props.employeeDetails.organisationId || null,
+      organisationName: this.props.employeeDetails.organisationName || '',
       resetPassword: false,
-    };
+    });
   }
 
   closeDialog() {
@@ -38,6 +55,7 @@ export default class EditEmployeeDialog extends React.Component {
       name: this.state.name,
       email: this.state.email,
       active: this.state.active,
+      organisationId: this.state.organisationId,
     };
 
     if (this.state.resetPassword) {
@@ -66,6 +84,15 @@ export default class EditEmployeeDialog extends React.Component {
     const field = event.target.name;
 
     this.setState({ ...this.state, [field]: value });
+  }
+
+  selectOrganisation(organisationId) {
+    this.setState({
+      organisationId,
+      organisationName: this.props.organisation.find(
+        org => org.id === organisationId,
+      ).name,
+    });
   }
 
   render() {
@@ -106,10 +133,27 @@ export default class EditEmployeeDialog extends React.Component {
                   />
                 </FormControl>
 
+                <FormControl className="form-control">
+                  <FormLabel>
+                    {formatMessage({ id: 'organisationUnit' })}
+                  </FormLabel>
+                  <SelectMenu
+                    id="organisation-position"
+                    selectedId={this.state.organisationId || 0}
+                    loading={this.props.loading}
+                    data={this.props.organisation}
+                    label={this.state.organisationName}
+                    onSelect={this.selectOrganisation.bind(this)}
+                  />
+                </FormControl>
+
                 <FormControl
                   className="form-control"
                   style={{ marginBottom: 0 }}
                 >
+                  <FormLabel>
+                    {formatMessage({ id: 'accountStatus' })}
+                  </FormLabel>
                   <FormControlLabel
                     control={
                       <Switch
@@ -171,3 +215,13 @@ export default class EditEmployeeDialog extends React.Component {
     );
   }
 }
+
+EditEmployeeDialog.propTypes = {
+  open: PropTypes.bool.isRequired,
+  employeeDetails: PropTypes.object.isRequired,
+  organisation: PropTypes.array.isRequired,
+  loading: PropTypes.bool.isRequired,
+  saving: PropTypes.bool.isRequired,
+  onRequestSave: PropTypes.func.isRequired,
+  onRequestClose: PropTypes.func.isRequired,
+};

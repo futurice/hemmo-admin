@@ -66,6 +66,7 @@ export default {
   resetStateExplanation:
     'Käytä tätä toimintoa jos huomaat ongelmia sovelluksen toiminnassa. Vaikuttaa ainoastaan sinun sessioon.',
   resetStateButton: 'Nollaa tila',
+  accountStatus: 'Tilin tila',
 
   ownDetails: 'Omat tiedot',
   newPassword: 'Uusi salasana',
@@ -88,7 +89,7 @@ export default {
 
   // Organisation Managements
   organisationManagement: 'Organisaation hallinta',
-  organisationUnit: 'Yksikön nimi',
+  organisationUnit: 'Organisaatio yksikkö',
   addOrganisationUnit: 'Lisää yksikkö',
   editOrganisationUnit: 'Muokkaa yksikköä',
   addUnitUnder: 'Lisää lapseksi...',

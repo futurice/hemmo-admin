@@ -75,6 +75,7 @@ export default {
     'You need to type in new password only if you want to change it.',
   passwordMismatch: 'Passwords are not identical.',
   detailsUpdated: 'Details updated',
+  accountStatus: 'Account status',
 
   // Employee management
   employeeManagement: 'Employee management',
@@ -88,7 +89,7 @@ export default {
 
   // Organisation Managements
   organisationManagement: 'Organisation management',
-  organisationUnit: 'Unit name',
+  organisationUnit: 'Organisation unit',
   addOrganisationUnit: 'Add organisation unit',
   editOrganisationUnit: 'Edit organisation unit',
   addUnitUnder: 'Add as a child of...',
