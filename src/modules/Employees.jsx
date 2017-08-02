@@ -38,7 +38,7 @@ const mapDispatchToProps = dispatch => ({
       .catch(fail);
   },
   createEmployee: (body, cb, fail) => {
-    dispatch(rest.actions.employee.patch(null, { body: JSON.stringify(body) }))
+    dispatch(rest.actions.employeeCreate(null, { body: JSON.stringify(body) }))
       .then(cb)
       .catch(fail);
   },
@@ -161,9 +161,19 @@ class EmployeeManagement extends React.Component {
       },
       {
         id: 'createdAt',
-        value: row => new Date(row.createdAt).toLocaleDateString(),
+        value: row =>
+          new Date(row.createdAt).toLocaleDateString(navigator.languages, {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+          }),
         columnTitle: formatMessage({ id: 'createdAt' }),
         maxShowWidth: 440,
+      },
+      {
+        id: 'organisation',
+        value: row => row.organisationName,
+        columnTitle: formatMessage({ id: 'organisationUnit' }),
       },
       {
         component: (
