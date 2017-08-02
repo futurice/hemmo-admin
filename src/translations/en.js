@@ -96,6 +96,7 @@ export default {
   addUnitAfter: 'Add after...',
   deleteOrganisationUnitWarn:
     'Deleting this organisation unit will remove it (and possible child units) permanently and unassign all employess from it! Only proceed if you are absolutely sure.',
+  memberCount: 'Member count',
 
   // Miscellaneous
   close: 'Close',

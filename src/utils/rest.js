@@ -242,7 +242,9 @@ const rest = reduxApi({
             closingRightIds.push(org.rightId);
           }
 
-          const newObj = { ...org, className: `indent-${indentLevel}` };
+          const newObj = indentLevel
+            ? { ...org, className: `indent-${indentLevel}` }
+            : org;
 
           // Has child so increate indentation
           if (hasChilds) {

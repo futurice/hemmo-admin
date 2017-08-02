@@ -36,13 +36,12 @@ export default class EditEmployeeDialog extends React.Component {
 
   componentWillReceiveProps(newProps) {
     this.setState({
-      id: this.props.employeeDetails.id || null,
-      name: this.props.employeeDetails.name || '',
-      email: this.props.employeeDetails.email || '',
-      active: this.props.employeeDetails.active || true,
-      organisationId: this.props.employeeDetails.organisationId || null,
-      organisationName: this.props.employeeDetails.organisationName || '',
-      resetPassword: false,
+      id: newProps.employeeDetails.id || null,
+      name: newProps.employeeDetails.name || '',
+      email: newProps.employeeDetails.email || '',
+      active: newProps.employeeDetails.active || true,
+      organisationId: newProps.employeeDetails.organisationId || null,
+      organisationName: newProps.employeeDetails.organisationName || '',
     });
   }
 

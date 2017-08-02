@@ -96,6 +96,7 @@ export default {
   addUnitAfter: 'Lisää jälkeen...',
   deleteOrganisationUnitWarn:
     'Tämän yksikön poistaminen (sekä mahdollisten alayksiköiden) on peruuttamatonta ja se poistaa myös kaikki liitokset työntekijöihin! Etene vain, jos olet täysin varma.',
+  memberCount: 'Jäsenmäärä',
 
   // Table toolbar
   childsName: 'Lapsen nimi',

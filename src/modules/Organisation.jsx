@@ -203,6 +203,12 @@ class OrganisationManagement extends React.Component {
         columnTitle: formatMessage({ id: 'organisationUnit' }),
       },
       {
+        id: 'members',
+        value: row => row.memberCount,
+        columnTitle: formatMessage({ id: 'memberCount' }),
+        className: 'align-right',
+      },
+      {
         component: row =>
           <div>
             <IconButton onClick={() => this.editOrganisationUnit(row)}>
