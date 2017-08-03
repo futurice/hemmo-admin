@@ -203,9 +203,15 @@ class OrganisationManagement extends React.Component {
         columnTitle: formatMessage({ id: 'organisationUnit' }),
       },
       {
-        id: 'members',
-        value: row => row.memberCount,
-        columnTitle: formatMessage({ id: 'memberCount' }),
+        id: 'membersTotal',
+        value: row => row.membersTotal.toString(),
+        columnTitle: formatMessage({ id: 'membersTotal' }),
+        className: 'align-right',
+      },
+      {
+        id: 'membersActive',
+        value: row => (row.membersActive ? row.membersActive.toString() : '0'),
+        columnTitle: formatMessage({ id: 'membersActive' }),
         className: 'align-right',
       },
       {

@@ -86,6 +86,8 @@ export default {
   active: 'Active',
   resetPassword: 'Reset password',
   resetPasswordExplanation: 'A new password will be emailed to the user.',
+  userStatus: 'Employee status',
+  childrenCount: 'Number of children',
 
   // Organisation Managements
   organisationManagement: 'Organisation management',
@@ -96,7 +98,8 @@ export default {
   addUnitAfter: 'Add after...',
   deleteOrganisationUnitWarn:
     'Deleting this organisation unit will remove it (and possible child units) permanently and unassign all employess from it! Only proceed if you are absolutely sure.',
-  memberCount: 'Member count',
+  membersTotal: 'Members count',
+  membersActive: 'Activated members',
 
   // Miscellaneous
   close: 'Close',

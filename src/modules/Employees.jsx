@@ -6,6 +6,8 @@ import { injectIntl } from 'react-intl';
 import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import Edit from 'material-ui-icons/Edit';
+import Visibility from 'material-ui-icons/Visibility';
+import VisibilityOff from 'material-ui-icons/VisibilityOff';
 
 import PageHeader from '../components/PageHeader';
 import TableCard from '../components/TableCard';
@@ -158,6 +160,20 @@ class EmployeeManagement extends React.Component {
         id: 'email',
         value: row => row.email,
         columnTitle: formatMessage({ id: 'email' }),
+      },
+      {
+        id: 'userStatus',
+        columnTitle: formatMessage({ id: 'userStatus' }),
+        component: row =>
+          <IconButton disabled={!row.active}>
+            {row.active ? <Visibility /> : <VisibilityOff />}
+          </IconButton>,
+      },
+      {
+        id: 'childrenCount',
+        columnTitle: formatMessage({ id: 'childrenCount' }),
+        value: row => row.childrenCount.toString(),
+        className: 'align-right',
       },
       {
         id: 'createdAt',

@@ -86,6 +86,8 @@ export default {
   resetPassword: 'Resetoi salasana',
   resetPasswordExplanation:
     'Uusi salasana lähetetään käyttäjälle sähköpostilla.',
+  userStatus: 'Käyttäjän tila',
+  childrenCount: 'Lasten määrä',
 
   // Organisation Managements
   organisationManagement: 'Organisaation hallinta',
@@ -96,7 +98,8 @@ export default {
   addUnitAfter: 'Lisää jälkeen...',
   deleteOrganisationUnitWarn:
     'Tämän yksikön poistaminen (sekä mahdollisten alayksiköiden) on peruuttamatonta ja se poistaa myös kaikki liitokset työntekijöihin! Etene vain, jos olet täysin varma.',
-  memberCount: 'Jäsenmäärä',
+  membersTotal: 'Jäsenmäärä',
+  membersActive: 'Aktivoituja jäseniä',
 
   // Table toolbar
   childsName: 'Lapsen nimi',
