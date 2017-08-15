@@ -75,6 +75,7 @@ export default {
     'You need to type in new password only if you want to change it.',
   passwordMismatch: 'Passwords are not identical.',
   detailsUpdated: 'Details updated',
+  accountStatus: 'Account status',
 
   // Employee management
   employeeManagement: 'Employee management',
@@ -85,16 +86,20 @@ export default {
   active: 'Active',
   resetPassword: 'Reset password',
   resetPasswordExplanation: 'A new password will be emailed to the user.',
+  userStatus: 'Employee status',
+  childrenCount: 'Number of children',
 
   // Organisation Managements
   organisationManagement: 'Organisation management',
-  organisationUnit: 'Unit name',
+  organisationUnit: 'Organisation unit',
   addOrganisationUnit: 'Add organisation unit',
   editOrganisationUnit: 'Edit organisation unit',
   addUnitUnder: 'Add as a child of...',
   addUnitAfter: 'Add after...',
   deleteOrganisationUnitWarn:
     'Deleting this organisation unit will remove it (and possible child units) permanently and unassign all employess from it! Only proceed if you are absolutely sure.',
+  membersTotal: 'Members count',
+  membersActive: 'Activated members',
 
   // Miscellaneous
   close: 'Close',

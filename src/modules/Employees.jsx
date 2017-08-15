@@ -6,6 +6,8 @@ import { injectIntl } from 'react-intl';
 import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import Edit from 'material-ui-icons/Edit';
+import Visibility from 'material-ui-icons/Visibility';
+import VisibilityOff from 'material-ui-icons/VisibilityOff';
 
 import PageHeader from '../components/PageHeader';
 import TableCard from '../components/TableCard';
@@ -14,6 +16,34 @@ import EditEmployeeDialog from '../components/EditEmployeeDialog';
 const mapStateToProps = state => ({
   employees: state.employees,
   employee: state.employee,
+  organisation: state.organisations,
+});
+
+const mapDispatchToProps = dispatch => ({
+  getOrganisation: () => {
+    dispatch(rest.actions.organisations());
+  },
+  getEmployees: params => {
+    dispatch(rest.actions.employees(params));
+  },
+  getEmployee: (employeeId, cb) => {
+    dispatch(rest.actions.employee.get({ id: employeeId }, cb));
+  },
+  saveEmployee: (employeeId, body, cb, fail) => {
+    dispatch(
+      rest.actions.employee.patch(
+        { id: employeeId },
+        { body: JSON.stringify(body) },
+      ),
+    )
+      .then(cb)
+      .catch(fail);
+  },
+  createEmployee: (body, cb, fail) => {
+    dispatch(rest.actions.employeeCreate(null, { body: JSON.stringify(body) }))
+      .then(cb)
+      .catch(fail);
+  },
 });
 
 @injectIntl
@@ -36,10 +66,12 @@ class EmployeeManagement extends React.Component {
     this.loadEmployees = this.loadEmployees.bind(this);
     this.saveEmployee = this.saveEmployee.bind(this);
     this.notSubmitting = this.notSubmitting.bind(this);
+    this.closeAndLoad = this.closeAndLoad.bind(this);
   }
 
   componentWillMount() {
     this.loadEmployees();
+    this.props.getOrganisation();
   }
 
   loadEmployees(p = {}) {
@@ -56,17 +88,14 @@ class EmployeeManagement extends React.Component {
       order: params.order,
     };
 
-    dispatch(rest.actions.employees(queryParams));
+    this.props.getEmployees(queryParams);
   }
 
   loadEmployee(user) {
-    const { dispatch } = this.props;
-
-    dispatch(
-      rest.actions.employee.get({ id: user.id }, () => {
-        this.setState({
-          dialogOpen: true,
-        });
+    this.props.getEmployee(
+      user.id,
+      this.setState({
+        dialogOpen: true,
       }),
     );
   }
@@ -89,39 +118,36 @@ class EmployeeManagement extends React.Component {
     this.setState({ submitting: false });
   }
 
+  closeAndLoad() {
+    this.closeDialog();
+    this.loadEmployees();
+    this.notSubmitting();
+  }
+
   saveEmployee(employeeId, data) {
     const { dispatch } = this.props;
 
     this.setState({ submitting: true });
 
     if (employeeId) {
-      dispatch(
-        rest.actions.employee.patch(
-          { id: employeeId },
-          { body: JSON.stringify(data) },
-        ),
-      )
-        .then(response => {
-          this.closeDialog();
-          this.loadEmployees();
-          this.notSubmitting();
-        })
-        .catch(this.notSubmitting);
+      this.props.saveEmployee(
+        employeeId,
+        data,
+        this.closeAndLoad,
+        this.notSubmitting,
+      );
     } else {
-      dispatch(
-        rest.actions.employeeCreate(null, { body: JSON.stringify(data) }),
-      )
-        .then(response => {
-          this.closeDialog();
-          this.loadEmployees();
-          this.notSubmitting();
-        })
-        .catch(this.notSubmitting);
+      this.props.createEmployee(data, this.closeAndLoad, this.notSubmitting);
     }
   }
 
   render() {
-    const { employees, employee, intl: { formatMessage } } = this.props;
+    const {
+      employees,
+      employee,
+      organisation,
+      intl: { formatMessage },
+    } = this.props;
     const initialPage = 0;
     const pageEntries = 20;
     const header = [
@@ -136,10 +162,34 @@ class EmployeeManagement extends React.Component {
         columnTitle: formatMessage({ id: 'email' }),
       },
       {
+        id: 'userStatus',
+        columnTitle: formatMessage({ id: 'userStatus' }),
+        component: row =>
+          <IconButton disabled={!row.active}>
+            {row.active ? <Visibility /> : <VisibilityOff />}
+          </IconButton>,
+      },
+      {
+        id: 'childrenCount',
+        columnTitle: formatMessage({ id: 'childrenCount' }),
+        value: row => row.childrenCount.toString(),
+        className: 'align-right',
+      },
+      {
         id: 'createdAt',
-        value: row => new Date(row.createdAt).toLocaleDateString(),
+        value: row =>
+          new Date(row.createdAt).toLocaleDateString(navigator.languages, {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+          }),
         columnTitle: formatMessage({ id: 'createdAt' }),
         maxShowWidth: 440,
+      },
+      {
+        id: 'organisation',
+        value: row => row.organisationName,
+        columnTitle: formatMessage({ id: 'organisationUnit' }),
       },
       {
         component: (
@@ -179,7 +229,8 @@ class EmployeeManagement extends React.Component {
           ? <EditEmployeeDialog
               open={this.state.dialogOpen}
               employeeDetails={employee.data}
-              loading={this.state.loading}
+              organisation={organisation.data.entries}
+              loading={employee.loading}
               saving={this.state.submitting}
               onRequestSave={this.saveEmployee.bind(this)}
               onRequestClose={this.closeDialog.bind(this)}
@@ -190,4 +241,4 @@ class EmployeeManagement extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(EmployeeManagement);
+export default connect(mapStateToProps, mapDispatchToProps)(EmployeeManagement);

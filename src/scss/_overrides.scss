@@ -1,9 +1,9 @@
-.indent-1 {
+.indent-1:not(td), td.indent-1:first-child {
 	padding-left: 2rem !important;
 }
-.indent-2 {
+.indent-2:not(td), td.indent-2:first-child {
 	padding-left: 3rem !important;
 }
-.indent-3 {
+.indent-3:not(td), td.indent-3:first-child {
 	padding-left: 4rem !important;
 }

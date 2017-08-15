@@ -72,7 +72,7 @@ export default class SelectMenu extends React.Component {
             ? this.props.data.map((opt, i) =>
                 <MenuItem
                   key={i}
-                  className={opt.className}
+                  className={opt.className ? opt.className : null}
                   selected={opt.id === this.state.selectedIndex}
                   onClick={event => this.selectItem(event, opt.id)}
                 >
