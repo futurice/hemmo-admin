@@ -17,6 +17,7 @@ const mapStateToProps = state => ({
   employees: state.employees,
   employee: state.employee,
   organisation: state.organisations,
+  scope: state.auth.data.decoded.scope,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -143,6 +144,7 @@ class EmployeeManagement extends React.Component {
 
   render() {
     const {
+      scope,
       employees,
       employee,
       organisation,
@@ -191,15 +193,18 @@ class EmployeeManagement extends React.Component {
         value: row => row.organisationName,
         columnTitle: formatMessage({ id: 'organisationUnit' }),
       },
-      {
+    ];
+
+    if (scope === 'admin') {
+      header.push({
         component: (
           <IconButton onClick={this.toggleEmployee}>
             <Edit />
           </IconButton>
         ),
         className: 'row-action',
-      },
-    ];
+      });
+    }
 
     return (
       <div className="employee-management">
@@ -232,6 +237,7 @@ class EmployeeManagement extends React.Component {
               organisation={organisation.data.entries}
               loading={employee.loading}
               saving={this.state.submitting}
+              isAdmin={this.props.scope !== 'admin'}
               onRequestSave={this.saveEmployee.bind(this)}
               onRequestClose={this.closeDialog.bind(this)}
             />

@@ -111,7 +111,6 @@ const routeConfigs = [
     component: Employees,
     icon: Group,
     requiresLogin: true,
-    hideWhenScope: ['employee'],
     showInMenu: true,
   },
   {
