@@ -42,6 +42,7 @@ export default class EditEmployeeDialog extends React.Component {
       active: newProps.employeeDetails.active || true,
       organisationId: newProps.employeeDetails.organisationId || null,
       organisationName: newProps.employeeDetails.organisationName || '',
+      isAdmin: newProps.employeeDetails.scope === 'admin' || false,
     });
   }
 
@@ -59,6 +60,10 @@ export default class EditEmployeeDialog extends React.Component {
 
     if (this.state.resetPassword) {
       body.resetPassword = true;
+    }
+
+    if (this.props.isAdmin) {
+      body.scope = this.state.isAdmin ? 'admin' : 'employee';
     }
 
     this.props.onRequestSave(this.state.id, body);
@@ -167,6 +172,30 @@ export default class EditEmployeeDialog extends React.Component {
                           />
                         }
                         label={formatMessage({ id: 'active' })}
+                      />
+                    </FormControl>
+                  : null}
+                {this.props.isAdmin
+                  ? <FormControl
+                      className="form-control"
+                      style={{ marginBottom: 0 }}
+                    >
+                      <FormLabel>
+                        {formatMessage({ id: 'isSuperAdmin' })}
+                      </FormLabel>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={this.state.isAdmin}
+                            onChange={(event, checked) => {
+                              this.setState({
+                                ...this.state.isAdmin,
+                                isAdmin: checked,
+                              });
+                            }}
+                          />
+                        }
+                        label={formatMessage({ id: 'superAdmin' })}
                       />
                     </FormControl>
                   : null}

@@ -88,6 +88,8 @@ export default {
     'Uusi salasana lähetetään käyttäjälle sähköpostilla.',
   userStatus: 'Käyttäjän tila',
   childrenCount: 'Lasten määrä',
+  isSuperAdmin: 'Onko käyttäjä super admin',
+  superAdmin: 'Super Admin',
 
   // Organisation Managements
   organisationManagement: 'Organisaation hallinta',

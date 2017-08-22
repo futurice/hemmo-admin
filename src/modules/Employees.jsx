@@ -237,7 +237,7 @@ class EmployeeManagement extends React.Component {
               organisation={organisation.data.entries}
               loading={employee.loading}
               saving={this.state.submitting}
-              isAdmin={this.props.scope !== 'admin'}
+              isAdmin={this.props.scope === 'admin'}
               onRequestSave={this.saveEmployee.bind(this)}
               onRequestClose={this.closeDialog.bind(this)}
             />

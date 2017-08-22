@@ -88,6 +88,8 @@ export default {
   resetPasswordExplanation: 'A new password will be emailed to the user.',
   userStatus: 'Employee status',
   childrenCount: 'Number of children',
+  isSuperAdmin: 'Is employee a super admin',
+  superAdmin: 'Super Admin',
 
   // Organisation Managements
   organisationManagement: 'Organisation management',
