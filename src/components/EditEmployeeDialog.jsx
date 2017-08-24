@@ -42,6 +42,7 @@ export default class EditEmployeeDialog extends React.Component {
       active: newProps.employeeDetails.active || true,
       organisationId: newProps.employeeDetails.organisationId || null,
       organisationName: newProps.employeeDetails.organisationName || '',
+      isAdmin: newProps.employeeDetails.scope === 'admin' || false,
     });
   }
 
@@ -59,6 +60,10 @@ export default class EditEmployeeDialog extends React.Component {
 
     if (this.state.resetPassword) {
       body.resetPassword = true;
+    }
+
+    if (this.props.isAdmin) {
+      body.scope = this.state.isAdmin ? 'admin' : 'employee';
     }
 
     this.props.onRequestSave(this.state.id, body);
@@ -146,29 +151,55 @@ export default class EditEmployeeDialog extends React.Component {
                   />
                 </FormControl>
 
-                <FormControl
-                  className="form-control"
-                  style={{ marginBottom: 0 }}
-                >
-                  <FormLabel>
-                    {formatMessage({ id: 'accountStatus' })}
-                  </FormLabel>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={this.state.active}
-                        onChange={(event, checked) => {
-                          this.setState({
-                            ...this.state.user,
-                            active: checked,
-                          });
-                        }}
+                {this.props.isAdmin
+                  ? <FormControl
+                      className="form-control"
+                      style={{ marginBottom: 0 }}
+                    >
+                      <FormLabel>
+                        {formatMessage({ id: 'accountStatus' })}
+                      </FormLabel>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={this.state.active}
+                            onChange={(event, checked) => {
+                              this.setState({
+                                ...this.state.user,
+                                active: checked,
+                              });
+                            }}
+                          />
+                        }
+                        label={formatMessage({ id: 'active' })}
                       />
-                    }
-                    label={formatMessage({ id: 'active' })}
-                  />
-                </FormControl>
-                {this.state.id
+                    </FormControl>
+                  : null}
+                {this.props.isAdmin
+                  ? <FormControl
+                      className="form-control"
+                      style={{ marginBottom: 0 }}
+                    >
+                      <FormLabel>
+                        {formatMessage({ id: 'isSuperAdmin' })}
+                      </FormLabel>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={this.state.isAdmin}
+                            onChange={(event, checked) => {
+                              this.setState({
+                                ...this.state.isAdmin,
+                                isAdmin: checked,
+                              });
+                            }}
+                          />
+                        }
+                        label={formatMessage({ id: 'superAdmin' })}
+                      />
+                    </FormControl>
+                  : null}
+                {this.state.id && this.props.isAdmin
                   ? <div>
                       <Divider />
                       <FormControl className="form-control">
@@ -221,6 +252,7 @@ EditEmployeeDialog.propTypes = {
   organisation: PropTypes.array.isRequired,
   loading: PropTypes.bool.isRequired,
   saving: PropTypes.bool.isRequired,
+  isAdmin: PropTypes.bool.isRequired,
   onRequestSave: PropTypes.func.isRequired,
   onRequestClose: PropTypes.func.isRequired,
 };
