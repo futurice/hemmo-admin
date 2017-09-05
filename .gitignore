@@ -16,3 +16,6 @@ npm-debug.log
 
 # Processed styles
 src/**/*.css
+
+# Built styles
+public/index.css
