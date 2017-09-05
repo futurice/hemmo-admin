@@ -76,7 +76,6 @@ class EmployeeManagement extends React.Component {
   }
 
   loadEmployees(p = {}) {
-    const { dispatch } = this.props;
     const params = Object.assign(this.state, p);
 
     this.setState({ ...this.state, params });
@@ -126,8 +125,6 @@ class EmployeeManagement extends React.Component {
   }
 
   saveEmployee(employeeId, data) {
-    const { dispatch } = this.props;
-
     this.setState({ submitting: true });
 
     if (employeeId) {
