@@ -111,6 +111,11 @@ export default class ModelTable extends React.Component {
       <TableRow
         hover
         key={index}
+        className={
+          this.props.activeRow && this.props.activeRow === row.id
+            ? 'active'
+            : null
+        }
         onClick={e => {
           if (
             this.props.onClickRow &&
@@ -165,4 +170,5 @@ ModelTable.propTypes = {
   orderBy: PropTypes.string.isRequired,
   tableSort: PropTypes.bool,
   noDataMessage: PropTypes.string,
+  activeRow: PropTypes.string,
 };
