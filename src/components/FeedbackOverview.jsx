@@ -127,6 +127,7 @@ export default class FeedbackOverview extends React.Component {
           order={this.state.order}
           hideElems={['name1', 'name2', 'showAll']}
           hideToolbar={true}
+          activeRow={this.props.activeFeedback}
           header={[
             {
               id: null,

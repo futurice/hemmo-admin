@@ -32,6 +32,7 @@ class TableCard extends React.Component {
           entries={this.props.model.data.entries}
           onClickRow={this.props.onClickRow}
           onSortRequest={this.props.refresh}
+          activeRow={this.props.activeRow}
         />
       );
     }
@@ -75,6 +76,7 @@ TableCard.propTypes = {
   hideElems: PropTypes.array,
   customLabels: PropTypes.object,
   hideToolbar: PropTypes.bool,
+  activeRow: PropTypes.string,
 };
 
 export default TableCard;

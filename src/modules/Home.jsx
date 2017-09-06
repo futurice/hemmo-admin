@@ -105,7 +105,7 @@ class Home extends React.Component {
   }
 
   openFeedback(row) {
-    const path = '/feedback/' + row.id;
+    const path = `/children/${row.childId}/feedback/${row.id}`;
     this.props.changeView(path);
   }
 
