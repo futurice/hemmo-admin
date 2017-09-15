@@ -52,12 +52,13 @@ const mapDispatchToProps = dispatch => ({
       }),
     );
   },
-  updateFeedback: (feedbackId, data) => {
+  updateFeedback: (feedbackId, data, cb) => {
     dispatch(
       rest.actions.feedbackDetail.patch(
         { feedbackId: feedbackId },
         { body: JSON.stringify(data) },
       ),
+      cb(),
     );
   },
   getFeedback: params => {
@@ -77,6 +78,14 @@ const mapDispatchToProps = dispatch => ({
 
 @injectIntl
 class ChildWrapper extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      moodChanges: 0,
+    };
+  }
+
   componentWillMount() {
     this.props.getEmployees();
 
@@ -111,6 +120,14 @@ class ChildWrapper extends React.Component {
       : null;
   }
 
+  updateFeedback(feedbackId, data) {
+    this.props.updateFeedback(feedbackId, data, () => {
+      this.setState({
+        moodChanges: this.state.moodChanges + 1,
+      });
+    });
+  }
+
   renderChildDetails = () =>
     <Grid item xs={12} sm={6}>
       <ChildDetails
@@ -131,6 +148,7 @@ class ChildWrapper extends React.Component {
         refreshMoods={this.props.getMoods}
         refreshFeedback={this.props.getFeedback}
         openFeedback={this.props.openFeedback}
+        moodChanges={this.state.moodChanges}
       />
     </Grid>;
 
@@ -143,7 +161,7 @@ class ChildWrapper extends React.Component {
               childId={this.props.child.data.id}
               details={this.props.feedbackDetail}
               employees={this.props.employees}
-              onUpdate={this.props.updateFeedback.bind(this)}
+              onUpdate={this.updateFeedback.bind(this)}
               onDelete={this.props.deleteFeedback.bind(this)}
             />
           : <Grid
