@@ -39,7 +39,11 @@ export default class EditEmployeeDialog extends React.Component {
       id: newProps.employeeDetails.id || null,
       name: newProps.employeeDetails.name || '',
       email: newProps.employeeDetails.email || '',
-      active: newProps.employeeDetails.active || true,
+      active:
+        newProps.employeeDetails.active !== null &&
+        newProps.employeeDetails.active !== undefined
+          ? newProps.employeeDetails.active
+          : true,
       organisationId: newProps.employeeDetails.organisationId || null,
       organisationName: newProps.employeeDetails.organisationName || '',
       isAdmin: newProps.employeeDetails.scope === 'admin' || false,
@@ -54,7 +58,7 @@ export default class EditEmployeeDialog extends React.Component {
     let body = {
       name: this.state.name,
       email: this.state.email,
-      active: this.state.active,
+      active: this.state.active.toString(),
       organisationId: this.state.organisationId,
     };
 
