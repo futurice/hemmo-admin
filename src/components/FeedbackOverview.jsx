@@ -35,6 +35,14 @@ export default class FeedbackOverview extends React.Component {
     this.openFeedback = this.openFeedback.bind(this);
   }
 
+  shouldComponentUpdate(newProps) {
+    if (this.props.moodChanges !== newProps.moodChanges) {
+      this.refreshMoods();
+    }
+
+    return true;
+  }
+
   componentWillMount() {
     this.refreshFeedback();
     this.refreshMoods();

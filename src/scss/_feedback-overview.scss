@@ -68,7 +68,7 @@
 		&.negative {
 			background-image: url(/assets/thumb-negative.png);
 			background-color: $activity-negative;
-			bottom: 0;
+			top: calc(100% - 37px);
 		}
 	}
 }
