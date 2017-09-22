@@ -28,7 +28,7 @@ let apiRoot;
 if (process.env.NODE_ENV === 'development') {
   apiRoot = 'http://localhost:3001/admin';
 } else {
-  apiRoot = 'https://hemmo-backend.herokuapp.com/admin';
+  apiRoot = 'https://hemmo.pelastakaalapset.fi:3001/admin';
 }
 
 const emptyMeta = {
