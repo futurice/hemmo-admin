@@ -2,14 +2,14 @@
 
 ### Install dependencies
 ```
-npm install
+yarn install
 ```
 
 ### Start
 
 Run webpack-dev-server, get ready to code with hot reloading
 ```
-npm start
+yarn start
 ```
 
 ## Debugging
