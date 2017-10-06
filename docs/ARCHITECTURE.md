@@ -32,10 +32,6 @@ translations                # Translation files for i18n
 ├── en.js
 └── fi.js
 
-webpack
-├── hotReload.jsx           # HMR config
-├── template.html           # HTML template file
-└── webpack.config.*        # Webpack 2 config files for dev/production
 ```
 
 ## Components (src/components)
