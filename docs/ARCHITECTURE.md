@@ -10,10 +10,6 @@ assets
 ├── manifest.json           # Web app manifest file
 └── ...                     # + various image assets used as placeholders
 
-config
-├── development.js          # App config in development environments
-└── production.js           # App config in production environments
-
 dist
 └── ...                     # Contains built app ready for distribution
 
