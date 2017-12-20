@@ -104,6 +104,7 @@ export default {
     'Deleting this organisation unit will remove it (and possible child units) permanently and unassign all employess from it! Only proceed if you are absolutely sure.',
   membersTotal: 'Members count',
   membersActive: 'Activated members',
+  noOrganisation: '- No organisation -',
 
   // Miscellaneous
   close: 'Close',

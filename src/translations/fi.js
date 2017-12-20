@@ -104,6 +104,7 @@ export default {
     'Tämän yksikön poistaminen (sekä mahdollisten alayksiköiden) on peruuttamatonta ja se poistaa myös kaikki liitokset työntekijöihin! Etene vain, jos olet täysin varma.',
   membersTotal: 'Jäsenmäärä',
   membersActive: 'Aktivoituja jäseniä',
+  noOrganisation: '- Ei organisaatiota -',
 
   // Miscellaneous
   close: 'Sulje',

@@ -231,7 +231,10 @@ class EmployeeManagement extends React.Component {
           ? <EditEmployeeDialog
               open={this.state.dialogOpen}
               employeeDetails={employee.data}
-              organisation={organisation.data.entries}
+              organisation={[
+                { id: null, name: formatMessage({ id: 'noOrganisation' }) },
+                ...organisation.data.entries,
+              ]}
               loading={employee.loading}
               saving={this.state.submitting}
               isAdmin={this.props.scope === 'admin'}
