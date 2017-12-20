@@ -48,9 +48,7 @@ class ImageUpload extends React.Component {
 
     return (
       <div className="previewComponent">
-        <div>
-          {$imagePreview}
-        </div>
+        <div>{$imagePreview}</div>
         <div>
           <Button
             raised

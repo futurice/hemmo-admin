@@ -40,15 +40,15 @@ export default class ModelTable extends React.Component {
       }
 
       const sortLabel =
-        this.props.tableSort !== false
-          ? <TableSortLabel
-              active={this.props.orderBy === header.id}
-              order={this.props.order}
-              onClick={this.sortHandler(header.id)}
-            >
-              {header.columnTitle || ''}
-            </TableSortLabel>
-          : null;
+        this.props.tableSort !== false ? (
+          <TableSortLabel
+            active={this.props.orderBy === header.id}
+            order={this.props.order}
+            onClick={this.sortHandler(header.id)}
+          >
+            {header.columnTitle || ''}
+          </TableSortLabel>
+        ) : null;
 
       columns.push(
         <TableCell
@@ -135,27 +135,27 @@ export default class ModelTable extends React.Component {
 
     return (
       <div className="data-table">
-        {entries.length
-          ? <Table>
-              <TableHead>
-                <TableRow>
-                  {this.getHeaderColumns()}
-                </TableRow>
-              </TableHead>
+        {entries.length ? (
+          <Table>
+            <TableHead>
+              <TableRow>{this.getHeaderColumns()}</TableRow>
+            </TableHead>
 
-              <TableBody>
-                {entries.map((row, index) => this.getRowColumns(row, index))}
-              </TableBody>
-            </Table>
-          : <div
-              className="info"
-              style={{
-                background: blueGrey[50],
-                border: `1px solid ${blueGrey[100]}`,
-              }}
-            >
-              {formatMessage({ id: noDataMessage || 'noDatatoShow' })}
-            </div>}
+            <TableBody>
+              {entries.map((row, index) => this.getRowColumns(row, index))}
+            </TableBody>
+          </Table>
+        ) : (
+          <div
+            className="info"
+            style={{
+              background: blueGrey[50],
+              border: `1px solid ${blueGrey[100]}`,
+            }}
+          >
+            {formatMessage({ id: noDataMessage || 'noDatatoShow' })}
+          </div>
+        )}
       </div>
     );
   }

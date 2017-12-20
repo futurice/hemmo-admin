@@ -163,10 +163,11 @@ class EmployeeManagement extends React.Component {
       {
         id: 'userStatus',
         columnTitle: formatMessage({ id: 'userStatus' }),
-        component: row =>
+        component: row => (
           <IconButton disabled={!row.active}>
             {row.active ? <Visibility /> : <VisibilityOff />}
-          </IconButton>,
+          </IconButton>
+        ),
       },
       {
         id: 'childrenCount',
@@ -227,21 +228,21 @@ class EmployeeManagement extends React.Component {
           hideElems={['showAll', 'name2']}
         />
 
-        {this.state.dialogOpen
-          ? <EditEmployeeDialog
-              open={this.state.dialogOpen}
-              employeeDetails={employee.data}
-              organisation={[
-                { id: null, name: formatMessage({ id: 'noOrganisation' }) },
-                ...organisation.data.entries,
-              ]}
-              loading={employee.loading}
-              saving={this.state.submitting}
-              isAdmin={this.props.scope === 'admin'}
-              onRequestSave={this.saveEmployee.bind(this)}
-              onRequestClose={this.closeDialog.bind(this)}
-            />
-          : null}
+        {this.state.dialogOpen ? (
+          <EditEmployeeDialog
+            open={this.state.dialogOpen}
+            employeeDetails={employee.data}
+            organisation={[
+              { id: null, name: formatMessage({ id: 'noOrganisation' }) },
+              ...organisation.data.entries,
+            ]}
+            loading={employee.loading}
+            saving={this.state.submitting}
+            isAdmin={this.props.scope === 'admin'}
+            onRequestSave={this.saveEmployee.bind(this)}
+            onRequestClose={this.closeDialog.bind(this)}
+          />
+        ) : null}
       </div>
     );
   }

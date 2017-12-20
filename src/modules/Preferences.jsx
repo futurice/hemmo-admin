@@ -135,11 +135,9 @@ class Preferences extends React.Component {
 
   renderOwnDetails = () => {
     const { intl: { formatMessage } } = this.props;
-    const passwordError = this.state.passwordMismatch
-      ? <Typography>
-          {formatMessage({ id: 'passwordMismatch' })}
-        </Typography>
-      : null;
+    const passwordError = this.state.passwordMismatch ? (
+      <Typography>{formatMessage({ id: 'passwordMismatch' })}</Typography>
+    ) : null;
 
     return (
       <Paper className="paper" elevation={1}>
@@ -210,11 +208,13 @@ class Preferences extends React.Component {
             {formatMessage({ id: 'save' })}
           </Button>
 
-          {this.state.detailsUpdated
-            ? <span className="details-updated" style={{ color: green[600] }}>
-                {formatMessage({ id: 'detailsUpdated' })}
-              </span>
-            : ''}
+          {this.state.detailsUpdated ? (
+            <span className="details-updated" style={{ color: green[600] }}>
+              {formatMessage({ id: 'detailsUpdated' })}
+            </span>
+          ) : (
+            ''
+          )}
         </FormControl>
       </Paper>
     );
@@ -234,9 +234,7 @@ class Preferences extends React.Component {
         <Typography type="headline">
           {formatMessage({ id: 'appLanguage' })}
         </Typography>
-        <Typography>
-          {formatMessage({ id: 'appLanguageExplain' })}
-        </Typography>
+        <Typography>{formatMessage({ id: 'appLanguageExplain' })}</Typography>
         <div className="language-selection">
           <List>
             <ListItem
@@ -248,7 +246,8 @@ class Preferences extends React.Component {
                 this.setState({
                   languageMenuOpen: true,
                   languageMenuAnchor: e.currentTarget,
-                })}
+                })
+              }
             >
               <ListItemText
                 primary={formatMessage({ id: 'selectedLanguage' })}
@@ -268,7 +267,7 @@ class Preferences extends React.Component {
             open={this.state.languageMenuOpen}
             onRequestClose={() => this.setState({ languageMenuOpen: false })}
           >
-            {Object.keys(languages).map(language =>
+            {Object.keys(languages).map(language => (
               <MenuItem
                 key={language}
                 selected={language === activeLanguage}
@@ -278,8 +277,8 @@ class Preferences extends React.Component {
                 }}
               >
                 {languages[language].name}
-              </MenuItem>,
-            )}
+              </MenuItem>
+            ))}
           </Menu>
         </div>
 

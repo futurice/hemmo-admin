@@ -151,7 +151,8 @@ class Login extends React.Component {
                 this.props.doLogin({
                   email: this.state.email,
                   password: this.state.password,
-                })}
+                })
+              }
             >
               Login
             </Button>

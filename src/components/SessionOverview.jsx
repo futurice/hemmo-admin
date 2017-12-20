@@ -172,14 +172,16 @@ class Overview extends Component {
           <CardHeader
             title={session.data.user.name}
             subtitle={
-              avgLikes !== null
-                ? <FormattedMessage
-                    id="percentHappyInSession"
-                    values={{
-                      percent: Math.round((avgLikes + 1) / 2 * 100),
-                    }}
-                  />
-                : <FormattedMessage id="noFeedbackGiven" />
+              avgLikes !== null ? (
+                <FormattedMessage
+                  id="percentHappyInSession"
+                  values={{
+                    percent: Math.round((avgLikes + 1) / 2 * 100),
+                  }}
+                />
+              ) : (
+                <FormattedMessage id="noFeedbackGiven" />
+              )
             }
             style={{
               backgroundColor:
@@ -188,25 +190,30 @@ class Overview extends Component {
                   : avgLikes > -0.5 ? yellow300 : red300,
             }}
             avatar={
-              avgLikes > 0.5
-                ? <ThumbUp style={iconStyle} />
-                : avgLikes > -0.5
-                  ? <Neutral style={iconStyle} />
-                  : <ThumbDown style={iconStyle} />
+              avgLikes > 0.5 ? (
+                <ThumbUp style={iconStyle} />
+              ) : avgLikes > -0.5 ? (
+                <Neutral style={iconStyle} />
+              ) : (
+                <ThumbDown style={iconStyle} />
+              )
             }
           />
 
           <CardTitle subtitle={<FormattedMessage id="reviewStatus" />}>
             <CardText>
-              {' '}{session.data.reviewed
-                ? <Chip>
-                    <Avatar backgroundColor={lightGreen300} icon={<Done />} />
-                    <FormattedMessage id="reviewed" />
-                  </Chip>
-                : <Chip>
-                    <Avatar backgroundColor={red300} icon={<Announcement />} />
-                    <FormattedMessage id="notReviewed" />
-                  </Chip>}
+              {' '}
+              {session.data.reviewed ? (
+                <Chip>
+                  <Avatar backgroundColor={lightGreen300} icon={<Done />} />
+                  <FormattedMessage id="reviewed" />
+                </Chip>
+              ) : (
+                <Chip>
+                  <Avatar backgroundColor={red300} icon={<Announcement />} />
+                  <FormattedMessage id="notReviewed" />
+                </Chip>
+              )}
             </CardText>
           </CardTitle>
 
@@ -222,13 +229,13 @@ class Overview extends Component {
                   style={{ color: palette.accent3Color }}
                   primaryText={<FormattedMessage id="nobody" />}
                 />
-                {this.props.employees.data.map((row, index) =>
+                {this.props.employees.data.map((row, index) => (
                   <MenuItem
                     key={index}
                     value={row.employeeId}
                     primaryText={row.name}
-                  />,
-                )}
+                  />
+                ))}
               </SelectField>
             </CardText>
           </CardTitle>
@@ -238,37 +245,39 @@ class Overview extends Component {
               {new Date(session.data.createdAt).toLocaleDateString()}
             </CardText>
           </CardTitle>
-          {session.reviewed
-            ? null
-            : <CardActions>
-                <Button
-                  label={<FormattedMessage id="back" />}
-                  onTouchTap={() => {
-                    this.props.dispatch(goBack());
-                  }}
-                  icon={<ArrowBack />}
-                />
-                <Button
-                  label={
-                    session.data.reviewed
-                      ? <FormattedMessage id="markUnhandled" />
-                      : <FormattedMessage id="markReviewed" />
-                  }
-                  onTouchTap={() => {
-                    this.markReviewed(!session.data.reviewed);
-                  }}
-                  primary={!session.data.reviewed}
-                  icon={session.data.reviewed ? <Cancel /> : <ActionDone />}
-                />
-                <Button
-                  label={<FormattedMessage id="deleteFeedback" />}
-                  onTouchTap={() => {
-                    this.openDeleteDialog();
-                  }}
-                  style={{ color: red300 }}
-                  icon={<Warning />}
-                />
-              </CardActions>}
+          {session.reviewed ? null : (
+            <CardActions>
+              <Button
+                label={<FormattedMessage id="back" />}
+                onTouchTap={() => {
+                  this.props.dispatch(goBack());
+                }}
+                icon={<ArrowBack />}
+              />
+              <Button
+                label={
+                  session.data.reviewed ? (
+                    <FormattedMessage id="markUnhandled" />
+                  ) : (
+                    <FormattedMessage id="markReviewed" />
+                  )
+                }
+                onTouchTap={() => {
+                  this.markReviewed(!session.data.reviewed);
+                }}
+                primary={!session.data.reviewed}
+                icon={session.data.reviewed ? <Cancel /> : <ActionDone />}
+              />
+              <Button
+                label={<FormattedMessage id="deleteFeedback" />}
+                onTouchTap={() => {
+                  this.openDeleteDialog();
+                }}
+                style={{ color: red300 }}
+                icon={<Warning />}
+              />
+            </CardActions>
+          )}
         </Card>
       </div>
     );

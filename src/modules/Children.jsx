@@ -146,24 +146,26 @@ class Children extends React.Component {
             },
             {
               id: 'prevFeedbackDate',
-              value: row =>
+              value: row => (
                 <div>
                   <span className="icon">
-                    {row.showAlerts && row.alert
-                      ? <Alert
-                          style={{ color: orange[600], cursor: 'pointer' }}
-                          onClick={e => this.openSnoozeDialog(e, row.id)}
-                        />
-                      : null}
+                    {row.showAlerts && row.alert ? (
+                      <Alert
+                        style={{ color: orange[600], cursor: 'pointer' }}
+                        onClick={e => this.openSnoozeDialog(e, row.id)}
+                      />
+                    ) : null}
                   </span>
-                  {new Date(
-                    row.lastFeedbackDate,
-                  ).toLocaleDateString(navigator.languages, {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                  })}
-                </div>,
+                  {new Date(row.lastFeedbackDate).toLocaleDateString(
+                    navigator.languages,
+                    {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric',
+                    },
+                  )}
+                </div>
+              ),
               columnTitle: <FormattedMessage id="lastFeedback" />,
               className: 'date',
               maxShowWidth: 440,
@@ -181,13 +183,13 @@ class Children extends React.Component {
           refresh={this.refresh}
         />
 
-        {this.state.snoozeOpen
-          ? <SnoozeDialog
-              open={this.state.snoozeOpen}
-              handleRequestClose={this.snoozeAlerts}
-              childId={this.state.childId}
-            />
-          : null}
+        {this.state.snoozeOpen ? (
+          <SnoozeDialog
+            open={this.state.snoozeOpen}
+            handleRequestClose={this.snoozeAlerts}
+            childId={this.state.childId}
+          />
+        ) : null}
       </div>
     );
   }

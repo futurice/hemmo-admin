@@ -27,9 +27,7 @@ class SnoozeDialog extends React.Component {
 
     return (
       <Dialog open={open} onRequestClose={this.handleRequestClose}>
-        <DialogTitle>
-          {formatMessage({ id: 'snoozeAlerts' })}
-        </DialogTitle>
+        <DialogTitle>{formatMessage({ id: 'snoozeAlerts' })}</DialogTitle>
         <DialogContent>
           <DialogContentText>
             {formatMessage({ id: 'snoozeAlertsExplain' })}

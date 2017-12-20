@@ -69,7 +69,7 @@ export default class SelectMenu extends React.Component {
           onRequestClose={this.closeMenu}
         >
           {!this.props.loading
-            ? this.props.data.map((opt, i) =>
+            ? this.props.data.map((opt, i) => (
                 <MenuItem
                   key={i}
                   className={opt.className ? opt.className : null}
@@ -77,8 +77,8 @@ export default class SelectMenu extends React.Component {
                   onClick={event => this.selectItem(event, opt.id)}
                 >
                   {opt.name}
-                </MenuItem>,
-              )
+                </MenuItem>
+              ))
             : null}
         </Menu>
       </span>

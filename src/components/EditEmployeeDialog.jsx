@@ -118,120 +118,122 @@ export default class EditEmployeeDialog extends React.Component {
             : formatMessage({ id: 'addEmployee' })}
         </DialogTitle>
         <DialogContent className="dialog-content">
-          {loading
-            ? <FullscreenSpinner />
-            : <div>
-                <FormControl className="form-control">
-                  <TextField
-                    className="full-width-text-field"
-                    name="name"
-                    value={this.state.name}
-                    label={formatMessage({ id: 'name' })}
-                    onChange={this.updateAttr.bind(this)}
-                  />
-                </FormControl>
+          {loading ? (
+            <FullscreenSpinner />
+          ) : (
+            <div>
+              <FormControl className="form-control">
+                <TextField
+                  className="full-width-text-field"
+                  name="name"
+                  value={this.state.name}
+                  label={formatMessage({ id: 'name' })}
+                  onChange={this.updateAttr.bind(this)}
+                />
+              </FormControl>
 
-                <FormControl className="form-control">
-                  <TextField
-                    name="email"
-                    className="full-width-text-field"
-                    value={this.state.email}
-                    label={formatMessage({ id: 'email' })}
-                    onChange={this.updateAttr.bind(this)}
-                  />
-                </FormControl>
+              <FormControl className="form-control">
+                <TextField
+                  name="email"
+                  className="full-width-text-field"
+                  value={this.state.email}
+                  label={formatMessage({ id: 'email' })}
+                  onChange={this.updateAttr.bind(this)}
+                />
+              </FormControl>
 
-                <FormControl className="form-control">
+              <FormControl className="form-control">
+                <FormLabel>
+                  {formatMessage({ id: 'organisationUnit' })}
+                </FormLabel>
+                <SelectMenu
+                  id="organisation-position"
+                  selectedId={this.state.organisationId || 0}
+                  loading={this.props.loading}
+                  data={this.props.organisation}
+                  label={this.state.organisationName}
+                  onSelect={this.selectOrganisation.bind(this)}
+                />
+              </FormControl>
+
+              {this.props.isAdmin ? (
+                <FormControl
+                  className="form-control"
+                  style={{ marginBottom: 0 }}
+                >
                   <FormLabel>
-                    {formatMessage({ id: 'organisationUnit' })}
+                    {formatMessage({ id: 'accountStatus' })}
                   </FormLabel>
-                  <SelectMenu
-                    id="organisation-position"
-                    selectedId={this.state.organisationId || 0}
-                    loading={this.props.loading}
-                    data={this.props.organisation}
-                    label={this.state.organisationName}
-                    onSelect={this.selectOrganisation.bind(this)}
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={this.state.active}
+                        onChange={(event, checked) => {
+                          this.setState({
+                            ...this.state.user,
+                            active: checked,
+                          });
+                        }}
+                      />
+                    }
+                    label={formatMessage({ id: 'active' })}
                   />
                 </FormControl>
-
-                {this.props.isAdmin
-                  ? <FormControl
-                      className="form-control"
-                      style={{ marginBottom: 0 }}
-                    >
-                      <FormLabel>
-                        {formatMessage({ id: 'accountStatus' })}
-                      </FormLabel>
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            checked={this.state.active}
-                            onChange={(event, checked) => {
-                              this.setState({
-                                ...this.state.user,
-                                active: checked,
-                              });
-                            }}
-                          />
-                        }
-                        label={formatMessage({ id: 'active' })}
+              ) : null}
+              {this.props.isAdmin ? (
+                <FormControl
+                  className="form-control"
+                  style={{ marginBottom: 0 }}
+                >
+                  <FormLabel>{formatMessage({ id: 'isSuperAdmin' })}</FormLabel>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={this.state.isAdmin}
+                        onChange={(event, checked) => {
+                          this.setState({
+                            ...this.state.isAdmin,
+                            isAdmin: checked,
+                          });
+                        }}
                       />
-                    </FormControl>
-                  : null}
-                {this.props.isAdmin
-                  ? <FormControl
-                      className="form-control"
-                      style={{ marginBottom: 0 }}
-                    >
-                      <FormLabel>
-                        {formatMessage({ id: 'isSuperAdmin' })}
-                      </FormLabel>
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            checked={this.state.isAdmin}
-                            onChange={(event, checked) => {
-                              this.setState({
-                                ...this.state.isAdmin,
-                                isAdmin: checked,
-                              });
-                            }}
-                          />
-                        }
-                        label={formatMessage({ id: 'superAdmin' })}
-                      />
-                    </FormControl>
-                  : null}
-                {this.state.id && this.props.isAdmin
-                  ? <div>
-                      <Divider />
-                      <FormControl className="form-control">
-                        <FormControlLabel
-                          control={
-                            <Switch
-                              checked={this.state.resetPassword}
-                              onChange={(event, checked) => {
-                                this.setState({
-                                  ...this.state,
-                                  resetPassword: checked,
-                                });
-                              }}
-                            />
-                          }
-                          label={formatMessage({ id: 'resetPassword' })}
+                    }
+                    label={formatMessage({ id: 'superAdmin' })}
+                  />
+                </FormControl>
+              ) : null}
+              {this.state.id && this.props.isAdmin ? (
+                <div>
+                  <Divider />
+                  <FormControl className="form-control">
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={this.state.resetPassword}
+                          onChange={(event, checked) => {
+                            this.setState({
+                              ...this.state,
+                              resetPassword: checked,
+                            });
+                          }}
                         />
-                        {this.state.resetPassword
-                          ? <Typography>
-                              {formatMessage({
-                                id: 'resetPasswordExplanation',
-                              })}
-                            </Typography>
-                          : ''}
-                      </FormControl>
-                    </div>
-                  : null}
-              </div>}
+                      }
+                      label={formatMessage({ id: 'resetPassword' })}
+                    />
+                    {this.state.resetPassword ? (
+                      <Typography>
+                        {formatMessage({
+                          id: 'resetPasswordExplanation',
+                        })}
+                      </Typography>
+                    ) : (
+                      ''
+                    )}
+                  </FormControl>
+                </div>
+              ) : null}
+            </div>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={this.closeDialog.bind(this)}>

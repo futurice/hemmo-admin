@@ -192,27 +192,31 @@ class AuthRedirectRoute extends React.Component {
       <Route
         {...rest}
         render={props =>
-          !requiresLogin || loggedIn
-            ? <ChildComponent {...props} />
-            : <Redirect
-                to={{
-                  pathname: '/login',
-                  state: { from: props.location },
-                }}
-              />}
+          !requiresLogin || loggedIn ? (
+            <ChildComponent {...props} />
+          ) : (
+            <Redirect
+              to={{
+                pathname: '/login',
+                state: { from: props.location },
+              }}
+            />
+          )
+        }
       />
     );
   }
 }
 
 // Map all configured routes into AuthRedirectRoute components
-export const ConfiguredRoutes = ({ ...rest }) =>
+export const ConfiguredRoutes = ({ ...rest }) => (
   <Switch>
-    {routeConfigs.map(routeConfig =>
-      <AuthRedirectRoute key={routeConfig.path} {...routeConfig} {...rest} />,
-    )}
+    {routeConfigs.map(routeConfig => (
+      <AuthRedirectRoute key={routeConfig.path} {...routeConfig} {...rest} />
+    ))}
     <Route component={NotFound} />
-  </Switch>;
+  </Switch>
+);
 
 // Return list of routes to show in navigation element(s)
 export const NavigationRoutes = (user, path) => {

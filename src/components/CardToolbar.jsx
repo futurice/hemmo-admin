@@ -147,7 +147,8 @@ export default class CardToolbar extends React.Component {
           aria-owns="simple-menu"
           aria-haspopup="true"
           onClick={e =>
-            this.setState({ pageEntriesOpen: true, anchorEl: e.currentTarget })}
+            this.setState({ pageEntriesOpen: true, anchorEl: e.currentTarget })
+          }
         >
           {this.state.pageEntries}
           <ArrowDropDown />
@@ -158,15 +159,15 @@ export default class CardToolbar extends React.Component {
           open={this.state.pageEntriesOpen}
           onRequestClose={this.setPageEntries}
         >
-          {[5, 20, 50, 100].map((opt, index) =>
+          {[5, 20, 50, 100].map((opt, index) => (
             <MenuItem
               key={opt}
               selected={opt === this.state.pageEntries}
               onClick={event => this.setPageEntries(event, opt)}
             >
               {opt}
-            </MenuItem>,
-          )}
+            </MenuItem>
+          ))}
         </Menu>
       </span>,
     );
@@ -200,11 +201,7 @@ export default class CardToolbar extends React.Component {
       </span>,
     );
 
-    return (
-      <Toolbar className="toolbar">
-        {toolbarItems}
-      </Toolbar>
-    );
+    return <Toolbar className="toolbar">{toolbarItems}</Toolbar>;
   }
 }
 

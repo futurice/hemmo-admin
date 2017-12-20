@@ -33,17 +33,19 @@ export default class CardGridWrapper extends React.Component {
     width: PropTypes.string.isRequired,
   };
 
-  renderChildDesktop = (component, index) =>
+  renderChildDesktop = (component, index) => (
     <Hidden key={index} xsDown>
       <Grid item sm={12} md={10} lg={6} xl={4}>
         {component}
       </Grid>
-    </Hidden>;
+    </Hidden>
+  );
 
-  renderChildMobile = component =>
+  renderChildMobile = component => (
     <Grid item xs={12}>
       {component}
-    </Grid>;
+    </Grid>
+  );
 
   render() {
     const { children, classes, width } = this.props;

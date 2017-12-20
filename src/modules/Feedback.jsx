@@ -93,9 +93,11 @@ class FeedbackTable extends React.Component {
             {
               id: null,
               value: row =>
-                row.reviewed
-                  ? <Done color={lightGreen[300]} />
-                  : <AlertErrorOutline color={red[300]} />,
+                row.reviewed ? (
+                  <Done color={lightGreen[300]} />
+                ) : (
+                  <AlertErrorOutline color={red[300]} />
+                ),
 
               className: 'row-icon',
               maxShowWidth: 320,
@@ -116,13 +118,14 @@ class FeedbackTable extends React.Component {
             {
               id: 'createdAt',
               value: row =>
-                new Date(
-                  row.createdAt,
-                ).toLocaleDateString(navigator.languages, {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: 'numeric',
-                }),
+                new Date(row.createdAt).toLocaleDateString(
+                  navigator.languages,
+                  {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                  },
+                ),
               columnTitle: <FormattedMessage id="feedbackStartDate" />,
               className: 'date',
               maxShowWidth: 440,

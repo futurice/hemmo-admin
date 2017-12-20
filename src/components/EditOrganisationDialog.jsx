@@ -99,57 +99,59 @@ export default class EditOrganisationDialog extends React.Component {
             : formatMessage({ id: 'addOrganisationUnit' })}
         </DialogTitle>
         <DialogContent className="dialog-content">
-          {loading
-            ? <FullscreenSpinner />
-            : <div>
-                <FormControl className="form-control">
-                  <TextField
-                    className="full-width-text-field"
-                    name="name"
-                    value={this.state.name}
-                    label={formatMessage({ id: 'name' })}
-                    onChange={this.updateAttr.bind(this)}
-                  />
-                </FormControl>
-                {!this.state.id
-                  ? <div>
-                      <FormControl className="form-control">
-                        <FormControlLabel
-                          control={
-                            <Radio
-                              checked={this.state.position === 'child'}
-                              value="child"
-                              onChange={this.updateAttr.bind(this)}
-                              name="position"
-                            />
-                          }
-                          label={formatMessage({ id: 'addUnitUnder' })}
+          {loading ? (
+            <FullscreenSpinner />
+          ) : (
+            <div>
+              <FormControl className="form-control">
+                <TextField
+                  className="full-width-text-field"
+                  name="name"
+                  value={this.state.name}
+                  label={formatMessage({ id: 'name' })}
+                  onChange={this.updateAttr.bind(this)}
+                />
+              </FormControl>
+              {!this.state.id ? (
+                <div>
+                  <FormControl className="form-control">
+                    <FormControlLabel
+                      control={
+                        <Radio
+                          checked={this.state.position === 'child'}
+                          value="child"
+                          onChange={this.updateAttr.bind(this)}
+                          name="position"
                         />
-                        <FormControlLabel
-                          control={
-                            <Radio
-                              checked={this.state.position === 'after'}
-                              value="after"
-                              onChange={this.updateAttr.bind(this)}
-                              name="position"
-                            />
-                          }
-                          label={formatMessage({ id: 'addUnitAfter' })}
+                      }
+                      label={formatMessage({ id: 'addUnitUnder' })}
+                    />
+                    <FormControlLabel
+                      control={
+                        <Radio
+                          checked={this.state.position === 'after'}
+                          value="after"
+                          onChange={this.updateAttr.bind(this)}
+                          name="position"
                         />
-                      </FormControl>
-                      <FormControl className="form-control">
-                        <SelectMenu
-                          id="organisation-position"
-                          selectedId={this.state.parent || 0}
-                          loading={loading}
-                          data={organisations}
-                          label={this.state.parentName}
-                          onSelect={this.selectParent.bind(this)}
-                        />
-                      </FormControl>
-                    </div>
-                  : null}
-              </div>}
+                      }
+                      label={formatMessage({ id: 'addUnitAfter' })}
+                    />
+                  </FormControl>
+                  <FormControl className="form-control">
+                    <SelectMenu
+                      id="organisation-position"
+                      selectedId={this.state.parent || 0}
+                      loading={loading}
+                      data={organisations}
+                      label={this.state.parentName}
+                      onSelect={this.selectParent.bind(this)}
+                    />
+                  </FormControl>
+                </div>
+              ) : null}
+            </div>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={this.closeDialog.bind(this)}>

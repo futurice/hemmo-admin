@@ -65,30 +65,30 @@ export default class FeedbackDetails extends React.Component {
     const { intl: { formatMessage } } = this.props;
     const indentAttachments = attachments && attachments.length > 1;
 
-    return attachments && attachments.length
-      ? <div>
-          <Divider />
-          <Grid container gutter={0} className="attachments">
-            <Typography type="subheading">
-              {formatMessage({ id: 'attachments' })}
-            </Typography>
-            <Grid item xs={12}>
-              {attachments.map((attachment, i) =>
-                <div key={i} className={indentAttachments ? 'indent' : null}>
-                  {indentAttachments
-                    ? <Typography>
-                        {formatMessage({ id: 'attachment' })} {i + 1}
-                      </Typography>
-                    : null}
-                  <div>
-                    <Attachment id={attachment.id} mime={attachment.mime} />
-                  </div>
-                </div>,
-              )}
-            </Grid>
+    return attachments && attachments.length ? (
+      <div>
+        <Divider />
+        <Grid container gutter={0} className="attachments">
+          <Typography type="subheading">
+            {formatMessage({ id: 'attachments' })}
+          </Typography>
+          <Grid item xs={12}>
+            {attachments.map((attachment, i) => (
+              <div key={i} className={indentAttachments ? 'indent' : null}>
+                {indentAttachments ? (
+                  <Typography>
+                    {formatMessage({ id: 'attachment' })} {i + 1}
+                  </Typography>
+                ) : null}
+                <div>
+                  <Attachment id={attachment.id} mime={attachment.mime} />
+                </div>
+              </div>
+            ))}
           </Grid>
-        </div>
-      : null;
+        </Grid>
+      </div>
+    ) : null;
   };
 
   renderActivities = () => {
@@ -100,55 +100,55 @@ export default class FeedbackDetails extends React.Component {
       '-1': 'negative',
     };
 
-    return activities && activities.length
-      ? <div>
-          <Divider />
-          <Grid container gutter={0} className="activities">
-            <Typography type="subheading">
-              {formatMessage({ id: 'activities' })}
-            </Typography>
-            <Grid item xs={12}>
-              {activities.map((act, i) => {
-                const moodClass =
-                  act.like !== undefined ? classes[act.like.toString()] : null;
+    return activities && activities.length ? (
+      <div>
+        <Divider />
+        <Grid container gutter={0} className="activities">
+          <Typography type="subheading">
+            {formatMessage({ id: 'activities' })}
+          </Typography>
+          <Grid item xs={12}>
+            {activities.map((act, i) => {
+              const moodClass =
+                act.like !== undefined ? classes[act.like.toString()] : null;
 
-                return (
-                  <Card key={i} className={'activity ' + moodClass}>
-                    <CardContent>
-                      <Typography type="subheading">
-                        {act.main}, {act.sub}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </Grid>
+              return (
+                <Card key={i} className={'activity ' + moodClass}>
+                  <CardContent>
+                    <Typography type="subheading">
+                      {act.main}, {act.sub}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </Grid>
-        </div>
-      : null;
+        </Grid>
+      </div>
+    ) : null;
   };
 
   renderMoods = () => {
     const { moods } = this.props.details.data;
     const { intl: { formatMessage } } = this.props;
 
-    return moods && moods.length
-      ? <div>
-          <Divider />
-          <Grid container gutter={0} className="moods">
-            <Grid item>
-              <Typography type="subheading">
-                {formatMessage({ id: 'moods' })}
-              </Typography>
-              {moods.map((mood, i) =>
-                <span key={i} className="mood">
-                  {mood}
-                </span>,
-              )}
-            </Grid>
+    return moods && moods.length ? (
+      <div>
+        <Divider />
+        <Grid container gutter={0} className="moods">
+          <Grid item>
+            <Typography type="subheading">
+              {formatMessage({ id: 'moods' })}
+            </Typography>
+            {moods.map((mood, i) => (
+              <span key={i} className="mood">
+                {mood}
+              </span>
+            ))}
           </Grid>
-        </div>
-      : null;
+        </Grid>
+      </div>
+    ) : null;
   };
 
   renderAssignee = () => {
@@ -205,18 +205,18 @@ export default class FeedbackDetails extends React.Component {
   renderConfirmDelete = () => {
     const { intl: { formatMessage } } = this.props;
 
-    return this.state.dialogOpen
-      ? <DeleteDialog
-          handleDelete={this.handleDelete.bind(this)}
-          handleClose={() => {
-            this.setState({
-              dialogOpen: false,
-            });
-          }}
-          open={this.state.dialogOpen}
-          message={formatMessage({ id: 'deleteFeedbackWarn' })}
-        />
-      : null;
+    return this.state.dialogOpen ? (
+      <DeleteDialog
+        handleDelete={this.handleDelete.bind(this)}
+        handleClose={() => {
+          this.setState({
+            dialogOpen: false,
+          });
+        }}
+        open={this.state.dialogOpen}
+        message={formatMessage({ id: 'deleteFeedbackWarn' })}
+      />
+    ) : null;
   };
 
   render() {
@@ -226,61 +226,63 @@ export default class FeedbackDetails extends React.Component {
 
     return (
       <div className="feedback-details">
-        {!loading
-          ? <Card>
-              <CardContent style={{ paddingBottom: 0 }}>
-                <Typography type="headline">
-                  {formatMessage({ id: 'feedback' })}
-                </Typography>
-                <Grid container gutter={0}>
-                  <Grid item xs={12} sm={8}>
-                    <Typography type="subheading" className="subheading">
-                      <div>
-                        {formatMessage({ id: 'date' })}:{' '}
-                        {this.formatDate(data.createdAt)}
-                      </div>
-                      <div>
-                        <FormControlLabel
-                          control={
-                            <Switch
-                              checked={data.reviewed}
-                              onChange={this.toggleReviewStatus}
-                            />
-                          }
-                          label={formatMessage({ id: 'reviewed' })}
-                        />
-                      </div>
-                      {this.renderGivenMood()}
-                      {this.renderAssignee()}
-                    </Typography>
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    sm={4}
-                    style={{ textAlign: 'right', alignSelf: 'flex-start' }}
-                  >
-                    <Button
-                      color="accent"
-                      style={{
-                        color: red[300],
-                      }}
-                      onClick={() => this.setState({ dialogOpen: true })}
-                    >
-                      {formatMessage({ id: 'deleteFeedback' })}
-                    </Button>
-                  </Grid>
+        {!loading ? (
+          <Card>
+            <CardContent style={{ paddingBottom: 0 }}>
+              <Typography type="headline">
+                {formatMessage({ id: 'feedback' })}
+              </Typography>
+              <Grid container gutter={0}>
+                <Grid item xs={12} sm={8}>
+                  <Typography type="subheading" className="subheading">
+                    <div>
+                      {formatMessage({ id: 'date' })}:{' '}
+                      {this.formatDate(data.createdAt)}
+                    </div>
+                    <div>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={data.reviewed}
+                            onChange={this.toggleReviewStatus}
+                          />
+                        }
+                        label={formatMessage({ id: 'reviewed' })}
+                      />
+                    </div>
+                    {this.renderGivenMood()}
+                    {this.renderAssignee()}
+                  </Typography>
                 </Grid>
-              </CardContent>
-              <CardContent>
-                {this.renderMoods()}
-                {this.renderActivities()}
-                {this.renderAttachments()}
-              </CardContent>
-            </Card>
-          : <div style={{ textAlign: 'center' }}>
-              <CircularProgress />
-            </div>}
+                <Grid
+                  item
+                  xs={12}
+                  sm={4}
+                  style={{ textAlign: 'right', alignSelf: 'flex-start' }}
+                >
+                  <Button
+                    color="accent"
+                    style={{
+                      color: red[300],
+                    }}
+                    onClick={() => this.setState({ dialogOpen: true })}
+                  >
+                    {formatMessage({ id: 'deleteFeedback' })}
+                  </Button>
+                </Grid>
+              </Grid>
+            </CardContent>
+            <CardContent>
+              {this.renderMoods()}
+              {this.renderActivities()}
+              {this.renderAttachments()}
+            </CardContent>
+          </Card>
+        ) : (
+          <div style={{ textAlign: 'center' }}>
+            <CircularProgress />
+          </div>
+        )}
 
         {this.renderConfirmDelete()}
       </div>

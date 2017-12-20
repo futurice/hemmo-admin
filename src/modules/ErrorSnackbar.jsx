@@ -63,7 +63,7 @@ class ErrorSnackbar extends React.Component {
     });
   };
 
-  renderSnackbar = (open, msg) =>
+  renderSnackbar = (open, msg) => (
     <Snackbar
       anchorOrigin={{
         vertical: 'bottom',
@@ -71,11 +71,7 @@ class ErrorSnackbar extends React.Component {
       }}
       open={open}
       autoHideDuration={6000}
-      message={
-        <span id="error-snackbar">
-          {msg}
-        </span>
-      }
+      message={<span id="error-snackbar">{msg}</span>}
       onRequestClose={this.handleRequestClose}
       action={[
         <Button key="undo" color="accent" onClick={this.openDetails}>
@@ -90,24 +86,22 @@ class ErrorSnackbar extends React.Component {
           <CloseIcon />
         </IconButton>,
       ]}
-    />;
+    />
+  );
 
-  renderDetails = (open, msg) =>
+  renderDetails = (open, msg) => (
     <Dialog open={open} onRequestClose={this.closeDetails}>
-      <DialogTitle>
-        {'Error details'}
-      </DialogTitle>
+      <DialogTitle>{'Error details'}</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          {msg}
-        </DialogContentText>
+        <DialogContentText>{msg}</DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={this.closeDetails} color="primary">
           Dismiss
         </Button>
       </DialogActions>
-    </Dialog>;
+    </Dialog>
+  );
 
   render() {
     const { open, msg, detailsOpen, details } = this.state;

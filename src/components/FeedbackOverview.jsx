@@ -140,9 +140,11 @@ export default class FeedbackOverview extends React.Component {
             {
               id: null,
               value: row =>
-                row.reviewed
-                  ? <Done color={lightGreen[300]} />
-                  : <AlertErrorOutline color={red[300]} />,
+                row.reviewed ? (
+                  <Done color={lightGreen[300]} />
+                ) : (
+                  <AlertErrorOutline color={red[300]} />
+                ),
 
               className: 'row-icon',
               maxShowWidth: 320,
@@ -151,13 +153,14 @@ export default class FeedbackOverview extends React.Component {
             {
               id: 'createdAt',
               value: row =>
-                new Date(
-                  row.createdAt,
-                ).toLocaleDateString(navigator.languages, {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: 'numeric',
-                }),
+                new Date(row.createdAt).toLocaleDateString(
+                  navigator.languages,
+                  {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                  },
+                ),
               columnTitle: formatMessage({ id: 'feedbackStartDate' }),
               className: 'date',
               maxShowWidth: 440,
@@ -174,18 +177,18 @@ export default class FeedbackOverview extends React.Component {
           onClickRow={this.openFeedback.bind(this)}
           refresh={this.refreshFeedback.bind(this)}
         />
-        {pageCount > 0
-          ? <MobileStepper
-              type="progress"
-              steps={pageCount}
-              position="static"
-              activeStep={this.state.page}
-              onBack={this.handleBack}
-              onNext={this.handleNext}
-              disableBack={this.state.page === 0}
-              disableNext={this.state.page === pageCount}
-            />
-          : null}
+        {pageCount > 0 ? (
+          <MobileStepper
+            type="progress"
+            steps={pageCount}
+            position="static"
+            activeStep={this.state.page}
+            onBack={this.handleBack}
+            onNext={this.handleNext}
+            disableBack={this.state.page === 0}
+            disableNext={this.state.page === pageCount}
+          />
+        ) : null}
       </div>
     );
   };
@@ -227,11 +230,11 @@ export default class FeedbackOverview extends React.Component {
           </Menu>
           {formatMessage({ id: headlineText })}
         </Typography>
-        {trendVisible
-          ? <Typography className="sub">
-              {formatMessage({ id: 'givenMoodsExplain' })}
-            </Typography>
-          : null}
+        {trendVisible ? (
+          <Typography className="sub">
+            {formatMessage({ id: 'givenMoodsExplain' })}
+          </Typography>
+        ) : null}
       </div>
     );
   };
@@ -259,9 +262,7 @@ export default class FeedbackOverview extends React.Component {
               }
               onClick={() => this.openFeedback(mood)}
             >
-              <span>
-                {this.formatDate(mood.createdAt)}
-              </span>
+              <span>{this.formatDate(mood.createdAt)}</span>
             </div>
           );
         })}

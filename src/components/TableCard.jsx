@@ -18,11 +18,7 @@ class TableCard extends React.Component {
         </div>
       );
     } else if (!this.props.model.data.entries.length && this.props.emptyMsg) {
-      return (
-        <div>
-          {this.props.emptyMsg}
-        </div>
-      );
+      return <div>{this.props.emptyMsg}</div>;
     } else {
       body = (
         <ModelTable
@@ -37,16 +33,16 @@ class TableCard extends React.Component {
       );
     }
 
-    let toolbar = this.props.hideToolbar
-      ? null
-      : <CardToolbar
-          refresh={this.props.refresh}
-          totalEntries={this.props.model.data.meta.count}
-          initialPage={parseInt(this.props.initialPage, 10)}
-          pageEntries={parseInt(this.props.pageEntries, 10)}
-          hideElems={hideElems || []}
-          customLabels={customLabels || {}}
-        />;
+    let toolbar = this.props.hideToolbar ? null : (
+      <CardToolbar
+        refresh={this.props.refresh}
+        totalEntries={this.props.model.data.meta.count}
+        initialPage={parseInt(this.props.initialPage, 10)}
+        pageEntries={parseInt(this.props.pageEntries, 10)}
+        hideElems={hideElems || []}
+        customLabels={customLabels || {}}
+      />
+    );
 
     return (
       <div>

@@ -39,7 +39,7 @@ export class App extends React.Component {
     this.props.setLocale(this.props.auth);
   };
 
-  render = () =>
+  render = () => (
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
       <NavigationDrawer />
       <Header />
@@ -49,7 +49,8 @@ export class App extends React.Component {
       </div>
 
       <ErrorSnackbar />
-    </div>;
+    </div>
+  );
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

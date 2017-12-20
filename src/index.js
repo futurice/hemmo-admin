@@ -69,10 +69,11 @@ export default class Root extends React.Component {
     persistStore(store, () => this.setState({ rehydrated: true }));
   }
 
-  renderLoading = () =>
+  renderLoading = () => (
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
       <FullscreenSpinner />
-    </div>;
+    </div>
+  );
 
   render() {
     const { rehydrated } = this.state;

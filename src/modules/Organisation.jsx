@@ -158,40 +158,41 @@ class OrganisationManagement extends React.Component {
   renderEditDialog = () => {
     const { organisations, organisationUnit } = this.props;
 
-    return this.state.editDialogOpen
-      ? <EditOrganisationDialog
-          open={this.state.editDialogOpen}
-          organisation={organisationUnit.data}
-          organisations={organisations.data.entries}
-          loading={organisationUnit.loading}
-          saving={this.state.submitting}
-          onRequestSave={this.saveOrganisationUnit.bind(this)}
-          onRequestClose={this.closeDialogs.bind(this)}
-        />
-      : null;
+    return this.state.editDialogOpen ? (
+      <EditOrganisationDialog
+        open={this.state.editDialogOpen}
+        organisation={organisationUnit.data}
+        organisations={organisations.data.entries}
+        loading={organisationUnit.loading}
+        saving={this.state.submitting}
+        onRequestSave={this.saveOrganisationUnit.bind(this)}
+        onRequestClose={this.closeDialogs.bind(this)}
+      />
+    ) : null;
   };
 
   renderConfirmDelete = () => {
     const { intl: { formatMessage } } = this.props;
 
-    return this.state.deleteDialogOpen
-      ? <DeleteDialog
-          handleDelete={() =>
-            this.props.deleteOrganisationUnit(
-              this.state.unit.id,
-              this.closeDialogs,
-              this.closeAndLoad,
-            )}
-          handleClose={event => {
-            event.preventDefault();
-            event.stopPropagation();
+    return this.state.deleteDialogOpen ? (
+      <DeleteDialog
+        handleDelete={() =>
+          this.props.deleteOrganisationUnit(
+            this.state.unit.id,
+            this.closeDialogs,
+            this.closeAndLoad,
+          )
+        }
+        handleClose={event => {
+          event.preventDefault();
+          event.stopPropagation();
 
-            this.closeDialogs();
-          }}
-          open={this.state.deleteDialogOpen}
-          message={formatMessage({ id: 'deleteOrganisationUnitWarn' })}
-        />
-      : null;
+          this.closeDialogs();
+        }}
+        open={this.state.deleteDialogOpen}
+        message={formatMessage({ id: 'deleteOrganisationUnitWarn' })}
+      />
+    ) : null;
   };
 
   render() {
@@ -215,7 +216,7 @@ class OrganisationManagement extends React.Component {
         className: 'align-right',
       },
       {
-        component: row =>
+        component: row => (
           <div>
             <IconButton onClick={() => this.editOrganisationUnit(row)}>
               <Edit />
@@ -223,7 +224,8 @@ class OrganisationManagement extends React.Component {
             <IconButton onClick={() => this.deleteOrganisationUnit(row)}>
               <Delete />
             </IconButton>
-          </div>,
+          </div>
+        ),
         className: 'row-action',
       },
     ];

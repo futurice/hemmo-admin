@@ -113,11 +113,11 @@ class ChildWrapper extends React.Component {
   renderProgressBar() {
     const { childLoading } = this.props;
 
-    return childLoading
-      ? <div style={{ marginBottom: '-5px' }}>
-          <LinearProgress />
-        </div>
-      : null;
+    return childLoading ? (
+      <div style={{ marginBottom: '-5px' }}>
+        <LinearProgress />
+      </div>
+    ) : null;
   }
 
   updateFeedback(feedbackId, data) {
@@ -128,7 +128,7 @@ class ChildWrapper extends React.Component {
     });
   }
 
-  renderChildDetails = () =>
+  renderChildDetails = () => (
     <Grid item xs={12} sm={6}>
       <ChildDetails
         child={this.props.child.data}
@@ -136,9 +136,10 @@ class ChildWrapper extends React.Component {
         onUpdate={this.props.update.bind(this)}
         onDelete={this.props.delete.bind(this)}
       />
-    </Grid>;
+    </Grid>
+  );
 
-  renderFeedbackOverview = () =>
+  renderFeedbackOverview = () => (
     <Grid item xs={12} sm={6}>
       <FeedbackOverview
         childId={this.props.match.params.childId}
@@ -150,30 +151,33 @@ class ChildWrapper extends React.Component {
         openFeedback={this.props.openFeedback}
         moodChanges={this.state.moodChanges}
       />
-    </Grid>;
+    </Grid>
+  );
 
   renderFeedbackDetails = () => {
     const { intl: { formatMessage } } = this.props;
     return (
       <Grid item xs={12} sm={12}>
-        {this.props.match.params.feedbackId
-          ? <FeedbackDetails
-              childId={this.props.child.data.id}
-              details={this.props.feedbackDetail}
-              employees={this.props.employees}
-              onUpdate={this.updateFeedback.bind(this)}
-              onDelete={this.props.deleteFeedback.bind(this)}
-            />
-          : <Grid
-              item
-              className="info"
-              style={{
-                background: blueGrey[50],
-                border: `1px solid ${blueGrey[100]}`,
-              }}
-            >
-              {formatMessage({ id: 'selectFeedback' })}
-            </Grid>}
+        {this.props.match.params.feedbackId ? (
+          <FeedbackDetails
+            childId={this.props.child.data.id}
+            details={this.props.feedbackDetail}
+            employees={this.props.employees}
+            onUpdate={this.updateFeedback.bind(this)}
+            onDelete={this.props.deleteFeedback.bind(this)}
+          />
+        ) : (
+          <Grid
+            item
+            className="info"
+            style={{
+              background: blueGrey[50],
+              border: `1px solid ${blueGrey[100]}`,
+            }}
+          >
+            {formatMessage({ id: 'selectFeedback' })}
+          </Grid>
+        )}
       </Grid>
     );
   };
@@ -183,19 +187,21 @@ class ChildWrapper extends React.Component {
 
     return (
       <div>
-        {childLoading
-          ? this.renderProgressBar()
-          : child.data && child.data.id
-            ? <div className="child-profile">
-                <PageHeader header={child.data.name} />
+        {childLoading ? (
+          this.renderProgressBar()
+        ) : child.data && child.data.id ? (
+          <div className="child-profile">
+            <PageHeader header={child.data.name} />
 
-                <Grid container gutter={24}>
-                  {this.renderChildDetails()}
-                  {this.renderFeedbackOverview()}
-                  {this.renderFeedbackDetails()}
-                </Grid>
-              </div>
-            : <NotFound />}
+            <Grid container gutter={24}>
+              {this.renderChildDetails()}
+              {this.renderFeedbackOverview()}
+              {this.renderFeedbackDetails()}
+            </Grid>
+          </div>
+        ) : (
+          <NotFound />
+        )}
       </div>
     );
   }
