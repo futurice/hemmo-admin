@@ -40,6 +40,9 @@ export default class FeedbackDetails extends React.Component {
 
   handleDelete() {
     this.props.onDelete(this.props.childId, this.props.details.data.id);
+    this.setState({
+      dialogOpen: false,
+    });
   }
 
   selectAssignee(assigneeId) {

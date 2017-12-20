@@ -48,6 +48,7 @@ const mapDispatchToProps = dispatch => ({
   deleteFeedback: (childId, feedbackId) => {
     dispatch(
       rest.actions.feedbackDetail.delete({ feedbackId: feedbackId }, () => {
+        dispatch(rest.actions.child.get({ childId: childId }));
         dispatch(push(`/children/${childId}`));
       }),
     );
