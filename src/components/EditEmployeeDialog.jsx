@@ -129,6 +129,7 @@ export default class EditEmployeeDialog extends React.Component {
                   value={this.state.name}
                   label={formatMessage({ id: 'name' })}
                   onChange={this.updateAttr.bind(this)}
+                  disabled={!this.props.isAdmin && !this.props.isSelf}
                 />
               </FormControl>
 
@@ -139,22 +140,25 @@ export default class EditEmployeeDialog extends React.Component {
                   value={this.state.email}
                   label={formatMessage({ id: 'email' })}
                   onChange={this.updateAttr.bind(this)}
+                  disabled={!this.props.isAdmin && !this.props.isSelf}
                 />
               </FormControl>
 
-              <FormControl className="form-control">
-                <FormLabel>
-                  {formatMessage({ id: 'organisationUnit' })}
-                </FormLabel>
-                <SelectMenu
-                  id="organisation-position"
-                  selectedId={this.state.organisationId || 0}
-                  loading={this.props.loading}
-                  data={this.props.organisation}
-                  label={this.state.organisationName}
-                  onSelect={this.selectOrganisation.bind(this)}
-                />
-              </FormControl>
+              {this.props.isAdmin ? (
+                <FormControl className="form-control">
+                  <FormLabel>
+                    {formatMessage({ id: 'organisationUnit' })}
+                  </FormLabel>
+                  <SelectMenu
+                    id="organisation-position"
+                    selectedId={this.state.organisationId || 0}
+                    loading={this.props.loading}
+                    data={this.props.organisation}
+                    label={this.state.organisationName}
+                    onSelect={this.selectOrganisation.bind(this)}
+                  />
+                </FormControl>
+              ) : null}
 
               {this.props.isAdmin ? (
                 <FormControl
@@ -259,6 +263,7 @@ EditEmployeeDialog.propTypes = {
   loading: PropTypes.bool.isRequired,
   saving: PropTypes.bool.isRequired,
   isAdmin: PropTypes.bool.isRequired,
+  isSelf: PropTypes.bool.isRequired,
   onRequestSave: PropTypes.func.isRequired,
   onRequestClose: PropTypes.func.isRequired,
 };

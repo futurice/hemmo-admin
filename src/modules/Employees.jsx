@@ -18,6 +18,7 @@ const mapStateToProps = state => ({
   employee: state.employee,
   organisation: state.organisations,
   scope: state.auth.data.decoded.scope,
+  employeeId: state.auth.data.decoded.id,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -239,6 +240,7 @@ class EmployeeManagement extends React.Component {
             loading={employee.loading}
             saving={this.state.submitting}
             isAdmin={this.props.scope === 'admin'}
+            isSelf={employee.data.id === this.props.employeeId}
             onRequestSave={this.saveEmployee.bind(this)}
             onRequestClose={this.closeDialog.bind(this)}
           />
