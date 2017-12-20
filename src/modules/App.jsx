@@ -11,10 +11,17 @@ import { getLocaleForUser, languages } from '../utils/intl';
 
 const mapStateToProps = state => ({
   auth: state.auth,
+  locationKey: state.router.location.key,
 });
 
 const mapDispatchToProps = dispatch => ({
   setLocale: auth => {
+    // Updates i18n messages for logged in users on app start
+    if (!auth.data.decoded) {
+      // User not logged in? Don't do anything here
+      return;
+    }
+
     const storedLocale = getLocaleForUser(auth.data.decoded.email);
     if (storedLocale && languages[storedLocale]) {
       dispatch(
