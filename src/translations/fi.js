@@ -9,6 +9,8 @@ export default {
   Login: 'Kirjaudu sisään',
   Children: 'Lapset',
   Feedback: 'Palautteet',
+  Employees: 'Työntekijät',
+  Organisation: 'Organisaatio',
 
   // Home
   latestFeedback: 'Viimeisimmät palautteet',
@@ -103,11 +105,6 @@ export default {
   membersTotal: 'Jäsenmäärä',
   membersActive: 'Aktivoituja jäseniä',
 
-  // Table toolbar
-  childsName: 'Lapsen nimi',
-  employeesName: 'Työntekijän nimi',
-  showAll: 'Näytä kaikki',
-
   // Miscellaneous
   close: 'Sulje',
   save: 'Tallenna',
@@ -118,6 +115,15 @@ export default {
   pageNotFound: 'Haettua sivua ei löytynyt.',
   selectValue: '- valitse -',
   pleaseLogin: 'Kirjaudu sisään, ole hyvä',
+
+  // Table toolbar
+  childsName: 'Lapsen nimi',
+  employeesName: 'Työntekijän nimi',
+  showAll: 'Näytä kaikki',
+
+  feedback: 'Palaute',
+  children: 'Lapset',
+  rowsPerPage: 'Rivien määrä',
 
   name: 'Nimi',
   registrationDate: 'Käyttäjän luontipvm.',

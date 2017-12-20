@@ -9,6 +9,8 @@ export default {
   Login: 'Login',
   Children: 'Children',
   Feedback: 'Feedback',
+  Employees: 'Employees',
+  Organisation: 'Organisation',
 
   // Home
   latestFeedback: 'Latest feedback',
