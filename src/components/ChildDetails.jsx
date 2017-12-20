@@ -86,7 +86,7 @@ export default class ChildDetails extends React.Component {
                 />
               </Grid>
 
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <FormControlLabel
                   control={
                     <Switch
@@ -96,7 +96,7 @@ export default class ChildDetails extends React.Component {
                   }
                   label={formatMessage({ id: 'showAlerts' })}
                 />
-              </Grid>
+              </Grid> */}
               <Grid item xs={12} className="delete-child">
                 <Button
                   color="accent"
