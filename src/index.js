@@ -13,12 +13,8 @@ import { createMuiTheme } from 'material-ui/styles';
 
 import { IntlProvider } from 'react-intl-redux';
 
-import ErrorSnackbar from './modules/ErrorSnackbar';
-import NavigationDrawer from './modules/NavigationDrawer';
-import Header from './modules/Header';
+import App from './modules/App';
 import FullscreenSpinner from './components/FullscreenSpinner';
-
-import { ConfiguredRoutes } from './utils/routes';
 
 import store from './utils/store';
 import persistStore from './utils/persist';
@@ -66,24 +62,12 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-export default class App extends React.Component {
+export default class Root extends React.Component {
   state = { rehydrated: false };
 
   componentWillMount() {
     persistStore(store, () => this.setState({ rehydrated: true }));
   }
-
-  renderApp = () =>
-    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <NavigationDrawer />
-      <Header />
-
-      <div className="content-wrapper">
-        <ConfiguredRoutes />
-      </div>
-
-      <ErrorSnackbar />
-    </div>;
 
   renderLoading = () =>
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -98,7 +82,7 @@ export default class App extends React.Component {
         <Provider store={store}>
           <IntlProvider>
             <ConnectedRouter history={history}>
-              {rehydrated ? this.renderApp() : this.renderLoading()}
+              {rehydrated ? <App /> : this.renderLoading()}
             </ConnectedRouter>
           </IntlProvider>
         </Provider>
@@ -107,4 +91,4 @@ export default class App extends React.Component {
   }
 }
 
-render(<App />, document.getElementById('root'));
+render(<Root />, document.getElementById('root'));

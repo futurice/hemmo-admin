@@ -21,6 +21,9 @@ const persistConfig = {
 
     // Clear any errors from previous app state
     'err',
+
+    // Don't persist i18n state
+    'intl',
   ],
 };
 
