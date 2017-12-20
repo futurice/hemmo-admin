@@ -78,7 +78,7 @@ class Header extends React.Component {
                     changeView(route.path);
                   }}
                 >
-                  {route.name}
+                  <FormattedMessage id={route.name} />
                 </Button>
               );
             })}
