@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import { withRouter } from 'react-router';
 import NavigationDrawer from './NavigationDrawer';
 import Header from './Header';
 import { ConfiguredRoutes } from '../utils/routes';
@@ -11,7 +12,6 @@ import { getLocaleForUser, languages } from '../utils/intl';
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  locationKey: state.router.location.key,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -53,4 +53,4 @@ export class App extends React.Component {
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
